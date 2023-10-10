@@ -8,7 +8,7 @@ CTestGame::CTestGame(GameDataRef _data)
 void CTestGame::STEInit()
 {
 	CGameState::STEInit();
-	data->assets.LoadTexture("lifePowerUp", "C:\\Users\\scizz\\Pictures\\VROUM\\lifepowerup\\lifePowerUp.png");
+	data->assets.LoadTexture("lifePowerUp", "res\\img\\lifePowerUp.png");
 }
 
 void CTestGame::STEHandleInput()
