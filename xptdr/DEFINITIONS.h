@@ -12,9 +12,9 @@
 #define FONT_FILE_PATH "C:\\Users\\scizz\\source\\repos\\xptdr\\res\\font\\lato.ttf"
 
 #define GAME_BACKGROUND_FILEPATH "C:\\Users\\scizz\\source\\repos\\xptdr\\res\\img\\backgroundupgrade2.jpeg"
-#define GAME_BIKE_FILEPATH "C:\\Users\\scizz\\Pictures\\VROUM\\spacecraft_player_1.png"
+#define GAME_SPACESHIP_FILEPATH "C:\\Users\\scizz\\source\\repos\\xptdr\\res\\img\\spacecraft_player_1.png"
 #define SCROLLING_SPEED 0.5f
 
-#define LIFEPOINTTEXTURE "C:\\Users\\scizz\\Pictures\\VROUM\\lifepoint2.png"
+#define LIFEPOINTTEXTURE "C:\\Users\\scizz\\source\\repos\\xptdr\\res\\img\\lifepoint2.png"
 #define ENEMYPNG_FILEPATH "C:\\Users\\scizz\\source\\repos\\xptdr\\res\\img\\enemy.png"
 # define M_PIl          3.141592653589793238462643383279502884L /* pi */

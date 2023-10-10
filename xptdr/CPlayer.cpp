@@ -22,7 +22,7 @@ void CPlayer::setAssets(CAssetManager* a)
 {
 	assets = a;
 	BAW.assets = a;
-	setTexture("spacecraftImage", GAME_BIKE_FILEPATH);
+	setTexture("spacecraftImage", GAME_SPACESHIP_FILEPATH);
 	assets->LoadTexture("lifepoint", LIFEPOINTTEXTURE);
 	initLifeBar();
 	setSprite();

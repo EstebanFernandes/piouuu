@@ -10,9 +10,6 @@ void CMainMenuState::STEInit()
 {
 	data->assets.LoadFont("Lato", FONT_FILE_PATH); //Load la police d'écriture
 
-	data->assets.LoadTexture("Background",
-		MAIN_MENU_BACKGROUND_FILEPATH);
-
 	data->assets.LoadTexture("Title",
 		MAIN_MENU_TITLE_PATH); // On charge les textures
 

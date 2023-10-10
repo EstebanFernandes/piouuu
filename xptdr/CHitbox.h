@@ -8,6 +8,7 @@ class CHitbox
 {
 private:
 	int size;
+	float highestPoint;
 	std::vector<sf::RectangleShape> listHitbox;
 public:
 	CHitbox();
