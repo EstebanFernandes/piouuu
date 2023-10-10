@@ -13,7 +13,7 @@ CBullet::CBullet(int damaage, sf::Vector2f pos, sf::Vector2f dir, CAssetManager*
 
 void CBullet::setSprite()
 {
-	setTexture("bulletImage", "C:\\Users\\scizz\\source\\repos\\xptdr\\res\\img\\bulletImage.png");
+	setTexture("bulletImage", "res\\img\\bulletImage.png");
 	assets->GetTexture("bulletImage").setSmooth(true);
 		getSprite().setColor(sf::Color::Yellow);
 }

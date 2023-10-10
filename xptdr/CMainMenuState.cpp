@@ -12,7 +12,8 @@ void CMainMenuState::STEInit()
 
 	data->assets.LoadTexture("Title",
 		MAIN_MENU_TITLE_PATH); // On charge les textures
-
+	data->assets.LoadTexture("Background",
+		MAIN_MENU_BACKGROUND_FILEPATH);
 
 	CMMBackground.setTexture(data->assets.GetTexture("Background"));
 	CMMBackground.setScale(1.2f, 1.2f);
@@ -53,10 +54,10 @@ void CMainMenuState::STEInit()
 		(SCREEN_HEIGHT*0.8f));
 
 	//file chargement
-	aaaa.addKeyWords("numero,Titre,Description,Type,spawn,pre");
-	aaaa.setFileName("C:\\Users\\scizz\\Desktop\\principalWeapon.txt");
-	aaaa.FileAnalysis();
-	aaaa.showValueList();
+	//aaaa.addKeyWords("numero,Titre,Description,Type,spawn,pre");
+	//aaaa.setFileName("C:\\Users\\scizz\\Desktop\\principalWeapon.txt");
+	//aaaa.FileAnalysis();
+	//aaaa.showValueList();
 }
 
 void CMainMenuState::STEHandleInput()

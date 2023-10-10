@@ -26,7 +26,7 @@ void CGameState::initBackground()
 	BG1.setWindowSize(data->window.getSize());
 	sf::Sprite t1,t2,t3,t4,t5;
 	data->assets.LoadTexture("background", 
-		"C:\\Users\\scizz\\source\\repos\\xptdr\\res\\img\\layers\\parallax-mountain-bg.png");
+		"res\\img\\layers\\parallax-mountain-bg.png");
 	TextureSize = data->assets.GetTexture("background").getSize(); //Get size of texture.
 	WindowSize = data->window.getSize();
 	float ScaleX = (float)(WindowSize.x*1.1f) / TextureSize.x;
@@ -36,7 +36,7 @@ void CGameState::initBackground()
 	BG1.addLayer(t1, "background", 0.0001f,CBackground::background);
 
 	data->assets.LoadTexture("firstLayer", 
-		"C:\\Users\\scizz\\source\\repos\\xptdr\\res\\img\\layers\\parallax-mountain-montain-far.png");
+		"res\\img\\layers\\parallax-mountain-montain-far.png");
 	TextureSize = data->assets.GetTexture("firstLayer").getSize(); //Get size of texture.
 	WindowSize = data->window.getSize();
 	ScaleX = (float)(WindowSize.x * 1.1f) / TextureSize.x;
@@ -44,11 +44,11 @@ void CGameState::initBackground()
 	t2.setTexture(data->assets.GetTexture("firstLayer")); 
 	t2.setScale(ScaleX, ScaleY);      //Set scale. 
 	BG1.addLayer(t2, "firstlayer", 0.1f, CBackground::bot); 
-	BG1.addAndScaleLayer("C:\\Users\\scizz\\source\\repos\\xptdr\\res\\img\\layers\\parallax-mountain-mountains.png",
+	BG1.addAndScaleLayer("res\\img\\layers\\parallax-mountain-mountains.png",
 		"secondLayer", 0.2f);
-	BG1.addAndScaleLayer("C:\\Users\\scizz\\source\\repos\\xptdr\\res\\img\\layers\\parallax-mountain-trees.png",
+	BG1.addAndScaleLayer("res\\img\\layers\\parallax-mountain-trees.png",
 		"thirdlayer", 0.4f);
-	BG1.addAndScaleLayer("C:\\Users\\scizz\\source\\repos\\xptdr\\res\\img\\layers\\parallax-mountain-foreground-trees.png",
+	BG1.addAndScaleLayer("res\\img\\layers\\parallax-mountain-foreground-trees.png",
 		"forthlayer", 0.5f);
 	uitext.setCharacterSize(12);
 	uitext.setFillColor(sf::Color::White);
@@ -267,7 +267,7 @@ void CGameState::DrawPlayer()
 
 void CGameState::initEnemy()
 {
-	data->assets.LoadTexture("explosion", "C:\\Users\\scizz\\source\\repos\\xptdr\\res\\img\\explosion_sprite_sheet.png");
+	data->assets.LoadTexture("explosion", "res\\img\\explosion_sprite_sheet.png");
 }
 
 void CGameState::deleteEntity(int& i)

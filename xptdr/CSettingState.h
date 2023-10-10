@@ -1,6 +1,5 @@
 #pragma once
 #include "CState.h"
-#include <TGUI/TGUI.hpp>
 #include "DEFINITIONS.h"
 #include <string.h>
 #include "CJeu.h"

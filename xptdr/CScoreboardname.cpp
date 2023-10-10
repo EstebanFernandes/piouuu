@@ -21,8 +21,8 @@ void CScoreboardname::STEInit()
 	keyboard.push_back("wxcvbn,;!?:²");
 					  //  MAJ  décaler gauche décaler droite barre espace ANNULER 
 	keyboard.push_back("  ^<>    è");
-	data->assets.LoadTexture("keyboardBlack", "C:\\Users\\scizz\\source\\repos\\xptdr\\res\\img\\keyboard_black.png");
-	data->assets.LoadTexture("keyboardWhite", "C:\\Users\\scizz\\source\\repos\\xptdr\\res\\img\\keyboard_white.png");
+	data->assets.LoadTexture("keyboardBlack", "res\\img\\keyboard_black.png");
+	data->assets.LoadTexture("keyboardWhite", "res\\img\\keyboard_white.png");
 	ahouais.setSize(sf::Vector2f(200.f, 50.f));
 	ahouais.setPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT *0.3f);
 	//mouseSelectionRectangle = sf::FloatRect(0.f, 0.f, 40.f, 40.f);//avec la scale actuelle (3) c'est 40 une case
