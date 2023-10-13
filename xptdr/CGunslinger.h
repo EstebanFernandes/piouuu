@@ -1,7 +1,7 @@
 #pragma once
-#include"CEntity1.h"
+#include"CEntity.h"
 #include"CBullet.h"
-class CGunslinger : public CEntity1
+class CGunslinger : public CEntity
 {
 private:
 	std::vector<CBullet> magazine;
@@ -10,7 +10,7 @@ public:
 	void setSprite(){}
 	void updateEntity(float dt);
 	void renderEntity(sf::RenderTarget& target);
-	void updateCollision(CEntity1& b);
+	void updateCollision(CEntity& b);
 	void iNeedMoreBullets(sf::Vector2f pos);
 	void iNeedMoreBullets(sf::Vector2f pos, int damage);
 	std::vector<CBullet>* getVector() { return &magazine; }

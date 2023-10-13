@@ -6,13 +6,6 @@ CPowerUp::CPowerUp(CAssetManager* a)
 	setSprite();
 }
 
-void CPowerUp::setSprite()
-{
-	currentFrame = sf::IntRect(0, 0, 68, 68);
-	getSprite().setTexture((*assets).GetTexture("lifePowerUp"));
-	getSprite().setTextureRect(currentFrame);
-	getSprite().setPosition(SCREEN_WIDTH, 300.f);
-}
 
 void CPowerUp::updatewPlayer(float delta, CPlayer& player)
 {

@@ -5,7 +5,7 @@
 
 void CPlayer::setSprite()
 {
-	getSprite().setScale(0.3f, 0.3f);
+	getSprite().setScale(0.7f, 0.7f);
 	getSprite().setPosition((SCREEN_WIDTH / 4) - (getSprite().getGlobalBounds().width/2), (SCREEN_HEIGHT / 2) - (getSprite().getGlobalBounds().height/2));
 }
 
@@ -24,6 +24,7 @@ void CPlayer::setAssets(CAssetManager* a)
 	BAW.assets = a;
 	setTexture("spacecraftImage", GAME_SPACESHIP_FILEPATH);
 	assets->LoadTexture("lifepoint", LIFEPOINTTEXTURE);
+	anim = CAnimation(getPointerSprite(), sf::IntRect(0, 0, 153, 66), 4, 0.16f);
 	initLifeBar();
 	setSprite();
 }
@@ -125,7 +126,7 @@ void CPlayer::renderLifeBar(sf::RenderTarget& target)
 	}
 }
 
-void CPlayer::updateCollision(CEntity1& b)
+void CPlayer::updateCollision(CEntity& b)
 {
 	switch (b.getType())
 	{
@@ -215,6 +216,7 @@ void CPlayer::renderEntity(sf::RenderTarget& target)
 
 void CPlayer::updateFx()
 {
+	anim.updateAnimation();
 	if (hasBeenHit)
 	{
 		if (hitClock.getElapsedTime().asSeconds() >= 0.5f)

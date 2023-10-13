@@ -4,75 +4,73 @@
 #include<iostream>
 #include <string>
 #include"CAssetManager.h"
-#include"CEntity1.h"
-class CEntity : public CEntity1
+class CEntity
 {
-protected :
-
-	bool hasBeenHit = false;
-	int maxhealth;
-	int iENTLifePoint;
-	sf::RectangleShape lifeBar;
-	sf::RectangleShape lifeBarBackground;
+private :
+	sf::Sprite ENTsprite;
+	int type = undefined;
+	int damage;
+	int level = 0;
 public:
-	CEntity();
-	//Méthode à redéfinir 
-
-	void setLifeBar(){
-		lifeBar = sf::RectangleShape(sf::Vector2f(100.f, 10.f));
-		lifeBar.setFillColor(sf::Color::Red);
-		lifeBarBackground = sf::RectangleShape(sf::Vector2f(100.f, 10.f));
-		lifeBarBackground.setFillColor(sf::Color::Black);
+	int damagetaken = 0;
+	bool isHitting = false;
+	bool isDead = false;
+	bool needDelete = false;
+	typedef enum
+	{
+		undefined = -1,
+		Player,
+		Enemy,
+		FriendlyFire,
+		EnemyFire,
+		PowerUp,
+		Gunslinger
+	} typeInt;
+	CAssetManager* assets = NULL;
+	 //void specialPlayerInteraction(CPlayer&a){}
+	virtual void setSprite() = 0;
+	virtual void updateEntity(float dt) = 0;
+	virtual void renderEntity(sf::RenderTarget& target) = 0;
+	virtual void updateCollision(CEntity& b) = 0;
+	void setTexture(std::string name, std::string filename) {
+		CAssetManager& a = *assets;
+		a.LoadTexture(name, filename);
+		ENTsprite.setTexture(a.GetTexture(name));
 	}
-	void updateLifeBar() {
-		if (hasBeenHit)
-		{
-			lifeBar.setSize(sf::Vector2f(100.f * iENTLifePoint / maxhealth, 10.f));
-			hasBeenHit = false;
-		}
+	sf::Sprite& getSprite() { return ENTsprite; }
+	sf::Sprite* getPointerSprite() { return &ENTsprite; }
+	sf::FloatRect getGlobalBounds() {
+		return ENTsprite.getGlobalBounds();
 	}
-	int getMaxHealth() { return maxhealth; }
-	int getLifePoint() { return iENTLifePoint; }
 	void setPositionEntity(const float x, const float y) {
-		sf::Sprite& temp = getSprite();
-		getSprite().setPosition(x, y);
-		float _x = x + (temp.getGlobalBounds().width / 2) - (lifeBarBackground.getGlobalBounds().width / 2);
-		float _y = y - ((temp.getGlobalBounds().height / 4));
-		lifeBar.setPosition(_x, _y);
-		lifeBarBackground.setPosition(_x, _y);
+		ENTsprite.setPosition(x, y);
 	}
 	void setPositionEntity(sf::Vector2f i) {
-		setPositionEntity(i.x, i.y);
+		ENTsprite.setPosition(i);
 	}
-	void moveEntity(sf::Vector2f mov) {
-		if (mov.x != 0.f)
-		{
-			std::cout << "";
-		}
-		getSprite().move(mov);
-		lifeBar.move(mov);
-		lifeBarBackground.move(mov);
-	}
-	void moveEntity(float x, float y) {
-		moveEntity(sf::Vector2f(x, y));
-	}
-	void renderTheEntity(sf::RenderTarget& target) {
-		target.draw(getSprite());
-		target.draw(lifeBarBackground);
-		target.draw(lifeBar);
-	}
-	void reduceHP(int damage) {
-		iENTLifePoint -= damage;
-		if (iENTLifePoint < 0)
-			iENTLifePoint = 0;
-		else if (iENTLifePoint > maxhealth)
-			iENTLifePoint = maxhealth;
-		hasBeenHit = true;
-	}
-	void gainHP(int damage)
+	int getType() { return type; }
+	void setType(int Type) { type = Type; }
+	bool checkCollisions(CEntity& b)
 	{
-		reduceHP(damage);
-		hasBeenHit = false;
+		if (b.ENTsprite.getGlobalBounds().intersects(ENTsprite.getGlobalBounds()))
+			return true;
+		return false;
 	}
+	bool checkGlobalCollisions() {
+		if(type!=Gunslinger)
+		{ 
+			if (ENTsprite.getGlobalBounds().left + ENTsprite.getGlobalBounds().width<0 || ENTsprite.getGlobalBounds().left>SCREEN_WIDTH)
+				return true;
+			return false;
+		}
+		return false;
+	}
+	int getDamage()
+	{
+		return damage;
+	}
+	void setDamage(int d) { damage = d; }
+	void setLevel(int l) { level = l; }
+	int getLevel() { return level; }
 };
 

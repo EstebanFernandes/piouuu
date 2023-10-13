@@ -12,7 +12,7 @@
 #define FONT_FILE_PATH "res\\font\\lato.ttf"
 
 #define GAME_BACKGROUND_FILEPATH "res\\img\\backgroundupgrade2.jpeg"
-#define GAME_SPACESHIP_FILEPATH "res\\img\\spacecraft_player_1.png"
+#define GAME_SPACESHIP_FILEPATH "res\\img\\SpriteSheet.png"
 #define SCROLLING_SPEED 0.5f
 
 #define LIFEPOINTTEXTURE "res\\img\\lifepoint2.png"
