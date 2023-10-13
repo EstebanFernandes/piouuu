@@ -35,7 +35,7 @@ void CGunslinger::renderEntity(sf::RenderTarget& target)
 	}
 }
 
-void CGunslinger::updateCollision(CEntity1& b)
+void CGunslinger::updateCollision(CEntity& b)
 {
 	for (size_t i = 0; i < magazine.size(); i++)
 	{

@@ -134,14 +134,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CAnimation.cpp" />
     <ClCompile Include="CAssetManager.cpp" />
     <ClCompile Include="CBackground.cpp" />
     <ClCompile Include="CBullet.cpp" />
     <ClCompile Include="CCharacterSelection.cpp" />
     <ClCompile Include="CCollision.cpp" />
     <ClCompile Include="CEnemy.cpp" />
+    <ClCompile Include="CMob.cpp" />
     <ClCompile Include="CEntity.cpp" />
-    <ClCompile Include="CEntity1.cpp" />
     <ClCompile Include="CFile.cpp" />
     <ClCompile Include="CGameMenu.cpp" />
     <ClCompile Include="CGameOver.cpp" />
@@ -166,17 +167,20 @@
     <ClCompile Include="CTile.cpp" />
     <ClCompile Include="CTileMap.cpp" />
     <ClCompile Include="CUpgrade.cpp" />
+    <ClCompile Include="lifeBarForEntity.cpp" />
+    <ClCompile Include="lifeForEntity.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CAnimation.h" />
     <ClInclude Include="CAssetManager.h" />
     <ClInclude Include="CBackground.h" />
     <ClInclude Include="CBullet.h" />
     <ClInclude Include="CCharacterSelection.h" />
     <ClInclude Include="CCollision.h" />
     <ClInclude Include="CEnemy.h" />
+    <ClInclude Include="CMob.h" />
     <ClInclude Include="CEntity.h" />
-    <ClInclude Include="CEntity1.h" />
     <ClInclude Include="CFile.h" />
     <ClInclude Include="CGameMenu.h" />
     <ClInclude Include="CGameOver.h" />
@@ -202,6 +206,8 @@
     <ClInclude Include="CTileMap.h" />
     <ClInclude Include="CUpgrade.h" />
     <ClInclude Include="DEFINITIONS.h" />
+    <ClInclude Include="lifeBarForEntity.h" />
+    <ClInclude Include="lifeForEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragbandw.frag" />

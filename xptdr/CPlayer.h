@@ -4,19 +4,27 @@
 #include<iostream>
 #include "CPhysics.h"
 #include"CBullet.h"
-#include "CEntity.h"
+#include "CMob.h"
 #include "CGunslinger.h"
-class CPlayer :  public CEntity
+#include "CAnimation.h"
+//CLASSE qui représente un joueur
+class CPlayer :  public CMob
 {
 private:
 	//Attributs
+	//S'occupe des animations du personnage
+	CAnimation anim;
 	float playerSpeed = 1.f;
+	//La barre de vie est une liste de sprite représentant chacun un point de vie
 	std::vector<sf::Sprite> lifeBar;
+	//les deux suivants servent à gérer la barre de vie
 	int previouslifePoint;
 	int previousMaxHealth;
-	int damagePerBullet;
+
+
 
 	//grr paw
+	int damagePerBullet;
 	sf::Clock bulletClock;
 	sf::Time bulletCooldown;
 
@@ -35,7 +43,7 @@ public:
 
 	//Méthodes
 	void initLifeBar();
-	void updateCollision(CEntity1& b);
+	void updateCollision(CEntity& b);
 	void gainXP(int levelofEntity);
 	void updateLifeBar();
 	void iNeedMoreBullet();

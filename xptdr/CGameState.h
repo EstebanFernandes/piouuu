@@ -9,7 +9,7 @@
 #include <sstream>
 #include"CEnemy.h"
 #include"CGameOver.h"
-#include"CEntity1.h"
+#include"CEntity.h"
 #include"CBackground.h"
 #include "CHittingEntity.h"
 class CGameState : public CState

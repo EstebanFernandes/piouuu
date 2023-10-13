@@ -101,7 +101,7 @@ void CEnemy::specialBehaviorwithPlayer(CPlayer& player)
 	player.gainXP(level);
 }
 
-void CEnemy::updateCollision(CEntity1& b)
+void CEnemy::updateCollision(CEntity& b)
 {
 	switch (b.getType())
 	{

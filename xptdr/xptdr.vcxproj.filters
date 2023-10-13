@@ -16,207 +16,255 @@
     <Filter Include="shaders">
       <UniqueIdentifier>{41e18a57-66a5-465c-b4fe-7e4d9afa3197}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers sources\GameEngine">
+      <UniqueIdentifier>{640bfbb4-1f5c-4893-93ca-e79ec87248ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\GameLogic">
+      <UniqueIdentifier>{c140e23a-a27b-4ab0-8b35-c2700a9544d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\GameRelated">
+      <UniqueIdentifier>{402c4fa8-cfaa-4400-8b65-5fd26a983f4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\State">
+      <UniqueIdentifier>{6e193bf7-c50f-4439-a724-29894e0d3a3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\pas utile pour l%27instant">
+      <UniqueIdentifier>{ea39c7c8-319b-4101-b6db-92ef49c4dc28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\GameEngine">
+      <UniqueIdentifier>{fc2a8c80-0877-4bfe-8910-d914634503e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\GameLogic">
+      <UniqueIdentifier>{a94acc61-ec08-425c-be3a-ac7925f3c081}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\GameRelated">
+      <UniqueIdentifier>{35a285c1-9933-4071-9260-e3f650e7913e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\pas utile pour l%27instant">
+      <UniqueIdentifier>{adc35cf0-1659-4d14-8a0c-92c6ee50d532}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\State">
+      <UniqueIdentifier>{422d88a6-2d43-4d9b-b1e4-7699d5bffc31}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="CJeu.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CState.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CStateMachine.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="CAssetManager.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\GameEngine</Filter>
     </ClCompile>
-    <ClCompile Include="CInputManager.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CSplashState.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CMainMenuState.cpp">
-      <Filter>Fichiers sources</Filter>
+    <ClCompile Include="CJeu.cpp">
+      <Filter>Fichiers sources\GameEngine</Filter>
     </ClCompile>
     <ClCompile Include="CGameState.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CPhysics.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CPlayer.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CTile.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CTileMap.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CSettingState.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CEntity.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CBullet.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CGameMenu.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CEnemy.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CGameOver.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CCharacterSelection.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CScoreboardname.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CEntity1.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CCollision.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CGunslinger.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CBackground.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CInfiniteGameState.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CTestGame.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CPowerUp.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CLevelUp.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CUpgrade.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CFile.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="CHittingEntity.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\GameLogic</Filter>
     </ClCompile>
     <ClCompile Include="CHitbox.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemy.cpp">
+      <Filter>Fichiers sources\GameRelated</Filter>
+    </ClCompile>
+    <ClCompile Include="CMob.cpp">
+      <Filter>Fichiers sources\GameRelated</Filter>
+    </ClCompile>
+    <ClCompile Include="CEntity.cpp">
+      <Filter>Fichiers sources\GameRelated</Filter>
+    </ClCompile>
+    <ClCompile Include="CBullet.cpp">
+      <Filter>Fichiers sources\GameRelated</Filter>
+    </ClCompile>
+    <ClCompile Include="CGunslinger.cpp">
+      <Filter>Fichiers sources\GameRelated</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayer.cpp">
+      <Filter>Fichiers sources\GameRelated</Filter>
+    </ClCompile>
+    <ClCompile Include="CState.cpp">
+      <Filter>Fichiers sources\GameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CStateMachine.cpp">
+      <Filter>Fichiers sources\GameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CBackground.cpp">
+      <Filter>Fichiers sources\GameRelated</Filter>
+    </ClCompile>
+    <ClCompile Include="CGameMenu.cpp">
+      <Filter>Fichiers sources\State</Filter>
+    </ClCompile>
+    <ClCompile Include="CHittingEntity.cpp">
+      <Filter>Fichiers sources\GameRelated</Filter>
+    </ClCompile>
+    <ClCompile Include="CInfiniteGameState.cpp">
+      <Filter>Fichiers sources\State</Filter>
+    </ClCompile>
+    <ClCompile Include="CGameOver.cpp">
+      <Filter>Fichiers sources\State</Filter>
+    </ClCompile>
+    <ClCompile Include="CScoreboardname.cpp">
+      <Filter>Fichiers sources\State</Filter>
+    </ClCompile>
+    <ClCompile Include="CTestGame.cpp">
+      <Filter>Fichiers sources\State</Filter>
+    </ClCompile>
+    <ClCompile Include="CSplashState.cpp">
+      <Filter>Fichiers sources\State</Filter>
+    </ClCompile>
+    <ClCompile Include="CSettingState.cpp">
+      <Filter>Fichiers sources\State</Filter>
+    </ClCompile>
+    <ClCompile Include="CPowerUp.cpp">
+      <Filter>Fichiers sources\GameRelated</Filter>
+    </ClCompile>
+    <ClCompile Include="CCharacterSelection.cpp">
+      <Filter>Fichiers sources\State</Filter>
+    </ClCompile>
+    <ClCompile Include="CMainMenuState.cpp">
+      <Filter>Fichiers sources\State</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelUp.cpp">
+      <Filter>Fichiers sources\pas utile pour l%27instant</Filter>
+    </ClCompile>
+    <ClCompile Include="CTile.cpp">
+      <Filter>Fichiers sources\pas utile pour l%27instant</Filter>
+    </ClCompile>
+    <ClCompile Include="CPhysics.cpp">
+      <Filter>Fichiers sources\pas utile pour l%27instant</Filter>
+    </ClCompile>
+    <ClCompile Include="CTileMap.cpp">
+      <Filter>Fichiers sources\pas utile pour l%27instant</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollision.cpp">
+      <Filter>Fichiers sources\pas utile pour l%27instant</Filter>
+    </ClCompile>
+    <ClCompile Include="CUpgrade.cpp">
+      <Filter>Fichiers sources\pas utile pour l%27instant</Filter>
+    </ClCompile>
+    <ClCompile Include="CFile.cpp">
+      <Filter>Fichiers sources\GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="CInputManager.cpp">
+      <Filter>Fichiers sources\GameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="lifeBarForEntity.cpp">
+      <Filter>Fichiers sources\pas utile pour l%27instant</Filter>
+    </ClCompile>
+    <ClCompile Include="lifeForEntity.cpp">
+      <Filter>Fichiers sources\pas utile pour l%27instant</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimation.cpp">
+      <Filter>Fichiers sources\GameRelated</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CJeu.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="CState.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="CStateMachine.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="CAssetManager.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="CInputManager.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="DEFINITIONS.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="CSplashState.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="CMainMenuState.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="CGameState.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="CPhysics.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="CPlayer.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="CTile.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="CTileMap.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="CSettingState.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="CEntity.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="CBullet.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="CGameMenu.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="CEnemy.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="CGameOver.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="CCharacterSelection.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="CScoreboardname.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="CEntity1.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="CCollision.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="CGunslinger.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="CAssetManager.h">
+      <Filter>Fichiers d%27en-tête\GameEngine</Filter>
     </ClInclude>
     <ClInclude Include="CBackground.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\GameRelated</Filter>
     </ClInclude>
-    <ClInclude Include="CInfiniteGameState.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="CBullet.h">
+      <Filter>Fichiers d%27en-tête\GameRelated</Filter>
     </ClInclude>
-    <ClInclude Include="CTestGame.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="CCharacterSelection.h">
+      <Filter>Fichiers d%27en-tête\State</Filter>
     </ClInclude>
-    <ClInclude Include="CPowerUp.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="CCollision.h">
+      <Filter>Fichiers d%27en-tête\pas utile pour l%27instant</Filter>
     </ClInclude>
-    <ClInclude Include="CLevelUp.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="CEnemy.h">
+      <Filter>Fichiers d%27en-tête\GameRelated</Filter>
     </ClInclude>
-    <ClInclude Include="CUpgrade.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="CMob.h">
+      <Filter>Fichiers d%27en-tête\GameRelated</Filter>
+    </ClInclude>
+    <ClInclude Include="CEntity.h">
+      <Filter>Fichiers d%27en-tête\GameRelated</Filter>
     </ClInclude>
     <ClInclude Include="CFile.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\GameLogic</Filter>
     </ClInclude>
-    <ClInclude Include="CHittingEntity.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="CGameMenu.h">
+      <Filter>Fichiers d%27en-tête\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CGameOver.h">
+      <Filter>Fichiers d%27en-tête\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CGameState.h">
+      <Filter>Fichiers d%27en-tête\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CGunslinger.h">
+      <Filter>Fichiers d%27en-tête\GameRelated</Filter>
     </ClInclude>
     <ClInclude Include="CHitbox.h">
+      <Filter>Fichiers d%27en-tête\GameRelated</Filter>
+    </ClInclude>
+    <ClInclude Include="CHittingEntity.h">
+      <Filter>Fichiers d%27en-tête\GameRelated</Filter>
+    </ClInclude>
+    <ClInclude Include="CInfiniteGameState.h">
+      <Filter>Fichiers d%27en-tête\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CInputManager.h">
+      <Filter>Fichiers d%27en-tête\GameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CJeu.h">
+      <Filter>Fichiers d%27en-tête\GameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevelUp.h">
+      <Filter>Fichiers d%27en-tête\GameRelated</Filter>
+    </ClInclude>
+    <ClInclude Include="CMainMenuState.h">
+      <Filter>Fichiers d%27en-tête\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CPhysics.h">
+      <Filter>Fichiers d%27en-tête\pas utile pour l%27instant</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayer.h">
+      <Filter>Fichiers d%27en-tête\GameRelated</Filter>
+    </ClInclude>
+    <ClInclude Include="CPowerUp.h">
+      <Filter>Fichiers d%27en-tête\GameRelated</Filter>
+    </ClInclude>
+    <ClInclude Include="CScoreboardname.h">
+      <Filter>Fichiers d%27en-tête\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CSettingState.h">
+      <Filter>Fichiers d%27en-tête\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CSplashState.h">
+      <Filter>Fichiers d%27en-tête\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CState.h">
+      <Filter>Fichiers d%27en-tête\GameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CStateMachine.h">
+      <Filter>Fichiers d%27en-tête\GameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CTestGame.h">
+      <Filter>Fichiers d%27en-tête\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CTile.h">
+      <Filter>Fichiers d%27en-tête\pas utile pour l%27instant</Filter>
+    </ClInclude>
+    <ClInclude Include="CTileMap.h">
+      <Filter>Fichiers d%27en-tête\pas utile pour l%27instant</Filter>
+    </ClInclude>
+    <ClInclude Include="CUpgrade.h">
+      <Filter>Fichiers d%27en-tête\pas utile pour l%27instant</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimation.h">
       <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="lifeBarForEntity.h">
+      <Filter>Fichiers d%27en-tête\pas utile pour l%27instant</Filter>
+    </ClInclude>
+    <ClInclude Include="lifeForEntity.h">
+      <Filter>Fichiers d%27en-tête\pas utile pour l%27instant</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -25,7 +25,7 @@ void CBullet::updateEntity(float dt)
 	getSprite().move(temp);
 }
 
-void CBullet::updateCollision(CEntity1& b)
+void CBullet::updateCollision(CEntity& b)
 {
 	switch (b.getType())
 	{

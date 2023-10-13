@@ -43,7 +43,7 @@ public:
 	void updateEntity(float delta);
 	void updatewPlayer( float delta,CPlayer& player);
 	void specialBehaviorwithPlayer(CPlayer& player);
-	void updateCollision(CEntity1& b);
+	void updateCollision(CEntity& b);
 	bool updateEntity(float leftbound,float delta);
 	bool updateEntity(sf::FloatRect a,float delta);
 	void updateAnimation();
