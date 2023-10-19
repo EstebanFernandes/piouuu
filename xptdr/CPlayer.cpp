@@ -85,34 +85,74 @@ void CPlayer::initLifeBar()
 }
 
 
-void CPlayer::PLYupdateMovement(float dt)
+void CPlayer::PLYupdateMovement(sf::Event event)
 {
-		if (sf::Keyboard::isKeyPressed( sf::Keyboard::Z) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up ))
-		{
-			moveEntity(0.f, -playerSpeed*dt * 60.f);
+	switch (event.type)
+	{
+	case sf::Event::KeyPressed :
+		if (event.key.code == sf::Keyboard::Z )
+			isMovingUp = true;
+		else if(event.key.code == sf::Keyboard::Q)
+			isMovingLeft = true;
+		else if (event.key.code == sf::Keyboard::S)
+			isMovingDown = true;
+		else if (event.key.code == sf::Keyboard::D)
+			isMovingRight = true;
+		break;
+	case sf::Event::KeyReleased:
+		if (event.key.code == sf::Keyboard::Z)
+			isMovingUp = false;
+		else if (event.key.code == sf::Keyboard::Q)
+			isMovingLeft = false;
+		else if (event.key.code == sf::Keyboard::S)
+			isMovingDown = false;
+		else if (event.key.code == sf::Keyboard::D)
+			isMovingRight = false;
+		break;
+	default:
+		break;
+
+
+	}
+}
+
+void CPlayer::updateMovement(float dt)
+{
+	if (isMovingUp == true)
+	{
+		moveEntity(0.f, -playerSpeed * dt*60.f);
+		anim.setDifferentAnimation(1);
+	}
+	else if (anim.getCurrentYFrameNumber() == 1)
+		anim.resetAnimation();
+	if (isMovingDown == true)
+	{
+		anim.setDifferentAnimation(2);
+		moveEntity(0.f, playerSpeed * dt * 60.f);
+	}
+	else if (anim.getCurrentYFrameNumber() == 2)
+		anim.resetAnimation();
+		
+	if (isMovingLeft == true)
+	{
+		moveEntity(-playerSpeed * dt * 60.f,0.f);
+	}
+	if (isMovingRight == true)
+	{
+		moveEntity(playerSpeed * dt * 60.f, 0.f);
+	}
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		// cooldown enregistre le temps depuis la dernière balle envoyé
+		bulletCooldown = bulletClock.getElapsedTime();
+		//Si se temps est trop faible on ne fait rien, 
+		if (bulletCooldown.asSeconds() >= 0.12f) {
+			sf::Vector2f r(getSprite().getPosition().x + getSprite().getGlobalBounds().width, getSprite().getPosition().y + (getSprite().getGlobalBounds().height / 2));
+			BAW.iNeedMoreBullets(r, damagePerBullet);
+			// vient juste le restart le timer à la fin 
+			bulletClock.restart();
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-			moveEntity(0.f, playerSpeed*dt * 60.f);//move tout court c'est la fonction pour déplacer le perso, et la fonction move lié au sprite ça déplace
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		{
-			moveEntity(-playerSpeed*dt* 60.f, 0.f);
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-			moveEntity(playerSpeed*dt* 60.f, 0.f);//move tout court c'est la fonction pour déplacer le perso, et la fonction move lié au sprite ça déplace
-		}
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-		{
-			// cooldown enregistre le temps depuis la dernière balle envoyé
-			bulletCooldown = bulletClock.getElapsedTime();
-			//Si se temps est trop faible on ne fait rien, 
-			if (bulletCooldown.asSeconds() >= 0.12f) {
-				sf::Vector2f r(getSprite().getPosition().x + getSprite().getGlobalBounds().width, getSprite().getPosition().y + (getSprite().getGlobalBounds().height / 2));
-				BAW.iNeedMoreBullets(r,damagePerBullet);
-				// vient juste le restart le timer à la fin 
-				bulletClock.restart();
-			}
-		}
+	}
 }
 
 
@@ -199,8 +239,8 @@ void CPlayer::iNeedMoreBullet()
 }
 void CPlayer::updateEntity(float dt)
 {
+	updateMovement(dt);
 	checkGlobalCollisions();
-	PLYupdateMovement(dt);
 		updateFx();
 	updateLifeBar();
 	BAW.updateEntity(dt);

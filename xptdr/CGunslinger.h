@@ -4,6 +4,7 @@
 class CGunslinger : public CEntity
 {
 private:
+	int type_de_tir;
 	std::vector<CBullet> magazine;
 public:
 	CGunslinger();
@@ -13,6 +14,7 @@ public:
 	void updateCollision(CEntity& b);
 	void iNeedMoreBullets(sf::Vector2f pos);
 	void iNeedMoreBullets(sf::Vector2f pos, int damage);
+	void iNeedMoreBullets(sf::Vector2f pos, int damage,sf::Vector2f direction);
 	std::vector<CBullet>* getVector() { return &magazine; }
 };
 
