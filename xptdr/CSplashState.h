@@ -5,6 +5,7 @@
 #include "DEFINITIONS.h"
 #include <iostream>
 #include "CMainMenuState.h"
+#include"CParserCSV.h"
 class CSplashState : public CState
 {
 

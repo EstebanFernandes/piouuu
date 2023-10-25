@@ -63,7 +63,6 @@ void CMainMenuState::STEInit()
 void CMainMenuState::STEHandleInput()
 {
 	sf::Event event;
-
 	while (data->window.pollEvent(event))
 	{
 		if (sf::Event::Closed == event.type)
@@ -111,7 +110,7 @@ void CMainMenuState::STEUpdate(float delta)
 
 void CMainMenuState::STEDraw(float delta)
 {
-	data->window.clear(sf::Color::Red);
+	data->window.clear();
 	data->window.draw(CMMBackground);
 	data->window.draw(CMMTitle);
 	data->window.draw(CMMInfinitePlayButton);

@@ -23,10 +23,7 @@ protected:
 	int enemyNumber = 0;
 private:
 	//engine related
-	//std::vector<CEntity1> entityList;
 	//Background related:
-	//Sorte de booléen pour gérer le background
-	int c1 = 0;
 	CBackground BG1;
 
 	sf::Text gameClockText;
