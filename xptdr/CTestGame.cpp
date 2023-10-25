@@ -16,6 +16,7 @@ void CTestGame::STEHandleInput()
 	sf::Event event;
 	while (data->window.pollEvent(event))
 	{
+		player1.PLYupdateMovement(event);
 		if (sf::Event::Closed == event.type)
 			data->window.close();
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11))

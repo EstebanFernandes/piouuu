@@ -11,8 +11,8 @@
 #define MAIN_MENU_TITLE_PATH "res\\img\\Title.png"
 #define FONT_FILE_PATH "res\\font\\lato.ttf"
 
-#define GAME_BACKGROUND_FILEPATH "res\\img\\backgroundupgrade2.jpeg"
-#define GAME_SPACESHIP_FILEPATH "res\\img\\SpriteSheet.png"
+#define GAME_BACKGROUND_FILEPATH "res/img/backgroundupgrade2.jpeg"
+#define GAME_SPACESHIP_FILEPATH "res/img/onessaye.png"
 #define SCROLLING_SPEED 0.5f
 
 #define LIFEPOINTTEXTURE "res\\img\\lifepoint2.png"

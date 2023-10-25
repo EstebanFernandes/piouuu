@@ -122,7 +122,6 @@ void CGameState::STEUpdate(float delta)
 		}
 		else
 			entityList[i]->updateEntity(delta);
-
 	}
 	if (player1.needDelete)
 		GameOver();

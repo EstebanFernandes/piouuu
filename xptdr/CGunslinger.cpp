@@ -53,3 +53,9 @@ void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage)
 {
 	magazine.push_back(CBullet(damage, pos, sf::Vector2f(1, 0), assets));
 }
+
+void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage, sf::Vector2f direction)
+{
+
+		magazine.push_back(CBullet(damage, pos, direction, assets));
+}

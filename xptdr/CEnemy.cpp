@@ -55,6 +55,7 @@ void CEnemy::updatewPlayer(float delta, CPlayer& player)
 {
 	if (checkCollisions(player))
 	{
+		//SI on est la c'est que l'ennemi est en contact avec le jouueur
 		if (isDead == false)
 		{
 			if (isHitting == false)

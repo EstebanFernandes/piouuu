@@ -5,6 +5,7 @@ CSplashState::CSplashState(GameDataRef _data) : data(_data)
 
 void CSplashState::STEInit()
 {
+	//CParserCSV r("C:/Users/scizz/Pictures/VROUM/test/testengros.csv"); Test pour load des informations depuis un fichier .csv
 	data->assets.LoadTexture("Splash State Background", SPLASH_SCENE_BACKGROUND_FILEPATH);
 	CSSBackground.setTexture(data->assets.GetTexture("Splash State Background"));
 	CSSBackground.setScale(1.07f,1.f);

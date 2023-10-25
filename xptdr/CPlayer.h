@@ -14,13 +14,16 @@ private:
 	//Attributs
 	//S'occupe des animations du personnage
 	CAnimation anim;
-	float playerSpeed = 1.f;
+	float playerSpeed = 0.5f;
 	//La barre de vie est une liste de sprite représentant chacun un point de vie
 	std::vector<sf::Sprite> lifeBar;
 	//les deux suivants servent à gérer la barre de vie
 	int previouslifePoint;
 	int previousMaxHealth;
-
+	bool isMovingUp;
+	bool isMovingDown;
+	bool isMovingLeft;
+	bool isMovingRight;
 
 
 	//grr paw
@@ -48,7 +51,8 @@ public:
 	void updateLifeBar();
 	void iNeedMoreBullet();
 	void updateEntity(float dt);
-	void PLYupdateMovement(float dt);
+	void PLYupdateMovement(sf::Event event);
+	void updateMovement(float dt);
 	int getDamagePerBullet() { return damagePerBullet; }
 	void renderLifeBar(sf::RenderTarget& target);
 	void renderEntity(sf::RenderTarget& target);

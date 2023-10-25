@@ -144,7 +144,7 @@
     <ClCompile Include="CCollision.cpp">
       <Filter>Fichiers sources\pas utile pour l%27instant</Filter>
     </ClCompile>
-    <ClCompile Include="CUpgrade.cpp">
+    <ClCompile Include="CUpgradeState.cpp">
       <Filter>Fichiers sources\pas utile pour l%27instant</Filter>
     </ClCompile>
     <ClCompile Include="CFile.cpp">
@@ -167,6 +167,12 @@
     </ClCompile>
     <ClCompile Include="CCard.cpp">
       <Filter>Fichiers sources\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CParserCSV.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="CHugoDecrypte.cpp">
+      <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -266,7 +272,7 @@
     <ClInclude Include="CTileMap.h">
       <Filter>Fichiers d%27en-tête\pas utile pour l%27instant</Filter>
     </ClInclude>
-    <ClInclude Include="CUpgrade.h">
+    <ClInclude Include="CUpgradeState.h">
       <Filter>Fichiers d%27en-tête\pas utile pour l%27instant</Filter>
     </ClInclude>
     <ClInclude Include="CAnimation.h">
@@ -277,12 +283,6 @@
     </ClInclude>
     <ClInclude Include="lifeForEntity.h">
       <Filter>Fichiers d%27en-tête\pas utile pour l%27instant</Filter>
-    </ClInclude>
-    <ClInclude Include="CCharacter.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="CCard.h">
-      <Filter>Fichiers d%27en-tête\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
