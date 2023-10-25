@@ -138,6 +138,8 @@
     <ClCompile Include="CAssetManager.cpp" />
     <ClCompile Include="CBackground.cpp" />
     <ClCompile Include="CBullet.cpp" />
+    <ClCompile Include="CCard.cpp" />
+    <ClCompile Include="CCharacter.cpp" />
     <ClCompile Include="CCharacterSelection.cpp" />
     <ClCompile Include="CCollision.cpp" />
     <ClCompile Include="CEnemy.cpp" />
@@ -178,6 +180,8 @@
     <ClInclude Include="CAssetManager.h" />
     <ClInclude Include="CBackground.h" />
     <ClInclude Include="CBullet.h" />
+    <ClInclude Include="CCard.h" />
+    <ClInclude Include="CCharacter.h" />
     <ClInclude Include="CCharacterSelection.h" />
     <ClInclude Include="CCollision.h" />
     <ClInclude Include="CEnemy.h" />
