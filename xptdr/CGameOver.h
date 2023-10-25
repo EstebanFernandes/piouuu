@@ -36,12 +36,12 @@ void CGameOver<MType>::STEInit()
 	}
 	texta = textur;
 //	texta = data->assets.GetTexture("endScreen");
-	/*if (!Shader.loadFromFile("vertexbandw.vert","fragbandw.frag"))
+	if (!Shader.loadFromFile("vertexbandw.vert","fragbandw.frag"))
 	{
 		std::cout << "bof";
 
 	}
-	Shader.setUniform("texture", sf::Shader::CurrentTexture);*/
+	Shader.setUniform("texture", sf::Shader::CurrentTexture);
 	backGroundImage.setTexture(texta);
 	textGameOver.setFont(data->assets.GetFont("Lato"));
 	textGameOver.setString("mdrr gros naze");
