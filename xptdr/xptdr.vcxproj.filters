@@ -46,6 +46,12 @@
     <Filter Include="Fichiers d%27en-tête\State">
       <UniqueIdentifier>{422d88a6-2d43-4d9b-b1e4-7699d5bffc31}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\UI">
+      <UniqueIdentifier>{8d17a4af-70c3-4881-8180-80920537ddda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\UI">
+      <UniqueIdentifier>{ba67ec23-cbae-47cb-b9dc-14d771664836}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -156,6 +162,12 @@
     <ClCompile Include="CAnimation.cpp">
       <Filter>Fichiers sources\GameRelated</Filter>
     </ClCompile>
+    <ClCompile Include="CCharacter.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="CCard.cpp">
+      <Filter>Fichiers sources\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DEFINITIONS.h">
@@ -265,6 +277,12 @@
     </ClInclude>
     <ClInclude Include="lifeForEntity.h">
       <Filter>Fichiers d%27en-tête\pas utile pour l%27instant</Filter>
+    </ClInclude>
+    <ClInclude Include="CCharacter.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="CCard.h">
+      <Filter>Fichiers d%27en-tête\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

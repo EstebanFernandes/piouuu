@@ -17,18 +17,23 @@ void CMainMenuState::STEInit()
 
 	CMMBackground.setTexture(data->assets.GetTexture("Background"));
 	CMMBackground.setScale(1.2f, 1.2f);
+
 	CMMPlayButton.setFont(data->assets.GetFont("Lato"));
 	CMMPlayButton.setString("Jouer");
 	CMMPlayButton.setCharacterSize(50);
+
 	CMMHowToPlay.setFont(data->assets.GetFont("Lato"));
 	CMMHowToPlay.setString("Comment jouer");
 	CMMHowToPlay.setCharacterSize(50);
+
 	CMMInfinitePlayButton.setFont(data->assets.GetFont("Lato"));
 	CMMInfinitePlayButton.setString("Mode infini");
 	CMMInfinitePlayButton.setCharacterSize(50);
+
 	CMMQuitButton.setFont(data->assets.GetFont("Lato"));
 	CMMQuitButton.setString("Quitter");
 	CMMQuitButton.setCharacterSize(50);
+
 	CMMSettingsButton.setFont(data->assets.GetFont("Lato"));
 	CMMSettingsButton.setString("Reglages");
 	CMMSettingsButton.setCharacterSize(50);
@@ -78,7 +83,7 @@ void CMainMenuState::STEHandleInput()
 		}
 		else if (data->inputs.IsTextClicked(CMMPlayButton, sf::Mouse::Left, data->window))
 		{
-			data->machine.AddState(StateRef(new CTestGame(data)), true);
+			data->machine.AddState(StateRef(new CCharacterSelection(data)), true);
 		}
 		else if (data->inputs.IsTextClicked(CMMSettingsButton, sf::Mouse::Left, data->window))
 		{

@@ -6,6 +6,8 @@
 #include <iostream>
 #include <sstream>
 #include "CFile.h"
+#include "CCharacterSelection.h"
+
 class CMainMenuState : public CState
 {
 private:
