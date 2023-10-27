@@ -16,16 +16,3 @@ void CPowerUp::updatewPlayer(float delta, CPlayer& player)
 	}
 }
 
-void CPowerUp::updateFX()
-{
-	sf::Sprite& temp = getSprite();
-	if(posSprite==4)
-		posSprite = 0;
-	if (animationTimer.getElapsedTime().asSeconds() > 0.3f)
-	{
-		currentFrame.left = posSprite*68;
-		temp.setTextureRect(currentFrame);
-		posSprite++;
-		animationTimer.restart();
-	}
-}

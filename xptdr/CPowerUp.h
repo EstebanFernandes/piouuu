@@ -13,13 +13,12 @@ public:
 	void setSprite()
 	{
 		currentFrame = sf::IntRect(0, 0, 68, 68);
-		anim = CAnimation(getPointerSprite(),currentFrame, 4,0.1f);
+		anim = CAnimation(getPointerSprite(), currentFrame, 4, 0.1f);
 		getSprite().setTexture((*assets).GetTexture("lifePowerUp"));
 		getSprite().setTextureRect(currentFrame);
 		getSprite().setPosition(SCREEN_WIDTH, 300.f);
 	}
 	void updatewPlayer(float delta, CPlayer& player);
-	void updateFX();
 	void updateEntity(float dt)
 	{
 		anim.updateAnimation();

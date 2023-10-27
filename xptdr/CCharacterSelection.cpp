@@ -14,8 +14,8 @@ void CCharacterSelection::STEInit()
 		GAME_SPACESHIP_FILEPATH);
 	data->assets.LoadTexture("backgroundCharacter", CHARACTERBACKGROUND);
 
-	characterCard = CCard(425, 40, "blabla", "Descrption", "Vaisso", &data->assets);
-
+	characterCard = CCard(425, 40, "blabla", "Descrption", "Vaisso", &(data->assets));
+	 
 
 	CMMBackground.setTexture(data->assets.GetTexture("Background"));
 	CMMBackground.setScale(1.2f, 1.2f);

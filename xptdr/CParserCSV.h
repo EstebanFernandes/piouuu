@@ -18,9 +18,9 @@ private:
 public:
 	CParserCSV(std::string fileName);
 	void displayInfo() {
-		for (int i = 0; i < imaxRow; i++)
+		for (unsigned int i = 0; i < imaxRow; i++)
 		{
-			for (int j = 0; j < imaxCol; j++)
+			for (unsigned int j = 0; j < imaxCol; j++)
 			{
 				std::cout << fileElements[i][j] << "  ";
 			}

@@ -36,7 +36,7 @@ void CEnemy::initAnimation()
 void CEnemy::setSprite()
 {
 	setLifeBar();
-	setPositionEntity(initPositionX  - getSprite().getGlobalBounds().width, initPositionY);
+	setPositionEntity(initPositionX  - getSprite().getGlobalBounds().width, (float)initPositionY);
 }
 
 

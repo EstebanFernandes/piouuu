@@ -15,7 +15,7 @@ void CParserCSV::parseFile()
 
 void CParserCSV::lineAnalysis()
 {
-	int col=0;
+	unsigned int col=0;
 	int substr = 0;
 	std::string temp = sCurrentLine;
 	while (substr != std::string::npos)

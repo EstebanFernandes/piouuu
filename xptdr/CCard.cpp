@@ -2,6 +2,7 @@
 
 CCard::CCard()
 {
+	asset = NULL;
 }
 
 CCard::CCard(float x, float y, std::string title, std::string description, std::string imageName, CAssetManager* assetParam)
@@ -22,10 +23,12 @@ CCard::CCard(float x, float y, std::string title, std::string description, std::
 	cardTitle.setCharacterSize(75);
 	cardTitle.setPosition(pos.x + (xSize - cardTitle.getGlobalBounds().width)/2, pos.y);
 
-	//asset->LoadTexture("test", imagePath);
-	cardImage.setTexture(assetParam->GetTexture(imageName));
+
+	cardImage.setTexture(asset->GetTexture(imageName));
 	cardImage.setPosition(pos.x, pos.y);
-	trucdesteban = CAnimation(&cardImage, sf::IntRect(0, 0, 153, 66), 4, 0.16f);
+	sf::IntRect temp = sf::IntRect(0, 0, 153, 66);
+	anim.setParameters(&cardImage, temp, 4, 0.16f);
+	cardImage.setTextureRect(temp);
 
 	cardDescription.setString(description);
 	cardDescription.setFillColor(sf::Color::White);
@@ -34,9 +37,19 @@ CCard::CCard(float x, float y, std::string title, std::string description, std::
 	cardDescription.setPosition(pos.x + (xSize - cardDescription.getGlobalBounds().width) / 2, pos.y + ySize*0.6f);
 }
 
+void CCard::draw(sf::RenderTarget& target)
+{
+	target.draw(cardBack);
+	target.draw(cardTitle);
+	target.draw(cardImage);
+	target.draw(cardDescription);
+}
+
 void CCard::update(float deltaTime)
 {
-	trucdesteban.updateAnimation();
+	if(MDRRcafonctionne++==1)
+		anim.setSprite(&cardImage);
+	anim.updateAnimation();
 }
 
 void CCard::draw(sf::RenderTarget& target, sf::RenderStates states) const {
@@ -44,5 +57,4 @@ void CCard::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	target.draw(cardTitle);
 	target.draw(cardImage);
 	target.draw(cardDescription);
-	
 }

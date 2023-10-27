@@ -24,21 +24,36 @@ private:
 
 public:
 	//Constructeur par défaut
-	CAnimation() {
-		currentSprite = nullptr;
+	CAnimation() 
+	{
+		currentSprite = NULL;
 		NumberofFrame = -1;
 		currentXFrameNumber = -1;
 		timeBetweenFrames = 0.f;
 	}
 	//Constructeur de confort
-	CAnimation(sf::Sprite* sprit,sf::IntRect textframe, int nbframe,float time)
+	CAnimation(sf::Sprite* sprit,sf::IntRect textframe, int nbframe,float time) : 
+		currentFrame(textframe),
+		NumberofFrame(nbframe),
+		timeBetweenFrames(time)
+	{
+		currentSprite = sprit;
+		currentXFrameNumber = 0;
+	}
+
+	void setSprite(sf::Sprite* sprit)
+	{
+		currentSprite = sprit;
+	}
+	void setParameters(sf::Sprite* sprit, sf::IntRect textframe, int nbframe, float time) 
 	{
 		currentSprite = sprit;
 		currentFrame = textframe;
 		NumberofFrame = nbframe;
-		currentXFrameNumber = 0;
 		timeBetweenFrames = time;
+		currentXFrameNumber = 0;
 	}
+
 	void updateAnimation() {
 		if (currentXFrameNumber == NumberofFrame)
 			currentXFrameNumber = 0;
@@ -59,6 +74,19 @@ public:
 	}
 	int getCurrentYFrameNumber() {
 		return currentYFrameNumber;
+	}
+	CAnimation& operator=(const CAnimation& AnimParam) {
+		currentSprite = AnimParam.currentSprite;
+		currentFrame = AnimParam.currentFrame;
+		animationTimer = AnimParam.animationTimer;
+		timeBetweenFrames = AnimParam.timeBetweenFrames;
+		NumberofFrame = AnimParam.NumberofFrame;
+		currentXFrameNumber= AnimParam.currentXFrameNumber;
+		return *this;
+	}
+
+	sf::Sprite* getSprite() {
+		return currentSprite;
 	}
 };
 
