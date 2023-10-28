@@ -31,4 +31,23 @@ sf::Font& CAssetManager::GetFont(std::string name)
 	return Fonts.at(name);
 }
 
+void CAssetManager::changeScreenType(sf::RenderWindow& window, bool& isFullScreen)
+{
+	if (!isFullScreen)
+	{
+		isFullScreen = true;
+		sCREEN_WIDTH = 1920;
+		sCREEN_HEIGHT = 1080;
+		window.create(sf::VideoMode(sCREEN_WIDTH, sCREEN_HEIGHT), "PIOU PIOU", sf::Style::Fullscreen);
+	}
+	else
+	{
+		isFullScreen = false;
+		sCREEN_WIDTH = 1280;
+		sCREEN_HEIGHT = 720;
+		window.create(sf::VideoMode(sCREEN_WIDTH, sCREEN_HEIGHT),"PIOU PIOU", sf::Style::Close | sf::Style::Titlebar);
+	}
+	window.setFramerateLimit(60);
+}
+
 

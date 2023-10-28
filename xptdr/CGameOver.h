@@ -46,18 +46,18 @@ void CGameOver<MType>::STEInit()
 	textGameOver.setFont(data->assets.GetFont("Lato"));
 	textGameOver.setString("mdrr gros naze");
 	textGameOver.setCharacterSize(30);
-	textGameOver.setPosition((SCREEN_WIDTH / 2) - (textGameOver.getGlobalBounds().width / 2),
-		(SCREEN_HEIGHT * 0.15f));
+	textGameOver.setPosition((data->assets.sCREEN_WIDTH / 2) - (textGameOver.getGlobalBounds().width / 2),
+		(data->assets.sCREEN_HEIGHT * 0.15f));
 	textRestart.setFont(data->assets.GetFont("Lato"));
 	textRestart.setString("Rejouer");
 	textRestart.setCharacterSize(30);
-	textRestart.setPosition((SCREEN_WIDTH / 2) - (textRestart.getGlobalBounds().width / 2),
-		(SCREEN_HEIGHT * 0.3f));
+	textRestart.setPosition((data->assets.sCREEN_WIDTH / 2) - (textRestart.getGlobalBounds().width / 2),
+		(data->assets.sCREEN_HEIGHT * 0.3f));
 	textMainMenu.setFont(data->assets.GetFont("Lato"));
 	textMainMenu.setString("Retour vers le menu principal\n(pas le futur lol ;-) )");
 	textMainMenu.setCharacterSize(30);
-	textMainMenu.setPosition((SCREEN_WIDTH / 2) - (textMainMenu.getGlobalBounds().width / 2),
-		(SCREEN_HEIGHT * 0.5f));
+	textMainMenu.setPosition((data->assets.sCREEN_WIDTH / 2) - (textMainMenu.getGlobalBounds().width / 2),
+		(data->assets.sCREEN_HEIGHT * 0.5f));
 }
 template <class MType>
 void CGameOver<MType>::STEHandleInput()

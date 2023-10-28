@@ -139,7 +139,6 @@
     <ClCompile Include="CBackground.cpp" />
     <ClCompile Include="CBullet.cpp" />
     <ClCompile Include="CCard.cpp" />
-    <ClCompile Include="CCarte.cpp" />
     <ClCompile Include="CCharacter.cpp" />
     <ClCompile Include="CCharacterSelection.cpp" />
     <ClCompile Include="CCollision.cpp" />
@@ -182,7 +181,6 @@
     <ClInclude Include="CBackground.h" />
     <ClInclude Include="CBullet.h" />
     <ClInclude Include="CCard.h" />
-    <ClInclude Include="CCarte.h" />
     <ClInclude Include="CCharacter.h" />
     <ClInclude Include="CCharacterSelection.h" />
     <ClInclude Include="CCollision.h" />

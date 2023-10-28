@@ -39,24 +39,24 @@ void CMainMenuState::STEInit()
 	CMMSettingsButton.setCharacterSize(50);
 
 	CMMTitle.setTexture(data->assets.GetTexture("Title")); // On les appliques
-	CMMTitle.setPosition((SCREEN_WIDTH / 2) - CMMTitle.getGlobalBounds().width / 2,
+	CMMTitle.setPosition((data->assets.sCREEN_WIDTH / 2) - CMMTitle.getGlobalBounds().width / 2,
 		CMMTitle.getGlobalBounds().height*0.7f);
 
-	CMMPlayButton.setPosition( (SCREEN_WIDTH / 2)-CMMPlayButton.getGlobalBounds().width/2, 
-							   (SCREEN_HEIGHT*0.2f));
+	CMMPlayButton.setPosition( (data->assets.sCREEN_WIDTH / 2)-CMMPlayButton.getGlobalBounds().width/2,
+							   (data->assets.sCREEN_HEIGHT *0.2f));
 
-	CMMInfinitePlayButton.setPosition((SCREEN_WIDTH / 2) - CMMInfinitePlayButton.getGlobalBounds().width / 2,
-		SCREEN_HEIGHT* 0.35f); 
+	CMMInfinitePlayButton.setPosition((data->assets.sCREEN_WIDTH / 2) - CMMInfinitePlayButton.getGlobalBounds().width / 2,
+		data->assets.sCREEN_HEIGHT * 0.35f);
 
-	CMMHowToPlay.setPosition((SCREEN_WIDTH / 2) - CMMHowToPlay.getGlobalBounds().width / 2,
-		SCREEN_HEIGHT * 0.5f);
+	CMMHowToPlay.setPosition((data->assets.sCREEN_WIDTH / 2) - CMMHowToPlay.getGlobalBounds().width / 2,
+		data->assets.sCREEN_HEIGHT * 0.5f);
 
 
-	CMMSettingsButton.setPosition((SCREEN_WIDTH / 2) - (CMMSettingsButton.getGlobalBounds().width / 2),
-		SCREEN_HEIGHT* 0.65f);
+	CMMSettingsButton.setPosition((data->assets.sCREEN_WIDTH / 2) - (CMMSettingsButton.getGlobalBounds().width / 2),
+		data->assets.sCREEN_HEIGHT * 0.65f);
 
-	CMMQuitButton.setPosition((SCREEN_WIDTH / 2) - CMMQuitButton.getGlobalBounds().width / 2,
-		(SCREEN_HEIGHT*0.8f));
+	CMMQuitButton.setPosition((data->assets.sCREEN_WIDTH / 2) - CMMQuitButton.getGlobalBounds().width / 2,
+		(data->assets.sCREEN_HEIGHT *0.8f));
 
 	//file chargement
 	//aaaa.addKeyWords("numero,Titre,Description,Type,spawn,pre");
@@ -94,16 +94,7 @@ void CMainMenuState::STEHandleInput()
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11))
 		{
-			if (!data->isFullScreen)
-			{
-				data->isFullScreen = true;
-				data->window.create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "ihih", sf::Style::Fullscreen);
-			}
-			else
-			{
-				data->isFullScreen = false;
-				data->window.create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "title", sf::Style::Close | sf::Style::Titlebar);
-			}
+			data->assets.changeScreenType(data->window, data->isFullScreen);
 		}
 	}
 }

@@ -1,11 +1,11 @@
 #pragma once
 
-#define SCREEN_WIDTH 1280
-#define SCREEN_HEIGHT 720
 
 #define SPLASH_STATE_SHOW_TIME 2
 
 #define SPLASH_SCENE_BACKGROUND_FILEPATH "res\\img\\le_chiengue.png"
+
+
 
 #define MAIN_MENU_BACKGROUND_FILEPATH "res\\img\\Background.png"
 #define MAIN_MENU_TITLE_PATH "res\\img\\Title.png"
@@ -21,3 +21,4 @@
 
 //characters
 #define CHARACTERBACKGROUND "res/img/characters/characterBackground.gif"
+

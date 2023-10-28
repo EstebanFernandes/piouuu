@@ -16,7 +16,7 @@ public:
 		anim = CAnimation(getPointerSprite(), currentFrame, 4, 0.1f);
 		getSprite().setTexture((*assets).GetTexture("lifePowerUp"));
 		getSprite().setTextureRect(currentFrame);
-		getSprite().setPosition(SCREEN_WIDTH, 300.f);
+		getSprite().setPosition(assets->sCREEN_WIDTH, 300.f);
 	}
 	void updatewPlayer(float delta, CPlayer& player);
 	void updateEntity(float dt)

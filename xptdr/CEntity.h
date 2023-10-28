@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include<iostream>
 #include <string>
+//#include"DEF"
 #include"CAssetManager.h"
 class CEntity
 {
@@ -27,7 +28,6 @@ public:
 		Gunslinger
 	} typeInt;
 	CAssetManager* assets = NULL;
-	 //void specialPlayerInteraction(CPlayer&a){}
 	virtual void setSprite() = 0;
 	virtual void updateEntity(float dt) = 0;
 	virtual void renderEntity(sf::RenderTarget& target) = 0;
@@ -59,7 +59,7 @@ public:
 	bool checkGlobalCollisions() {
 		if(type!=Gunslinger)
 		{ 
-			if (ENTsprite.getGlobalBounds().left + ENTsprite.getGlobalBounds().width<0 || ENTsprite.getGlobalBounds().left>SCREEN_WIDTH)
+			if (ENTsprite.getGlobalBounds().left + ENTsprite.getGlobalBounds().width<0 || ENTsprite.getGlobalBounds().left>assets->sCREEN_WIDTH)
 				return true;
 			return false;
 		}

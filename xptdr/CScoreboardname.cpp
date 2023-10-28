@@ -24,11 +24,11 @@ void CScoreboardname::STEInit()
 	data->assets.LoadTexture("keyboardBlack", "res\\img\\keyboard_black.png");
 	data->assets.LoadTexture("keyboardWhite", "res\\img\\keyboard_white.png");
 	ahouais.setSize(sf::Vector2f(200.f, 50.f));
-	ahouais.setPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT *0.3f);
+	ahouais.setPosition(data->assets.sCREEN_WIDTH  / 2, data->assets.sCREEN_HEIGHT *0.3f);
 	//mouseSelectionRectangle = sf::FloatRect(0.f, 0.f, 40.f, 40.f);//avec la scale actuelle (3) c'est 40 une case
 	keyboardBlackSprite.setTexture(data->assets.GetTexture("keyboardBlack"));
 	keyboardBlackSprite.setScale(4.f, 4.f);
-	keyboardBlackSprite.setPosition(SCREEN_WIDTH/4, SCREEN_HEIGHT * 0.4f);
+	keyboardBlackSprite.setPosition(data->assets.sCREEN_WIDTH /4, data->assets.sCREEN_HEIGHT * 0.4f);
 	keyboardWhiteSprite.setTexture(data->assets.GetTexture("keyboardWhite"));
 	keyboardWhiteSprite.setScale(keyboardBlackSprite.getScale());
 	keyboardWhiteSprite.setPosition(keyboardBlackSprite.getPosition());
@@ -37,7 +37,7 @@ void CScoreboardname::STEInit()
 	//capslocksprite.setPosition(keyboardBlackSprite.getPosition());
 	capslocksprite.setPosition(sf::Vector2f(448.f,544.f));
 	capslocksprite.setTextureRect(sf::IntRect(32, 64, 14, 13));
-	nameText.setPosition((SCREEN_WIDTH / 2) + 10.f, SCREEN_HEIGHT * 0.3f);
+	nameText.setPosition((data->assets.sCREEN_WIDTH / 2) + 10.f, data->assets.sCREEN_HEIGHT * 0.3f);
 	nameText.setCharacterSize(30);
 	nameText.setFillColor(sf::Color::Black);
 	nameText.setFont(data->assets.GetFont("Lato"));
@@ -64,16 +64,7 @@ void CScoreboardname::STEHandleInput()
 			data->window.close();
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11))
 		{
-			if (!data->isFullScreen)
-			{
-				data->isFullScreen = true;
-				data->window.create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "ihih", sf::Style::Fullscreen);
-			}
-			else
-			{
-				data->isFullScreen = false;
-				data->window.create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "title", sf::Style::Close | sf::Style::Titlebar);
-			}
+			data->assets.changeScreenType(data->window, data->isFullScreen);
 		}
 		if (event.type == sf::Event::KeyPressed)
 		{

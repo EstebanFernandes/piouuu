@@ -10,15 +10,15 @@ void CGameMenu::STEInit()
 	resume.setFont(data->assets.GetFont("Lato"));
 	resume.setString("Reprendre");
 	resume.setCharacterSize(30);
-	resume.setPosition((SCREEN_WIDTH / 2.f) - (resume.getGlobalBounds().width / 2.f),
-		(SCREEN_HEIGHT * 0.7f));
+	resume.setPosition((data->assets.sCREEN_WIDTH / 2.f) - (resume.getGlobalBounds().width / 2.f),
+		(data->assets.sCREEN_HEIGHT * 0.7f));
 	quitToMMenu.setFont(data->assets.GetFont("Lato"));
 	quitToMMenu.setString("Revenir au menu principal");
 	quitToMMenu.setCharacterSize(30);
 
 
-	quitToMMenu.setPosition((SCREEN_WIDTH / 2) - (quitToMMenu.getGlobalBounds().width / 2),
-		SCREEN_HEIGHT * 0.8);
+	quitToMMenu.setPosition((data->assets.sCREEN_WIDTH / 2) - (quitToMMenu.getGlobalBounds().width / 2),
+		data->assets.sCREEN_HEIGHT * 0.8);
 }
 
 void CGameMenu::STEHandleInput()
@@ -30,7 +30,10 @@ void CGameMenu::STEHandleInput()
 		{
 			if (sf::Event::Closed == event.type)
 				data->window.close();
-			if (data->inputs.IsTextClicked(resume, sf::Mouse::Left, data->window))
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11))
+			{
+				data->assets.changeScreenType(data->window, data->isFullScreen);
+			}if (data->inputs.IsTextClicked(resume, sf::Mouse::Left, data->window))
 			{
 				resumeClicked = true;
 			ahah =	resumeClock.restart().Zero;

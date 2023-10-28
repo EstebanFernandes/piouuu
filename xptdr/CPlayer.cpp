@@ -6,7 +6,7 @@
 void CPlayer::setSprite()
 {
 	getSprite().setScale(0.7f, 0.7f);
-	getSprite().setPosition((SCREEN_WIDTH / 4) - (getSprite().getGlobalBounds().width/2), (SCREEN_HEIGHT / 2) - (getSprite().getGlobalBounds().height/2));
+	getSprite().setPosition((assets->sCREEN_WIDTH / 4) - (getSprite().getGlobalBounds().width/2), (assets->sCREEN_HEIGHT / 2) - (getSprite().getGlobalBounds().height/2));
 }
 
 void CPlayer::initStat()
@@ -34,13 +34,13 @@ bool CPlayer::checkGlobalCollisions()
 	//Top collision and bot collision
 	if (getGlobalBounds().top <= 0)
 		setPositionEntity(getGlobalBounds().left, 0);
-	else if(getGlobalBounds().top + getGlobalBounds().height >= SCREEN_HEIGHT)
-		setPositionEntity(getGlobalBounds().left, SCREEN_HEIGHT - getGlobalBounds().height);
+	else if(getGlobalBounds().top + getGlobalBounds().height >= assets->sCREEN_HEIGHT)
+		setPositionEntity(getGlobalBounds().left, assets->sCREEN_HEIGHT - getGlobalBounds().height);
 	//Left and right collision
 	if (getGlobalBounds().left <= 0)
 		setPositionEntity(0, getGlobalBounds().top);
-	else if (getGlobalBounds().left + getGlobalBounds().width >= SCREEN_WIDTH)
-		setPositionEntity(SCREEN_WIDTH - getGlobalBounds().width, getGlobalBounds().top);
+	else if (getGlobalBounds().left + getGlobalBounds().width >= assets->sCREEN_WIDTH)
+		setPositionEntity(assets->sCREEN_WIDTH - getGlobalBounds().width, getGlobalBounds().top);
 	return false;
 }
 
@@ -68,9 +68,9 @@ void CPlayer::initLifeBar()
 	previousMaxHealth = maxhealth;
 	float scaleFactor = 1.f;
 	float lifebarwidth = lp * maxhealth;
-	if (lifebarwidth >= SCREEN_WIDTH * 0.5f)
+	if (lifebarwidth >= assets->sCREEN_WIDTH * 0.5f)
 	{
-		float maxWidthPerPoint = SCREEN_WIDTH * 0.5f / maxhealth;
+		float maxWidthPerPoint = assets->sCREEN_WIDTH * 0.5f / maxhealth;
 		scaleFactor = maxWidthPerPoint / lp;
 	}
 	for (int i = 0; i < maxhealth; i++)

@@ -23,7 +23,7 @@ public:
 	CEnemy(float xcoordinate, CAssetManager* a);
 	void initAnimation();
 	void initStat() {
-		int a = SCREEN_HEIGHT - (int)getGlobalBounds().height;
+		int a = assets->sCREEN_HEIGHT - (int)getGlobalBounds().height;
 		initPositionY = rand() % a; 
 		float maxDirY = 0.16f * (1.f-(initPositionY / a));
 		float minDirY = -(0.16f* initPositionY / (float)a);

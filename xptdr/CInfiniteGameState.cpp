@@ -14,21 +14,12 @@ void CInfiniteGameState::STEHandleInput()
 			data->window.close();
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11))
 		{
-			if (!data->isFullScreen)
-			{
-				data->isFullScreen = true;
-				data->window.create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "ihih", sf::Style::Fullscreen);
-			}
-			else
-			{
-				data->isFullScreen = false;
-				data->window.create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "title", sf::Style::Close | sf::Style::Titlebar);
-			}
+			data->assets.changeScreenType(data->window, data->isFullScreen);
 		}if (event.type == sf::Event::KeyReleased) {
 			if (event.key.code == sf::Keyboard::Escape)
 			{
 				sf::Texture texture;
-				texture.create(SCREEN_WIDTH, SCREEN_HEIGHT);
+				texture.create(data->assets.sCREEN_WIDTH, data->assets.sCREEN_HEIGHT);
 				texture.update(data->window);
 				data->assets.LoadTexture("pauseScreen", texture);
 				gameTime += gameClock.getElapsedTime();

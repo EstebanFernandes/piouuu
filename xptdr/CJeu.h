@@ -20,7 +20,10 @@ private :
 //Attributs
 	unsigned int fps = 60;
 	const float dt = 1.0f / fps;
+	static int screenWidth;
+	static int screenHeight;
 	sf::Clock JEUClock;
+
 public:
 //Constructeur
 	CJeu(int width, int height, std::string title);

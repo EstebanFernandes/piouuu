@@ -1,7 +1,5 @@
 #pragma once
 #include "CState.h"
-#include "CJeu.h"
-#include "DEFINITIONS.h"
 #include "CPhysics.h"
 #include <iostream>
 #include "CPlayer.h"

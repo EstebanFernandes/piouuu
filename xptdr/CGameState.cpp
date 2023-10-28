@@ -77,18 +77,18 @@ void CGameState::STEHandleInput()
 			if (!data->isFullScreen)
 			{
 				data->isFullScreen = true;
-				data->window.create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "ihih", sf::Style::Fullscreen);
+				data->window.create(sf::VideoMode(data->assets.sCREEN_WIDTH, data->assets.sCREEN_HEIGHT), "ihih", sf::Style::Fullscreen);
 			}
 			else
 			{
 				data->isFullScreen = false;
-				data->window.create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "title", sf::Style::Close | sf::Style::Titlebar);
+				data->window.create(sf::VideoMode(data->assets.sCREEN_WIDTH, data->assets.sCREEN_HEIGHT), "title", sf::Style::Close | sf::Style::Titlebar);
 			}
 		}if (event.type == sf::Event::KeyReleased) {
 			if (event.key.code == sf::Keyboard::Escape)
 			{
 				sf::Texture texture;
-				texture.create(SCREEN_WIDTH, SCREEN_HEIGHT);
+				texture.create(data->assets.sCREEN_WIDTH, data->assets.sCREEN_HEIGHT);
 				texture.update(data->window);
 				data->assets.LoadTexture("pauseScreen", texture);
 				gameTime += gameClock.getElapsedTime();
@@ -141,7 +141,7 @@ void CGameState::STEUpdate(float delta)
 	size_t ti = gameClockText.getString().getSize();
 	gameClockText.setString(i);
 	if(ti!=i.size())
-		gameClockText.setPosition(sf::Vector2f(SCREEN_WIDTH / 2 - gameClockText.getGlobalBounds().width / 2, 20.f));
+		gameClockText.setPosition(sf::Vector2f(data->assets.sCREEN_WIDTH / 2 - gameClockText.getGlobalBounds().width / 2, 20.f));
 }
 
 

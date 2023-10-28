@@ -1,7 +1,6 @@
 #include "CJeu.h"
 #include "DEFINITIONS.h"
 //SIUUUUU
-
 int main() {
-	CJeu(SCREEN_WIDTH, SCREEN_HEIGHT, "PIOU PIOU");
+	CJeu(1280, 720, "PIOU PIOU");
 }

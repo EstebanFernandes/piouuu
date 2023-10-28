@@ -8,7 +8,8 @@ CCard::CCard()
 CCard::CCard(float x, float y, std::string title, std::string description, std::string imageName, CAssetManager* assetParam)
 {
 	asset = assetParam;
-
+	xSize = (float)asset->sCREEN_WIDTH / 3.f;
+	ySize = (float)assetParam->sCREEN_HEIGHT * 0.85f;
 	pos.x = x;
 	pos.y = y;
 
@@ -35,14 +36,6 @@ CCard::CCard(float x, float y, std::string title, std::string description, std::
 	cardDescription.setFont(asset->GetFont("Lato"));
 	cardDescription.setCharacterSize(35);
 	cardDescription.setPosition(pos.x + (xSize - cardDescription.getGlobalBounds().width) / 2, pos.y + ySize*0.6f);
-}
-
-void CCard::draw(sf::RenderTarget& target)
-{
-	target.draw(cardBack);
-	target.draw(cardTitle);
-	target.draw(cardImage);
-	target.draw(cardDescription);
 }
 
 void CCard::update(float deltaTime)

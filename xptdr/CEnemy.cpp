@@ -8,7 +8,7 @@ CEnemy::CEnemy(CAssetManager* a)
 	getSprite().setScale(0.2f, 0.2f);
 	initAnimation();
 	initStat();
-	initPositionX = SCREEN_WIDTH;
+	initPositionX = assets->sCREEN_WIDTH;
 	setSprite();
 }
 CEnemy::CEnemy(float xcoordinate, CAssetManager* a) 
