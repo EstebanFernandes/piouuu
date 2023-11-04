@@ -10,10 +10,13 @@ class CCharacterSelection : public CState
 private :
 	GameDataRef data;
 	std::vector<CCharacter> characterList;
+	int currentCharacterIndex;
 	CCharacter chosenCharacter;
 	CCard characterCard;
 
 	sf::Sprite CMMBackground;
+	sf::CircleShape triangle1;
+	sf::CircleShape triangle2;
 
 public:
 	// Constructeur
