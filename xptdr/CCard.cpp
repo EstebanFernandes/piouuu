@@ -9,7 +9,7 @@ CCard::CCard(float x, float y, std::string title, std::string description, std::
 {
 	asset = assetParam;
 	xSize = (float)asset->sCREEN_WIDTH / 3.f;
-	ySize = (float)assetParam->sCREEN_HEIGHT * 0.85f;
+	ySize = (float)asset->sCREEN_HEIGHT * 0.85f;
 	pos.x = x;
 	pos.y = y;
 
@@ -26,7 +26,8 @@ CCard::CCard(float x, float y, std::string title, std::string description, std::
 
 
 	cardImage.setTexture(asset->GetTexture(imageName));
-	cardImage.setPosition(pos.x, pos.y);
+	//bizarre, à revoir
+	cardImage.setPosition(pos.x + ((xSize - cardImage.getGlobalBounds().height)/2.0f), pos.y + ySize/2);
 	sf::IntRect temp = sf::IntRect(0, 0, 153, 66);
 	anim.setParameters(&cardImage, temp, 4, 0.16f);
 	cardImage.setTextureRect(temp);
