@@ -164,6 +164,7 @@
     <ClCompile Include="CPowerUp.cpp" />
     <ClCompile Include="CScoreboardname.cpp" />
     <ClCompile Include="CSettingState.cpp" />
+    <ClCompile Include="CSommetUpgrade.cpp" />
     <ClCompile Include="CSplashState.cpp" />
     <ClCompile Include="CState.cpp" />
     <ClCompile Include="CStateMachine.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="CPowerUp.h" />
     <ClInclude Include="CScoreboardname.h" />
     <ClInclude Include="CSettingState.h" />
+    <ClInclude Include="CSommetUpgrade.h" />
     <ClInclude Include="CSplashState.h" />
     <ClInclude Include="CState.h" />
     <ClInclude Include="CStateMachine.h" />

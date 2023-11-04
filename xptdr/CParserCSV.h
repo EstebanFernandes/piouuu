@@ -16,6 +16,7 @@ private:
 	void parseFile();
 	void lineAnalysis();
 public:
+	CParserCSV();
 	CParserCSV(std::string fileName);
 	void displayInfo() {
 		for (unsigned int i = 0; i < imaxRow; i++)

@@ -29,6 +29,13 @@ void CParserCSV::lineAnalysis()
 		imaxCol = col;
 }
 
+CParserCSV::CParserCSV()
+{
+	imaxCol = -1;
+	imaxRow = -1;
+	sFileName = "";
+}
+
 CParserCSV::CParserCSV(std::string fileName)
 {
 	imaxCol = 0;
