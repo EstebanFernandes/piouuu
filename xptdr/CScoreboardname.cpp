@@ -149,7 +149,7 @@ void CScoreboardname::STEUpdate(float delta)
 	if (OUAIS)
 	{
 		UpdateText();
-		int a= name.size();
+		int a= (int)name.size();
 		float tempX = nameText.getGlobalBounds().width-(((name.size()- stringPosition)*nameText.getLetterSpacing()*nameText.getCharacterSize())/2);
 		bar.setPosition(sf::Vector2f(nameText.getPosition().x+tempX,nameText.getPosition().y));
 		OUAIS = false;

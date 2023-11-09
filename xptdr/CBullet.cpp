@@ -11,6 +11,17 @@ CBullet::CBullet(int damaage, sf::Vector2f pos, sf::Vector2f dir, CAssetManager*
 	getSprite().setPosition(pos);
 }
 
+CBullet::CBullet(int damaage, sf::Vector2f pos, sf::Vector2f dir, float bulletSpeed_, CAssetManager* assetss)
+{
+	bulletSpeed = bulletSpeed_;
+	setType(FriendlyFire);
+	assets = assetss;
+	setSprite();
+	direction = dir;
+	damage = damaage;
+	getSprite().setPosition(pos);
+}
+
 void CBullet::setSprite()
 {
 	setTexture("bulletImage", "res\\img\\bulletImage.png");
@@ -27,22 +38,7 @@ void CBullet::updateEntity(float dt)
 
 void CBullet::updateCollision(CEntity& b)
 {
-	switch (b.getType())
-	{
-	case Enemy:
-		if (checkCollisions(b))
-		{
-			if(b.isDead==false)
-			{
-				needDelete = true;
-				b.damagetaken -= damage;
-			}
-		}
-		break;
-	default:
-		break;
-
-	}
+	
 }
 
 void CBullet::renderEntity(sf::RenderTarget& target)

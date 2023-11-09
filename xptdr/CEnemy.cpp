@@ -4,17 +4,19 @@ CEnemy::CEnemy(CAssetManager* a)
 {
 	setType(Enemy);
 	assets = a;
-	setTexture("enemyImage", ENEMYPNG_FILEPATH);
+	imageName = "enemyImage";
+	setTexture(imageName, ENEMYPNG_FILEPATH);
 	getSprite().setScale(0.2f, 0.2f);
 	initAnimation();
 	initStat();
-	initPositionX = assets->sCREEN_WIDTH;
+	initPositionX = (float)assets->sCREEN_WIDTH;
 	setSprite();
 }
 CEnemy::CEnemy(float xcoordinate, CAssetManager* a) 
 {
 	assets = a;
-	setTexture("enemyImage", ENEMYPNG_FILEPATH);
+	imageName = "enemyImage";
+	setTexture(imageName, ENEMYPNG_FILEPATH);
 	initPositionX = xcoordinate;
 	getSprite().setScale(0.2f, 0.2f);
 	initAnimation();
@@ -60,7 +62,7 @@ void CEnemy::updatewPlayer(float delta, CPlayer& player)
 		{
 			if (isHitting == false)
 			{
-				player.reduceHP(getDamage());
+				player.reduceHP(damage);
 				isHitting = true;
 			}
 		}
@@ -80,7 +82,7 @@ void CEnemy::updatewPlayer(float delta, CPlayer& player)
 			temp--;
 		}
 	}
-	if (iENTLifePoint <= 0)
+	if (healthPoint <= 0)
 	{
 		isDead = true;
 		onAvance = false;
@@ -104,7 +106,7 @@ void CEnemy::specialBehaviorwithPlayer(CPlayer& player)
 
 void CEnemy::updateCollision(CEntity& b)
 {
-	switch (b.getType())
+	/*switch (b.getType())
 	{
 	case FriendlyFire:
 		if (checkCollisions(b))
@@ -124,7 +126,7 @@ void CEnemy::updateCollision(CEntity& b)
 		break;
 	default:
 		break;
-	}
+	}*/
 }
 
 bool CEnemy::updateEntity(float leftbound, float delta)

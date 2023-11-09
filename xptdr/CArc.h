@@ -26,7 +26,7 @@ public :
 	***** Sortie : Aucune                                                           *****
 	***** Postcondition : Crée un objet CArc en copiant les valeurs de l'arc source *****
 	************************************************************************************/
-	CArc(CArc & ARCParam);
+	CArc(const CArc & ARCParam);
 
 	/*************************************************************************************************
 	***** CArc(int iValeur) : Constructeur de confort                                            *****
@@ -131,4 +131,5 @@ public :
 	*****************************************************************************************************************************************/
 	friend std::ostream& operator<< (std::ostream& stream, const CArc& ARCParam);
 };
+
 

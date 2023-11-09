@@ -20,7 +20,7 @@ void CParserCSV::lineAnalysis()
 	std::string temp = sCurrentLine;
 	while (substr != std::string::npos)
 	{
-		substr = temp.find(";");
+		substr = (int)temp.find(";");
 		fileElements[imaxRow].push_back(temp.substr(0, substr));
 		temp = temp.substr(substr + 1);
 		col++;

@@ -1,7 +1,7 @@
 #pragma once
 #define Arrivant true
 #define Partant false
-#include "CListe.h"
+#include <vector>
 #include "CArc.h"
 
 const int ARC_NON_TROUVEE = -999;
@@ -10,8 +10,8 @@ class CSommet
 {
 private :
 	int iSOMNumero;
-	CListe<CArc> lisSOMArcArrivant;
-	CListe<CArc> lisSOMArcPartant;
+	std::vector<CArc> lisSOMArcArrivant;
+	std::vector<CArc> lisSOMArcPartant;
 public :
 
 	/**************************************************************************************
@@ -44,7 +44,7 @@ public :
 	***** Postcondition : Crée un objet CSommet en copiant les valeurs du sommet source (SOMParam), y compris le numéro du sommet  *****
 	***** (iSOMNumero) et les listes d'arcs arrivants et partants                                                                  *****
 	***********************************************************************************************************************************/
-	CSommet(CSommet& SOMParam);
+	CSommet(const CSommet& SOMParam);
 
 	/*************************************************************************************
 	***** ~CSommet() : Destructeur                                                   *****
@@ -155,7 +155,7 @@ public :
 	***** Postcondition : Copie les valeurs du sommet source (SOMParam) dans l'objet actuel, y compris le numéro du sommet (iSOMNumero)  *****
 	***** et les listes d'arcs arrivants et partants. Retourne une référence à l'objet CSommet modifié                                   *****
 	*****************************************************************************************************************************************/
-	CSommet& operator=(CSommet& SOMParam);
+	CSommet& operator=(const CSommet& SOMParam);
 
 	/***********************************************************************************************************************************************
 	***** operator<<(std::ostream & stream, const CSommet & SOMParam) : Surcharge de l'opérateur de sortie (<<) pour afficher un objet CSommet *****
@@ -177,7 +177,7 @@ public :
 	***** Sortie : Une référence à une liste d'objets de type "CArc"                                                        *****
 	***** Postcondition : La fonction renvoie une référence à la liste des arcs arrivant (lisSOMArcArrivant) de l'objet SOM *****
 	****************************************************************************************************************************/
-	CListe<CArc>& SOMLireArcArrivant() {
+	std::vector<CArc>& SOMLireArcArrivant() {
 		return lisSOMArcArrivant;
 	}
 
@@ -189,7 +189,7 @@ public :
 	***** Sortie : Une référence à une liste d'objets de type "CArc"                                                      *****
 	***** Postcondition : La fonction renvoie une référence à la liste des arcs partant (lisSOMArcPartant) de l'objet SOM *****
 	**************************************************************************************************************************/
-	CListe<CArc>& SOMLireArcPartant() {
+	std::vector<CArc>& SOMLireArcPartant() {
 		return lisSOMArcPartant;
 	}
 
@@ -202,9 +202,9 @@ public :
 	***** Postcondition : Retourne la taille de la liste de l'arc demandé                  *****
 	*******************************************************************************************/
 	unsigned int SOMTailleListeArc(bool type) {
-		if (type == Arrivant) return lisSOMArcArrivant.LISTaille();
+		if (type == Arrivant) return (unsigned int)lisSOMArcArrivant.size();
 		else {
-			return lisSOMArcPartant.LISTaille();
+			return (unsigned int)lisSOMArcPartant.size();
 		}
 	}
 };

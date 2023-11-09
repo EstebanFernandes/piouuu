@@ -18,7 +18,7 @@ void CGameMenu::STEInit()
 
 
 	quitToMMenu.setPosition((data->assets.sCREEN_WIDTH / 2) - (quitToMMenu.getGlobalBounds().width / 2),
-		data->assets.sCREEN_HEIGHT * 0.8);
+		data->assets.sCREEN_HEIGHT * 0.8f);
 }
 
 void CGameMenu::STEHandleInput()

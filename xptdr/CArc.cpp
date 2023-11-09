@@ -22,9 +22,9 @@ CArc::CArc()
 ***** Sortie : Aucune                                                           *****
 ***** Postcondition : Crée un objet CArc en copiant les valeurs de l'arc source *****
 ************************************************************************************/
-CArc::CArc(CArc & ARCParam)
+CArc::CArc(const CArc & ARCParam)
 {
-	iARCDestination = ARCParam.ARCObtenirDest();
+	iARCDestination = ARCParam.iARCDestination;
 	uiARCpoids = ARCParam.uiARCpoids;
 }
 

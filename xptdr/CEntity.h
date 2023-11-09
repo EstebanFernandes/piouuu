@@ -10,10 +10,7 @@ class CEntity
 private :
 	sf::Sprite ENTsprite;
 	int type = undefined;
-	int damage;
-	int level = 0;
 public:
-	int damagetaken = 0;
 	bool isHitting = false;
 	bool isDead = false;
 	bool needDelete = false;
@@ -65,12 +62,5 @@ public:
 		}
 		return false;
 	}
-	int getDamage()
-	{
-		return damage;
-	}
-	void setDamage(int d) { damage = d; }
-	void setLevel(int l) { level = l; }
-	int getLevel() { return level; }
 };
 

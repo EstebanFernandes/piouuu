@@ -63,10 +63,10 @@ CGraphe::~CGraphe()
 ***************************************************************************************************************************************************************/
 int CGraphe::GRATrouverSommet(int Identifiant)
 {
-	unsigned int taille = lisGRAListeSommet.LISTaille();
+	unsigned int taille = (unsigned int)lisGRAListeSommet.size();
 	for (unsigned int uiBoucle = 0; uiBoucle < taille; uiBoucle++)
 	{
-		int tempId = lisGRAListeSommet.LISLire(uiBoucle).SOMLireNumero();
+		int tempId = lisGRAListeSommet[uiBoucle].SOMLireNumero();
 		if (Identifiant == tempId)
 		{
 			return uiBoucle;
@@ -90,20 +90,12 @@ void CGraphe::GRAAjouterSommet(int NumSommet)
 		if (trouve == SOMMET_NON_TROUVEE) //Le sommet n'existe pas, on peut donc l'ajouter
 		{
 			CSommet sommetAajouter(NumSommet);
-			lisGRAListeSommet.LISAjouterDernier(sommetAajouter);
+			lisGRAListeSommet.push_back(sommetAajouter);
 		}
 		else {
 			CException existe(SommetExistant);
 			throw (existe);
 		}
-}
-
-void CGraphe::GRAAjouterSommet(CSommet somParam) 
-{
-	if (GRATrouverSommet(somParam.SOMLireNumero()) == SOMMET_NON_TROUVEE)
-	{
-		lisGRAListeSommet.LISAjouterDernier(somParam);
-	}
 }
 
 /*********************************************************************************************************************
@@ -123,7 +115,7 @@ void CGraphe::GRAModifierSommet(int AncienNum, int NouveauNum)
 		throw(introuvable);
 	}
 	else {
-		CSommet& sommetAModifier = lisGRAListeSommet.LISLire(trouve);
+		CSommet& sommetAModifier = lisGRAListeSommet[trouve];
 		sommetAModifier.SOMModifierNumero(NouveauNum);
 	}
 }
@@ -147,30 +139,30 @@ void CGraphe::GRASupprimerSommet(int NumSommet)
 		throw(introuvable);
 	}
 	else {
-		CSommet& sommetASupprimer = lisGRAListeSommet.LISLire(trouve);
+		CSommet& sommetASupprimer = lisGRAListeSommet[trouve];
 		unsigned int uiBoucle;
 		if (bGRAType == Oriente) {
 			for (uiBoucle = 0;uiBoucle < sommetASupprimer.SOMTailleListeArc(Partant);uiBoucle++) {
 
-				int SommetARCArrivantaSuppr = sommetASupprimer.SOMLireArcPartant().LISLire(uiBoucle).ARCObtenirDest();
+				int SommetARCArrivantaSuppr = sommetASupprimer.SOMLireArcPartant()[uiBoucle].ARCObtenirDest();
 				int idsommetarcsuppr = GRATrouverSommet(SommetARCArrivantaSuppr);
-				lisGRAListeSommet.LISLire(idsommetarcsuppr).SOMSupprimerArc(Arrivant, NumSommet);
+				lisGRAListeSommet[idsommetarcsuppr].SOMSupprimerArc(Arrivant, NumSommet);
 			}
 			unsigned int taille = sommetASupprimer.SOMTailleListeArc(Arrivant);
 			for (uiBoucle = 0; uiBoucle < taille; uiBoucle++) {
-				int SommetARCPartantaSuppr = sommetASupprimer.SOMLireArcArrivant().LISLire(uiBoucle).ARCObtenirDest();
+				int SommetARCPartantaSuppr = sommetASupprimer.SOMLireArcArrivant()[uiBoucle].ARCObtenirDest();
 				int idsommetarcsuppr = GRATrouverSommet(SommetARCPartantaSuppr);
-				lisGRAListeSommet.LISLire(idsommetarcsuppr).SOMSupprimerArc(Partant, NumSommet);
+				lisGRAListeSommet[idsommetarcsuppr].SOMSupprimerArc(Partant, NumSommet);
 			}
 		}
 		else {
 			for (uiBoucle = 0; uiBoucle < sommetASupprimer.SOMTailleListeArc(Partant);uiBoucle++) {
-				int SommetArcPartantArrivant = sommetASupprimer.SOMLireArcPartant().LISLire(uiBoucle).ARCObtenirDest();
-				lisGRAListeSommet.LISLire(GRATrouverSommet(SommetArcPartantArrivant)).SOMSupprimerArc(Arrivant, NumSommet);
-				lisGRAListeSommet.LISLire(GRATrouverSommet(SommetArcPartantArrivant)).SOMSupprimerArc(Partant, NumSommet);
+				int SommetArcPartantArrivant = sommetASupprimer.SOMLireArcPartant()[uiBoucle].ARCObtenirDest();
+				lisGRAListeSommet[GRATrouverSommet(SommetArcPartantArrivant)].SOMSupprimerArc(Arrivant, NumSommet);
+				lisGRAListeSommet[GRATrouverSommet(SommetArcPartantArrivant)].SOMSupprimerArc(Partant, NumSommet);
 			}
 		}
-		lisGRAListeSommet.LISSupprimer(trouve);
+		lisGRAListeSommet.erase(lisGRAListeSommet.begin()+trouve);
 	}
 }
 
@@ -189,14 +181,14 @@ void CGraphe::GRAAjouterArc(int iSource, int iDestination) {
 
 	if (trouveSource != SOMMET_NON_TROUVEE || trouveDestination != SOMMET_NON_TROUVEE) {
 		if (bGRAType == Oriente) {
-			lisGRAListeSommet.LISLire(trouveSource).SOMAjouterArc(Partant, iDestination);
-			lisGRAListeSommet.LISLire(trouveDestination).SOMAjouterArc(Arrivant, iSource);
+			lisGRAListeSommet[trouveSource].SOMAjouterArc(Partant, iDestination);
+			lisGRAListeSommet[trouveDestination].SOMAjouterArc(Arrivant, iSource);
 		}
 		else {
-			lisGRAListeSommet.LISLire(trouveSource).SOMAjouterArc(Partant, iDestination);
-			lisGRAListeSommet.LISLire(trouveSource).SOMAjouterArc(Arrivant, iDestination);
-			lisGRAListeSommet.LISLire(trouveDestination).SOMAjouterArc(Partant, iSource);
-			lisGRAListeSommet.LISLire(trouveDestination).SOMAjouterArc(Arrivant, iSource);
+			lisGRAListeSommet[trouveSource].SOMAjouterArc(Partant, iDestination);
+			lisGRAListeSommet[trouveSource].SOMAjouterArc(Arrivant, iDestination);
+			lisGRAListeSommet[trouveDestination].SOMAjouterArc(Partant, iSource);
+			lisGRAListeSommet[trouveDestination].SOMAjouterArc(Arrivant, iSource);
 		}
 	}
 	else {
@@ -225,14 +217,14 @@ void CGraphe::GRAAjouterArc(int iSource, int iDestination, double dpoids)
 	CArc temp2(iDestination, dpoids);
 	if (trouveSource != SOMMET_NON_TROUVEE || trouveDestination != SOMMET_NON_TROUVEE) {
 		if (bGRAType == Oriente) {
-			lisGRAListeSommet.LISLire(trouveSource).SOMAjouterArc(Partant, iDestination);
-			lisGRAListeSommet.LISLire(trouveDestination).SOMAjouterArc(Arrivant, iSource);
+			lisGRAListeSommet[trouveSource].SOMAjouterArc(Partant, iDestination);
+			lisGRAListeSommet[trouveDestination].SOMAjouterArc(Arrivant, iSource);
 		}
 		else {
-			lisGRAListeSommet.LISLire(trouveSource).SOMAjouterArc(Partant, temp2);
-			lisGRAListeSommet.LISLire(trouveSource).SOMAjouterArc(Arrivant, temp2);
-			lisGRAListeSommet.LISLire(trouveDestination).SOMAjouterArc(Partant, temp1);
-			lisGRAListeSommet.LISLire(trouveDestination).SOMAjouterArc(Arrivant, temp1);
+			lisGRAListeSommet[trouveSource].SOMAjouterArc(Partant, temp2);
+			lisGRAListeSommet[trouveSource].SOMAjouterArc(Arrivant, temp2);
+			lisGRAListeSommet[trouveDestination].SOMAjouterArc(Partant, temp1);
+			lisGRAListeSommet[trouveDestination].SOMAjouterArc(Arrivant, temp1);
 		}
 	}
 	else {
@@ -307,14 +299,14 @@ void CGraphe::GRASupprimerArc( int iSource, int iDestination)
 	if (trouveSource != SOMMET_NON_TROUVEE || trouveDestination != SOMMET_NON_TROUVEE)
 	{
 		if (bGRAType == Oriente) {
-			lisGRAListeSommet.LISLire(trouveDestination).SOMSupprimerArc(Arrivant, iSource);
-			lisGRAListeSommet.LISLire(trouveSource).SOMSupprimerArc(Partant, iDestination);
+			lisGRAListeSommet[trouveDestination].SOMSupprimerArc(Arrivant, iSource);
+			lisGRAListeSommet[trouveSource].SOMSupprimerArc(Partant, iDestination);
 		}
 		else {
-			lisGRAListeSommet.LISLire(trouveDestination).SOMSupprimerArc(Arrivant, iSource);
-			lisGRAListeSommet.LISLire(trouveDestination).SOMSupprimerArc(Partant, iSource);
-			lisGRAListeSommet.LISLire(trouveSource).SOMSupprimerArc(Partant, iDestination);
-			lisGRAListeSommet.LISLire(trouveSource).SOMSupprimerArc(Arrivant, iDestination);
+			lisGRAListeSommet[trouveDestination].SOMSupprimerArc(Arrivant, iSource);
+			lisGRAListeSommet[trouveDestination].SOMSupprimerArc(Partant, iSource);
+			lisGRAListeSommet[trouveSource].SOMSupprimerArc(Partant, iDestination);
+			lisGRAListeSommet[trouveSource].SOMSupprimerArc(Arrivant, iDestination);
 		}
 	}
 	else {
@@ -350,19 +342,19 @@ CGraphe& CGraphe::operator=(const CGraphe & GRAParam)
 ***********************************************************************************************************************************************/
 std::ostream & operator<<(std::ostream & stream, const CGraphe & GRAParam)
 {
-	stream << "Affichage du graphe ";
+	/*stream << "Affichage du graphe ";
 	if (GRAParam.bGRAType == Oriente)
 		stream << "oriente :\n";
 	else
 		stream << "non oriente :\n"<<std::endl;
-		for (int i = 0; i < GRAParam.lisGRAListeSommet.LISTaille(); i++)
+		for (int i = 0; i < GRAParam.lisGRAListeSommet.size(); i++)
 		{
-			stream << "Sommet numero " << GRAParam.lisGRAListeSommet.LISLire(i).SOMLireNumero()<<std::endl;
-			for (int j = 0; j < GRAParam.lisGRAListeSommet.LISLire(i).SOMLireArcArrivant().LISTaille(); j++)
+			stream << "Sommet numero " << GRAParam.lisGRAListeSommet[i].SOMLireNumero() << std::endl;
+			for (int j = 0; j < GRAParam.lisGRAListeSommet[i].SOMLireArcArrivant().size(); j++)
 			{
-				stream << GRAParam.lisGRAListeSommet.LISLire(i).SOMLireArcArrivant().LISLire(j)<<std::endl;
+				stream << GRAParam.lisGRAListeSommet[i].SOMLireArcArrivant()[j]<<std::endl;
 			}
 			stream << std::endl;
-		}
+		}*/
 	return stream;
 }

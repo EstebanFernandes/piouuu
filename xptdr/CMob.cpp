@@ -2,8 +2,8 @@
 
 CMob::CMob() 
 { 
-	iENTLifePoint = 0;
-	maxhealth = 0;
+	healthPoint = 0;
+	maxHealthPoint = 0;
 }
 
 

@@ -35,7 +35,7 @@ CSommet::CSommet(int Num)
 ***** Postcondition : Crée un objet CSommet en copiant les valeurs du sommet source (SOMParam), y compris le numéro du sommet  *****
 ***** (iSOMNumero) et les listes d'arcs arrivants et partants                                                                  *****
 ***********************************************************************************************************************************/
-CSommet::CSommet(CSommet & SOMParam)
+CSommet::CSommet(const CSommet & SOMParam)
 {
 	iSOMNumero = SOMParam.iSOMNumero;
 	lisSOMArcArrivant = SOMParam.lisSOMArcArrivant;
@@ -81,20 +81,20 @@ void CSommet::SOMAjouterArc(bool type, int Destination)
 {
 	CArc temp(Destination);
 	if (type == Arrivant) {
-		for (int uiBoucle = 0; uiBoucle < lisSOMArcArrivant.LISTaille(); ++uiBoucle) {
-			if (lisSOMArcArrivant.LISLire(uiBoucle).ARCObtenirDest() == Destination) {
+		for (int uiBoucle = 0; uiBoucle < lisSOMArcArrivant.size(); ++uiBoucle) {
+			if (lisSOMArcArrivant[uiBoucle].ARCObtenirDest() == Destination) {
 				throw(CException(ArcExistant));
 			}
 		}
-		lisSOMArcArrivant.LISAjouterDernier(temp);
+		lisSOMArcArrivant.push_back(temp);
 	}
 	else {
-		for (int uiBoucle = 0; uiBoucle < lisSOMArcPartant.LISTaille(); ++uiBoucle) {
-			if (lisSOMArcPartant.LISLire(uiBoucle).ARCObtenirDest() == Destination) {
+		for (int uiBoucle = 0; uiBoucle < lisSOMArcPartant.size(); ++uiBoucle) {
+			if (lisSOMArcPartant[uiBoucle].ARCObtenirDest() == Destination) {
 				throw(CException(ArcExistant));
 			}
 		}
-		lisSOMArcPartant.LISAjouterDernier(temp);
+		lisSOMArcPartant.push_back(temp);
 	}
 }
 
@@ -109,20 +109,20 @@ void CSommet::SOMAjouterArc(bool type, int Destination)
 void CSommet::SOMAjouterArc(bool type, CArc Arc)
 {
 	if (type == Arrivant) {
-		for (int uiBoucle = 0; uiBoucle < lisSOMArcArrivant.LISTaille(); ++uiBoucle) {
-			if (lisSOMArcArrivant.LISLire(uiBoucle).ARCObtenirDest() == Arc.ARCObtenirDest()) {
+		for (int uiBoucle = 0; uiBoucle < lisSOMArcArrivant.size(); ++uiBoucle) {
+			if (lisSOMArcArrivant[uiBoucle].ARCObtenirDest() == Arc.ARCObtenirDest()) {
 				throw(CException(ArcExistant));
 			}
 		}
-		lisSOMArcArrivant.LISAjouterDernier(Arc);
+		lisSOMArcArrivant.push_back(Arc);
 	}
 	else {
-		for (int uiBoucle = 0; uiBoucle < lisSOMArcPartant.LISTaille(); ++uiBoucle) {
-			if (lisSOMArcPartant.LISLire(uiBoucle).ARCObtenirDest() == Arc.ARCObtenirDest()) {
+		for (int uiBoucle = 0; uiBoucle < lisSOMArcPartant.size(); ++uiBoucle) {
+			if (lisSOMArcPartant[uiBoucle].ARCObtenirDest() == Arc.ARCObtenirDest()) {
 				throw(CException(ArcExistant));
 			}
 		}
-		lisSOMArcPartant.LISAjouterDernier(Arc);
+		lisSOMArcPartant.push_back(Arc);
 	}
 }
 
@@ -147,11 +147,11 @@ void CSommet::SOMModifierArc(bool type, int AncienneDestination, int NouvelleDes
 		}
 		else {
 			// Supprimer l'arc avec l'ancienne destination
-			lisSOMArcArrivant.LISSupprimer(iNumListe);
+			lisSOMArcArrivant.erase(lisSOMArcArrivant.begin()+iNumListe);
 
 			// Ajouter un nouvel arc avec la nouvelle destination
 			CArc nouvelArc(NouvelleDestination);
-			lisSOMArcArrivant.LISAjouterDernier(nouvelArc);
+			lisSOMArcArrivant.push_back(nouvelArc);
 		}
 	}
 	else {
@@ -162,11 +162,11 @@ void CSommet::SOMModifierArc(bool type, int AncienneDestination, int NouvelleDes
 		}
 		else {
 			// Supprimer l'arc avec l'ancienne destination
-			lisSOMArcPartant.LISSupprimer(iNumListe);
+			lisSOMArcArrivant.erase(lisSOMArcArrivant.begin() + iNumListe);
 
 			// Ajouter un nouvel arc avec la nouvelle destination
 			CArc nouvelArc(NouvelleDestination);
-			lisSOMArcPartant.LISAjouterDernier(nouvelArc);
+			lisSOMArcPartant.push_back(nouvelArc);
 		}
 	}
 }
@@ -191,7 +191,7 @@ void CSommet::SOMModifierArc(bool type, int Destination, double dPoids)
 			throw(introuvable);
 		}
 		else {
-			lisSOMArcArrivant.LISLire(iNumListe).ARCModifier(dPoids);
+			lisSOMArcArrivant[iNumListe].ARCModifier(dPoids);
 		}
 	}
 	else {
@@ -202,7 +202,7 @@ void CSommet::SOMModifierArc(bool type, int Destination, double dPoids)
 		}
 		else {
 			// Modifie le poids
-			lisSOMArcPartant.LISLire(iNumListe).ARCModifier(dPoids);
+			lisSOMArcArrivant[iNumListe].ARCModifier(dPoids);
 		}
 	}
 }
@@ -226,7 +226,7 @@ void CSommet::SOMSupprimerArc(bool type, int Destination)
 			throw(introuvable);
 		}
 		else {
-			lisSOMArcArrivant.LISSupprimer(iNumListe);
+			lisSOMArcArrivant.erase(lisSOMArcArrivant.begin() + iNumListe);
 		}
 	}
 	else {
@@ -236,7 +236,7 @@ void CSommet::SOMSupprimerArc(bool type, int Destination)
 			throw(introuvable);
 		}
 		else {
-			lisSOMArcPartant.LISSupprimer(iNumListe);
+			lisSOMArcArrivant.erase(lisSOMArcArrivant.begin() + iNumListe);
 		}
 	}
 }
@@ -255,16 +255,16 @@ void CSommet::SOMSupprimerArc(bool type, int Destination)
 int CSommet::SOMRechercherArc(bool type, int Element)
 {
 	if (type == Arrivant) {
-		unsigned int uiTaille = lisSOMArcArrivant.LISTaille();
+		unsigned int uiTaille = (unsigned int)lisSOMArcArrivant.size();
 		for (unsigned int uiBoucle = 0; uiBoucle < uiTaille; uiBoucle++) {
-			if (lisSOMArcArrivant.LISLire(uiBoucle).ARCObtenirDest() == Element)
+			if (lisSOMArcArrivant[uiBoucle].ARCObtenirDest() == Element)
 				return uiBoucle;
 		}
 	}
 	else {
-		unsigned int uiTaille = lisSOMArcPartant.LISTaille();
+		unsigned int uiTaille = (unsigned int)lisSOMArcPartant.size();
 		for (unsigned int uiBoucle = 0; uiBoucle < uiTaille; uiBoucle++) {
-			if (lisSOMArcPartant.LISLire(uiBoucle).ARCObtenirDest() == Element) return uiBoucle;
+			if (lisSOMArcPartant[uiBoucle].ARCObtenirDest() == Element) return uiBoucle;
 		}
 	}
 	return ARC_NON_TROUVEE;
@@ -279,7 +279,7 @@ int CSommet::SOMRechercherArc(bool type, int Element)
 ***** Postcondition : Copie les valeurs du sommet source (SOMParam) dans l'objet actuel, y compris le numéro du sommet (iSOMNumero)  *****
 ***** et les listes d'arcs arrivants et partants. Retourne une référence à l'objet CSommet modifié                                   *****
 *****************************************************************************************************************************************/
-CSommet & CSommet::operator=(CSommet & SOMParam)
+CSommet & CSommet::operator=(const CSommet & SOMParam)
 {
 	iSOMNumero = SOMParam.iSOMNumero;
 	lisSOMArcArrivant = SOMParam.lisSOMArcArrivant;
@@ -302,7 +302,7 @@ CSommet & CSommet::operator=(CSommet & SOMParam)
 std::ostream & operator<<(std::ostream & stream, const CSommet & SOMParam)
 {
 	stream << "Sommet numero " << SOMParam.SOMLireNumero()<<"\n";
-	stream << "Liste des arcs arrivant : \n" << SOMParam.lisSOMArcArrivant;
-	stream << "Liste des arcs partant : \n" << SOMParam.lisSOMArcPartant;
+	//stream << "Liste des arcs arrivant : \n" << SOMParam.lisSOMArcArrivant;
+	//stream << "Liste des arcs partant : \n" << SOMParam.lisSOMArcPartant;
 	return stream;
 }

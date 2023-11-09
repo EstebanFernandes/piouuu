@@ -5,14 +5,13 @@
 #include <string>
 #include"CAssetManager.h"
 #include"CEntity.h"
+#include"CCharacter.h"
 //Héritage de entité, classe de base qui permet de gérer les mobs (joueurs, npc,ennemies)
-class CMob : public CEntity
+class CMob : public CEntity, public CCharacter
 {
 protected :
 
 	bool hasBeenHit = false;
-	int maxhealth;
-	int iENTLifePoint;
 	sf::RectangleShape lifeBar;
 	sf::RectangleShape lifeBarBackground;
 public:
@@ -28,12 +27,10 @@ public:
 	void updateLifeBar() {
 		if (hasBeenHit)
 		{
-			lifeBar.setSize(sf::Vector2f(100.f * iENTLifePoint / maxhealth, 10.f));
+			lifeBar.setSize(sf::Vector2f(100.f * healthPoint / maxHealthPoint, 10.f));
 			hasBeenHit = false;
 		}
 	}
-	int getMaxHealth() { return maxhealth; }
-	int getLifePoint() { return iENTLifePoint; }
 	void setPositionEntity(const float x, const float y) {
 		sf::Sprite& temp = getSprite();
 		getSprite().setPosition(x, y);
@@ -63,11 +60,11 @@ public:
 		target.draw(lifeBar);
 	}
 	void reduceHP(int damage) {
-		iENTLifePoint -= damage;
-		if (iENTLifePoint < 0)
-			iENTLifePoint = 0;
-		else if (iENTLifePoint > maxhealth)
-			iENTLifePoint = maxhealth;
+		healthPoint -= damage;
+		if (healthPoint < 0)
+			healthPoint = 0;
+		else if (healthPoint > maxHealthPoint)
+			healthPoint = maxHealthPoint;
 		hasBeenHit = true;
 	}
 	void gainHP(int damage)

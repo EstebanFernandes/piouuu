@@ -14,9 +14,9 @@ private:
 	float initPositionX = 0;
 	int initPositionY;
 	float directionY;
-	int level;
 	int r = 0;
 	bool gavexP=false;
+	int damage;
 public:
 	bool onAvance = true;
 	CEnemy(CAssetManager* a);
@@ -29,9 +29,9 @@ public:
 		float minDirY = -(0.16f* initPositionY / (float)a);
 		directionY = RandomFloat(minDirY, maxDirY);
 		level = 0;
-		setDamage(3);
-		maxhealth = 20+15*level;
-		iENTLifePoint = maxhealth;
+		damage = 3;
+		maxHealthPoint = 20+15*level;
+		healthPoint = maxHealthPoint;
 		float rad = atan2(abs(directionY), abs(directionX));
 		float degree =rad * (180.f / (float)M_PIl);
   		getSprite().rotate(degree);

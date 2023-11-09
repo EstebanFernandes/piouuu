@@ -9,7 +9,7 @@ class CGraphe
 {
 private :
 	bool bGRAType;
-	CListe<CSommet> lisGRAListeSommet;
+	std::vector<CSommet> lisGRAListeSommet;
 public:
 
 	/*****************************************************************************
@@ -71,7 +71,7 @@ public:
 	***** Sortie : Le nombre de sommets présent dans le graphe                             *****
 	***** Postcondition : Retourne le nombre de sommets présents dans la liste des sommets *****
 	*******************************************************************************************/
-	unsigned int GRARetourneNbSommet() { return lisGRAListeSommet.LISTaille(); }
+	unsigned int GRARetourneNbSommet() { return (unsigned int)lisGRAListeSommet.size(); }
 
 	/*****************************************************************************************
 	***** GRARetourneType() : Retourne le type de graphe                                 *****
@@ -92,8 +92,6 @@ public:
 	***** Postcondition : Ajoute un nouveau sommet à la liste des sommets (lisGRAListeSommet) avec le numéro spécifié (NumSommet) *****
 	**********************************************************************************************************************************/
 	void GRAAjouterSommet(int NumSommet);
-
-	void GRAAjouterSommet(CSommet somParam);
 
 	/*********************************************************************************************************************
 	***** GRAModifierSommet(int AncienNum, int NouveauNum) : Modifier un sommet dans le graphe                       *****
@@ -202,7 +200,7 @@ public:
 	***** Sortie : Une référence à la liste des sommets de type CListe<CSommet>        *****
 	***** Postcondition : Aucune                                                       *****
 	***************************************************************************************/
-	CListe<CSommet>& GRAObtenirListeSommet() {
+	std::vector<CSommet>& GRAObtenirListeSommet() {
 		return lisGRAListeSommet;
 	}
 };

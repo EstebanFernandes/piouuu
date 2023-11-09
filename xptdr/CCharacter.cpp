@@ -2,7 +2,7 @@
 
 CCharacter::CCharacter(std::string imagePathParam, std::string nameParam, std::string descriptionParam)
 {
-	imagePath = imagePathParam;
+	imageName = imagePathParam;
 	name = nameParam;
 	description = descriptionParam;
 }
@@ -11,9 +11,9 @@ CCharacter::CCharacter()
 {
 }
 
-std::string CCharacter::getImagePath()
+std::string CCharacter::getImageName()
 {
-	return imagePath;
+	return imageName;
 }
 
 std::string CCharacter::getName()

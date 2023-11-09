@@ -17,7 +17,8 @@ void CGunslinger::updateEntity(float dt)
 			break;
 		}
 		magazine[i].updateEntity(dt);
-		if(magazine[i].checkGlobalCollisions()==true)
+		if (magazine[i].checkGlobalCollisions() == true)
+			magazine[i].needDelete = true;
 		if (magazine[i].needDelete == true)
 		{
 			magazine.erase(magazine.begin() + i);
@@ -54,8 +55,18 @@ void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage)
 	magazine.push_back(CBullet(damage, pos, sf::Vector2f(1, 0), assets));
 }
 
+void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage, float bulletSpeed_)
+{
+	magazine.push_back(CBullet(damage, pos, sf::Vector2f(1, 0), bulletSpeed_, assets));
+}
+
 void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage, sf::Vector2f direction)
 {
 
 		magazine.push_back(CBullet(damage, pos, direction, assets));
+}
+
+void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage, float bulletSpeed_, sf::Vector2f direction)
+{
+	magazine.push_back(CBullet(damage, pos, direction, bulletSpeed_, assets));
 }
