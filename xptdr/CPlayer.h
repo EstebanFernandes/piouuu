@@ -14,7 +14,6 @@ private:
 	//Attributs
 	//S'occupe des animations du personnage
 	CAnimation anim;
-	float playerSpeed = 0.5f;
 	//La barre de vie est une liste de sprite représentant chacun un point de vie
 	std::vector<sf::Sprite> lifeBar;
 	//les deux suivants servent à gérer la barre de vie
@@ -27,9 +26,7 @@ private:
 
 
 	//grr paw
-	int damagePerBullet;
 	sf::Clock bulletClock;
-	sf::Time bulletCooldown;
 
 	sf::Clock hitClock;
 	bool hittype = false;
@@ -37,8 +34,6 @@ private:
 	void setSprite();
 	void initStat();
 public:
-	int xp;
-	int maxXp;
 	CGunslinger BAW;
 	CPlayer();
 	CPlayer(CAssetManager* a);
@@ -53,7 +48,6 @@ public:
 	void updateEntity(float dt);
 	void PLYupdateMovement(sf::Event event);
 	void updateMovement(float dt);
-	int getDamagePerBullet() { return damagePerBullet; }
 	void renderLifeBar(sf::RenderTarget& target);
 	void renderEntity(sf::RenderTarget& target);
 	void updateFx();

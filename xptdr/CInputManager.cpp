@@ -11,7 +11,7 @@ bool CInputManager::IsSpriteClicked(sf::Sprite object, sf::Mouse::Button button,
     if (sf::Mouse::isButtonPressed(button))
     {
         sf::IntRect tempRect((int)object.getPosition().x,
-            object.getPosition().y, (int)object.getGlobalBounds().width,
+            (int)object.getPosition().y, (int)object.getGlobalBounds().width,
             (int)object.getGlobalBounds().height);
         if (tempRect.contains(sf::Mouse::getPosition(window))) {
             return true;

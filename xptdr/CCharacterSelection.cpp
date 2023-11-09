@@ -25,23 +25,21 @@ void CCharacterSelection::STEInit()
 
 	//temp
 	data->assets.LoadTexture("backgroundCharacter", CHARACTERBACKGROUND);
-
 	chosenCharacter = characterList[currentCharacterIndex];
-	characterCard = CCard(425, 40, chosenCharacter.getName(), chosenCharacter.getDescription(), chosenCharacter.getName(), &(data->assets));
-	 
+	characterCard = CCard(chosenCharacter.getName(), chosenCharacter.getDescription(), chosenCharacter.getName(), &(data->assets));
 
 	CMMBackground.setTexture(data->assets.GetTexture("Background"));
 	CMMBackground.setScale(1.2f, 1.2f);
 
-	triangle1 = sf::CircleShape(80, 3);
-	triangle1.rotate(270);
+	triangle1 = sf::CircleShape(80.f, 3);
+	triangle1.rotate(270.f);
 	triangle1.setFillColor(sf::Color::Color(64, 64, 64));
-	triangle1.setPosition(275, data->assets.sCREEN_HEIGHT/2);
+	triangle1.setPosition(275.f, (float)data->assets.sCREEN_HEIGHT/2);
 
-	triangle2 = sf::CircleShape(80, 3);
-	triangle2.rotate(90);
+	triangle2 = sf::CircleShape(80.f, 3);
+	triangle2.rotate(90.f);
 	triangle2.setFillColor(sf::Color::Color(64, 64, 64));
-	triangle2.setPosition(275+320 +((float)data->assets.sCREEN_WIDTH / 3.f), data->assets.sCREEN_HEIGHT / 2);
+	triangle2.setPosition(275+320 +((float)data->assets.sCREEN_WIDTH / 3.f), data->assets.sCREEN_HEIGHT / 2.f);
 }
 
 void CCharacterSelection::STEHandleInput()
@@ -62,7 +60,7 @@ void CCharacterSelection::STEHandleInput()
 			{
 				currentCharacterIndex = (currentCharacterIndex + 1) % characterList.size();
 				chosenCharacter = characterList[currentCharacterIndex];
-				characterCard = CCard(425, 40, chosenCharacter.getName(), chosenCharacter.getDescription(), chosenCharacter.getName(), &(data->assets));
+				characterCard = CCard(chosenCharacter.getName(), chosenCharacter.getDescription(), chosenCharacter.getName(), &(data->assets));
 			}
 			else if (event.key.code == sf::Keyboard::Q)
 			{
@@ -73,7 +71,7 @@ void CCharacterSelection::STEHandleInput()
 					currentCharacterIndex = (currentCharacterIndex - 1) % characterList.size();
 				}
 				chosenCharacter = characterList[currentCharacterIndex];
-				characterCard = CCard(425, 40, chosenCharacter.getName(), chosenCharacter.getDescription(), chosenCharacter.getName(), &(data->assets));
+				characterCard = CCard(chosenCharacter.getName(), chosenCharacter.getDescription(), chosenCharacter.getName(), &(data->assets));
 			}
 		}
 	}

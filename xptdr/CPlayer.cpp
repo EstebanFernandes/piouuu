@@ -11,11 +11,13 @@ void CPlayer::setSprite()
 
 void CPlayer::initStat()
 {
-	maxhealth = 20;
-	iENTLifePoint = maxhealth;
+	moveSpeed = 0.5f;
+	maxHealthPoint = 20;
+	healthPoint = maxHealthPoint;
 	xp = 0;
 	maxXp = 10;
 	damagePerBullet = 5;
+	attackSpeed = 8.f;
 }
 
 void CPlayer::setAssets(CAssetManager* a)
@@ -53,6 +55,7 @@ CPlayer::CPlayer()
 
 CPlayer::CPlayer(CAssetManager* a)
 {
+	imageName = "player1Image";
 	setType(Player);
 	setAssets(a);
 }
@@ -64,16 +67,16 @@ CPlayer::~CPlayer()
 void CPlayer::initLifeBar()
 {
 	float lp = 87.f;
-	previouslifePoint = maxhealth;
-	previousMaxHealth = maxhealth;
+	previouslifePoint = maxHealthPoint;
+	previousMaxHealth = maxHealthPoint;
 	float scaleFactor = 1.f;
-	float lifebarwidth = lp * maxhealth;
+	float lifebarwidth = lp * maxHealthPoint;
 	if (lifebarwidth >= assets->sCREEN_WIDTH * 0.5f)
 	{
-		float maxWidthPerPoint = assets->sCREEN_WIDTH * 0.5f / maxhealth;
+		float maxWidthPerPoint = assets->sCREEN_WIDTH * 0.5f / (float)maxHealthPoint;
 		scaleFactor = maxWidthPerPoint / lp;
 	}
-	for (int i = 0; i < maxhealth; i++)
+	for (int i = 0; i < maxHealthPoint; i++)
 	{
 		sf::Sprite temp;
 		temp.setTexture(assets->GetTexture("lifepoint"));
@@ -120,7 +123,7 @@ void CPlayer::updateMovement(float dt)
 {
 	if (isMovingUp == true)
 	{
-		moveEntity(0.f, -playerSpeed * dt*60.f);
+		moveEntity(0.f, -moveSpeed * dt*60.f);
 		anim.setDifferentAnimation(1);
 	}
 	else if (anim.getCurrentYFrameNumber() == 1)
@@ -128,25 +131,23 @@ void CPlayer::updateMovement(float dt)
 	if (isMovingDown == true)
 	{
 		anim.setDifferentAnimation(2);
-		moveEntity(0.f, playerSpeed * dt * 60.f);
+		moveEntity(0.f, moveSpeed * dt * 60.f);
 	}
 	else if (anim.getCurrentYFrameNumber() == 2)
 		anim.resetAnimation();
 		
 	if (isMovingLeft == true)
 	{
-		moveEntity(-playerSpeed * dt * 60.f,0.f);
+		moveEntity(-moveSpeed * dt * 60.f,0.f);
 	}
 	if (isMovingRight == true)
 	{
-		moveEntity(playerSpeed * dt * 60.f, 0.f);
+		moveEntity(moveSpeed * dt * 60.f, 0.f);
 	}
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		// cooldown enregistre le temps depuis la dernière balle envoyé
-		bulletCooldown = bulletClock.getElapsedTime();
 		//Si se temps est trop faible on ne fait rien, 
-		if (bulletCooldown.asSeconds() >= 0.12f) {
+		if (bulletClock.getElapsedTime().asSeconds() >= 1.f / attackSpeed) {
 			sf::Vector2f r(getSprite().getPosition().x + getSprite().getGlobalBounds().width, getSprite().getPosition().y + (getSprite().getGlobalBounds().height / 2));
 			BAW.iNeedMoreBullets(r, damagePerBullet);
 			// vient juste le restart le timer à la fin 
@@ -168,7 +169,7 @@ void CPlayer::renderLifeBar(sf::RenderTarget& target)
 
 void CPlayer::updateCollision(CEntity& b)
 {
-	switch (b.getType())
+	/*switch (b.getType())
 	{
 	case Enemy:
 		if (checkCollisions(b))
@@ -196,46 +197,46 @@ void CPlayer::updateCollision(CEntity& b)
 	case PowerUp:
 		if (checkCollisions(b))
 			b.needDelete = true;
-	}
+	}*/
 }
 void CPlayer::gainXP(int levelofEntity)
 {
 	xp += 3 + 3 * levelofEntity;
 	if (xp >= maxXp)
 	{
-		setLevel(getLevel()+1);
+		level++;
 		xp = 0;
 		maxXp += 10;
 	}
 }
 void CPlayer::updateLifeBar()
 {
-	if (previouslifePoint > iENTLifePoint)
+	if (previouslifePoint > healthPoint)
 	{
-		for (int i = iENTLifePoint; i < previouslifePoint; i++)
+		for (int i = healthPoint; i < previouslifePoint; i++)
 		{
 
 			lifeBar[i].setTextureRect(sf::IntRect(87, 0, 87, 26));
 		}
-		previouslifePoint = iENTLifePoint;
+		previouslifePoint = healthPoint;
 		hasBeenHit = false;
 	}
 	else 
 	{
-		for (int i = previouslifePoint; i < iENTLifePoint; i++)
+		for (int i = previouslifePoint; i < healthPoint; i++)
 		{
 
 			lifeBar[i].setTextureRect(sf::IntRect(0, 0, 87, 26));
 		}
-		previouslifePoint = iENTLifePoint;
+		previouslifePoint = healthPoint;
 		hasBeenHit = false;
 	}
-	if (iENTLifePoint <= 0)
+	if (healthPoint <= 0)
 		needDelete = true;
 }
 void CPlayer::iNeedMoreBullet()
 {
-	BAW.iNeedMoreBullets(getSprite().getPosition(),damagePerBullet);
+	BAW.iNeedMoreBullets(getSprite().getPosition(),damagePerBullet,bulletSpeed);
 }
 void CPlayer::updateEntity(float dt)
 {

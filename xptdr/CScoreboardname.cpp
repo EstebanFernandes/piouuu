@@ -24,18 +24,19 @@ void CScoreboardname::STEInit()
 	data->assets.LoadTexture("keyboardBlack", "res\\img\\keyboard_black.png");
 	data->assets.LoadTexture("keyboardWhite", "res\\img\\keyboard_white.png");
 	ahouais.setSize(sf::Vector2f(200.f, 50.f));
-	ahouais.setPosition(data->assets.sCREEN_WIDTH  / 2, data->assets.sCREEN_HEIGHT *0.3f);
+	ahouais.setPosition((float)data->assets.sCREEN_WIDTH  / 2.f, (float)data->assets.sCREEN_HEIGHT *0.3f);
 	//mouseSelectionRectangle = sf::FloatRect(0.f, 0.f, 40.f, 40.f);//avec la scale actuelle (3) c'est 40 une case
 	keyboardBlackSprite.setTexture(data->assets.GetTexture("keyboardBlack"));
 	keyboardBlackSprite.setScale(4.f, 4.f);
-	keyboardBlackSprite.setPosition(data->assets.sCREEN_WIDTH /4, data->assets.sCREEN_HEIGHT * 0.4f);
+	keyboardBlackSprite.setPosition(((float)data->assets.sCREEN_WIDTH / 2.f)- keyboardBlackSprite.getGlobalBounds().width/2.f, (float)data->assets.sCREEN_HEIGHT * 0.4f);
 	keyboardWhiteSprite.setTexture(data->assets.GetTexture("keyboardWhite"));
 	keyboardWhiteSprite.setScale(keyboardBlackSprite.getScale());
 	keyboardWhiteSprite.setPosition(keyboardBlackSprite.getPosition());
 	capslocksprite.setTexture(data->assets.GetTexture("keyboardWhite"));
 	capslocksprite.setScale(keyboardBlackSprite.getScale());
-	//capslocksprite.setPosition(keyboardBlackSprite.getPosition());
-	capslocksprite.setPosition(sf::Vector2f(448.f,544.f));
+	capslocksprite.setPosition(keyboardBlackSprite.getPosition());
+	//capslocksprite.setPosition(sf::Vector2f(448.f,544.f));
+	capslocksprite.setPosition(capslocksprite.getPosition().x + (32.f* keyboardBlackSprite.getScale().x), capslocksprite.getPosition().y + (64.f* keyboardBlackSprite.getScale().y));
 	capslocksprite.setTextureRect(sf::IntRect(32, 64, 14, 13));
 	nameText.setPosition((data->assets.sCREEN_WIDTH / 2) + 10.f, data->assets.sCREEN_HEIGHT * 0.3f);
 	nameText.setCharacterSize(30);
@@ -148,7 +149,7 @@ void CScoreboardname::STEUpdate(float delta)
 	if (OUAIS)
 	{
 		UpdateText();
-		int a= name.size();
+		int a= (int)name.size();
 		float tempX = nameText.getGlobalBounds().width-(((name.size()- stringPosition)*nameText.getLetterSpacing()*nameText.getCharacterSize())/2);
 		bar.setPosition(sf::Vector2f(nameText.getPosition().x+tempX,nameText.getPosition().y));
 		OUAIS = false;
@@ -262,7 +263,7 @@ void CScoreboardname::drawBar()
 void CScoreboardname::STEDraw(float delta)
 {
 	sf::RenderWindow & r = data->window;
-	r.clear(sf::Color::Red);
+	r.clear(sf::Color(191,165,117,1));
 	r.draw(ahouais);
 	r.draw(nameText);
 	drawBar();

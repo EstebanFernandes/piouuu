@@ -4,11 +4,13 @@
 class CHugoDecrypte
 {
 private:
-	CParserCSV file;
 	//CGraphe 
 	//les mots clés sont écrit
 	std::vector<std::string> keyWords;
+	std::vector<std::vector<std::string>> fileContent;
+	//CGraphe a;
+	void parseFile();
 public:
-
+	CHugoDecrypte(std::string fileName);
 };
 

@@ -129,8 +129,9 @@ void CGameState::STEUpdate(float delta)
 	sf::Vector2f tempw = player1.getSprite().getPosition();
 	std::stringstream ss;
 	ss <<"Player level : "<<player1.getLevel()<<std::endl <<
-		"XP : " << player1.xp<<std::endl <<
-		"Max xp : " << player1.maxXp << "\n";
+		"XP : " << player1.getXp()<<std::endl <<
+		"Max xp : " << player1.getMaxXp() << "\n"<<
+		"Bullet number : " << player1.BAW.getVector()->size() << "\n";
 	uitext.setString(ss.str());
 	float clock = gameTime.asSeconds() * 100.f + gameClock.getElapsedTime().asSeconds() * 100.f;
 	clock = ceil(clock);
