@@ -13,7 +13,7 @@ void CCharacterSelection::loadCharacters()
 	std::vector<std::vector<std::string>> charactersInfo = parser.getElements();
 
 	for (int i = 0; i < charactersInfo.size(); i++) {
-		characterList.push_back(CCharacter(charactersInfo[i][1], charactersInfo[i][0], charactersInfo[i][2]));
+		characterList.push_back(CCharacter(charactersInfo[i][1], charactersInfo[i][0], charactersInfo[i][2], charactersInfo[i][3]=="animated"));
 		data->assets.LoadTexture(charactersInfo[i][0], charactersInfo[i][1]);
 	}
 }
@@ -26,7 +26,7 @@ void CCharacterSelection::STEInit()
 	//temp
 	data->assets.LoadTexture("backgroundCharacter", CHARACTERBACKGROUND);
 	chosenCharacter = characterList[currentCharacterIndex];
-	characterCard = CCard(chosenCharacter.getName(), chosenCharacter.getDescription(), chosenCharacter.getName(), &(data->assets));
+	characterCard = CCard(chosenCharacter.getName(), chosenCharacter.getDescription(), chosenCharacter.getName(), &(data->assets), chosenCharacter.getAnimated());
 
 	CMMBackground.setTexture(data->assets.GetTexture("Background"));
 	CMMBackground.setScale(1.2f, 1.2f);
@@ -52,7 +52,7 @@ void CCharacterSelection::STEHandleInput()
 			data->window.close();
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
-			data->machine.AddState(StateRef(new CTestGame(data)), true);
+			data->machine.AddState(StateRef(new CTestGame(data, chosenCharacter)), true);
 		}
 		else if (event.type == sf::Event::KeyPressed)
 		{
@@ -60,7 +60,7 @@ void CCharacterSelection::STEHandleInput()
 			{
 				currentCharacterIndex = (currentCharacterIndex + 1) % characterList.size();
 				chosenCharacter = characterList[currentCharacterIndex];
-				characterCard = CCard(chosenCharacter.getName(), chosenCharacter.getDescription(), chosenCharacter.getName(), &(data->assets));
+				characterCard = CCard(chosenCharacter.getName(), chosenCharacter.getDescription(), chosenCharacter.getName(), &(data->assets), chosenCharacter.getAnimated());
 			}
 			else if (event.key.code == sf::Keyboard::Q)
 			{
@@ -71,7 +71,7 @@ void CCharacterSelection::STEHandleInput()
 					currentCharacterIndex = (currentCharacterIndex - 1) % characterList.size();
 				}
 				chosenCharacter = characterList[currentCharacterIndex];
-				characterCard = CCard(chosenCharacter.getName(), chosenCharacter.getDescription(), chosenCharacter.getName(), &(data->assets));
+				characterCard = CCard(chosenCharacter.getName(), chosenCharacter.getDescription(), chosenCharacter.getName(), &(data->assets), chosenCharacter.getAnimated());
 			}
 		}
 	}

@@ -5,6 +5,12 @@ CTestGame::CTestGame(GameDataRef _data)
 	setData(_data);
 }
 
+CTestGame::CTestGame(GameDataRef _data, CCharacter characterParam)
+{
+	setData(_data);
+	player1.updateStates(characterParam);
+}
+
 void CTestGame::STEInit()
 {
 	CGameState::STEInit();

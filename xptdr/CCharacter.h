@@ -15,6 +15,7 @@ protected :
 	int healthPoint;
 	int maxHealthPoint;
 	float moveSpeed;
+	bool isAnimated;
 
 	float canonNumber;
 	//Bullet 
@@ -25,7 +26,7 @@ protected :
 	//Misc
 	//Jsp quoi mettre pour l'instant
 public:
-	CCharacter(std::string imagePathParam, std::string nameParam, std::string descriptionParam);
+	CCharacter(std::string imagePathParam, std::string nameParam, std::string descriptionParam, bool animated);
 	CCharacter();
 
 	std::string getImageName();
@@ -37,6 +38,7 @@ public:
 	int getXp() { return xp; }
 	int getMaxXp() { return maxXp; }
 	int getDamagePerBullet() { return damagePerBullet; }
+	bool getAnimated() { return isAnimated; }
 
 };
 

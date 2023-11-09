@@ -18,19 +18,22 @@ private :
 	sf::Vector2f pos;
 	CAnimation anim;
 
+	bool animatedImage;
+
 	float xSize;
 	float ySize;
 
 public:
 	CCard();
-	CCard(float x, float y, std::string title, std::string description, std::string imageName, CAssetManager* assetParam);
-	CCard(std::string title, std::string description, std::string imageName, CAssetManager* assetParam);
+	CCard(float x, float y, std::string title, std::string description, std::string imageName, CAssetManager* assetParam, bool animated);
+	CCard(std::string title, std::string description, std::string imageName, CAssetManager* assetParam, bool animated);
 	void Drawable::draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	void update(float deltaTime);
 	sf::FloatRect getGlobalBounds()
 	{
 		return cardBack.getGlobalBounds();
 	}
+	void setAnimated(bool animated) { animatedImage = animated; }
 	void setPosition(sf::Vector2f r)
 	{
 		pos = r;

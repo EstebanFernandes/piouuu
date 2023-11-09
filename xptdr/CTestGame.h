@@ -5,7 +5,8 @@ class CTestGame : public CGameState
 {
 public:
 
-	CTestGame(GameDataRef _data);
+	CTestGame(GameDataRef _data); 
+	CTestGame(GameDataRef _data, CCharacter characterParam);
 	void STEInit();
 	void STEHandleInput();
 	void STEUpdate(float delta);

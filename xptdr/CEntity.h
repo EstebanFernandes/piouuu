@@ -29,11 +29,13 @@ public:
 	virtual void updateEntity(float dt) = 0;
 	virtual void renderEntity(sf::RenderTarget& target) = 0;
 	virtual void updateCollision(CEntity& b) = 0;
+
 	void setTexture(std::string name, std::string filename) {
 		CAssetManager& a = *assets;
 		a.LoadTexture(name, filename);
 		ENTsprite.setTexture(a.GetTexture(name));
 	}
+
 	sf::Sprite& getSprite() { return ENTsprite; }
 	sf::Sprite* getPointerSprite() { return &ENTsprite; }
 	sf::FloatRect getGlobalBounds() {

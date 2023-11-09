@@ -24,9 +24,11 @@ void CPlayer::setAssets(CAssetManager* a)
 {
 	assets = a;
 	BAW.assets = a;
-	setTexture("spacecraftImage", GAME_SPACESHIP_FILEPATH);
+	//setTexture(getName(), GAME_SPACESHIP_FILEPATH);
+	getSprite().setTexture((*a).GetTexture(getName()));
+
 	assets->LoadTexture("lifepoint", LIFEPOINTTEXTURE);
-	anim = CAnimation(getPointerSprite(), sf::IntRect(0, 0, 153, 66), 4, 0.16f);
+	if (getAnimated()) anim = CAnimation(getPointerSprite(), sf::IntRect(0, 0, 153, 66), 4, 0.16f);
 	initLifeBar();
 	setSprite();
 }
@@ -124,16 +126,22 @@ void CPlayer::updateMovement(float dt)
 	if (isMovingUp == true)
 	{
 		moveEntity(0.f, -moveSpeed * dt*60.f);
-		anim.setDifferentAnimation(1);
+		if (getAnimated()) {
+			anim.setDifferentAnimation(1);
+		}
 	}
-	else if (anim.getCurrentYFrameNumber() == 1)
+	else if (getAnimated() && anim.getCurrentYFrameNumber() == 1) {
 		anim.resetAnimation();
+	}
+		
 	if (isMovingDown == true)
 	{
-		anim.setDifferentAnimation(2);
+		if (getAnimated()) {
+			anim.setDifferentAnimation(2);
+		}
 		moveEntity(0.f, moveSpeed * dt * 60.f);
 	}
-	else if (anim.getCurrentYFrameNumber() == 2)
+	else if (getAnimated() && anim.getCurrentYFrameNumber() == 2)
 		anim.resetAnimation();
 		
 	if (isMovingLeft == true)
@@ -257,7 +265,9 @@ void CPlayer::renderEntity(sf::RenderTarget& target)
 
 void CPlayer::updateFx()
 {
-	anim.updateAnimation();
+	if (getAnimated()) {
+		anim.updateAnimation();
+	}
 	if (hasBeenHit)
 	{
 		if (hitClock.getElapsedTime().asSeconds() >= 0.5f)
