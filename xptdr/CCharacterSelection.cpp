@@ -66,7 +66,12 @@ void CCharacterSelection::STEHandleInput()
 			}
 			else if (event.key.code == sf::Keyboard::Q)
 			{
-				currentCharacterIndex = (currentCharacterIndex - 1) % characterList.size();
+				if (currentCharacterIndex == 0) {
+					currentCharacterIndex = characterList.size() - 1;
+				}
+				else {
+					currentCharacterIndex = (currentCharacterIndex - 1) % characterList.size();
+				}
 				chosenCharacter = characterList[currentCharacterIndex];
 				characterCard = CCard(425, 40, chosenCharacter.getName(), chosenCharacter.getDescription(), chosenCharacter.getName(), &(data->assets));
 			}

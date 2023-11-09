@@ -1,2 +1,3 @@
 lavion;res/img/SpriteSheet.png;Toujours un classique;
 levaisseau;res/img/spacecraft_player_1.png;Reviens aux origines;
+lautre;res/img/SpriteSheet.png;Tu es différent;
