@@ -5,8 +5,9 @@
 #include "DEFINITIONS.h"
 #include <iostream>
 #include <sstream>
-#include "CFile.h"
+#include "CHugoDecrypte.h"
 #include "CCharacterSelection.h"
+#include"SFML/Audio.hpp"
 
 class CMainMenuState : public CState
 {
@@ -20,7 +21,7 @@ private:
 	sf::Text CMMQuitButton;
 	sf::Text CMMInfinitePlayButton;
 	sf::Sprite CMMTitle;
-	CFile aaaa;
+	CHugoDecrypte aaaa;
 public:
 
 	CMainMenuState(GameDataRef _data);

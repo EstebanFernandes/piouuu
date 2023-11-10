@@ -89,13 +89,27 @@ void CGraphe::GRAAjouterSommet(int NumSommet)
 		int trouve = GRATrouverSommet(NumSommet);
 		if (trouve == SOMMET_NON_TROUVEE) //Le sommet n'existe pas, on peut donc l'ajouter
 		{
-			CSommet sommetAajouter(NumSommet);
+			CSommetUpgrade sommetAajouter(NumSommet);
 			lisGRAListeSommet.push_back(sommetAajouter);
 		}
 		else {
 			CException existe(SommetExistant);
 			throw (existe);
 		}
+}
+//Surcharge qui prend un CSommet en parametre
+void CGraphe::GRAAjouterSommet(CSommetUpgrade temp)
+{
+	//vérification que le int n'existe pas déjà
+	int trouve = GRATrouverSommet(temp.SOMLireNumero());
+	if (trouve == SOMMET_NON_TROUVEE) //Le sommet n'existe pas, on peut donc l'ajouter
+	{
+		lisGRAListeSommet.push_back(temp);
+	}
+	else {
+		CException existe(SommetExistant);
+		throw (existe);
+	}
 }
 
 /*********************************************************************************************************************

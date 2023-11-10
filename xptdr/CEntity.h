@@ -36,6 +36,11 @@ public:
 		ENTsprite.setTexture(a.GetTexture(name));
 	}
 
+	void setTexture(std::string name) {
+		CAssetManager& a = *assets;
+		ENTsprite.setTexture(a.GetTexture(name));
+	}
+
 	sf::Sprite& getSprite() { return ENTsprite; }
 	sf::Sprite* getPointerSprite() { return &ENTsprite; }
 	sf::FloatRect getGlobalBounds() {

@@ -111,7 +111,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-system-d.lib;sfml-graphics-d.lib;sfml-window-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-system-d.lib;sfml-graphics-d.lib;sfml-audio-d.lib;sfml-window-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -147,6 +147,7 @@
     <ClCompile Include="CEnemy.cpp" />
     <ClCompile Include="CException.cpp" />
     <ClCompile Include="CGraphe.cpp" />
+    <ClCompile Include="CGrapheUpdate.cpp" />
     <ClCompile Include="CHugoDecrypte.cpp" />
     <ClCompile Include="CMob.cpp" />
     <ClCompile Include="CEntity.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="CEnemy.h" />
     <ClInclude Include="CException.h" />
     <ClInclude Include="CGraphe.h" />
+    <ClInclude Include="CGrapheUpdate.h" />
     <ClInclude Include="CHugoDecrypte.h" />
     <ClInclude Include="CMob.h" />
     <ClInclude Include="CEntity.h" />

@@ -59,10 +59,7 @@ void CMainMenuState::STEInit()
 		(data->assets.sCREEN_HEIGHT *0.8f));
 
 	//file chargement
-	//aaaa.addKeyWords("numero,Titre,Description,Type,spawn,pre");
-	//aaaa.setFileName("C:\\Users\\scizz\\Desktop\\principalWeapon.txt");
-	//aaaa.FileAnalysis();
-	//aaaa.showValueList();
+	CHugoDecrypte r("C:/Users/scizz/Pictures/VROUM/test/TESTVRAI.csv");
 }
 
 void CMainMenuState::STEHandleInput()

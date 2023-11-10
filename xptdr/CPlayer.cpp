@@ -24,11 +24,11 @@ void CPlayer::setAssets(CAssetManager* a)
 {
 	assets = a;
 	BAW.assets = a;
-	//setTexture(getName(), GAME_SPACESHIP_FILEPATH);
+	setTexture(imageName, GAME_SPACESHIP_FILEPATH);
 	getSprite().setTexture((*a).GetTexture(getName()));
 
 	assets->LoadTexture("lifepoint", LIFEPOINTTEXTURE);
-	if (getAnimated()) anim = CAnimation(getPointerSprite(), sf::IntRect(0, 0, 153, 66), 4, 0.16f);
+	if (isAnimated) anim = CAnimation(getPointerSprite(), sf::IntRect(0, 0, 153, 66), 4, 0.16f);
 	initLifeBar();
 	setSprite();
 }
@@ -130,18 +130,18 @@ void CPlayer::updateMovement(float dt)
 			anim.setDifferentAnimation(1);
 		}
 	}
-	else if (getAnimated() && anim.getCurrentYFrameNumber() == 1) {
+	else if (isAnimated && anim.getCurrentYFrameNumber() == 1) {
 		anim.resetAnimation();
 	}
 		
 	if (isMovingDown == true)
 	{
-		if (getAnimated()) {
+		if (isAnimated) {
 			anim.setDifferentAnimation(2);
 		}
 		moveEntity(0.f, moveSpeed * dt * 60.f);
 	}
-	else if (getAnimated() && anim.getCurrentYFrameNumber() == 2)
+	else if (isAnimated && anim.getCurrentYFrameNumber() == 2)
 		anim.resetAnimation();
 		
 	if (isMovingLeft == true)
