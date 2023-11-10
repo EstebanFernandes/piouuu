@@ -17,14 +17,14 @@ void CMob::updateStates(CCharacter characterParam)
 	maxXp = characterParam.getMaxXp();
 	healthPoint = characterParam.getLifePoint();
 	maxHealthPoint = characterParam.getMaxHealth();
-	//float moveSpeed = characterParam.get;
+	moveSpeed = characterParam.getMoveSpeed();
 	isAnimated = characterParam.getAnimated();
 
-	//float canonNumber = characterParam.get;
+	canonNumber = characterParam.getCanonNumber();
 	//Bullet 
 	damagePerBullet = characterParam.getDamagePerBullet();
-	//float attackSpeed = characterParam.get;
-	//float bulletSpeed = characterParam.get;
+	attackSpeed = characterParam.getAttackSpeed();
+	bulletSpeed = characterParam.getBulletSpeed();
 }
 
 

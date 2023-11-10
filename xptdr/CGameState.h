@@ -34,6 +34,7 @@ private:
 public:
 	CGameState();
 	CGameState(GameDataRef _data);
+	CGameState(GameDataRef _data, CCharacter characterParam);
 	~CGameState();
 	void STEInit();
 	void STEHandleInput();

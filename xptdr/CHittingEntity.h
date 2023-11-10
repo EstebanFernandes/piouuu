@@ -3,8 +3,10 @@
 //entité qui doivent rentrer en collision avec le joueur.
 class CHittingEntity : public CMob
 {
+protected:
+	float scoreGived;
 public:
-	CHittingEntity(){}
+	CHittingEntity() { scoreGived = 0; }
 	//Cette méthode est à appeler sur chaque entité qui rentre en contact avec le joueur
 	virtual void updatewPlayer(float delta, CPlayer& player)=0;
 };

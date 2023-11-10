@@ -1,6 +1,7 @@
 #include "CCharacterSelection.h"
 #include "CTestGame.h"
 #include "CParserCSV.h"
+#include <typeinfo>
 
 CCharacterSelection::CCharacterSelection(GameDataRef _data) : data(_data)
 {
@@ -9,13 +10,43 @@ CCharacterSelection::CCharacterSelection(GameDataRef _data) : data(_data)
 
 void CCharacterSelection::loadCharacters()
 {
-	CParserCSV parser = CParserCSV("res/data/characters.txt");
+	CParserCSV parser = CParserCSV("res/data/characters.csv");
 	std::vector<std::vector<std::string>> charactersInfo = parser.getElements();
 
+	//Nouvelle méthode pour initialiser les stats
+	for (int i = 1; i < charactersInfo.size(); i++) {
+		characterList.push_back(CCharacter(charactersInfo[i][1], charactersInfo[i][0], charactersInfo[i][2], charactersInfo[i][3] == "animated"));
+		data->assets.LoadTexture(charactersInfo[i][0], charactersInfo[i][1]);
+
+		int maxHealthPointTemp = 20;
+		if (charactersInfo[i][4] != "" && typeid(std::stoi(charactersInfo[i][4])) == typeid(int)) maxHealthPointTemp = std::stoi(charactersInfo[i][4]);
+
+		float moveSpeedTemp = 0.5f;
+		if (charactersInfo[i][5] != "" && typeid(std::stof(charactersInfo[i][5])) == typeid(float)) moveSpeedTemp = std::stof(charactersInfo[i][5]);
+
+		int canonNumberTemp = 1;
+		if (charactersInfo[i][6] != "" && typeid(std::stoi(charactersInfo[i][6])) == typeid(int)) canonNumberTemp = std::stoi(charactersInfo[i][6]);
+
+		int damagePerBulletTemp = 5;
+		if (charactersInfo[i][7] != "" && typeid(std::stoi(charactersInfo[i][7])) == typeid(int)) damagePerBulletTemp = std::stoi(charactersInfo[i][7]);
+
+		float attackSpeedTemp = 8.f;
+		if (charactersInfo[i][8] != "" && typeid(std::stof(charactersInfo[i][8])) == typeid(float)) attackSpeedTemp = std::stof(charactersInfo[i][8]);
+
+		float bulletSpeedTemp = 2.0f;
+		if (charactersInfo[i][9] != "" && typeid(std::stof(charactersInfo[i][9])) == typeid(float)) bulletSpeedTemp = std::stof(charactersInfo[i][9]);
+
+		characterList[i - 1].setCharacterStats(maxHealthPointTemp, moveSpeedTemp, canonNumberTemp, damagePerBulletTemp, attackSpeedTemp, bulletSpeedTemp);
+
+	}
+
+	//ancienne
+	/*
 	for (int i = 0; i < charactersInfo.size(); i++) {
 		characterList.push_back(CCharacter(charactersInfo[i][1], charactersInfo[i][0], charactersInfo[i][2], charactersInfo[i][3]=="animated"));
 		data->assets.LoadTexture(charactersInfo[i][0], charactersInfo[i][1]);
 	}
+	*/
 }
 
 void CCharacterSelection::STEInit()

@@ -26,6 +26,7 @@ private:
 	bool isMovingLeft;
 	bool isMovingRight;
 
+	float score;
 
 	//grr paw
 	sf::Clock bulletClock;
@@ -42,6 +43,8 @@ public:
 	virtual ~CPlayer();
 
 	//Méthodes
+	float getScore();
+	void addToScore(float scoreToAdd);
 	void initLifeBar();
 	void updateCollision(CEntity& b);
 	void gainXP(int levelofEntity);
