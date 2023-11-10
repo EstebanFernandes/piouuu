@@ -93,6 +93,7 @@ void CEnemy::updatewPlayer(float delta, CPlayer& player)
 		{
 			player.gainXP(level);
 			gavexP=true;
+			player.addToScore(scoreGived);
 		}
 	}
 }

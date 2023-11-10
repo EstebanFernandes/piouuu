@@ -12,9 +12,14 @@ private:
 	sf::Text textRestart;
 	sf::Text textMainMenu;
 	sf::Texture texta;
+	CCharacter character;
 public:
 	CGameOver<MType>(GameDataRef _data) {
 		data = _data;
+	}
+	CGameOver<MType>(GameDataRef _data, CCharacter characterParam) {
+		data = _data;
+		character = characterParam;
 	}
 	void STEInit();
 	void STEHandleInput();
@@ -70,7 +75,7 @@ void CGameOver<MType>::STEHandleInput()
 		else if (data->inputs.IsTextClicked(textMainMenu, sf::Mouse::Left, data->window))
 			data->machine.AddState(StateRef(new CMainMenuState(data)), true);
 		else if (data->inputs.IsTextClicked(textRestart, sf::Mouse::Left, data->window))
-			data->machine.AddState(StateRef(new MType(data)), true);
+			data->machine.AddState(StateRef(new MType(data, character)), true);
 	}
 
 }

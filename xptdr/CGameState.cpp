@@ -9,6 +9,12 @@ CGameState::CGameState(GameDataRef _data) : data(_data)
 	
 }
 
+CGameState::CGameState(GameDataRef _data, CCharacter characterParam) : data(_data)
+{
+	player1.updateStates(characterParam);
+}
+
+
 CGameState::~CGameState()
 {
 }
@@ -139,6 +145,7 @@ void CGameState::STEUpdate(float delta)
 	ss <<"Player level : "<<player1.getLevel()<<std::endl <<
 		"XP : " << player1.getXp()<<std::endl <<
 		"Max xp : " << player1.getMaxXp() << "\n"<<
+		"Score : " << player1.getScore() << std::endl << 
 		"Bullet number : " << player1.BAW.getVector()->size() << "\n";
 	uitext.setString(ss.str());
 	float clock = gameTime.asSeconds() * 100.f + gameClock.getElapsedTime().asSeconds() * 100.f;

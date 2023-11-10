@@ -76,5 +76,5 @@ void CTestGame::STEDraw(float delta)
 
 void CTestGame::GameOver()
 {
-	data->machine.AddState(StateRef(new CGameOver<CTestGame>(data)), true);
+	data->machine.AddState(StateRef(new CGameOver<CTestGame>(data, player1)), true);
 }

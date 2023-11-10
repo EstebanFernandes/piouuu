@@ -11,13 +11,7 @@ void CPlayer::setSprite()
 
 void CPlayer::initStat()
 {
-	moveSpeed = 0.5f;
-	maxHealthPoint = 20;
-	healthPoint = maxHealthPoint;
-	xp = 0;
-	maxXp = 10;
-	damagePerBullet = 5;
-	attackSpeed = 8.f;
+	score = 0;
 }
 
 void CPlayer::setAssets(CAssetManager* a)
@@ -64,6 +58,16 @@ CPlayer::CPlayer(CAssetManager* a)
 
 CPlayer::~CPlayer()
 {
+}
+
+float CPlayer::getScore()
+{
+	return score;
+}
+
+void CPlayer::addToScore(float scoreToAdd)
+{
+	score += scoreToAdd;
 }
 
 void CPlayer::initLifeBar()

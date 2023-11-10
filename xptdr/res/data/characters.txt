@@ -1,3 +1,0 @@
-lavion;res/img/TestSpriteSheet2.png;Toujours un classique;animated
-levaisseau;res/img/spacecraft_player_1.png;Reviens aux origines;notanimated
-lautre;res/img/SpriteSheet.png;Tu es différent;animated
