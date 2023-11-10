@@ -62,6 +62,14 @@ void CHugoDecrypte::parseFile()
 			maxRow = currentY;
 			for (int q = 0; q < orderkw.size(); q++)
 			{
+				if (orderkw[q] == "<id>" || orderkw[q] == "<previd>")
+				{
+					orderkw.erase(orderkw.begin() + q);
+						q--;
+				}
+				else {
+					orderkw[q] = orderkw[q].substr(5);
+				}
 			}
 			Graphe.ListeType = orderkw;
 			GraphList.push_back(Graphe);
