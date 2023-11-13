@@ -48,6 +48,7 @@ public:
 	int getCanonNumber() { return canonNumber;  }
 	float getAttackSpeed() { return attackSpeed; }
 	float getBulletSpeed() { return bulletSpeed; }
+	bool matchTypewithValue(std::string type, std::string value);
 
 };
 

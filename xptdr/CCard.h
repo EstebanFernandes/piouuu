@@ -7,18 +7,23 @@
 
 class CCard : public sf::Drawable
 {
-private :
+protected :
 	int MDRRcafonctionne = 0;
 	CAssetManager* asset;
-	sf::Text cardTitle;
-	sf::Text cardDescription;
-	std::string imagePath;
-	sf::Sprite cardImage;
+
 	sf::RectangleShape cardBack;
 	sf::Vector2f pos;
+
+	sf::Text cardTitle;
+	sf::Text cardDescription;
+
+	std::string imagePath;
+	sf::Sprite cardImage;
 	CAnimation anim;
+	
 
 	bool animatedImage;
+	bool needImage;
 
 	float xSize;
 	float ySize;

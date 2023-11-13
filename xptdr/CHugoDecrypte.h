@@ -32,5 +32,9 @@ public:
 
 	}
 	CHugoDecrypte(std::string fileName);
-};
+	std::vector<CGrapheUpdate> returnGraphs()
+	{
+		return GraphList;
+	}
+};	
 

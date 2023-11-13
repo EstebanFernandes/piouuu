@@ -1,5 +1,5 @@
 #include "CTestGame.h"
-
+#include"CUpgradeState.h"
 CTestGame::CTestGame(GameDataRef _data)
 {
 	setData(_data);
@@ -40,8 +40,8 @@ void CTestGame::STEHandleInput()
 			}
 			if (event.key.code == sf::Keyboard::Space)
 			{
-				player1.reduceHP(player1.getMaxHealth());
-				GameOver();
+				player1.gainXP(100);
+				//GameOver();
 			}
 			if (event.key.code == sf::Keyboard::A)
 			{
@@ -61,6 +61,11 @@ void CTestGame::STEHandleInput()
 void CTestGame::STEUpdate(float delta)
 {
 	CGameState::STEUpdate(delta);
+	if (currentLevelOfplayer < player1.getLevel())
+	{
+		currentLevelOfplayer = player1.getLevel();
+		data->machine.AddState(StateRef(new CUpgradeState(data,&player1,&Upgradegraphs)), false);
+	}
 }
 
 void CTestGame::addPowerUp()

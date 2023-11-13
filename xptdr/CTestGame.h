@@ -1,8 +1,12 @@
 #pragma once
 #include"CGameState.h"
 #include "CPowerUp.h"
+#include"CGrapheUpdate.h"
 class CTestGame : public CGameState
 {
+private:
+	std::vector<CGrapheUpdate> Upgradegraphs;
+	int currentLevelOfplayer = 0;
 public:
 
 	CTestGame(GameDataRef _data); 

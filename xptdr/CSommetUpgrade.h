@@ -16,5 +16,9 @@ public:
 	{
 		values.push_back(value);
 	}
+	std::vector<std::string> returnValues()
+	{
+		return values;
+	}
 };
 

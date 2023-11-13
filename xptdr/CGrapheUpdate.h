@@ -12,6 +12,7 @@ public:
 		bGRAType = GRAParam.bGRAType;
 		lisGRAListeSommet = GRAParam.lisGRAListeSommet;
 		ListeType = GRAParam.ListeType;
+		Name = GRAParam.Name;
 		return *this;
 	}
 	CGrapheUpdate(const CGrapheUpdate& GRAParam)

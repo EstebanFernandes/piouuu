@@ -59,7 +59,6 @@ void CMainMenuState::STEInit()
 		(data->assets.sCREEN_HEIGHT *0.8f));
 
 	//file chargement
-	CHugoDecrypte r("C:/Users/scizz/Pictures/VROUM/test/TESTVRAI.csv");
 }
 
 void CMainMenuState::STEHandleInput()

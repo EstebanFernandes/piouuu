@@ -140,6 +140,7 @@
     <ClCompile Include="CBackground.cpp" />
     <ClCompile Include="CBullet.cpp" />
     <ClCompile Include="CCard.cpp" />
+    <ClCompile Include="CCardUpgrade.cpp" />
     <ClCompile Include="CCharacter.cpp" />
     <ClCompile Include="CCharacterSelection.cpp" />
     <ClCompile Include="CCharacterStat.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="CBackground.h" />
     <ClInclude Include="CBullet.h" />
     <ClInclude Include="CCard.h" />
+    <ClInclude Include="CCardUpgrade.h" />
     <ClInclude Include="CCharacter.h" />
     <ClInclude Include="CCharacterSelection.h" />
     <ClInclude Include="CCharacterStat.h" />
