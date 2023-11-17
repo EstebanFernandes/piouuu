@@ -111,7 +111,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-system-d.lib;sfml-graphics-d.lib;sfml-window-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-system-d.lib;sfml-graphics-d.lib;sfml-audio-d.lib;sfml-window-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -140,6 +140,8 @@
     <ClCompile Include="CBackground.cpp" />
     <ClCompile Include="CBullet.cpp" />
     <ClCompile Include="CCard.cpp" />
+    <ClCompile Include="CCardUpgrade.cpp" />
+    <ClCompile Include="CCarousel.cpp" />
     <ClCompile Include="CCharacter.cpp" />
     <ClCompile Include="CCharacterSelection.cpp" />
     <ClCompile Include="CCharacterStat.cpp" />
@@ -147,6 +149,7 @@
     <ClCompile Include="CEnemy.cpp" />
     <ClCompile Include="CException.cpp" />
     <ClCompile Include="CGraphe.cpp" />
+    <ClCompile Include="CGrapheUpdate.cpp" />
     <ClCompile Include="CHugoDecrypte.cpp" />
     <ClCompile Include="CMob.cpp" />
     <ClCompile Include="CEntity.cpp" />
@@ -177,6 +180,7 @@
     <ClCompile Include="CTile.cpp" />
     <ClCompile Include="CTileMap.cpp" />
     <ClCompile Include="CUpgradeState.cpp" />
+    <ClCompile Include="EllipseShape.cpp" />
     <ClCompile Include="lifeBarForEntity.cpp" />
     <ClCompile Include="lifeForEntity.cpp" />
     <ClCompile Include="main.cpp" />
@@ -188,6 +192,8 @@
     <ClInclude Include="CBackground.h" />
     <ClInclude Include="CBullet.h" />
     <ClInclude Include="CCard.h" />
+    <ClInclude Include="CCardUpgrade.h" />
+    <ClInclude Include="CCarousel.h" />
     <ClInclude Include="CCharacter.h" />
     <ClInclude Include="CCharacterSelection.h" />
     <ClInclude Include="CCharacterStat.h" />
@@ -195,6 +201,7 @@
     <ClInclude Include="CEnemy.h" />
     <ClInclude Include="CException.h" />
     <ClInclude Include="CGraphe.h" />
+    <ClInclude Include="CGrapheUpdate.h" />
     <ClInclude Include="CHugoDecrypte.h" />
     <ClInclude Include="CMob.h" />
     <ClInclude Include="CEntity.h" />
@@ -226,6 +233,7 @@
     <ClInclude Include="CTileMap.h" />
     <ClInclude Include="CUpgradeState.h" />
     <ClInclude Include="DEFINITIONS.h" />
+    <ClInclude Include="EllipseShape.h" />
     <ClInclude Include="lifeBarForEntity.h" />
     <ClInclude Include="lifeForEntity.h" />
   </ItemGroup>

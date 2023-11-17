@@ -9,6 +9,12 @@ CGameState::CGameState(GameDataRef _data) : data(_data)
 	
 }
 
+CGameState::CGameState(GameDataRef _data, CCharacter characterParam) : data(_data)
+{
+	player1.updateStates(characterParam);
+}
+
+
 CGameState::~CGameState()
 {
 }
@@ -25,12 +31,16 @@ void CGameState::initBackground()
 	BG1.setAssets(&(data->assets));
 	BG1.setWindowSize(data->window.getSize());
 	sf::Sprite t1,t2,t3,t4,t5;
+
 	data->assets.LoadTexture("background", 
 		"res\\img\\layers\\parallax-mountain-bg.png");
+
 	TextureSize = data->assets.GetTexture("background").getSize(); //Get size of texture.
 	WindowSize = data->window.getSize();
+
 	float ScaleX = (float)(WindowSize.x*1.1f) / TextureSize.x;
 	float ScaleY = (float)WindowSize.y / TextureSize.y;     //Calculate scale.
+
 	t1.setTexture(data->assets.GetTexture("background"));
 	t1.setScale(ScaleX, ScaleY);      //Set scale. 
 	BG1.addLayer(t1, "background", 0.0001f,CBackground::background);
@@ -39,10 +49,12 @@ void CGameState::initBackground()
 		"res\\img\\layers\\parallax-mountain-montain-far.png");
 	TextureSize = data->assets.GetTexture("firstLayer").getSize(); //Get size of texture.
 	WindowSize = data->window.getSize();
+
 	ScaleX = (float)(WindowSize.x * 1.1f) / TextureSize.x;
 	ScaleY = (float)WindowSize.y / TextureSize.y;
 	t2.setTexture(data->assets.GetTexture("firstLayer")); 
 	t2.setScale(ScaleX, ScaleY);      //Set scale. 
+
 	BG1.addLayer(t2, "firstlayer", 0.1f, CBackground::bot); 
 	BG1.addAndScaleLayer("res\\img\\layers\\parallax-mountain-mountains.png",
 		"secondLayer", 0.2f);
@@ -50,9 +62,11 @@ void CGameState::initBackground()
 		"thirdlayer", 0.4f);
 	BG1.addAndScaleLayer("res\\img\\layers\\parallax-mountain-foreground-trees.png",
 		"forthlayer", 0.5f);
+
 	uitext.setCharacterSize(12);
 	uitext.setFillColor(sf::Color::White);
 	uitext.setFont(data->assets.GetFont("Lato"));
+
 	gameClockText.setCharacterSize(20);
 	gameClockText.setFillColor(sf::Color::White);
 	gameClockText.setFont(data->assets.GetFont("Lato"));
@@ -131,6 +145,7 @@ void CGameState::STEUpdate(float delta)
 	ss <<"Player level : "<<player1.getLevel()<<std::endl <<
 		"XP : " << player1.getXp()<<std::endl <<
 		"Max xp : " << player1.getMaxXp() << "\n"<<
+		"Score : " << player1.getScore() << std::endl << 
 		"Bullet number : " << player1.BAW.getVector()->size() << "\n";
 	uitext.setString(ss.str());
 	float clock = gameTime.asSeconds() * 100.f + gameClock.getElapsedTime().asSeconds() * 100.f;

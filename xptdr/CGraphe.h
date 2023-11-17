@@ -1,15 +1,15 @@
 #pragma once
 #define Oriente true
 #define NonOriente false
-#include"CSommet.h"
+#include"CSommetUpgrade.h"
 
 const int SOMMET_NON_TROUVEE = -998;
 
 class CGraphe
 {
-private :
+protected :
 	bool bGRAType;
-	std::vector<CSommet> lisGRAListeSommet;
+	std::vector<CSommetUpgrade> lisGRAListeSommet;
 public:
 
 	/*****************************************************************************
@@ -92,6 +92,8 @@ public:
 	***** Postcondition : Ajoute un nouveau sommet à la liste des sommets (lisGRAListeSommet) avec le numéro spécifié (NumSommet) *****
 	**********************************************************************************************************************************/
 	void GRAAjouterSommet(int NumSommet);
+
+	void GRAAjouterSommet(CSommetUpgrade temp);
 
 	/*********************************************************************************************************************
 	***** GRAModifierSommet(int AncienNum, int NouveauNum) : Modifier un sommet dans le graphe                       *****
@@ -200,7 +202,7 @@ public:
 	***** Sortie : Une référence à la liste des sommets de type CListe<CSommet>        *****
 	***** Postcondition : Aucune                                                       *****
 	***************************************************************************************/
-	std::vector<CSommet>& GRAObtenirListeSommet() {
+	std::vector<CSommetUpgrade>& GRAObtenirListeSommet() {
 		return lisGRAListeSommet;
 	}
 };

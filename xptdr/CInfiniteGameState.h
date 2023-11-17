@@ -6,6 +6,7 @@ private:
 	sf::Clock enemyClock;
 public:
 	CInfiniteGameState(GameDataRef _data);
+	CInfiniteGameState(GameDataRef _data, CCharacter characterParam);
 	void STEHandleInput();
 	void STEUpdate(float delta);
 	void STEDraw(float delta);

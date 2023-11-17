@@ -7,6 +7,7 @@
 #include "CMob.h"
 #include "CGunslinger.h"
 #include "CAnimation.h"
+#include"SFML/Audio.hpp"
 //CLASSE qui représente un joueur
 class CPlayer :  public CMob
 {
@@ -19,11 +20,13 @@ private:
 	//les deux suivants servent à gérer la barre de vie
 	int previouslifePoint;
 	int previousMaxHealth;
+
 	bool isMovingUp;
 	bool isMovingDown;
 	bool isMovingLeft;
 	bool isMovingRight;
 
+	float score;
 
 	//grr paw
 	sf::Clock bulletClock;
@@ -40,6 +43,8 @@ public:
 	virtual ~CPlayer();
 
 	//Méthodes
+	float getScore();
+	void addToScore(float scoreToAdd);
 	void initLifeBar();
 	void updateCollision(CEntity& b);
 	void gainXP(int levelofEntity);
@@ -55,4 +60,3 @@ public:
 	bool checkGlobalCollisions();
 	CGunslinger* getBAW() { return &BAW; }
 };
-

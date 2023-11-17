@@ -236,7 +236,7 @@ void CSommet::SOMSupprimerArc(bool type, int Destination)
 			throw(introuvable);
 		}
 		else {
-			lisSOMArcArrivant.erase(lisSOMArcArrivant.begin() + iNumListe);
+			lisSOMArcPartant.erase(lisSOMArcPartant.begin() + iNumListe);
 		}
 	}
 }

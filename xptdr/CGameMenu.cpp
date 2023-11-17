@@ -37,7 +37,6 @@ void CGameMenu::STEHandleInput()
 			{
 				resumeClicked = true;
 			ahah =	resumeClock.restart().Zero;
-			std::cout << ahah.asSeconds();
 				//data->machine.RemoveState();
 			}
 			else if (data->inputs.IsTextClicked(quitToMMenu, sf::Mouse::Left, data->window))
@@ -66,7 +65,6 @@ void CGameMenu::STEUpdate(float delta)
 	{
 
 		float temp = resumeClock.getElapsedTime().asSeconds()- ahah.asSeconds();
-		std::cout << temp << std::endl;
 		std::string temp2;
 		if (temp > 3.f)
 		{

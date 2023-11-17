@@ -8,7 +8,7 @@ const int ARC_NON_TROUVEE = -999;
 
 class CSommet
 {
-private :
+protected :
 	int iSOMNumero;
 	std::vector<CArc> lisSOMArcArrivant;
 	std::vector<CArc> lisSOMArcPartant;

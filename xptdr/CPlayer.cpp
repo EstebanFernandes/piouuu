@@ -11,22 +11,18 @@ void CPlayer::setSprite()
 
 void CPlayer::initStat()
 {
-	moveSpeed = 0.5f;
-	maxHealthPoint = 20;
-	healthPoint = maxHealthPoint;
-	xp = 0;
-	maxXp = 10;
-	damagePerBullet = 5;
-	attackSpeed = 8.f;
+	score = 0;
 }
 
 void CPlayer::setAssets(CAssetManager* a)
 {
 	assets = a;
 	BAW.assets = a;
-	setTexture("spacecraftImage", GAME_SPACESHIP_FILEPATH);
+	setTexture(imageName, GAME_SPACESHIP_FILEPATH);
+	getSprite().setTexture((*a).GetTexture(getName()));
+
 	assets->LoadTexture("lifepoint", LIFEPOINTTEXTURE);
-	anim = CAnimation(getPointerSprite(), sf::IntRect(0, 0, 153, 66), 4, 0.16f);
+	if (isAnimated) anim = CAnimation(getPointerSprite(), sf::IntRect(0, 0, 153, 66), 4, 0.16f);
 	initLifeBar();
 	setSprite();
 }
@@ -62,6 +58,16 @@ CPlayer::CPlayer(CAssetManager* a)
 
 CPlayer::~CPlayer()
 {
+}
+
+float CPlayer::getScore()
+{
+	return score;
+}
+
+void CPlayer::addToScore(float scoreToAdd)
+{
+	score += scoreToAdd;
 }
 
 void CPlayer::initLifeBar()
@@ -124,16 +130,22 @@ void CPlayer::updateMovement(float dt)
 	if (isMovingUp == true)
 	{
 		moveEntity(0.f, -moveSpeed * dt*60.f);
-		anim.setDifferentAnimation(1);
+		if (getAnimated()) {
+			anim.setDifferentAnimation(1);
+		}
 	}
-	else if (anim.getCurrentYFrameNumber() == 1)
+	else if (isAnimated && anim.getCurrentYFrameNumber() == 1) {
 		anim.resetAnimation();
+	}
+		
 	if (isMovingDown == true)
 	{
-		anim.setDifferentAnimation(2);
+		if (isAnimated) {
+			anim.setDifferentAnimation(2);
+		}
 		moveEntity(0.f, moveSpeed * dt * 60.f);
 	}
-	else if (anim.getCurrentYFrameNumber() == 2)
+	else if (isAnimated && anim.getCurrentYFrameNumber() == 2)
 		anim.resetAnimation();
 		
 	if (isMovingLeft == true)
@@ -257,7 +269,9 @@ void CPlayer::renderEntity(sf::RenderTarget& target)
 
 void CPlayer::updateFx()
 {
-	anim.updateAnimation();
+	if (getAnimated()) {
+		anim.updateAnimation();
+	}
 	if (hasBeenHit)
 	{
 		if (hitClock.getElapsedTime().asSeconds() >= 0.5f)

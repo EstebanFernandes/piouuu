@@ -23,6 +23,10 @@ public:
 	CEnemy(float xcoordinate, CAssetManager* a);
 	void initAnimation();
 	void initStat() {
+
+		//TEMPORAIRE FAUDRA REFAIRE LES CLASSES ENNEMY
+		scoreGived = 10;
+
 		int a = assets->sCREEN_HEIGHT - (int)getGlobalBounds().height;
 		initPositionY = rand() % a; 
 		float maxDirY = 0.16f * (1.f-(initPositionY / a));

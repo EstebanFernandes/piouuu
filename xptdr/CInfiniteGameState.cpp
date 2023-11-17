@@ -5,6 +5,10 @@ CInfiniteGameState::CInfiniteGameState(GameDataRef _data)
 	data = _data;
 }
 
+CInfiniteGameState::CInfiniteGameState(GameDataRef _data, CCharacter characterParam)
+{
+}
+
 void CInfiniteGameState::STEHandleInput()
 {
 	sf::Event event;

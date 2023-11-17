@@ -18,6 +18,8 @@ public:
 	CMob();
 	//Méthode à redéfinir 
 
+	void updateStates(CCharacter characterParam);
+
 	void setLifeBar(){
 		lifeBar = sf::RectangleShape(sf::Vector2f(100.f, 10.f));
 		lifeBar.setFillColor(sf::Color::Red);
