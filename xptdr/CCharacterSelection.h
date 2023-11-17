@@ -2,8 +2,7 @@
 #include <vector>
 #include "CState.h"
 #include "CSettingState.h"
-#include "CCard.h"
-#include "CCharacter.h"
+#include"CCarousel.h"
 
 class CCharacterSelection : public CState
 {
@@ -12,9 +11,8 @@ private :
 	std::vector<CCharacter> characterList;
 	int currentCharacterIndex;
 	CCharacter chosenCharacter;
-	CCard characterCard;
+	CCarousel carousel;
 
-	sf::Sprite CMMBackground;
 	sf::CircleShape triangle1;
 	sf::CircleShape triangle2;
 

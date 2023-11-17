@@ -19,12 +19,14 @@ private:
 	CGrapheUpdate* currentGraph;
 	CSommetUpgrade* currentVert;
 	bool isFirstTime = false;
+	int hasPressedKey = 0;
 	//Graphique
 	std::vector<CCardUpgrade> CardList;
 
 	//Selection
 	int iCardSelection = 0;
-
+	int tailleAvantAjout = 0;
+	int nbgrapheajoute = 0;
 	//Si il n'y a pas de graph pour l'amélioration à venir on charge tous les premiers sommets des graphes possibles
 	//Sinon la fonction renvoie false
 	bool pointsurlesgraphs()
@@ -39,6 +41,7 @@ private:
 			fileName = "";
 			break;
 		case 2:
+			fileName = "";
 			break;
 		}
 		if (fileName == "")
@@ -46,7 +49,9 @@ private:
 		CHugoDecrypte r(fileName);
 		CGrapheUpdate t;
 		t.GRAAjouterSommet(0);
-		for (int i = 0; i < r.returnGraphs().size(); i++)
+		nbgrapheajoute = (int)r.returnGraphs().size();
+		tailleAvantAjout = (int)Graphs->size();
+		for (int i = 0; i < nbgrapheajoute; i++)
 		{
 			Graphs->push_back(r.returnGraphs()[i]);
 			CSommetUpgrade temp = r.returnGraphs()[i].GRAObtenirListeSommet()[0];
@@ -54,6 +59,7 @@ private:
 			t.GRAAjouterSommet(temp);
 			t.GRAAjouterArc(0, i + 1);
 		}
+
 		Graphs->push_back(t);
 		currentGraph = (&(*Graphs)[Graphs->size()-1]);
 		levelofPlayer = pointerToPlayer1->getLevel();
@@ -61,7 +67,7 @@ private:
 
 		int screen_Height = data->assets.sCREEN_HEIGHT;
 		int screen_Width = data->assets.sCREEN_WIDTH;
-		int nbofUpgrade = currentVert->SOMLireArcPartant().size();
+		int nbofUpgrade = (int)currentVert->SOMLireArcPartant().size();
 		for (int i = 0; i < nbofUpgrade; i++)
 		{
 			sf::Vector2f pos;
@@ -71,6 +77,11 @@ private:
 			float ratio = 1 / (float)nbofUpgrade;
 			//Distance qui n'est pas prise par les cartes
 			float t = screen_Width - (temp.getGlobalBounds().width * nbofUpgrade);
+			while(t <= screen_Width * 0.2)
+			{
+				temp.reduceScale();
+				t = screen_Width - (temp.getGlobalBounds().width * nbofUpgrade);
+			}
 			float spaceBetweenCard = t / (float)(nbofUpgrade + 1);
 			pos.x = spaceBetweenCard + (spaceBetweenCard + temp.getGlobalBounds().width) * i;
 			pos.y = (screen_Height / 2.f) - (temp.getGlobalBounds().height / 2.f);
@@ -94,7 +105,7 @@ private:
 	{
 		int screen_Height = data->assets.sCREEN_HEIGHT;
 		int screen_Width = data->assets.sCREEN_WIDTH;
-		int nbofUpgrade = currentVert->SOMLireArcPartant().size();
+		int nbofUpgrade = (int)currentVert->SOMLireArcPartant().size();
 		for (int i = 0; i < nbofUpgrade; i++)
 		{
 			sf::Vector2f pos;
@@ -104,6 +115,11 @@ private:
 			float ratio = 1 / (float)nbofUpgrade;
 			//Distance qui n'est pas prise par les cartes
 			float t = screen_Width - (temp.getGlobalBounds().width * nbofUpgrade);
+			while (t <= screen_Width * 0.2)
+			{
+				temp.reduceScale();
+				t = screen_Width - (temp.getGlobalBounds().width * nbofUpgrade);
+			}
 			float spaceBetweenCard = t / (float)(nbofUpgrade + 1);
 			pos.x = spaceBetweenCard + (spaceBetweenCard + temp.getGlobalBounds().width) * i;
 			pos.y = (screen_Height / 2.f) - (temp.getGlobalBounds().height / 2.f);

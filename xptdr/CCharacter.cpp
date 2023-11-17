@@ -50,7 +50,7 @@ bool CCharacter::matchTypewithValue(std::string type, std::string value)
 	std::vector<std::string> typeString = {"maxXp","healthPoint","maxHealthPoint",
 										"moveSpeed","canonNumber","damagePerBullet",
 											"attackSpeed","bulletSpeed","misc"};
-	int pos = std::find(typeString.begin(), typeString.end(), type) - typeString.begin();
+	int pos = (int)(std::find(typeString.begin(), typeString.end(), type) - typeString.begin());
 	if (pos >= typeString.size()) {
 		return false;
 	}
@@ -157,7 +157,7 @@ bool CCharacter::matchTypewithValue(std::string type, std::string value)
 					damagePerBullet = damagePerBullet - std::stoi(value.substr(1));
 					break;
 				default:
-					damagePerBullet = std::stof(value);
+					damagePerBullet = std::stoi(value);
 					break;
 				}
 				break;
@@ -228,7 +228,6 @@ std::string CCharacter::getName()
 	return name;
 }
 
-std::string CCharacter::getDescription()
-{
+std::string CCharacter::getDescription(){
 	return description;
 }

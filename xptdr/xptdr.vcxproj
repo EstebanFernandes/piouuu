@@ -141,6 +141,7 @@
     <ClCompile Include="CBullet.cpp" />
     <ClCompile Include="CCard.cpp" />
     <ClCompile Include="CCardUpgrade.cpp" />
+    <ClCompile Include="CCarousel.cpp" />
     <ClCompile Include="CCharacter.cpp" />
     <ClCompile Include="CCharacterSelection.cpp" />
     <ClCompile Include="CCharacterStat.cpp" />
@@ -179,6 +180,7 @@
     <ClCompile Include="CTile.cpp" />
     <ClCompile Include="CTileMap.cpp" />
     <ClCompile Include="CUpgradeState.cpp" />
+    <ClCompile Include="EllipseShape.cpp" />
     <ClCompile Include="lifeBarForEntity.cpp" />
     <ClCompile Include="lifeForEntity.cpp" />
     <ClCompile Include="main.cpp" />
@@ -191,6 +193,7 @@
     <ClInclude Include="CBullet.h" />
     <ClInclude Include="CCard.h" />
     <ClInclude Include="CCardUpgrade.h" />
+    <ClInclude Include="CCarousel.h" />
     <ClInclude Include="CCharacter.h" />
     <ClInclude Include="CCharacterSelection.h" />
     <ClInclude Include="CCharacterStat.h" />
@@ -230,6 +233,7 @@
     <ClInclude Include="CTileMap.h" />
     <ClInclude Include="CUpgradeState.h" />
     <ClInclude Include="DEFINITIONS.h" />
+    <ClInclude Include="EllipseShape.h" />
     <ClInclude Include="lifeBarForEntity.h" />
     <ClInclude Include="lifeForEntity.h" />
   </ItemGroup>

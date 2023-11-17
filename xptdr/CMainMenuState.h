@@ -8,20 +8,19 @@
 #include "CHugoDecrypte.h"
 #include "CCharacterSelection.h"
 #include"SFML/Audio.hpp"
+#include"EllipseShape.h"
 
 class CMainMenuState : public CState
 {
 private:
 	GameDataRef data;
 	sf::Clock CMMClock;
-	sf::Sprite CMMBackground;
 	sf::Text CMMPlayButton;
 	sf::Text CMMHowToPlay;
 	sf::Text CMMSettingsButton;
 	sf::Text CMMQuitButton;
 	sf::Text CMMInfinitePlayButton;
 	sf::Sprite CMMTitle;
-	CHugoDecrypte aaaa;
 public:
 
 	CMainMenuState(GameDataRef _data);
@@ -33,5 +32,7 @@ public:
 	{
 		//CESTBON = false;
 	}
+	void resizeScreen();
+
 };
 

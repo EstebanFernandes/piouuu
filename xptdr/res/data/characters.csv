@@ -1,3 +1,4 @@
 Name;ImageLink;Description;isAnimated;maxHealthPoint;moveSpeed;canonNumber;damagePerBullet;attackSpeed;bulletSpeed;Misc
-lavion;res/img/onessaye.png;Toujours un classique;animated;;;;10;3.0;;
+lavion;res/img/onessaye.png;Toujours un classique;animated;;;;1;3.0;;
 levaisseau;res/img/spacecraft_player_1.png;Reviens aux origines;notAnimated;;10.0;1;5;30;;
+Avion 2;res/img/onessaye.png;Le même en gros;animated;;;;1;3.0;;

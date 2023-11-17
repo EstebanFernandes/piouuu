@@ -51,26 +51,39 @@ void CCharacterSelection::loadCharacters()
 
 void CCharacterSelection::STEInit()
 {
+	int screenwidth = data->assets.sCREEN_WIDTH;
+	int screenheight = data->assets.sCREEN_HEIGHT;
 	loadCharacters();
 	data->assets.LoadFont("Lato", FONT_FILE_PATH); //Load la police d'écriture
 
 	//temp
-	data->assets.LoadTexture("backgroundCharacter", CHARACTERBACKGROUND);
-	chosenCharacter = characterList[currentCharacterIndex];
-	characterCard = CCard(chosenCharacter.getName(), chosenCharacter.getDescription(), chosenCharacter.getName(), &(data->assets), chosenCharacter.getAnimated());
 
-	CMMBackground.setTexture(data->assets.GetTexture("Background"));
-	CMMBackground.setScale(1.2f, 1.2f);
+	//on a load les personnages donc on va les mettre dans le carousel
+	int maxPoint = (int)carousel.ellipse.getPointCount();
+	int nbCharacter = (int)characterList.size();
+
+	carousel.setSize(sf::Vector2f(500.f, 50.f));
+	sf::Vector2f carouselPos((float)screenwidth / 2 - carousel.ellipse.getGlobalBounds().width/2,
+		(float)screenheight * 0.05f);
+	carousel.setCarouselPosition(carouselPos);
+	carousel.setEllipseVisibility(true);
+	for (int i = 0; i < characterList.size(); i++)
+	{
+		chosenCharacter = characterList[i];
+		CCard temp(chosenCharacter.getName(), chosenCharacter.getDescription(), chosenCharacter.getName(), &(data->assets), chosenCharacter.getAnimated());
+		temp.setOutlineThickNess(10.f);
+		carousel.addCard(temp);
+	}
 
 	triangle1 = sf::CircleShape(80.f, 3);
 	triangle1.rotate(270.f);
 	triangle1.setFillColor(sf::Color::Color(64, 64, 64));
-	triangle1.setPosition(275.f, (float)data->assets.sCREEN_HEIGHT/2);
+	triangle1.setPosition(275.f, (float)screenheight/2);
 
 	triangle2 = sf::CircleShape(80.f, 3);
 	triangle2.rotate(90.f);
 	triangle2.setFillColor(sf::Color::Color(64, 64, 64));
-	triangle2.setPosition(275+320 +((float)data->assets.sCREEN_WIDTH / 3.f), data->assets.sCREEN_HEIGHT / 2.f);
+	triangle2.setPosition(275+320 +((float)screenwidth / 3.f),  screenheight/ 2.f);
 }
 
 void CCharacterSelection::STEHandleInput()
@@ -83,7 +96,7 @@ void CCharacterSelection::STEHandleInput()
 			data->window.close();
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
-			data->machine.AddState(StateRef(new CTestGame(data, chosenCharacter)), true);
+			data->machine.AddState(StateRef(new CTestGame(data,chosenCharacter)), true);
 		}
 		else if (event.type == sf::Event::KeyPressed)
 		{
@@ -91,18 +104,17 @@ void CCharacterSelection::STEHandleInput()
 			{
 				currentCharacterIndex = (currentCharacterIndex + 1) % characterList.size();
 				chosenCharacter = characterList[currentCharacterIndex];
-				characterCard = CCard(chosenCharacter.getName(), chosenCharacter.getDescription(), chosenCharacter.getName(), &(data->assets), chosenCharacter.getAnimated());
+				carousel.move(RightMove);
 			}
 			else if (event.key.code == sf::Keyboard::Q)
 			{
 				if (currentCharacterIndex == 0) {
-					currentCharacterIndex = characterList.size() - 1;
+					currentCharacterIndex = (int)characterList.size() - 1;
 				}
-				else {
+				else 
 					currentCharacterIndex = (currentCharacterIndex - 1) % characterList.size();
-				}
 				chosenCharacter = characterList[currentCharacterIndex];
-				characterCard = CCard(chosenCharacter.getName(), chosenCharacter.getDescription(), chosenCharacter.getName(), &(data->assets), chosenCharacter.getAnimated());
+				carousel.move( LeftMove);
 			}
 		}
 	}
@@ -110,16 +122,15 @@ void CCharacterSelection::STEHandleInput()
 
 void CCharacterSelection::STEUpdate(float delta)
 {
-	characterCard.update(delta);
+	carousel.update(delta);
 }
 
 void CCharacterSelection::STEDraw(float delta)
 {
-	data->window.clear(sf::Color::Red);
-	data->window.draw(CMMBackground);
-	data->window.draw(characterCard);
-	data->window.draw(triangle1);
-	data->window.draw(triangle2);
+	data->window.clear(sf::Color(174, 177, 184));
+	//data->window.draw(triangle1);
+	//data->window.draw(triangle2);
+	data->window.draw(carousel);
 	data->window.display();
 }
 

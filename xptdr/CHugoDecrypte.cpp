@@ -19,7 +19,7 @@ void CHugoDecrypte::parseFile()
 			int maxRow;
 			std::vector<std::string> orderkw;
 			sf::Vector2i starter;
-			starter = sf::Vector2i(std::distance(fileContent[i].begin(),temp),i);
+			starter = sf::Vector2i((int)std::distance(fileContent[i].begin(),temp),i);
 			CGrapheUpdate Graphe;
 			int currentX = starter.x;
 			int currentY = starter.y;
