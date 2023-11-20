@@ -2,9 +2,15 @@
 #include "CState.h"
 #include "CMainMenuState.h"
 #include "DEFINITIONS.h"
+#include "CParserCSV.h"
+#include "CCLavierVirtuel.h"
+#include "CScoreboard.h"
+
 template <class MType> class CGameOver : public CState
 {
 private:
+	int score;
+
 	GameDataRef data;
 	sf::Shader Shader;
 	sf::Sprite backGroundImage;
@@ -17,9 +23,38 @@ public:
 	CGameOver<MType>(GameDataRef _data) {
 		data = _data;
 	}
-	CGameOver<MType>(GameDataRef _data, CCharacter characterParam) {
+	CGameOver<MType>(GameDataRef _data, CCharacter characterParam, int scoreParam) {
 		data = _data;
 		character = characterParam;
+		score = scoreParam;
+
+		CParserCSV parser = CParserCSV("res/data/characters.csv");
+		std::vector<std::vector<std::string>> charactersInfo = parser.getElements();
+
+		for (int i = 1; i < charactersInfo.size(); i++) {
+			if (charactersInfo[i][0] == character.getName()) {
+
+				int maxHealthPointTemp = 20;
+				if (charactersInfo[i][4] != "" && typeid(std::stoi(charactersInfo[i][4])) == typeid(int)) maxHealthPointTemp = std::stoi(charactersInfo[i][4]);
+
+				float moveSpeedTemp = 0.5f;
+				if (charactersInfo[i][5] != "" && typeid(std::stof(charactersInfo[i][5])) == typeid(float)) moveSpeedTemp = std::stof(charactersInfo[i][5]);
+
+				int canonNumberTemp = 1;
+				if (charactersInfo[i][6] != "" && typeid(std::stoi(charactersInfo[i][6])) == typeid(int)) canonNumberTemp = std::stoi(charactersInfo[i][6]);
+
+				int damagePerBulletTemp = 5;
+				if (charactersInfo[i][7] != "" && typeid(std::stoi(charactersInfo[i][7])) == typeid(int)) damagePerBulletTemp = std::stoi(charactersInfo[i][7]);
+
+				float attackSpeedTemp = 8.f;
+				if (charactersInfo[i][8] != "" && typeid(std::stof(charactersInfo[i][8])) == typeid(float)) attackSpeedTemp = std::stof(charactersInfo[i][8]);
+
+				float bulletSpeedTemp = 2.0f;
+				if (charactersInfo[i][9] != "" && typeid(std::stof(charactersInfo[i][9])) == typeid(float)) bulletSpeedTemp = std::stof(charactersInfo[i][9]);
+
+				character.setCharacterStats(maxHealthPointTemp, moveSpeedTemp, canonNumberTemp, damagePerBulletTemp, attackSpeedTemp, bulletSpeedTemp);
+			}
+		}
 	}
 	void STEInit();
 	void STEHandleInput();
@@ -37,11 +72,11 @@ void CGameOver<MType>::STEInit()
 
 	if (textur.copyToImage().saveToFile("filename.jpg"))
 	{
-		std::cout << "screenshot saved to filename.jpg" <<std::endl;
+		std::cout << "screenshot saved to filename.jpg" << std::endl;
 	}
 	texta = textur;
-//	texta = data->assets.GetTexture("endScreen");
-	if (!Shader.loadFromFile("vertexbandw.vert","fragbandw.frag"))
+	//	texta = data->assets.GetTexture("endScreen");
+	if (!Shader.loadFromFile("vertexbandw.vert", "fragbandw.frag"))
 	{
 		std::cout << "bof";
 
@@ -63,6 +98,8 @@ void CGameOver<MType>::STEInit()
 	textMainMenu.setCharacterSize(30);
 	textMainMenu.setPosition((data->assets.sCREEN_WIDTH / 2) - (textMainMenu.getGlobalBounds().width / 2),
 		(data->assets.sCREEN_HEIGHT * 0.5f));
+
+	data->machine.AddState(StateRef(new CScoreboard(data, score)), false);
 }
 template <class MType>
 void CGameOver<MType>::STEHandleInput()

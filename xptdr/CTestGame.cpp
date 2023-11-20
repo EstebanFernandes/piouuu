@@ -52,6 +52,12 @@ void CTestGame::STEHandleInput()
 			{
 				addPowerUp();
 			}
+			//TEMP C POUR MOURIR
+			if (event.key.code == sf::Keyboard::M)
+			{
+				player1.reduceHP(player1.getMaxHealth());
+				GameOver();
+			}
 		}
 	}
 
@@ -81,5 +87,5 @@ void CTestGame::STEDraw(float delta)
 
 void CTestGame::GameOver()
 {
-	data->machine.AddState(StateRef(new CGameOver<CTestGame>(data, player1)), true);
+	data->machine.AddState(StateRef(new CGameOver<CTestGame>(data, player1, player1.getScore())), true);
 }

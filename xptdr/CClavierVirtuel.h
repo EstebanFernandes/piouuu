@@ -5,7 +5,8 @@
 #include"SFML/Graphics.hpp"
 #include <sstream>
 #include "CJeu.h"
-class CScoreboardname : public CState
+
+class CClavierVirtuel : public CState
 {
 private:
 	GameDataRef data;
@@ -16,7 +17,7 @@ private:
 	std::vector<std::string> keyboard;
 	bool OUAIS = false;
 	sf::Text ui;
-	sf::Vector2i mouseSelectionRectangle = sf::Vector2i(0,0);
+	sf::Vector2i mouseSelectionRectangle = sf::Vector2i(0, 0);
 	sf::RectangleShape ahouais;
 	sf::Sprite capslocksprite;
 	sf::Sprite keyboardWhiteSprite;
@@ -25,23 +26,25 @@ private:
 	sf::Vector2f mousePositionKeyboard;
 	sf::Vector2f tilePositionKeyboard;
 	sf::Text nameText;
+	sf::Text scorePrompt;
 	std::string name;
 	sf::Clock barClock;
 	unsigned int stringPosition;
 	bool cancel = false;
 	bool ok = false;
 	sf::RectangleShape bar;
+	int score;
+	int rank;
 public:
-	CScoreboardname(GameDataRef _data);
+	CClavierVirtuel(GameDataRef _data, int scoreParam, int rankParam);
 	void keyboardInit();
 	void STEInit();
 	void STEHandleInput();
 	void STEUpdate(float delta);
 	void UpdateText();
 	void drawBar();
-	void STEDraw(float delta); 
+	void STEDraw(float delta);
 	void STEPause() {};
 	void STEResume() {};
 };
 
-   
