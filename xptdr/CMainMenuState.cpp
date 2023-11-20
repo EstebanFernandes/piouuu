@@ -70,7 +70,7 @@ void CMainMenuState::STEHandleInput()
 		}
 		if (data->inputs.IsTextClicked(CMMHowToPlay, sf::Mouse::Left, data->window))
 		{
-			data->machine.AddState(StateRef(new CScoreboardname(data)), true);
+			data->machine.AddState(StateRef(new CClavierVirtuel(data, 2, 1)), true);
 		}
 		else if (data->inputs.IsTextClicked(CMMPlayButton, sf::Mouse::Left, data->window))
 		{

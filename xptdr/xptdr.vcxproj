@@ -169,7 +169,8 @@
     <ClCompile Include="CPhysics.cpp" />
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CPowerUp.cpp" />
-    <ClCompile Include="CScoreboardname.cpp" />
+    <ClCompile Include="CClavierVirtuel.cpp" />
+    <ClCompile Include="CScoreboard.cpp" />
     <ClCompile Include="CSettingState.cpp" />
     <ClCompile Include="CSommet.cpp" />
     <ClCompile Include="CSommetUpgrade.cpp" />
@@ -221,7 +222,8 @@
     <ClInclude Include="CPhysics.h" />
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CPowerUp.h" />
-    <ClInclude Include="CScoreboardname.h" />
+    <ClInclude Include="CClavierVirtuel.h" />
+    <ClInclude Include="CScoreboard.h" />
     <ClInclude Include="CSettingState.h" />
     <ClInclude Include="CSommet.h" />
     <ClInclude Include="CSommetUpgrade.h" />
