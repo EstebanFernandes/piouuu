@@ -53,17 +53,22 @@ CCardUpgrade::CCardUpgrade( std::vector<std::string> Upgrade, std::vector<std::s
 	cardDescription.setCharacterSize(35);
 	cardDescription.setPosition(pos.x + (xSize - cardDescription.getGlobalBounds().width) / 2, pos.y + ySize * 0.8f);
 	resizeText(cardDescription);
+	int YSizepris = (int)(pos.y + ySize * 0.3f);
+	int padding = 5.f;
 	for (int i = 0; i < type.size(); i++)
 	{
-		sf::Text temp;
-		std::string tempString = type[i] + Upgrade[i];
-		temp.setString(tempString);
-		temp.setFillColor(sf::Color::White);
-		temp.setFont(asset->GetFont("Lato"));
-		temp.setCharacterSize(35);
-		int posY = (int)(pos.y + ySize * 0.3f + (int)(temp.getGlobalBounds().height*1.5f * (i + 1)));
-		temp.setPosition(pos.x + (xSize - temp.getGlobalBounds().width) / 2, pos.y + ySize * 0.4f);
-		Stats.push_back(temp);
+		if(Upgrade[i]!="")
+		{
+			sf::Text temp;
+			std::string tempString = CCharacter::returnTypeStylish(type[i], Upgrade[i]) ;
+			temp.setString(tempString);
+			temp.setFillColor(sf::Color::White);
+			temp.setFont(asset->GetFont("Lato"));
+			temp.setCharacterSize(35);
+			int posY = YSizepris+ padding+(int)(temp.getGlobalBounds().height*i );
+			temp.setPosition(pos.x + (xSize - temp.getGlobalBounds().width) / 2, posY);
+			Stats.push_back(temp);
+		}
 	}
 }
 
@@ -72,10 +77,13 @@ void CCardUpgrade::setPosition(sf::Vector2f r)
 	pos = r;
 	cardBack.setPosition(pos);
 	cardTitle.setPosition(pos.x + (xSize - cardTitle.getGlobalBounds().width) / 2, pos.y);
+	int YSizepris = (int)(ySize * 0.3f);
+	int padding = 5.f;
 	for (int i = 0; i < Stats.size(); i++)
 	{
-		int posY = (int)(pos.y + ySize * 0.3f + (int)((Stats[i].getGlobalBounds().height * 1.5f) * (i + 1)));
-		Stats[i].setPosition(pos.x + (xSize - Stats[i].getGlobalBounds().width) / 2, (float)posY);
+		int posY = pos.y + YSizepris;
+		Stats[i].setPosition(pos.x + (xSize - Stats[i].getGlobalBounds().width) / 2, posY);
+		YSizepris += padding + (int)(Stats[i].getGlobalBounds().height);
 	}
 	cardDescription.setPosition(pos.x + (xSize - cardDescription.getGlobalBounds().width) / 2, pos.y + ySize * 0.8f);
 }
@@ -127,6 +135,37 @@ void CCardUpgrade::reduceScale()
 		Stats[i].setScale(scale);
 	}
 	cardDescription.setScale(scale);
+}
+
+void CCardUpgrade::resizeTexts(std::vector<sf::Text>& texts, sf::FloatRect border)
+{
+	float padding = 5.f;
+	/*while (textToResize.getGlobalBounds().width >=
+		cardBack.getGlobalBounds().width - cardBack.getGlobalBounds().width * 0.05f &&
+		textToResize.getCharacterSize() >= 20)
+	{
+		textToResize.setCharacterSize(textToResize.getCharacterSize() - 1);
+	}
+	int dividedIn = 1;
+	std::string basicString = textToResize.getString();
+	while (textToResize.getGlobalBounds().width >= cardBack.getGlobalBounds().width - cardBack.getGlobalBounds().width * 0.05f)
+	{
+		dividedIn++;
+		std::string temp = basicString;
+		for (int i = 1; i < dividedIn; i++)
+		{
+			int R = (int)(temp.size() / (float)(dividedIn)) * i;
+			for (int j = R; j < temp.size(); j++)
+			{
+				if (temp[j] == ' ')
+				{
+					temp.insert(j, "\n");
+					textToResize.setString(temp);
+					break;
+				}
+			}
+		}
+	}*/
 }
 
 void CCardUpgrade::draw(sf::RenderTarget& target, sf::RenderStates states) const {

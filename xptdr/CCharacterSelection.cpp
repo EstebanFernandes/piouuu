@@ -66,7 +66,7 @@ void CCharacterSelection::STEInit()
 	sf::Vector2f carouselPos((float)screenwidth / 2 - carousel.ellipse.getGlobalBounds().width/2,
 		(float)screenheight * 0.05f);
 	carousel.setCarouselPosition(carouselPos);
-	carousel.setEllipseVisibility(true);
+	carousel.setEllipseVisibility(false);
 	for (int i = 0; i < characterList.size(); i++)
 	{
 		chosenCharacter = characterList[i];

@@ -16,5 +16,7 @@ public:
 	void resizeText(sf::Text& textToResize);
 	void update(float deltaTime);
 	void reduceScale();
+	//Fonction qui resize une liste de texte compte tenu d'une bordure en hauteur et en largeur
+	void resizeTexts(std::vector<sf::Text>& texts, sf::FloatRect border);
 };
 

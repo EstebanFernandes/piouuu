@@ -58,5 +58,6 @@ public:
 	void updateFx();
 	void setAssets(CAssetManager* a);
 	bool checkGlobalCollisions();
+	void resetMovement();
 	CGunslinger* getBAW() { return &BAW; }
 };

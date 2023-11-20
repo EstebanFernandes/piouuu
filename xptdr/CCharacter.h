@@ -49,6 +49,6 @@ public:
 	float getAttackSpeed() { return attackSpeed; }
 	float getBulletSpeed() { return bulletSpeed; }
 	bool matchTypewithValue(std::string type, std::string value);
-
+	static std::string returnTypeStylish(std::string type,std::string value);
 };
 

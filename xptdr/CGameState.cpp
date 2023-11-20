@@ -323,6 +323,7 @@ void CGameState::STEResume()
 		data->assets.DeleteTexture("pauseScreen");
 	gameClock.restart();
 	CESTBON = false;
+	player1.resetMovement();
 }
 
 
