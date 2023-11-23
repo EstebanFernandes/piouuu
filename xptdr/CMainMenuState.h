@@ -15,6 +15,7 @@ class CMainMenuState : public CState
 private:
 	GameDataRef data;
 	sf::Clock CMMClock;
+	sf::Music menuMusic;
 	sf::Text CMMPlayButton;
 	sf::Text CMMHowToPlay;
 	sf::Text CMMSettingsButton;
