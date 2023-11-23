@@ -1,5 +1,5 @@
 #pragma once
-#include"CScoreboardname.h"
+#include"CClavierVirtuel.h"
 #include "CState.h"
 #include "CSettingState.h"
 #include "DEFINITIONS.h"

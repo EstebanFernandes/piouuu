@@ -18,8 +18,7 @@ void CPlayer::setAssets(CAssetManager* a)
 {
 	assets = a;
 	BAW.assets = a;
-	setTexture(imageName, GAME_SPACESHIP_FILEPATH);
-	getSprite().setTexture((*a).GetTexture(getName()));
+	getSprite().setTexture((*a).GetTexture(name));
 
 	assets->LoadTexture("lifepoint", LIFEPOINTTEXTURE);
 	if (isAnimated) anim = CAnimation(getPointerSprite(), sf::IntRect(0, 0, 153, 66), 4, 0.16f);
@@ -40,6 +39,14 @@ bool CPlayer::checkGlobalCollisions()
 	else if (getGlobalBounds().left + getGlobalBounds().width >= assets->sCREEN_WIDTH)
 		setPositionEntity(assets->sCREEN_WIDTH - getGlobalBounds().width, getGlobalBounds().top);
 	return false;
+}
+
+void CPlayer::resetMovement()
+{
+	isMovingDown = false;
+	isMovingLeft = false;
+	isMovingRight = false;
+	isMovingUp = false;
 }
 
  

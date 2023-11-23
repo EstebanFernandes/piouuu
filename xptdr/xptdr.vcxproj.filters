@@ -108,7 +108,7 @@
     <ClCompile Include="CGameOver.cpp">
       <Filter>Fichiers sources\State</Filter>
     </ClCompile>
-    <ClCompile Include="CScoreboardname.cpp">
+    <ClCompile Include="CClavierVirtuel.cpp">
       <Filter>Fichiers sources\State</Filter>
     </ClCompile>
     <ClCompile Include="CTestGame.cpp">
@@ -204,6 +204,9 @@
     <ClCompile Include="CCarousel.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="CScoreboard.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DEFINITIONS.h">
@@ -278,7 +281,7 @@
     <ClInclude Include="CPowerUp.h">
       <Filter>Fichiers d%27en-tête\GameRelated</Filter>
     </ClInclude>
-    <ClInclude Include="CScoreboardname.h">
+    <ClInclude Include="CClavierVirtuel.h">
       <Filter>Fichiers d%27en-tête\State</Filter>
     </ClInclude>
     <ClInclude Include="CSettingState.h">
@@ -354,6 +357,9 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="CCarousel.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="CScoreboard.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,64 +1,92 @@
-#include "CScoreboardname.h"
+#include "CClavierVirtuel.h"
 
-CScoreboardname::CScoreboardname(GameDataRef _data) : data(_data)
+CClavierVirtuel::CClavierVirtuel(GameDataRef _data, int scoreParam, int rankParam) : data(_data)
+{
+	score = scoreParam;
+	rank = rankParam;
+}
+
+void CClavierVirtuel::keyboardInit()
 {
 }
 
-void CScoreboardname::keyboardInit()
-{
-}
-
-void CScoreboardname::STEInit()
+void CClavierVirtuel::STEInit()
 {
 	//Le tableau correspond au lettre du clavier, 
 					  //1234567890-effacer
 	keyboard.push_back("1234567890-&");
-					  //azertyuiop,Entrer
+	//azertyuiop,Entrer
 	keyboard.push_back("azertyuiop'!à");
-					  //qsdfghjlm;ok
+	//qsdfghjlm;ok
 	keyboard.push_back("qsdfghjklm;²");
-					  //wxcvbn,.!?:ok
-	keyboard.push_back("wxcvbn,;!?:²");
-					  //  MAJ  décaler gauche décaler droite barre espace ANNULER 
+	//wxcvbn,.!?:ok
+	keyboard.push_back("wxcvbn,.!?:²");
+	//  MAJ  décaler gauche décaler droite barre espace ANNULER 
 	keyboard.push_back("  ^<>    è");
 	data->assets.LoadTexture("keyboardBlack", "res\\img\\keyboard_black.png");
 	data->assets.LoadTexture("keyboardWhite", "res\\img\\keyboard_white.png");
-	ahouais.setSize(sf::Vector2f(200.f, 50.f));
-	ahouais.setPosition((float)data->assets.sCREEN_WIDTH  / 2.f, (float)data->assets.sCREEN_HEIGHT *0.3f);
+
 	//mouseSelectionRectangle = sf::FloatRect(0.f, 0.f, 40.f, 40.f);//avec la scale actuelle (3) c'est 40 une case
 	keyboardBlackSprite.setTexture(data->assets.GetTexture("keyboardBlack"));
 	keyboardBlackSprite.setScale(4.f, 4.f);
-	keyboardBlackSprite.setPosition(((float)data->assets.sCREEN_WIDTH / 2.f)- keyboardBlackSprite.getGlobalBounds().width/2.f, (float)data->assets.sCREEN_HEIGHT * 0.4f);
+	keyboardBlackSprite.setPosition(((float)data->assets.sCREEN_WIDTH / 2.f) - keyboardBlackSprite.getGlobalBounds().width / 2.f, (float)data->assets.sCREEN_HEIGHT * 0.4f);
+
 	keyboardWhiteSprite.setTexture(data->assets.GetTexture("keyboardWhite"));
 	keyboardWhiteSprite.setScale(keyboardBlackSprite.getScale());
 	keyboardWhiteSprite.setPosition(keyboardBlackSprite.getPosition());
+
 	capslocksprite.setTexture(data->assets.GetTexture("keyboardWhite"));
 	capslocksprite.setScale(keyboardBlackSprite.getScale());
 	capslocksprite.setPosition(keyboardBlackSprite.getPosition());
 	//capslocksprite.setPosition(sf::Vector2f(448.f,544.f));
-	capslocksprite.setPosition(capslocksprite.getPosition().x + (32.f* keyboardBlackSprite.getScale().x), capslocksprite.getPosition().y + (64.f* keyboardBlackSprite.getScale().y));
+	capslocksprite.setPosition(capslocksprite.getPosition().x + (32.f * keyboardBlackSprite.getScale().x), capslocksprite.getPosition().y + (64.f * keyboardBlackSprite.getScale().y));
 	capslocksprite.setTextureRect(sf::IntRect(32, 64, 14, 13));
-	nameText.setPosition((data->assets.sCREEN_WIDTH / 2) + 10.f, data->assets.sCREEN_HEIGHT * 0.3f);
+
+	ui.setCharacterSize(12);
+	ui.setFillColor(sf::Color::White);
+	ui.setFont(data->assets.GetFont("Lato"));
+
+	CapsLock.setFillColor(sf::Color::Black);
+	CapsLock.setPosition(keyboardBlackSprite.getPosition().x + 172, keyboardBlackSprite.getPosition().y + 264);
+	CapsLock.setSize(sf::Vector2f(4.f, 4.f));
+
+	//ahouais.setSize(sf::Vector2f(200.f, 50.f));
+	ahouais.setSize(sf::Vector2f(keyboardBlackSprite.getGlobalBounds().width * 0.5, 50.f));
+	//ahouais.setPosition((float)data->assets.sCREEN_WIDTH / 2.f, (float)data->assets.sCREEN_HEIGHT * 0.3f);
+	ahouais.setPosition(keyboardBlackSprite.getPosition().x + ((keyboardBlackSprite.getGlobalBounds().width - ahouais.getLocalBounds().width) * 0.5), (float)data->assets.sCREEN_HEIGHT * 0.3f);
+
+	nameText.setPosition(ahouais.getPosition().x * 1.01, ahouais.getPosition().y * 1.03);
 	nameText.setCharacterSize(30);
 	nameText.setFillColor(sf::Color::Black);
 	nameText.setFont(data->assets.GetFont("Lato"));
 	nameText.setString(name);
-	bar.setSize(sf::Vector2f(2.f,40.f));
+
+	bar.setSize(sf::Vector2f(ahouais.getLocalBounds().width * 0.005, ahouais.getLocalBounds().height * 0.80));
 	bar.setPosition(nameText.getPosition());
 	bar.setFillColor(sf::Color::Black);
-	ui.setCharacterSize(12);
-	ui.setFillColor(sf::Color::White);
-	ui.setFont(data->assets.GetFont("Lato"));
-	CapsLock.setFillColor(sf::Color::Black);
-	CapsLock.setPosition(keyboardBlackSprite.getPosition().x + 172, keyboardBlackSprite.getPosition().y + 264);
-	CapsLock.setSize(sf::Vector2f(4.f, 4.f)); 
+
+	std::stringstream textToPrompt;
+	if (rank == 1) {
+		textToPrompt << "Tu deviens la nouvelle légende de PIOU avec ce \nmagnifique score de " << score << ",tu finis premier,\nécris ton nom qui deviendra légendaire\n(jusqu'à ce que ton score soit battu)";
+	}
+	else {
+		textToPrompt << "Bien joué, ton score est de " << score << ", tu finis " << rank << "ème, écris ton nom\n pour qu'il reste gravé à jamais dans l'histoire de PIOU";
+	}
+
+	scorePrompt.setFont(data->assets.GetFont("Lato"));
+	scorePrompt.setCharacterSize(35);
+	scorePrompt.setFillColor(sf::Color::White);
+	scorePrompt.setString(textToPrompt.str());
+	scorePrompt.setPosition(keyboardBlackSprite.getPosition().x, 0);
+
+
 }
 
-void CScoreboardname::STEHandleInput()
+void CClavierVirtuel::STEHandleInput()
 {
 	sf::Event event;
-	int &x = mouseSelectionRectangle.x;
-	int &y = mouseSelectionRectangle.y;
+	int& x = mouseSelectionRectangle.x;
+	int& y = mouseSelectionRectangle.y;
 	while (data->window.pollEvent(event))
 	{
 		if (sf::Event::Closed == event.type)
@@ -87,61 +115,61 @@ void CScoreboardname::STEHandleInput()
 			{
 				if (y == 3 && (x < 2 || x > 9))
 					break;
-				if (y != 4 )
+				if (y != 4)
 					y += 1;
 			}
 			if (event.key.code == sf::Keyboard::D)
 			{
 				if (y == 4 && x == 9)
 					break;
-			if (x != 11)
-				x += 1;
+				if (x != 11)
+					x += 1;
 			}
 		}
-			if (sf::Event::MouseButtonPressed == event.type)
+		if (sf::Event::MouseButtonPressed == event.type)
+		{
+			if (event.mouseButton.button == sf::Mouse::Left)
 			{
-				if (event.mouseButton.button == sf::Mouse::Left)
-				{
-					OUAIS = true;
-				}
+				OUAIS = true;
 			}
+		}
 	}
 }
 
-void CScoreboardname::STEUpdate(float delta)
+void CClavierVirtuel::STEUpdate(float delta)
 {
 	sf::IntRect temp;
 	mousePositionScreen = sf::Mouse::getPosition(data->window);
 	mousePositionKeyboard = (sf::Vector2f)mousePositionScreen - keyboardBlackSprite.getPosition();
 	std::stringstream ss;
 	ss << "mouse position : \n" << "Window : " << mousePositionScreen.x << " " << mousePositionScreen.y << "\n"
-		<< "keyboard relative: " << mousePositionKeyboard.x << " " << mousePositionKeyboard.y<<std::endl
-	<< "rectangleseleciton : " <<mouseSelectionRectangle.x << " " << mouseSelectionRectangle.y;
+		<< "keyboard relative: " << mousePositionKeyboard.x << " " << mousePositionKeyboard.y << std::endl
+		<< "rectangleseleciton : " << mouseSelectionRectangle.x << " " << mouseSelectionRectangle.y;
 	ui.setString(ss.str());
 	//On check les positions du clavier et on remet s'il faut
 	if (mouseSelectionRectangle.x != -1 && mouseSelectionRectangle.y != -1)
 	{
-		int &x = mouseSelectionRectangle.x;
-		int &y = mouseSelectionRectangle.y;
+		int& x = mouseSelectionRectangle.x;
+		int& y = mouseSelectionRectangle.y;
 		if (x == 11 && (y == 2 || y == 3))
 		{
 			y = 2;
 			temp = sf::IntRect(14 * x + 2 * x, 13 * y + 3 * y, 14, 26 + 12);
-		tilePositionKeyboard.x = keyboardBlackSprite.getPosition().x + 56 * x + 8 * x;
-		tilePositionKeyboard.y = keyboardBlackSprite.getPosition().y + 52 * y + 12 * y;	
+			tilePositionKeyboard.x = keyboardBlackSprite.getPosition().x + 56 * x + 8 * x;
+			tilePositionKeyboard.y = keyboardBlackSprite.getPosition().y + 52 * y + 12 * y;
 		}
-		else if (y == 4 && (x >= 5 && x <=8))
+		else if (y == 4 && (x >= 5 && x <= 8))
 		{
 			x = 5;
 			temp = sf::IntRect(14 * x + 2 * x, 13 * y + 3 * y, (14 * 4) + 2 * 3, 13);
 			tilePositionKeyboard.x = keyboardBlackSprite.getPosition().x + 56 * x + 8 * x;
 			tilePositionKeyboard.y = keyboardBlackSprite.getPosition().y + 52 * y + 12 * y;
-		x = 8;
+			x = 8;
 		}
-		else{
-		tilePositionKeyboard.x = keyboardBlackSprite.getPosition().x + 56 * x + 8 * x;
-		tilePositionKeyboard.y = keyboardBlackSprite.getPosition().y + 52 * y + 12 * y;
-		temp = sf::IntRect(14 * x + 2 * x, 13 * y + 3 * y, 14, 13);
+		else {
+			tilePositionKeyboard.x = keyboardBlackSprite.getPosition().x + 56 * x + 8 * x;
+			tilePositionKeyboard.y = keyboardBlackSprite.getPosition().y + 52 * y + 12 * y;
+			temp = sf::IntRect(14 * x + 2 * x, 13 * y + 3 * y, 14, 13);
 		}
 		keyboardWhiteSprite.setPosition(tilePositionKeyboard);
 		keyboardWhiteSprite.setTextureRect(temp);
@@ -149,14 +177,14 @@ void CScoreboardname::STEUpdate(float delta)
 	if (OUAIS)
 	{
 		UpdateText();
-		int a= (int)name.size();
-		float tempX = nameText.getGlobalBounds().width-(((name.size()- stringPosition)*nameText.getLetterSpacing()*nameText.getCharacterSize())/2);
-		bar.setPosition(sf::Vector2f(nameText.getPosition().x+tempX,nameText.getPosition().y));
+		int a = (int)name.size();
+		float tempX = nameText.getGlobalBounds().width - (((name.size() - stringPosition) * nameText.getLetterSpacing() * nameText.getCharacterSize()) / 2);
+		bar.setPosition(sf::Vector2f(nameText.getPosition().x + tempX, nameText.getPosition().y));
 		OUAIS = false;
 	}
 }
-//Fonction appeler que si l'utilisateur appuie sur une touche
-void CScoreboardname::UpdateText()
+//Fonction appelée que si l'utilisateur appuie sur une touche
+void CClavierVirtuel::UpdateText()
 {
 	int x = mouseSelectionRectangle.x;
 	int y = mouseSelectionRectangle.y;
@@ -223,54 +251,60 @@ void CScoreboardname::UpdateText()
 			stringPosition++;
 		break;
 	default:
-		if (capsInt == 1 || capsInt==2) {
-			if (capsInt == 1)
-			{
-				capsInt = 0;
-				CapsLock.setFillColor(sf::Color::Black);
-			}
-			if (letter >= 'a')
-			{
+		if (name.size() < 14) {
+			if (capsInt == 1 || capsInt == 2) {
+				if (capsInt == 1)
 				{
-					if (letter <= 'z')letter = letter + ('A' - 'a');
+					capsInt = 0;
+					CapsLock.setFillColor(sf::Color::Black);
+				}
+				if (letter >= 'a')
+				{
+					{
+						if (letter <= 'z')letter = letter + ('A' - 'a');
+					}
 				}
 			}
+			if (name.size() == stringPosition)
+				name = name + letter;
+			else {
+				std::string name1 = name.substr(0, stringPosition);
+				std::string name2 = name.substr(stringPosition);
+				name = name1 + letter + name2;
+			}
+			stringPosition += 1;
+			break;
 		}
-		if(name.size()==stringPosition)
-			name = name + letter;
 		else {
-			std::string name1 = name.substr(0, stringPosition);
-			std::string name2 = name.substr(stringPosition);
-			name = name1 + letter + name2;
+			//Ici, signaler que le nom est trop long
 		}
-		stringPosition += 1;
-		break;
 	}
 	nameText.setString(name);
 }
 
-void CScoreboardname::drawBar()
+void CClavierVirtuel::drawBar()
 {
 	if (barClock.getElapsedTime().asSeconds() <= 0.5f)
 	{
 		data->window.draw(bar);
 	}
-	else if(barClock.getElapsedTime().asSeconds() >= 1.f) {
+	else if (barClock.getElapsedTime().asSeconds() >= 1.f) {
 		barClock.restart();
 	}
 }
 
-void CScoreboardname::STEDraw(float delta)
+void CClavierVirtuel::STEDraw(float delta)
 {
-	sf::RenderWindow & r = data->window;
-	r.clear(sf::Color(191,165,117,1));
+	sf::RenderWindow& r = data->window;
+	r.clear(sf::Color(191, 165, 117, 1));
 	r.draw(ahouais);
 	r.draw(nameText);
 	drawBar();
-	r.draw(keyboardBlackSprite);r.draw(keyboardWhiteSprite);
+	r.draw(keyboardBlackSprite); r.draw(keyboardWhiteSprite);
 	if (capsInt == 2)r.draw(capslocksprite);
 	r.draw(CapsLock);
 	r.draw(ui);
+	r.draw(scorePrompt);
 	r.display();
 }
 

@@ -218,6 +218,83 @@ bool CCharacter::matchTypewithValue(std::string type, std::string value)
 	}
 }
 
+std::string CCharacter::returnTypeStylish(std::string type, std::string value)
+{
+	std::string operatorandvalue;
+	std::string returnType;
+	std::vector<std::string> typeString = { "maxXp","healthPoint","maxHealthPoint",
+										"moveSpeed","canonNumber","damagePerBullet",
+											"attackSpeed","bulletSpeed","misc" };
+	int pos = (int)(std::find(typeString.begin(), typeString.end(), type) - typeString.begin());
+	if (pos >= typeString.size()) {
+		return "";
+	}
+	else {
+		if (value != "")
+		{
+			float fvalue = 0.f;
+			int ivalue = 0;
+			switch (value[0])
+			{
+			case '*':
+				fvalue = std::stof(value.substr(1));
+				ivalue = 0;
+				if (fvalue > 1.f)
+				{
+					ivalue = (int)((fvalue - 1.f) * 100.f);
+					operatorandvalue = "+" + std::to_string(ivalue) + "%";
+				}
+				else
+				{
+					ivalue = (int)(ceil((double)(abs(fvalue - 1.f) * 100.f)));
+					operatorandvalue = "-" + std::to_string(ivalue) + "%";
+				}
+				break;
+			case '+':
+				operatorandvalue = "+" + value.substr(1);
+				break;
+			case '-':
+				operatorandvalue = "-" + value.substr(1);
+				break;
+			default:
+				operatorandvalue = value;
+				break;
+			}
+			switch (pos)
+			{
+			case 0: //Max XP
+				returnType = "Max xp : ";
+				break;
+			case 1:  //Health Point
+				returnType = "Point de vie : ";
+				break;
+			case 2: // Max HealthPoint
+				returnType = "Point de vie maximum : ";
+				break;
+			case 3: //move Speed
+				returnType = "Vitesse de déplacement : ";
+				break;
+			case 4: //canon number
+				returnType = "Nombre de canon : ";
+				break;
+			case 5: //DamagePerBullet
+				returnType = "Dégat par balles : ";
+				break;
+			case 6: //attack speed
+				returnType = "Vitesse d'attaque : ";
+				break;
+			case 7: // bullet speed
+				returnType = "Vitesse d'une balle :";
+				break;
+			case 8: //misc
+				returnType = "Spécifité : ";
+				break;
+			} 
+		}
+		return returnType + operatorandvalue;
+	}
+}
+
 std::string CCharacter::getImageName()
 {
 	return imageName;
