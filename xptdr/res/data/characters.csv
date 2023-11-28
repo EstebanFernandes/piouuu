@@ -2,3 +2,4 @@ Name;ImageLink;Description;isAnimated;maxHealthPoint;moveSpeed;canonNumber;damag
 lavion;res/img/characters/BaseCharacterSpriteSheet.png;Toujours un classique;animated;;;;;3.0;;
 Rancoeur;res/img/characters/RancoeurSpriteSheet.png;Reviens aux origines;animated;;0.5;;5;;;
 Avion 2;res/img/characters/BaseCharacterSpriteSheet.png;Le même en gros;animated;;;;;3.0;;
+GOD;res/img/characters/RancoeurSpriteSheet.png;pour le debug;animated;;;;500;5.0;5.0;
