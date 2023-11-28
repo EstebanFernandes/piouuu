@@ -3,6 +3,7 @@
 #include "DEFINITIONS.h"
 #include <string.h>
 #include "CJeu.h"
+#include <SFML/Audio.hpp>
 class CSettingState : public CState
 {
 private:

@@ -9,6 +9,14 @@ CBullet::CBullet(int damaage, sf::Vector2f pos, sf::Vector2f dir, CAssetManager*
 	direction = dir;
 	damage = damaage;
 	getSprite().setPosition(pos);
+	if (bulletSoundBuffer.loadFromFile("res/sfx/Piou.wav"))
+	{
+		bulletSound.setBuffer(bulletSoundBuffer);
+	}
+	else
+	{
+		std::cout << "Erreur lors du chargement du son de tir." << std::endl;
+	}
 }
 
 CBullet::CBullet(int damaage, sf::Vector2f pos, sf::Vector2f dir, float bulletSpeed_, CAssetManager* assetss)
@@ -20,7 +28,16 @@ CBullet::CBullet(int damaage, sf::Vector2f pos, sf::Vector2f dir, float bulletSp
 	direction = dir;
 	damage = damaage;
 	getSprite().setPosition(pos);
+	if (bulletSoundBuffer.loadFromFile("res/sfx/Piou.wav"))
+	{
+		bulletSound.setBuffer(bulletSoundBuffer);
+	}
+	else
+	{
+		std::cout << "Erreur lors du chargement du son de tir." << std::endl;
+	}
 }
+
 
 void CBullet::setSprite()
 {
@@ -34,6 +51,7 @@ void CBullet::updateEntity(float dt)
 	sf::Vector2f temp = direction;
 	temp.x = temp.x * bulletSpeed * dt * 60.f;
 	getSprite().move(temp);
+	bulletSound.play();
 }
 
 void CBullet::updateCollision(CEntity& b)
