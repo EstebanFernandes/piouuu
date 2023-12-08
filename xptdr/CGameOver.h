@@ -10,7 +10,8 @@ template <class MType> class CGameOver : public CState
 {
 private:
 	int score;
-
+	sf::Texture texture;
+	bool premierefois=true;
 	GameDataRef data;
 	sf::Shader Shader;
 	sf::Sprite backGroundImage;
@@ -65,24 +66,18 @@ public:
 template <class MType>
 void CGameOver<MType>::STEInit()
 {
-	sf::RenderWindow& Renderwindow = data->window;
-	sf::Texture textur;
-	textur.create(Renderwindow.getSize().x, Renderwindow.getSize().y);
-	textur.update(Renderwindow);
-
-	if (textur.copyToImage().saveToFile("filename.jpg"))
-	{
-		std::cout << "screenshot saved to filename.jpg" << std::endl;
-	}
-	texta = textur;
-	//	texta = data->assets.GetTexture("endScreen");
-	if (!Shader.loadFromFile("vertexbandw.vert", "fragbandw.frag"))
+	/*if (!Shader.loadFromFile("vertexbandw.vert", "fragbandw.frag"))
 	{
 		std::cout << "bof";
 
 	}
-	Shader.setUniform("texture", sf::Shader::CurrentTexture);
-	backGroundImage.setTexture(texta);
+	Shader.setUniform("texture", sf::Shader::CurrentTexture);*/
+	sf::RenderWindow& Renderwindow = data->window;
+	//sf::Texture textur;
+	//textur.create(Renderwindow.getSize().x, Renderwindow.getSize().y);
+	//textur.update(Renderwindow);
+	//texta = textur;
+	//backGroundImage.setTexture(texta);
 	textGameOver.setFont(data->assets.GetFont("Lato"));
 	textGameOver.setString("mdrr gros naze");
 	textGameOver.setCharacterSize(30);
@@ -119,13 +114,21 @@ void CGameOver<MType>::STEHandleInput()
 template <class MType>
 void CGameOver<MType>::STEUpdate(float delta)
 {
+	sf::RenderWindow& temp = data->window;
+	if (premierefois)
+	{
+		texture.create(temp.getSize().x, temp.getSize().y);
+		texture.update(temp);
+		backGroundImage.setTexture(texture);
+		premierefois = false;
+	}
 }
 template <class MType>
 void CGameOver<MType>::STEDraw(float delta)
 {
 	sf::RenderWindow& temp = data->window;
 	temp.clear();
-	temp.draw(backGroundImage, &Shader);
+	temp.draw(backGroundImage);
 	temp.draw(textGameOver);
 	temp.draw(textMainMenu);
 	temp.draw(textRestart);

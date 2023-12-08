@@ -13,14 +13,14 @@
 class CMainMenuState : public CState
 {
 private:
+	int index;
 	GameDataRef data;
 	sf::Clock CMMClock;
-	sf::Text CMMPlayButton;
-	sf::Text CMMHowToPlay;
-	sf::Text CMMSettingsButton;
-	sf::Text CMMQuitButton;
-	sf::Text CMMInfinitePlayButton;
+	std::vector<sf::Text> buttons;
+	std::vector<float> where;
 	sf::Sprite CMMTitle;
+	void choosedButton();
+	void outline(int previndex);
 public:
 
 	CMainMenuState(GameDataRef _data);

@@ -105,7 +105,6 @@ void CGameState::STEHandleInput()
 				texture.create(data->assets.sCREEN_WIDTH, data->assets.sCREEN_HEIGHT);
 				texture.update(data->window);
 				data->assets.LoadTexture("pauseScreen", texture);
-				gameTime += gameClock.getElapsedTime();
 				data->machine.AddState(StateRef(new CGameMenu(data)), false);
 			}
 		}
@@ -324,6 +323,11 @@ void CGameState::STEResume()
 	gameClock.restart();
 	CESTBON = false;
 	player1.resetMovement();
+}
+
+void CGameState::STEPause()
+{
+	gameTime += gameClock.getElapsedTime();
 }
 
 

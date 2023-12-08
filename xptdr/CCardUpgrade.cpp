@@ -1,7 +1,11 @@
 #include "CCardUpgrade.h"
 
 
-CCardUpgrade::CCardUpgrade( std::vector<std::string> Upgrade, std::vector<std::string> type_, CAssetManager* assetParam)
+CCardUpgrade::CCardUpgrade(int levelofEntity)
+{
+}
+
+CCardUpgrade::CCardUpgrade( std::vector<std::string> Upgrade_, std::vector<std::string> type_, CAssetManager* assetParam)
 {
 	asset = assetParam;
 	xSize = (float)asset->sCREEN_WIDTH / 3.f;
@@ -10,7 +14,7 @@ CCardUpgrade::CCardUpgrade( std::vector<std::string> Upgrade, std::vector<std::s
 	pos.y = 0.f;
 
 	type = type_;
-
+	Upgrade = Upgrade_;
 	cardBack.setPosition(pos);
 	cardBack.setFillColor(sf::Color::Black);
 	cardBack.setSize(sf::Vector2f(xSize, ySize));
@@ -54,7 +58,7 @@ CCardUpgrade::CCardUpgrade( std::vector<std::string> Upgrade, std::vector<std::s
 	cardDescription.setPosition(pos.x + (xSize - cardDescription.getGlobalBounds().width) / 2, pos.y + ySize * 0.8f);
 	resizeText(cardDescription);
 	int YSizepris = (int)(pos.y + ySize * 0.3f);
-	int padding = 5.f;
+	int padding = 5;
 	for (int i = 0; i < type.size(); i++)
 	{
 		if(Upgrade[i]!="")
@@ -65,11 +69,40 @@ CCardUpgrade::CCardUpgrade( std::vector<std::string> Upgrade, std::vector<std::s
 			temp.setFillColor(sf::Color::White);
 			temp.setFont(asset->GetFont("Lato"));
 			temp.setCharacterSize(35);
-			int posY = YSizepris+ padding+(int)(temp.getGlobalBounds().height*i );
+			int posY = YSizepris+ padding+ (int)temp.getGlobalBounds().height*i ;
 			temp.setPosition(pos.x + (xSize - temp.getGlobalBounds().width) / 2, posY);
 			Stats.push_back(temp);
 		}
 	}
+}
+
+CCardUpgrade::CCardUpgrade(std::string Upgrade_, std::string type_, CAssetManager* assetParam)
+{
+	asset = assetParam;
+	xSize = (float)asset->sCREEN_WIDTH / 3.f;
+	ySize = (float)asset->sCREEN_HEIGHT * 0.85f;
+	pos.x = 0.f;
+	pos.y = 0.f;
+
+	cardBack.setPosition(pos);
+	cardBack.setFillColor(sf::Color::Black);
+	cardBack.setSize(sf::Vector2f(xSize, ySize));
+
+	type.push_back(type_);
+	Upgrade.push_back(Upgrade_);
+	std::string title = type_;
+	cardTitle.setString(title);
+	cardTitle.setFillColor(sf::Color::White);
+	cardTitle.setFont(asset->GetFont("Lato"));
+	cardTitle.setCharacterSize(75);
+	cardTitle.setPosition(pos.x + (xSize - cardTitle.getGlobalBounds().width) / 2, pos.y);
+	resizeText(cardTitle);
+	cardDescription.setString(CCharacter::returnTypeStylish(type_, Upgrade_));
+	cardDescription.setFillColor(sf::Color::White);
+	cardDescription.setFont(asset->GetFont("Lato"));
+	cardDescription.setCharacterSize(35);
+	cardDescription.setPosition(pos.x + (xSize - cardDescription.getGlobalBounds().width) / 2,
+		pos.y + (ySize - cardDescription.getGlobalBounds().height) / 2);
 }
 
 void CCardUpgrade::setPosition(sf::Vector2f r)
@@ -82,7 +115,7 @@ void CCardUpgrade::setPosition(sf::Vector2f r)
 	for (int i = 0; i < Stats.size(); i++)
 	{
 		int posY = pos.y + YSizepris;
-		Stats[i].setPosition(pos.x + (xSize - Stats[i].getGlobalBounds().width) / 2, posY);
+		Stats[i].setPosition(pos.x + (xSize - Stats[i].getGlobalBounds().width) / 2.f, posY);
 		YSizepris += padding + (int)(Stats[i].getGlobalBounds().height);
 	}
 	cardDescription.setPosition(pos.x + (xSize - cardDescription.getGlobalBounds().width) / 2, pos.y + ySize * 0.8f);
@@ -112,7 +145,7 @@ cardBack.getGlobalBounds().width - cardBack.getGlobalBounds().width * 0.05f &&
 					temp.insert(j, "\n");
 					textToResize.setString(temp);
 					break;
-				}
+				}  
 			}
 		}
 	}

@@ -4,7 +4,7 @@ CCard::CCard()
 {
 	asset = NULL;
 }
-
+//pas utilisé
 CCard::CCard(float x, float y, std::string title, std::string description, std::string imageName, CAssetManager* assetParam, bool animated)
 {
 	asset = assetParam;
@@ -71,7 +71,7 @@ CCard::CCard(std::string title, std::string description, std::string imageName, 
 
 	cardImage.setTexture(asset->GetTexture(imageName));
 	//bizarre, à revoir
-	cardImage.setPosition(pos.x + ((xSize - cardImage.getGlobalBounds().height) / 2.0f), pos.y + ySize / 2);
+	cardImage.setPosition(pos.x + xSize/2.f - cardImage.getGlobalBounds().width / 2.f, pos.y + (ySize +cardImage.getGlobalBounds().height) / 2.f);
 	
 	if (animatedImage) {
 		sf::IntRect temp = sf::IntRect(0, 0, 153, 66);
