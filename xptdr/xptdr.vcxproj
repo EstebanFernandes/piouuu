@@ -139,6 +139,7 @@
     <ClCompile Include="CAssetManager.cpp" />
     <ClCompile Include="CBackground.cpp" />
     <ClCompile Include="CBullet.cpp" />
+    <ClCompile Include="CButton.cpp" />
     <ClCompile Include="CCard.cpp" />
     <ClCompile Include="CCardUpgrade.cpp" />
     <ClCompile Include="CCarousel.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="CAssetManager.h" />
     <ClInclude Include="CBackground.h" />
     <ClInclude Include="CBullet.h" />
+    <ClInclude Include="CButton.h" />
     <ClInclude Include="CCard.h" />
     <ClInclude Include="CCardUpgrade.h" />
     <ClInclude Include="CCarousel.h" />
