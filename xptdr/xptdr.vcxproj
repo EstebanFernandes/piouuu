@@ -146,6 +146,7 @@
     <ClCompile Include="CCharacterSelection.cpp" />
     <ClCompile Include="CCharacterStat.cpp" />
     <ClCompile Include="CCollision.cpp" />
+    <ClCompile Include="Ceffetsonore.cpp" />
     <ClCompile Include="CEnemy.cpp" />
     <ClCompile Include="CException.cpp" />
     <ClCompile Include="CGraphe.cpp" />
@@ -165,6 +166,7 @@
     <ClCompile Include="CJeu.cpp" />
     <ClCompile Include="CLevelUp.cpp" />
     <ClCompile Include="CMainMenuState.cpp" />
+    <ClCompile Include="Cmusique.cpp" />
     <ClCompile Include="CParserCSV.cpp" />
     <ClCompile Include="CPhysics.cpp" />
     <ClCompile Include="CPlayer.cpp" />
@@ -199,6 +201,7 @@
     <ClInclude Include="CCharacterSelection.h" />
     <ClInclude Include="CCharacterStat.h" />
     <ClInclude Include="CCollision.h" />
+    <ClInclude Include="Ceffetsonore.h" />
     <ClInclude Include="CEnemy.h" />
     <ClInclude Include="CException.h" />
     <ClInclude Include="CGraphe.h" />
@@ -218,6 +221,7 @@
     <ClInclude Include="CJeu.h" />
     <ClInclude Include="CLevelUp.h" />
     <ClInclude Include="CMainMenuState.h" />
+    <ClInclude Include="Cmusique.h" />
     <ClInclude Include="CParserCSV.h" />
     <ClInclude Include="CPhysics.h" />
     <ClInclude Include="CPlayer.h" />

@@ -2,7 +2,6 @@
 #include "SFML/Graphics.hpp"
 #include "DEFINITIONS.h"
 #include "CEntity.h"
-#include "SFML/Audio.hpp"
 
 class CBullet : public CEntity
 {
@@ -10,8 +9,6 @@ private:
 	sf::Vector2f direction;
 	float bulletSpeed = 2.f;
 	int damage;
-	sf::Sound bulletSound;
-	sf::SoundBuffer bulletSoundBuffer;
 public :
 	CBullet(int damaage, sf::Vector2f pos, sf::Vector2f dir, CAssetManager* assetss);
 	CBullet(int damaage, sf::Vector2f pos, sf::Vector2f dir, float bulletSpeed, CAssetManager* assetss); 

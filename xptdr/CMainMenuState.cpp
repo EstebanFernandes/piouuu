@@ -8,13 +8,10 @@ CMainMenuState::CMainMenuState(GameDataRef _data) : data(_data)
 
 void CMainMenuState::STEInit()
 {
-
-
 	data->assets.LoadFont("Lato", FONT_FILE_PATH); //Load la police d'écriture
 
 	data->assets.LoadTexture("Title",
-		MAIN_MENU_TITLE_PATH); // On charge les textures
-
+	MAIN_MENU_TITLE_PATH); // On charge les textures
 
 	CMMPlayButton.setFont(data->assets.GetFont("Lato"));
 	CMMPlayButton.setString("Jouer");
@@ -56,16 +53,6 @@ void CMainMenuState::STEInit()
 
 	CMMQuitButton.setPosition((data->assets.sCREEN_WIDTH / 2) - CMMQuitButton.getGlobalBounds().width / 2,
 		(data->assets.sCREEN_HEIGHT *0.8f));
-
-	if (menuMusic.openFromFile("res/sfx/musique_menu_test.wav"))
-	{
-		menuMusic.play();
-		menuMusic.setLoop(true);
-	}
-	else
-	{
-		std::cout << "Erreur lors du chargement de la musique des reglages." << std::endl;
-	}
 }
 
 void CMainMenuState::STEHandleInput()
@@ -75,22 +62,18 @@ void CMainMenuState::STEHandleInput()
 	{
 		if (sf::Event::Closed == event.type)
 		{
-			menuMusic.stop();
 			data->window.close();
 		}
 		if (data->inputs.IsTextClicked(CMMInfinitePlayButton, sf::Mouse::Left, data->window))
 		{
-			menuMusic.stop();
 			data->machine.AddState(StateRef(new CInfiniteGameState(data)), true);
 		}
 		if (data->inputs.IsTextClicked(CMMHowToPlay, sf::Mouse::Left, data->window))
 		{
-			menuMusic.stop();
 			data->machine.AddState(StateRef(new CClavierVirtuel(data, 2, 1)), true);
 		}
 		else if (data->inputs.IsTextClicked(CMMPlayButton, sf::Mouse::Left, data->window))
 		{
-			menuMusic.stop();
 			data->machine.AddState(StateRef(new CCharacterSelection(data)), true);
 		}
 		else if (data->inputs.IsTextClicked(CMMSettingsButton, sf::Mouse::Left, data->window))
@@ -99,7 +82,6 @@ void CMainMenuState::STEHandleInput()
 		}
 		else if (data->inputs.IsTextClicked(CMMQuitButton, sf::Mouse::Left, data->window))
 		{
-			menuMusic.stop();
 			data->window.close();
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11))

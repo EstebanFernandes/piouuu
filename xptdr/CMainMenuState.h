@@ -7,7 +7,6 @@
 #include <sstream>
 #include "CHugoDecrypte.h"
 #include "CCharacterSelection.h"
-#include"SFML/Audio.hpp"
 #include"EllipseShape.h"
 
 class CMainMenuState : public CState
@@ -15,7 +14,6 @@ class CMainMenuState : public CState
 private:
 	GameDataRef data;
 	sf::Clock CMMClock;
-	sf::Music menuMusic;
 	sf::Text CMMPlayButton;
 	sf::Text CMMHowToPlay;
 	sf::Text CMMSettingsButton;
@@ -29,10 +27,6 @@ public:
 	void STEHandleInput();
 	void STEUpdate(float delta);
 	void STEDraw(float delta);
-	void STEResume()
-	{
-		//CESTBON = false;
-	}
 	void resizeScreen();
 
 };
