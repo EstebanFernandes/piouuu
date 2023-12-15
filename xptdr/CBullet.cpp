@@ -1,6 +1,11 @@
 #include "CBullet.h"
 
 
+CBullet::CBullet()
+{
+
+}
+
 CBullet::CBullet(int damaage, sf::Vector2f pos, sf::Vector2f dir, CAssetManager* assetss)
 {
 	setType(FriendlyFire);

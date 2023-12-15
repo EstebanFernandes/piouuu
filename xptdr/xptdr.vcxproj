@@ -141,6 +141,7 @@
     <ClCompile Include="CBackground.cpp" />
     <ClCompile Include="CBullet.cpp" />
     <ClCompile Include="CButton.cpp" />
+    <ClCompile Include="CBulletAuto.cpp" />
     <ClCompile Include="CCard.cpp" />
     <ClCompile Include="CCardUpgrade.cpp" />
     <ClCompile Include="CCarousel.cpp" />
@@ -153,6 +154,7 @@
     <ClCompile Include="CGraphe.cpp" />
     <ClCompile Include="CGrapheUpdate.cpp" />
     <ClCompile Include="CHugoDecrypte.cpp" />
+    <ClCompile Include="CMiscellaneous.cpp" />
     <ClCompile Include="CMob.cpp" />
     <ClCompile Include="CEntity.cpp" />
     <ClCompile Include="CFile.cpp" />
@@ -198,6 +200,7 @@
     <ClInclude Include="CBackground.h" />
     <ClInclude Include="CBullet.h" />
     <ClInclude Include="CButton.h" />
+    <ClInclude Include="CBulletAuto.h" />
     <ClInclude Include="CCard.h" />
     <ClInclude Include="CCardUpgrade.h" />
     <ClInclude Include="CCarousel.h" />
@@ -210,6 +213,7 @@
     <ClInclude Include="CGraphe.h" />
     <ClInclude Include="CGrapheUpdate.h" />
     <ClInclude Include="CHugoDecrypte.h" />
+    <ClInclude Include="CMiscellaneous.h" />
     <ClInclude Include="CMob.h" />
     <ClInclude Include="CEntity.h" />
     <ClInclude Include="CFile.h" />

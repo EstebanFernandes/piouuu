@@ -21,7 +21,6 @@ protected:
 	CPlayer player1;
 	std::vector<CHittingEntity*> entityList;
 	int enemyNumber = 0;
-private:
 	//engine related
 	//Background related:
 	CBackground BG1;
@@ -54,6 +53,7 @@ public:
 	void renderBackground();
 	void STEDraw(float delta);
 	void STEResume();
+	void STEPause();
 	void setData(GameDataRef dataa) { data = dataa; }
 	GameDataRef getData();
 };

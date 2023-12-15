@@ -48,7 +48,7 @@ void ShootingEnemy::updateEntity(float delta)
 void ShootingEnemy::updatewPlayer(float delta, CPlayer& player)
 {
 	CEnemy::updatewPlayer(delta, player);
-	std::vector<CBullet>* bullets = BAW.getVector();
+	std::vector<CBulletAuto>* bullets = BAW.getVector();
 	size_t temp = bullets->size();
 	for (int i = 0; i < temp; i++) {
 		if (player.checkCollisions((*bullets)[i])) {

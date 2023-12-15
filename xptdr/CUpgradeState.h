@@ -4,25 +4,26 @@
 #include "CJeu.h"
 #include"CHugoDecrypte.h"
 #include"CCardUpgrade.h"
-#include"CCharacter.h"
 //état qui gère les améliorations du joueur 1
 class CUpgradeState : public CState
 {
 private:
 	GameDataRef data;
-
+	int nbOfGraph;
 	//Liste des graphes qui suivent les améliorations du joueur
 	std::vector<CGrapheUpdate>* Graphs;
 	//Pointeur sur le joueur afin d'accéder plus facilement à ces stats
 	CCharacter* pointerToPlayer1;
 	int levelofPlayer;
+	//Liste qui gère les améliorations une fois que l'on arrive à la fin d'un arbre
+	std::vector<std::string> listUpgradeMax;
 	CGrapheUpdate* currentGraph;
-	CSommetUpgrade* currentVert;
 	bool isFirstTime = false;
+
 	int hasPressedKey = 0;
 	//Graphique
 	std::vector<CCardUpgrade> CardList;
-
+	sf::Text title;
 	//Selection
 	int iCardSelection = 0;
 	int tailleAvantAjout = 0;
@@ -63,15 +64,15 @@ private:
 		Graphs->push_back(t);
 		currentGraph = (&(*Graphs)[Graphs->size()-1]);
 		levelofPlayer = pointerToPlayer1->getLevel();
-		currentVert = &currentGraph->GRAObtenirListeSommet()[0];
+		currentGraph->currentVert = &currentGraph->GRAObtenirListeSommet()[0];
 
 		int screen_Height = data->assets.sCREEN_HEIGHT;
 		int screen_Width = data->assets.sCREEN_WIDTH;
-		int nbofUpgrade = (int)currentVert->SOMLireArcPartant().size();
+		int nbofUpgrade = (int)currentGraph->currentVert->SOMLireArcPartant().size();
 		for (int i = 0; i < nbofUpgrade; i++)
 		{
 			sf::Vector2f pos;
-			int iDNextVert = (*currentVert).SOMLireArcPartant()[i].ARCObtenirDest();
+			int iDNextVert = (*currentGraph->currentVert).SOMLireArcPartant()[i].ARCObtenirDest();
 			CSommetUpgrade nextVert = currentGraph->GRAObtenirListeSommet()[iDNextVert];
 			CCardUpgrade temp(nextVert.returnValues(), r.returnGraphs()[i].ListeType, &(data->assets));
 			float ratio = 1 / (float)nbofUpgrade;
@@ -93,6 +94,8 @@ private:
 
 	void PremiereFois();
 	void PasPremiereFois();
+
+	void fillUpgrade(int nbofUpgrade);
 	//Méthodes et constructeurs
 	int whichKindofUpgrade() {
 		int temp = levelofPlayer;
@@ -105,12 +108,12 @@ private:
 	{
 		int screen_Height = data->assets.sCREEN_HEIGHT;
 		int screen_Width = data->assets.sCREEN_WIDTH;
-		int nbofUpgrade = (int)currentVert->SOMLireArcPartant().size();
+		int nbofUpgrade = (int)currentGraph->currentVert->SOMLireArcPartant().size();
 		for (int i = 0; i < nbofUpgrade; i++)
 		{
 			sf::Vector2f pos;
-			int iDNextVert = (*currentVert).SOMLireArcPartant()[i].ARCObtenirDest();
-			CSommetUpgrade nextVert = currentGraph->GRAObtenirListeSommet()[iDNextVert];
+			int iDNextVert = (*currentGraph->currentVert).SOMLireArcPartant()[i].ARCObtenirDest();
+			CSommetUpgrade nextVert = currentGraph->GRAObtenirListeSommet()[currentGraph->GRATrouverSommet(iDNextVert)];
 			CCardUpgrade temp(nextVert.returnValues(), type, &(data->assets));
 			float ratio = 1 / (float)nbofUpgrade;
 			//Distance qui n'est pas prise par les cartes
@@ -127,6 +130,7 @@ private:
 			CardList.push_back(temp);
 		}
 	}
+	void plusStats();
 public:
 	CUpgradeState(GameDataRef d, CCharacter* player, std::vector<CGrapheUpdate>* pointerToPlayerGraphs);
 	void STEInit(); 
@@ -134,4 +138,3 @@ public:
 	void STEUpdate(float delta);
 	void STEDraw(float delta);
 };
-

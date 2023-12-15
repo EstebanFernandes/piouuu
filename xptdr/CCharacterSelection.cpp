@@ -39,14 +39,6 @@ void CCharacterSelection::loadCharacters()
 		characterList[i - 1].setCharacterStats(maxHealthPointTemp, moveSpeedTemp, canonNumberTemp, damagePerBulletTemp, attackSpeedTemp, bulletSpeedTemp);
 
 	}
-
-	//ancienne
-	/*
-	for (int i = 0; i < charactersInfo.size(); i++) {
-		characterList.push_back(CCharacter(charactersInfo[i][1], charactersInfo[i][0], charactersInfo[i][2], charactersInfo[i][3]=="animated"));
-		data->assets.LoadTexture(charactersInfo[i][0], charactersInfo[i][1]);
-	}
-	*/
 }
 
 void CCharacterSelection::STEInit()
@@ -62,9 +54,9 @@ void CCharacterSelection::STEInit()
 	int maxPoint = (int)carousel.ellipse.getPointCount();
 	int nbCharacter = (int)characterList.size();
 
-	carousel.setSize(sf::Vector2f(500.f, 50.f));
+	carousel.setSize(sf::Vector2f(screenwidth*0.35f, screenwidth*0.03f));
 	sf::Vector2f carouselPos((float)screenwidth / 2 - carousel.ellipse.getGlobalBounds().width/2,
-		(float)screenheight * 0.05f);
+		(float)screenheight * 0.02f);
 	carousel.setCarouselPosition(carouselPos);
 	carousel.setEllipseVisibility(false);
 	for (int i = 0; i < characterList.size(); i++)
@@ -74,62 +66,66 @@ void CCharacterSelection::STEInit()
 		temp.setOutlineThickNess(10.f);
 		carousel.addCard(temp);
 	}
-
-	triangle1 = sf::CircleShape(80.f, 3);
-	triangle1.rotate(270.f);
-	triangle1.setFillColor(sf::Color::Color(64, 64, 64));
-	triangle1.setPosition(275.f, (float)screenheight/2);
-
-	triangle2 = sf::CircleShape(80.f, 3);
-	triangle2.rotate(90.f);
-	triangle2.setFillColor(sf::Color::Color(64, 64, 64));
-	triangle2.setPosition(275+320 +((float)screenwidth / 3.f),  screenheight/ 2.f);
+	chosenCharacter = characterList[0];
 }
 
 void CCharacterSelection::STEHandleInput()
 {
 	sf::Event event;
 	while (data->window.pollEvent(event)) {
-
-		//Pour pouvoir fermer la fenêtre
-		if (sf::Event::Closed == event.type) {
-			data->window.close();
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
-			data->machine.AddState(StateRef(new CTestGame(data,chosenCharacter)), true);
-		}
-		else if (event.type == sf::Event::KeyPressed)
+		switch (event.type)
 		{
-			if (event.key.code == sf::Keyboard::D)
+		case sf::Event::KeyPressed:
+		 if (event.key.code == sf::Keyboard::D)
 			{
-				currentCharacterIndex = (currentCharacterIndex + 1) % characterList.size();
-				chosenCharacter = characterList[currentCharacterIndex];
-				carousel.move(RightMove);
+				if (!carousel.isMoving)
+					isMovingLeft = true;
 			}
 			else if (event.key.code == sf::Keyboard::Q)
 			{
-				if (currentCharacterIndex == 0) {
-					currentCharacterIndex = (int)characterList.size() - 1;
-				}
-				else 
-					currentCharacterIndex = (currentCharacterIndex - 1) % characterList.size();
-				chosenCharacter = characterList[currentCharacterIndex];
-				carousel.move( LeftMove);
+				if (!carousel.isMoving)
+					isMovingRight = true;
 			}
+			else if (event.key.code == sf::Keyboard::Enter)
+			{
+			 if(!carousel.isMoving)
+				 data->machine.AddState(StateRef(new CTestGame(data, chosenCharacter)), true);
+			}
+			break;
+		case sf::Event::Closed:
+			data->window.close();
+			break;
 		}
 	}
 }
 
+
 void CCharacterSelection::STEUpdate(float delta)
 {
+	if (isMovingLeft)
+	{
+			currentCharacterIndex = (currentCharacterIndex + 1) % characterList.size();
+			chosenCharacter = characterList[currentCharacterIndex];
+			if (carousel.move(LeftMove))
+				isMovingLeft = false;
+	}
+	if (isMovingRight)
+	{
+			if (currentCharacterIndex == 0) {
+				currentCharacterIndex = (int)characterList.size() - 1;
+			}
+			else
+				currentCharacterIndex = (currentCharacterIndex - 1) % characterList.size();
+			chosenCharacter = characterList[currentCharacterIndex];
+			if (carousel.move(RightMove))
+				isMovingRight = false;
+	}
 	carousel.update(delta);
 }
 
 void CCharacterSelection::STEDraw(float delta)
 {
 	data->window.clear(sf::Color(174, 177, 184));
-	//data->window.draw(triangle1);
-	//data->window.draw(triangle2);
 	data->window.draw(carousel);
 	data->window.display();
 }

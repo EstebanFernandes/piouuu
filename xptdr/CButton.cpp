@@ -66,6 +66,34 @@ void CButton::setString(std::string strParam)
 	resizeText(text);
 }
 
+void CButton::setScale(sf::Vector2f scale)
+{
+	back.setScale(scale);
+	xSize = back.getGlobalBounds().width;
+	ySize = back.getGlobalBounds().height;
+	text.setScale(scale);
+	setPos(back.getPosition());
+}
+
+//void CButton::setCharacterSize(unsigned int charSize)
+//{
+//	unsigned int prevCharSize = text.getCharacterSize();
+//	int sum = 0;
+//	text.setCharacterSize(charSize);
+//	if (prevCharSize > charSize)
+//		sum++;
+//	else if (prevCharSize < charSize)
+//		sum--;
+//		while (text.getGlobalBounds().width * 0.95f >= back.getGlobalBounds().width)
+//		{
+//			back.setSize(sf::Vector2f(back.getSize().x + 1, back.getSize().y));
+//		}
+//		while (text.getGlobalBounds().width * 0.95f >= back.getGlobalBounds().width)
+//		{
+//			back.setSize(sf::Vector2f(back.getSize().x + 1, back.getSize().y));
+//		}
+//}
+
 void CButton::resizeText(sf::Text& textToResize)
 {
 	while (textToResize.getGlobalBounds().width >=

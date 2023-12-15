@@ -9,19 +9,19 @@
 #include "CCharacterSelection.h"
 #include"SFML/Audio.hpp"
 #include"EllipseShape.h"
+#include"CButton.h"
 
 class CMainMenuState : public CState
 {
 private:
+	int index;
 	GameDataRef data;
 	sf::Clock CMMClock;
-	sf::Music menuMusic;
-	sf::Text CMMPlayButton;
-	sf::Text CMMHowToPlay;
-	sf::Text CMMSettingsButton;
-	sf::Text CMMQuitButton;
-	sf::Text CMMInfinitePlayButton;
+	std::vector<CButton> buttons;
+	std::vector<float> where;
 	sf::Sprite CMMTitle;
+	void choosedButton();
+	void outline(int previndex);
 public:
 
 	CMainMenuState(GameDataRef _data);

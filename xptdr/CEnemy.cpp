@@ -114,7 +114,9 @@ void CEnemy::updatewPlayer(float delta, CPlayer& player)
 		else if (isHitting == true)
 			isHitting = false;
 	}
-	std::vector<CBullet>* guns = player.getBAW()->getVector();
+	//Ici on regarde le type 
+
+	std::vector<CBulletAuto>* guns = player.getBAW()->getVector();
 	size_t temp =guns->size();
 	for (size_t i = 0; i < temp; i++)
 	{
@@ -235,6 +237,7 @@ void CEnemy::renderEntity(sf::RenderTarget& target)
 	if(isDead==false)
 		renderTheEntity(target);
 	else{
+		//std::cout << r << std::endl;
 		target.draw(explosionSprite);
 	}
 }

@@ -63,7 +63,10 @@ public:
 	bool checkGlobalCollisions() {
 		if(type!=Gunslinger)
 		{ 
-			if (ENTsprite.getGlobalBounds().left + ENTsprite.getGlobalBounds().width<0 || ENTsprite.getGlobalBounds().left>assets->sCREEN_WIDTH)
+			if (ENTsprite.getGlobalBounds().left + ENTsprite.getGlobalBounds().width<0 ||
+				ENTsprite.getGlobalBounds().left>assets->sCREEN_WIDTH ||
+				ENTsprite.getGlobalBounds().top+ENTsprite.getGlobalBounds().height < 0
+				|| ENTsprite.getGlobalBounds().top>assets->sCREEN_HEIGHT)
 				return true;
 			return false;
 		}

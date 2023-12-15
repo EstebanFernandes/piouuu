@@ -48,7 +48,7 @@ public:
 		pos = r;
 		cardBack.setPosition(pos);
 		cardTitle.setPosition(pos.x + (xSize - cardTitle.getGlobalBounds().width) / 2, pos.y);
-		cardImage.setPosition(pos.x + ((xSize - cardImage.getGlobalBounds().height) / 2.0f), pos.y + ySize / 2);
+		cardImage.setPosition(pos.x + xSize / 2.f - cardImage.getGlobalBounds().width / 2.f, pos.y + ySize/2.f - cardImage.getGlobalBounds().height/ 2.f);
 		cardDescription.setPosition(pos.x + (xSize - cardDescription.getGlobalBounds().width) / 2, pos.y + ySize * 0.6f);
 	}
 	void setScale(sf::Vector2f scale)
