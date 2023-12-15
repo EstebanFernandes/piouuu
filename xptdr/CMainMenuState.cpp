@@ -14,11 +14,10 @@ void CMainMenuState::STEInit()
 	data->assets.LoadTexture("Title",
 		MAIN_MENU_TITLE_PATH); // On charge les textures
 
-	sf::Text temp;
-	temp.setFont(data->assets.GetFont("Lato"));
+	CButton temp = CButton(data);
 	temp.setString("Jouer");
-	temp.setCharacterSize(50);
-	temp.setPosition((data->assets.sCREEN_WIDTH / 2) - temp.getGlobalBounds().width / 2,
+	temp.setSize(data->assets.sCREEN_WIDTH * 0.15f, data->assets.sCREEN_HEIGHT * 0.1f);
+	temp.setPos((data->assets.sCREEN_WIDTH / 2) - temp.getGlobalBounds().width / 2,
 		(data->assets.sCREEN_HEIGHT * 0.2f));
 	where.push_back(0.2f);
 	buttons.push_back(temp);
@@ -26,29 +25,28 @@ void CMainMenuState::STEInit()
 
 
 	temp.setString("Mode infini");
-	temp.setCharacterSize(50);
-	temp.setPosition((data->assets.sCREEN_WIDTH / 2) - temp.getGlobalBounds().width / 2,
+	temp.setPos((data->assets.sCREEN_WIDTH / 2) - temp.getGlobalBounds().width / 2,
 		data->assets.sCREEN_HEIGHT * 0.35f);
 	where.push_back(0.35f);
 	buttons.push_back(temp);
 
 	temp.setString("Comment jouer");
-	temp.setCharacterSize(50);
-	temp.setPosition((data->assets.sCREEN_WIDTH / 2) - temp.getGlobalBounds().width / 2,
+	//temp.setCharacterSize(50);
+	temp.setPos((data->assets.sCREEN_WIDTH / 2) - temp.getGlobalBounds().width / 2,
 		data->assets.sCREEN_HEIGHT * 0.5f);
 	where.push_back(0.5f);
 	buttons.push_back(temp);
 
 	temp.setString("Reglages");
-	temp.setCharacterSize(50);
-	temp.setPosition((data->assets.sCREEN_WIDTH / 2) - (temp.getGlobalBounds().width / 2),
+	//temp.setCharacterSize(50);
+	temp.setPos((data->assets.sCREEN_WIDTH / 2) - (temp.getGlobalBounds().width / 2),
 		data->assets.sCREEN_HEIGHT * 0.65f);
 	where.push_back(0.65f);
 	buttons.push_back(temp);
 
 	temp.setString("Quitter");
-	temp.setCharacterSize(50);
-	temp.setPosition((data->assets.sCREEN_WIDTH / 2) - temp.getGlobalBounds().width / 2,
+	//temp.setCharacterSize(50);
+	temp.setPos((data->assets.sCREEN_WIDTH / 2) - temp.getGlobalBounds().width / 2,
 		(data->assets.sCREEN_HEIGHT * 0.8f));
 	where.push_back(0.8f);
 	buttons.push_back(temp);
@@ -118,7 +116,7 @@ void CMainMenuState::resizeScreen()
 	for (int i = 0; i < buttons.size(); i++)
 	{
 		buttons[i].setScale(scale);
-		buttons[i].setPosition((data->assets.sCREEN_WIDTH / 2) - buttons[i].getGlobalBounds().width / 2,
+		buttons[i].setPos((data->assets.sCREEN_WIDTH / 2) - buttons[i].getGlobalBounds().width / 2,
 			(data->assets.sCREEN_HEIGHT *where[i]));
 	}
 }
@@ -136,7 +134,7 @@ void CMainMenuState::choosedButton()
 	case 1:
 		data->machine.AddState(StateRef(new CInfiniteGameState(data)), true);
 	case 2:
-		data->machine.AddState(StateRef(new CClavierVirtuel(data, 2, 1)), true);
+		//data->machine.AddState(StateRef(new CClavierVirtuel(data, 2, 1)), true);
 		break;
 	case 3:
 		data->machine.AddState(StateRef(new CSettingState(data)), false);
@@ -155,7 +153,7 @@ void CMainMenuState::outline(int previndex)
 		
 		break;
 	case 1:
-		data->machine.AddState(StateRef(new CClavierVirtuel(data, 2, 1)), true);
+		//data->machine.AddState(StateRef(new CClavierVirtuel(data, 2, 1)), true);
 	case 2:
 		data->machine.AddState(StateRef(new CInfiniteGameState(data)), true);
 		break;

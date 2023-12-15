@@ -101,10 +101,6 @@ void CGameState::STEHandleInput()
 		}if (event.type == sf::Event::KeyReleased) {
 			if (event.key.code == sf::Keyboard::Escape)
 			{
-				sf::Texture texture;
-				texture.create(data->assets.sCREEN_WIDTH, data->assets.sCREEN_HEIGHT);
-				texture.update(data->window);
-				data->assets.LoadTexture("pauseScreen", texture);
 				data->machine.AddState(StateRef(new CGameMenu(data)), false);
 			}
 		}

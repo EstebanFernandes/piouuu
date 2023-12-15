@@ -9,6 +9,7 @@
 #include "CCharacterSelection.h"
 #include"SFML/Audio.hpp"
 #include"EllipseShape.h"
+#include"CButton.h"
 
 class CMainMenuState : public CState
 {
@@ -16,7 +17,7 @@ private:
 	int index;
 	GameDataRef data;
 	sf::Clock CMMClock;
-	std::vector<sf::Text> buttons;
+	std::vector<CButton> buttons;
 	std::vector<float> where;
 	sf::Sprite CMMTitle;
 	void choosedButton();

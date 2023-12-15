@@ -31,12 +31,12 @@ private:
 	sf::Clock barClock;
 	unsigned int stringPosition;
 	bool cancel = false;
-	bool ok = false;
 	sf::RectangleShape bar;
-	int score;
+	float score;
 	int rank;
+	std::string* playerName;
 public:
-	CClavierVirtuel(GameDataRef _data, int scoreParam, int rankParam);
+	CClavierVirtuel(GameDataRef _data, float scoreParam, int rankParam, std::string &playerNameParam);
 	void keyboardInit();
 	void STEInit();
 	void STEHandleInput();

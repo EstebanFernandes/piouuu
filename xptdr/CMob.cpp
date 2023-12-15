@@ -12,8 +12,10 @@ void CMob::updateStates(CCharacter characterParam)
 	name = characterParam.getName();
 	description = characterParam.getDescription();
 	//Character related
-	level = characterParam.getLevel();
-	xp = characterParam.getXp();
+
+	//On remet l'xp et le level à 0
+	level = 0;
+	xp = 0;
 	maxXp = characterParam.getMaxXp();
 	healthPoint = characterParam.getLifePoint();
 	maxHealthPoint = characterParam.getMaxHealth();

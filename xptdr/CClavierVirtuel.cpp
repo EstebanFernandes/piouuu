@@ -1,9 +1,10 @@
 #include "CClavierVirtuel.h"
 
-CClavierVirtuel::CClavierVirtuel(GameDataRef _data, int scoreParam, int rankParam) : data(_data)
+CClavierVirtuel::CClavierVirtuel(GameDataRef _data, float scoreParam, int rankParam, std::string &playerNameParam) : data(_data)
 {
 	score = scoreParam;
 	rank = rankParam;
+	playerName = &playerNameParam;
 }
 
 void CClavierVirtuel::keyboardInit()
@@ -221,7 +222,7 @@ void CClavierVirtuel::UpdateText()
 		cancel = true;
 		break;
 	case '²':
-		ok = true;
+		data->machine.RemoveState();
 		break;
 	case 'à':
 
@@ -280,6 +281,7 @@ void CClavierVirtuel::UpdateText()
 		}
 	}
 	nameText.setString(name);
+	*playerName = name;
 }
 
 void CClavierVirtuel::drawBar()

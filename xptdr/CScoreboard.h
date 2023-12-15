@@ -1,18 +1,33 @@
 #pragma once
-#include "CState.h"
+#include <SFML/Graphics.hpp>
+#include <vector>
+#include <sstream>
+#include "CAssetManager.h"
 #include "CParserCSV.h"
-#include "CJeu.h"
 
-class CScoreboard : public CState
+class CScoreboard : public sf::Drawable
 {
 private:
-	GameDataRef data;
+	CAssetManager* asset;
+	int boldRank;
+
+	sf::RectangleShape scoreboardBack;
+	sf::Vector2f pos;
+
+	std::vector<sf::Text> textToDisplay;
+
+	float xSize;
+	float ySize;
 public:
-	CScoreboard(GameDataRef _data);
-	CScoreboard(GameDataRef _data, int score);
-	void STEInit();
-	void STEHandleInput();
-	void STEUpdate(float delta);
-	void STEDraw(float delta); // différence entre les frames
+	CScoreboard();
+	CScoreboard(CAssetManager* assetParam, int boldRank);
+	CScoreboard(CAssetManager* assetParam, float x, float y, int boldRank);
+	void Drawable::draw(sf::RenderTarget& target, sf::RenderStates states) const;
+
+	void setSize(float xSizeParam, float ySizeParam);
+	void setPosAuto();
+	void initText();
+	float getWidth();
+	float getHeight();
 };
 
