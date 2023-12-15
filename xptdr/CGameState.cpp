@@ -113,16 +113,30 @@ void CGameState::STEHandleInput()
 
 }
 
-void CGameState::addEnemy()
+void CGameState::addEnemy(std::string enemyName)
 {
-	entityList.push_back(new CEnemy(&(data->assets)));
-	enemyNumber++;
+	if (enemyName == "roaming") {
+		RoamingEnnemy* enemy = new RoamingEnnemy(&(data->assets));
+		entityList.push_back(enemy);
+		enemyNumber++;
+	}
+	else if (enemyName == "shooter") {
+		ShootingEnemy* enemy = new ShootingEnemy(&(data->assets));
+		entityList.push_back(enemy);
+		enemyNumber++;
+	}
+	else {
+		std::cout << "tentative d'invocation d'un ennemi qui n'existe pas";
+	}
+	
+	
 }
 
 
 void CGameState::STEUpdate(float delta)
 {
 	updateBackground(delta);
+
 	//On check d'abord les collisions entre le joueur et les entités. ensuite on update
 	size_t temp = entityList.size();
 	player1.updateEntity(delta);
@@ -287,8 +301,10 @@ void CGameState::initEnemy()
 
 void CGameState::deleteEntity(int& i)
 {
-	if (entityList[i]->getType() == 1)
+	if (entityList[i]->getType() == 1) {
 		enemyNumber--;
+		
+	}
 	delete entityList[i];
 	entityList.erase(entityList.begin() + i);
 	if (i != 0)
@@ -324,6 +340,11 @@ void CGameState::STEResume()
 	gameClock.restart();
 	CESTBON = false;
 	player1.resetMovement();
+}
+
+GameDataRef CGameState::getData()
+{
+	return data;
 }
 
 

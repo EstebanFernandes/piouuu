@@ -37,7 +37,7 @@ void CButton::setSize(float xSizeParam, float ySizeParam)
 void CButton::setPos(float xParam, float yParam)
 {
 	back.setPosition(sf::Vector2f(xParam, yParam));
-	text.setPosition(xParam + (back.getGlobalBounds().width - text.getLocalBounds().getSize().x) / 2.5f, yParam + (back.getGlobalBounds().height - text.getLocalBounds().getSize().y) / 2.5f);
+	text.setPosition(xParam + (back.getGlobalBounds().width - text.getLocalBounds().getSize().x) / 2.f, yParam + (back.getGlobalBounds().height - text.getLocalBounds().getSize().y) / 2.f);
 }
 
 void CButton::setColor(sf::Color colorParam)
@@ -94,7 +94,7 @@ void CButton::resizeText(sf::Text& textToResize)
 			}
 		}
 	}
-	text.setPosition(back.getPosition().x + (back.getGlobalBounds().width - text.getGlobalBounds().width) / 2.5f, back.getPosition().y + (back.getGlobalBounds().height - text.getGlobalBounds().height) / 2.5f);
+	text.setPosition(back.getPosition().x + (back.getGlobalBounds().width - text.getGlobalBounds().width) / 2.f, back.getPosition().y + (back.getGlobalBounds().height - text.getGlobalBounds().height) / 2.f);
 
 }
 

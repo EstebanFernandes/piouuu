@@ -1,5 +1,10 @@
 #include "CEnemy.h"
 
+/*
+CEnemy::CEnemy()
+{
+}
+
 CEnemy::CEnemy(CAssetManager* a)
 {
 	setType(Enemy);
@@ -11,6 +16,7 @@ CEnemy::CEnemy(CAssetManager* a)
 	initStat();
 	initPositionX = (float)assets->sCREEN_WIDTH;
 	setSprite();
+	std::cout << "bah oui !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
 }
 CEnemy::CEnemy(float xcoordinate, CAssetManager* a) 
 {
@@ -23,7 +29,7 @@ CEnemy::CEnemy(float xcoordinate, CAssetManager* a)
 	initStat();
 	setSprite();
 }
-
+*/
 void CEnemy::initAnimation()
 {
 	CAssetManager &a = *assets;
@@ -31,6 +37,45 @@ void CEnemy::initAnimation()
 	explosionSprite.setTexture(a.GetTexture("explosion"));
 	explosionSprite.setTextureRect(currentFrame);
 	explosionSprite.setScale(0.1f, 0.1f);
+}
+
+/*
+CEnemy::CEnemy(CAssetManager* a, std::string nameParam, std::string imageFileParam)
+{
+	setType(Enemy);
+	assets = a;
+	a->LoadTexture(enemyName, imageFile);
+	getSprite().setTexture((a->GetTexture(enemyName)));
+	getSprite().setScale(0.2f, 0.2f);
+	initAnimation();
+	initStat();
+	initPositionX = (float)assets->sCREEN_WIDTH;
+	setSprite();
+}
+*/
+
+void CEnemy::initEnnemy(CAssetManager* a)
+{
+	setType(Enemy);
+	assets = a;
+	imageName = "enemyImage";
+	setTexture(imageName, ENEMYPNG_FILEPATH);
+	getSprite().setScale(0.2f, 0.2f);
+	initAnimation();
+	initStat();
+	setSprite();
+}
+
+void CEnemy::initEnnemy(CAssetManager* a, std::string nameParam, std::string imageFileParam)
+{
+	setType(Enemy);
+	assets = a;
+	a->LoadTexture(enemyName, imageFile);
+	getSprite().setTexture((a->GetTexture(enemyName)));
+	getSprite().setScale(0.2f, 0.2f);
+	initAnimation();
+	initStat();
+	setSprite();
 }
 
 
@@ -96,6 +141,11 @@ void CEnemy::updatewPlayer(float delta, CPlayer& player)
 			player.addToScore(scoreGived);
 		}
 	}
+}
+
+bool CEnemy::getIsAShooter()
+{
+	return isAShooter;
 }
 
 
@@ -185,11 +235,10 @@ void CEnemy::renderEntity(sf::RenderTarget& target)
 	if(isDead==false)
 		renderTheEntity(target);
 	else{
-		std::cout << r << std::endl;
 		target.draw(explosionSprite);
 	}
 }
-
+/*
 void CEnemy::updateMovement(float delta)
 {
 		if (checkGlobalCollisions())
@@ -200,3 +249,4 @@ void CEnemy::updateMovement(float delta)
 
 
 }
+*/

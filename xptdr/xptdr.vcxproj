@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="CAnimation.cpp" />
     <ClCompile Include="CArc.cpp" />
     <ClCompile Include="CAssetManager.cpp" />
@@ -186,8 +187,11 @@
     <ClCompile Include="lifeBarForEntity.cpp" />
     <ClCompile Include="lifeForEntity.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="RoamingEnnemy.cpp" />
+    <ClCompile Include="ShootingEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Boss.h" />
     <ClInclude Include="CAnimation.h" />
     <ClInclude Include="CArc.h" />
     <ClInclude Include="CAssetManager.h" />
@@ -240,6 +244,8 @@
     <ClInclude Include="EllipseShape.h" />
     <ClInclude Include="lifeBarForEntity.h" />
     <ClInclude Include="lifeForEntity.h" />
+    <ClInclude Include="RoamingEnnemy.h" />
+    <ClInclude Include="ShootingEnemy.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragbandw.frag" />

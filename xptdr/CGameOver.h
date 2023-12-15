@@ -40,8 +40,6 @@ public:
 		character = characterParam;
 		score = scoreParam;
 		askedScore = false;
-		setRank();
-		updateCharacter();
 	}
 	void STEInit();
 	void STEHandleInput();
@@ -53,6 +51,9 @@ public:
 template <class MType>
 void CGameOver<MType>::STEInit()
 {
+	setRank();
+	updateCharacter();
+
 	sf::RenderWindow& Renderwindow = data->window;
 	sf::Texture textur;
 	textur.create(Renderwindow.getSize().x, Renderwindow.getSize().y);
