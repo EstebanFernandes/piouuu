@@ -223,7 +223,7 @@
       <Filter>Fichiers sources\Ennemies</Filter>
     </ClCompile>
     <ClCompile Include="Boss.cpp">
-      <Filter>Fichiers d%27en-tête\Ennemies</Filter>
+      <Filter>Fichiers sources\Ennemies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
