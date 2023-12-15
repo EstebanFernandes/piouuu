@@ -44,7 +44,11 @@ void CTestGame::STEHandleInput()
 			}
 			if (event.key.code == sf::Keyboard::A)
 			{
-				addEnemy();
+				addEnemy("roaming");
+			}
+			if (event.key.code == sf::Keyboard::E)
+			{
+				addEnemy("shooter");
 			}
 			if (event.key.code == sf::Keyboard::T)
 

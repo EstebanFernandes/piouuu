@@ -76,6 +76,11 @@ void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage)
 
 void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage, float bulletSpeed)
 {
+	iNeedMoreBullets(pos, damage, bulletSpeed, sf::Vector2f(1.f, 0.f));
+}
+
+void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage, float bulletSpeed, sf::Vector2f dir)
+{
 	std::bitset<nbAim> temp = std::bitset<nbAim>(typeTir);
 	//magazine.push_back(CBullet(damage, pos, sf::Vector2f(1, 0), assets));
 	for (int i = 0; i < temp.size(); i++)
@@ -84,7 +89,7 @@ void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage, float bulletSpe
 		{
 			switch (i) {
 			case classic:
-				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, 0.f), assets));
+				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, dir, assets));
 				break;
 			case doubleTirs1:
 				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, 0.75f), assets));
@@ -92,9 +97,9 @@ void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage, float bulletSpe
 				break;
 			case doubleTirs2:
 				pos.y += 3.f;
-				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, 0.f),  assets));
+				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, 0.f), assets));
 				pos.y -= 6.f;
-				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, 0.f),  assets));
+				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, 0.f), assets));
 				break;
 			case gunshotAim:
 				//magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 1.f), bulletSpeed, gunshotDistance, assets));

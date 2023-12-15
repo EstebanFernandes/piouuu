@@ -39,8 +39,6 @@ public:
 		character = characterParam;
 		score = scoreParam;
 		askedScore = false;
-		setRank();
-		updateCharacter();
 	}
 	void STEInit();
 	void STEHandleInput();
@@ -52,6 +50,8 @@ public:
 template <class MType>
 void CGameOver<MType>::STEInit()
 {
+	setRank();
+	updateCharacter();
 	texta.create(data->window.getSize().x, data->window.getSize().y);
 	texta.update(data->window);
 	if (!Shader.loadFromFile("vertexbandw.vert", "fragbandw.frag"))
@@ -220,6 +220,7 @@ inline void CGameOver<MType>::setRank()
 		std::cout << "score : " << score << ", ton rang : " << rank << " (c'est naze)" << std::endl;
 	}
 	else {
+		rank = index + 2;
 		//T'ES NUL, pas top 100
 	}
 }

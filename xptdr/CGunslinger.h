@@ -39,6 +39,7 @@ public:
 	void updateCollision(CEntity& b);
 	void iNeedMoreBullets(sf::Vector2f pos, int damage);
 	void iNeedMoreBullets(sf::Vector2f pos, int damage,float bulletSpeed);
+	void iNeedMoreBullets(sf::Vector2f pos, int damage, float bulletSpeed, sf::Vector2f dir);
 
 	//Spécialement pour les balles autoguidés
 	void changeTarget(CMob* r) {       
