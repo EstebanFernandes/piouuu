@@ -7,6 +7,7 @@
 #include <sstream>
 #include "CHugoDecrypte.h"
 #include "CCharacterSelection.h"
+#include"SFML/Audio.hpp"
 #include"EllipseShape.h"
 #include"CButton.h"
 
@@ -28,7 +29,10 @@ public:
 	void STEHandleInput();
 	void STEUpdate(float delta);
 	void STEDraw(float delta);
+	void STEResume()
+	{
+		//CESTBON = false;
+	}
 	void resizeScreen();
 
 };
-

@@ -12,8 +12,15 @@ void CMainMenuState::STEInit()
 	data->assets.LoadFont("Lato", FONT_FILE_PATH); //Load la police d'écriture
 
 	data->assets.LoadTexture("Title",
-	MAIN_MENU_TITLE_PATH); // On charge les textures
+		MAIN_MENU_TITLE_PATH); // On charge les textures
 
+	CButton temp = CButton(data);
+	temp.setString("Jouer");
+	temp.setSize(data->assets.sCREEN_WIDTH * 0.15f, data->assets.sCREEN_HEIGHT * 0.1f);
+	temp.setPos((data->assets.sCREEN_WIDTH / 2) - temp.getGlobalBounds().width / 2,
+		(data->assets.sCREEN_HEIGHT * 0.2f));
+	where.push_back(0.2f);
+	buttons.push_back(temp);
 
 
 
@@ -37,18 +44,18 @@ void CMainMenuState::STEInit()
 	where.push_back(0.65f);
 	buttons.push_back(temp);
 
-	CMMQuitButton.setPosition((data->assets.sCREEN_WIDTH / 2) - CMMQuitButton.getGlobalBounds().width / 2,
-		(data->assets.sCREEN_HEIGHT *0.8f));
+	temp.setString("Quitter");
+	//temp.setCharacterSize(50);
+	temp.setPos((data->assets.sCREEN_WIDTH / 2) - temp.getGlobalBounds().width / 2,
+		(data->assets.sCREEN_HEIGHT * 0.8f));
+	where.push_back(0.8f);
+	buttons.push_back(temp);
 
-	if (menuMusic.openFromFile("res/sfx/musique_menu_test.wav"))
-	{
-		menuMusic.play();
-		menuMusic.setLoop(true);
-	}
-	else
-	{
-		std::cout << "Erreur lors du chargement de la musique des reglages." << std::endl;
-	}
+	CMMTitle.setTexture(data->assets.GetTexture("Title")); // On les appliques
+
+	CMMTitle.setPosition((data->assets.sCREEN_WIDTH / 2) - CMMTitle.getGlobalBounds().width / 2,
+		CMMTitle.getGlobalBounds().height * 0.7f);
+	buttons[index].setOutlineThickness(3.f);
 }
 
 void CMainMenuState::STEHandleInput()
@@ -58,39 +65,29 @@ void CMainMenuState::STEHandleInput()
 	{
 		int previousSelec = index;
 		if (sf::Event::Closed == event.type)
-		{
-			menuMusic.stop();
 			data->window.close();
 		else if (event.type == sf::Event::KeyPressed)
 		{
-			menuMusic.stop();
-			data->machine.AddState(StateRef(new CInfiniteGameState(data)), true);
-		}
-		if (data->inputs.IsTextClicked(CMMHowToPlay, sf::Mouse::Left, data->window))
-		{
-			menuMusic.stop();
-			std::string test;
-			data->machine.AddState(StateRef(new CClavierVirtuel(data, 2, 1, test)), false);
-		}
-		else if (data->inputs.IsTextClicked(CMMPlayButton, sf::Mouse::Left, data->window))
-		{
-			menuMusic.stop();
-			data->machine.AddState(StateRef(new CCharacterSelection(data)), true);
-		}
-		else if (data->inputs.IsTextClicked(CMMSettingsButton, sf::Mouse::Left, data->window))
-		{
-			data->machine.AddState(StateRef(new CSettingState(data)), false);
-		}
-		else if (data->inputs.IsTextClicked(CMMQuitButton, sf::Mouse::Left, data->window))
-		{
-			menuMusic.stop();
-			data->window.close();
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11))
-		{
-			data->assets.changeScreenType(data->window, data->isFullScreen);
-			resizeScreen();
-		}
+			if (event.key.code == sf::Keyboard::Z)
+			{
+				if (index == 0) {
+					index = (int)buttons.size() - 1;
+				}
+				else {
+					index = (index - 1) % buttons.size();
+				}
+			}
+			else if (event.key.code == sf::Keyboard::S)
+			{
+				index = (index + 1) % buttons.size();
+			}
+			else if (event.key.code == sf::Keyboard::Enter)
+				choosedButton();
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11))
+			{
+				data->assets.changeScreenType(data->window, data->isFullScreen);
+				resizeScreen();
+			}
 			buttons[previousSelec].setOutlineThickness(0.f);
 			buttons[index].setOutlineThickness(3.f);
 		}
@@ -104,23 +101,23 @@ void CMainMenuState::STEHandleInput()
 void CMainMenuState::resizeScreen()
 {
 	sf::Vector2f scale;
-		if(data->assets.sCREEN_WIDTH == 1920)
-		{
-			scale.x = data->assets.sCREEN_WIDTH / 1280.f;
-			scale.y = data->assets.sCREEN_HEIGHT / 720.f;
-		}
-		else {
-			scale.x =  1280.f/ data->assets.sCREEN_WIDTH;
-			scale.y = 720.f/ data->assets.sCREEN_HEIGHT;
-		}
-		CMMTitle.setScale(scale);
+	if (data->assets.sCREEN_WIDTH == 1920)
+	{
+		scale.x = data->assets.sCREEN_WIDTH / 1280.f;
+		scale.y = data->assets.sCREEN_HEIGHT / 720.f;
+	}
+	else {
+		scale.x = 1280.f / data->assets.sCREEN_WIDTH;
+		scale.y = 720.f / data->assets.sCREEN_HEIGHT;
+	}
+	CMMTitle.setScale(scale);
 	CMMTitle.setPosition((data->assets.sCREEN_WIDTH / 2) - CMMTitle.getGlobalBounds().width / 2,
 		CMMTitle.getGlobalBounds().height * 0.7f);
 	for (int i = 0; i < buttons.size(); i++)
 	{
 		buttons[i].setScale(scale);
 		buttons[i].setPos((data->assets.sCREEN_WIDTH / 2) - buttons[i].getGlobalBounds().width / 2,
-			(data->assets.sCREEN_HEIGHT *where[i]));
+			(data->assets.sCREEN_HEIGHT * where[i]));
 	}
 }
 
@@ -153,7 +150,7 @@ void CMainMenuState::outline(int previndex)
 {
 	switch (index) {
 	case 0:
-		
+
 		break;
 	case 1:
 		//data->machine.AddState(StateRef(new CClavierVirtuel(data, 2, 1)), true);
@@ -178,5 +175,3 @@ void CMainMenuState::STEDraw(float delta)
 		data->window.draw(buttons[i]);
 	data->window.display();
 }
-
-
