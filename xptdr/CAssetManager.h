@@ -1,6 +1,7 @@
 #pragma once
 #include <map>
 #include <SFML/Graphics.hpp>
+#include "Cmusique.h"
 //La classe assetmanager est partagé par toutes les entités qui doivent avoir des sprites, donc c'est également ici que l'on met la taille de l'écran
 class CAssetManager
 {
@@ -8,6 +9,7 @@ class CAssetManager
 private:
 	std::map<std::string, sf::Texture> Textures;
 	std::map<std::string, sf::Font> Fonts;
+	Cmusique musiqueManager;
 public:
 	// Oui les deux attributs sont en public, force à nous la moindre erreur dans le code l'écran ressemble plus à rien
 	int sCREEN_WIDTH= 1280;
