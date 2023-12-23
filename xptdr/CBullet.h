@@ -5,11 +5,12 @@
 
 class CBullet : public CEntity
 {
-private:
+protected:
 	sf::Vector2f direction;
 	float bulletSpeed = 2.f;
 	int damage;
 public :
+	CBullet();
 	CBullet(int damaage, sf::Vector2f pos, sf::Vector2f dir, CAssetManager* assetss);
 	CBullet(int damaage, sf::Vector2f pos, sf::Vector2f dir, float bulletSpeed, CAssetManager* assetss); 
 	void setSprite();

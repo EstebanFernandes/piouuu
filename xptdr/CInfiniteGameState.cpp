@@ -37,7 +37,7 @@ void CInfiniteGameState::STEUpdate(float delta)
 {
 	while(enemyNumber < 2 + (1 * player1.getLevel()))
 	{
-		addEnemy();
+		addEnemy("roaming");
 	}
 	CGameState::STEUpdate(delta);
 	if (player1.needDelete == true)

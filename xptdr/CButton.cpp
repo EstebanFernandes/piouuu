@@ -37,7 +37,7 @@ void CButton::setSize(float xSizeParam, float ySizeParam)
 void CButton::setPos(float xParam, float yParam)
 {
 	back.setPosition(sf::Vector2f(xParam, yParam));
-	text.setPosition(xParam + (back.getGlobalBounds().width - text.getLocalBounds().getSize().x) / 2.5f, yParam + (back.getGlobalBounds().height - text.getLocalBounds().getSize().y) / 2.5f);
+	text.setPosition(xParam + (back.getGlobalBounds().width - text.getLocalBounds().getSize().x) / 2.f, yParam + (back.getGlobalBounds().height - text.getLocalBounds().getSize().y) / 2.f);
 }
 
 void CButton::setColor(sf::Color colorParam)
@@ -65,6 +65,34 @@ void CButton::setString(std::string strParam)
 	text.setString(strParam);
 	resizeText(text);
 }
+
+void CButton::setScale(sf::Vector2f scale)
+{
+	back.setScale(scale);
+	xSize = back.getGlobalBounds().width;
+	ySize = back.getGlobalBounds().height;
+	text.setScale(scale);
+	setPos(back.getPosition());
+}
+
+//void CButton::setCharacterSize(unsigned int charSize)
+//{
+//	unsigned int prevCharSize = text.getCharacterSize();
+//	int sum = 0;
+//	text.setCharacterSize(charSize);
+//	if (prevCharSize > charSize)
+//		sum++;
+//	else if (prevCharSize < charSize)
+//		sum--;
+//		while (text.getGlobalBounds().width * 0.95f >= back.getGlobalBounds().width)
+//		{
+//			back.setSize(sf::Vector2f(back.getSize().x + 1, back.getSize().y));
+//		}
+//		while (text.getGlobalBounds().width * 0.95f >= back.getGlobalBounds().width)
+//		{
+//			back.setSize(sf::Vector2f(back.getSize().x + 1, back.getSize().y));
+//		}
+//}
 
 void CButton::resizeText(sf::Text& textToResize)
 {
@@ -94,7 +122,7 @@ void CButton::resizeText(sf::Text& textToResize)
 			}
 		}
 	}
-	text.setPosition(back.getPosition().x + (back.getGlobalBounds().width - text.getGlobalBounds().width) / 2.5f, back.getPosition().y + (back.getGlobalBounds().height - text.getGlobalBounds().height) / 2.5f);
+	text.setPosition(back.getPosition().x + (back.getGlobalBounds().width - text.getGlobalBounds().width) / 2.f, back.getPosition().y + (back.getGlobalBounds().height - text.getGlobalBounds().height) / 2.f);
 
 }
 

@@ -7,14 +7,13 @@
 class CCharacterSelection : public CState
 {
 private :
+	bool isMovingRight = false;
+	bool isMovingLeft = false;
 	GameDataRef data;
 	std::vector<CCharacter> characterList;
 	int currentCharacterIndex;
 	CCharacter chosenCharacter;
 	CCarousel carousel;
-
-	sf::CircleShape triangle1;
-	sf::CircleShape triangle2;
 
 public:
 	// Constructeur
@@ -26,4 +25,3 @@ public:
 	void STEUpdate(float delta);
 	void STEDraw(float delta);
 };
-

@@ -25,9 +25,11 @@ protected :
 	float bulletSpeed;
 
 	//Misc
-	std::vector<std::string> specificites;
 
 public:
+	//static const std::vector<std::string> typeString;
+	int nbspecifities = 0;
+	std::vector<std::string> specificites;
 	CCharacter(std::string imagePathParam, std::string nameParam, std::string descriptionParam, bool animated);
 	CCharacter();
 

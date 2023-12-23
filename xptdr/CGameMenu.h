@@ -8,6 +8,7 @@ private:
 	GameDataRef data;
 	// On met un petit compteur avant de reprendre
 	bool resumeClicked = false;
+	sf::Texture texta;
 	sf::Sprite backGroundImage;
 	sf::Text quitToMMenu;
 	sf::Text resume;

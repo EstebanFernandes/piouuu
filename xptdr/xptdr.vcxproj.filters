@@ -52,6 +52,12 @@
     <Filter Include="Fichiers sources\UI">
       <UniqueIdentifier>{ba67ec23-cbae-47cb-b9dc-14d771664836}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers sources\Ennemies">
+      <UniqueIdentifier>{a8b914fe-3b12-4c13-af04-3ce9f3e3a2c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Ennemies">
+      <UniqueIdentifier>{132b9a68-9402-4a14-aa14-2ab3e71b07cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -68,9 +74,6 @@
     </ClCompile>
     <ClCompile Include="CHitbox.cpp">
       <Filter>Fichiers sources\GameLogic</Filter>
-    </ClCompile>
-    <ClCompile Include="CEnemy.cpp">
-      <Filter>Fichiers sources\GameRelated</Filter>
     </ClCompile>
     <ClCompile Include="CMob.cpp">
       <Filter>Fichiers sources\GameRelated</Filter>
@@ -207,8 +210,26 @@
     <ClCompile Include="CScoreboard.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="CMiscellaneous.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletAuto.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
     <ClCompile Include="CButton.cpp">
       <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemy.cpp">
+      <Filter>Fichiers sources\Ennemies</Filter>
+    </ClCompile>
+    <ClCompile Include="RoamingEnnemy.cpp">
+      <Filter>Fichiers sources\Ennemies</Filter>
+    </ClCompile>
+    <ClCompile Include="ShootingEnemy.cpp">
+      <Filter>Fichiers sources\Ennemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>Fichiers d%27en-tête\Ennemies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -229,9 +250,6 @@
     </ClInclude>
     <ClInclude Include="CCollision.h">
       <Filter>Fichiers d%27en-tête\pas utile pour l%27instant</Filter>
-    </ClInclude>
-    <ClInclude Include="CEnemy.h">
-      <Filter>Fichiers d%27en-tête\GameRelated</Filter>
     </ClInclude>
     <ClInclude Include="CMob.h">
       <Filter>Fichiers d%27en-tête\GameRelated</Filter>
@@ -364,6 +382,27 @@
     </ClInclude>
     <ClInclude Include="CScoreboard.h">
       <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="CButton.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="CMiscellaneous.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletAuto.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemy.h">
+      <Filter>Fichiers d%27en-tête\Ennemies</Filter>
+    </ClInclude>
+    <ClInclude Include="RoamingEnnemy.h">
+      <Filter>Fichiers d%27en-tête\Ennemies</Filter>
+    </ClInclude>
+    <ClInclude Include="ShootingEnemy.h">
+      <Filter>Fichiers d%27en-tête\Ennemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>Fichiers d%27en-tête\Ennemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -8,18 +8,19 @@
 #include "CHugoDecrypte.h"
 #include "CCharacterSelection.h"
 #include"EllipseShape.h"
+#include"CButton.h"
 
 class CMainMenuState : public CState
 {
 private:
+	int index;
 	GameDataRef data;
 	sf::Clock CMMClock;
-	sf::Text CMMPlayButton;
-	sf::Text CMMHowToPlay;
-	sf::Text CMMSettingsButton;
-	sf::Text CMMQuitButton;
-	sf::Text CMMInfinitePlayButton;
+	std::vector<CButton> buttons;
+	std::vector<float> where;
 	sf::Sprite CMMTitle;
+	void choosedButton();
+	void outline(int previndex);
 public:
 
 	CMainMenuState(GameDataRef _data);

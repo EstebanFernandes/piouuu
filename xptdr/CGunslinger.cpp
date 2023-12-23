@@ -1,72 +1,118 @@
 #include "CGunslinger.h"
 
+
+
+void CGunslinger::updatebyIndex(float dt, int index)
+{
+		for (size_t i = 0; i < magasine.size(); i++)
+		{
+			if (magasine[i].needDelete == true)
+			{
+				magasine.erase(magasine.begin() + i);
+				if (i != 0)
+					i--;
+				break;
+			}
+			magasine[i].updateEntity(dt);
+			if (magasine[i].checkGlobalCollisions() == true)
+				magasine[i].needDelete = true;
+			if (magasine[i].needDelete == true)
+			{
+				magasine.erase(magasine.begin() + i);
+				if (i != 0)
+					i--;
+			}
+		}
+}
+
+void CGunslinger::pushByIndex(int index)
+{
+	
+}
+
 CGunslinger::CGunslinger()
 {
+	typeTir = (int)pow(2,0);
+	typeBalle = (int)pow(2,0);
 	setType(Gunslinger);
 }
 
 void CGunslinger::updateEntity(float dt)
 {
-	for (size_t i = 0; i < magazine.size(); i++)
+	std::bitset<nbBullet> temp = std::bitset<nbBullet>(typeBalle);
+	for (int i = 0; i < temp.size(); i++)
 	{
-		if (magazine[i].needDelete == true)
+		if (temp[i] != 0)
 		{
-			magazine.erase(magazine.begin() + i);
-			if (i != 0)
-				i--;
-			break;
-		}
-		magazine[i].updateEntity(dt);
-		if (magazine[i].checkGlobalCollisions() == true)
-			magazine[i].needDelete = true;
-		if (magazine[i].needDelete == true)
-		{
-			magazine.erase(magazine.begin() + i);
-			if (i != 0)
-				i--;
+			updatebyIndex(dt, i);
 		}
 	}
 }
 
 void CGunslinger::renderEntity(sf::RenderTarget& target)
 {
-	for (size_t i = 0; i < magazine.size(); i++)
-	{
-		magazine[i].renderEntity(target);
-	}
+		for (size_t i = 0; i < magasine.size(); i++)
+		{
+			magasine[i].renderEntity(target);
+		}
 }
 
 void CGunslinger::updateCollision(CEntity& b)
 {
-	for (size_t i = 0; i < magazine.size(); i++)
-	{
-		magazine[i].updateCollision(b);
+		for (size_t i = 0; i < magasine.size(); i++)
+		{
+			magasine[i].updateCollision(b);
 
-	}
+		}
 }
 
-void CGunslinger::iNeedMoreBullets(sf::Vector2f pos)
-{
-	magazine.push_back(CBullet(4, pos, sf::Vector2f(1, 0), assets));
-}
 
+
+//Méthode utilisé par le joueur
 void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage)
 {
-	magazine.push_back(CBullet(damage, pos, sf::Vector2f(1, 0), assets));
+	iNeedMoreBullets(pos, damage, 0.f);
 }
 
-void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage, float bulletSpeed_)
+void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage, float bulletSpeed)
 {
-	magazine.push_back(CBullet(damage, pos, sf::Vector2f(1, 0), bulletSpeed_, assets));
+	iNeedMoreBullets(pos, damage, bulletSpeed, sf::Vector2f(1.f, 0.f));
 }
 
-void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage, sf::Vector2f direction)
+void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage, float bulletSpeed, sf::Vector2f dir)
 {
-
-		magazine.push_back(CBullet(damage, pos, direction, assets));
-}
-
-void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage, float bulletSpeed_, sf::Vector2f direction)
-{
-	magazine.push_back(CBullet(damage, pos, direction, bulletSpeed_, assets));
+	std::bitset<nbAim> temp = std::bitset<nbAim>(typeTir);
+	//magazine.push_back(CBullet(damage, pos, sf::Vector2f(1, 0), assets));
+	for (int i = 0; i < temp.size(); i++)
+	{
+		if (temp[i] != 0)
+		{
+			switch (i) {
+			case classic:
+				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, dir, assets));
+				break;
+			case doubleTirs1:
+				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, 0.75f), assets));
+				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, -0.75f), assets));
+				break;
+			case doubleTirs2:
+				pos.y += 3.f;
+				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, 0.f), assets));
+				pos.y -= 6.f;
+				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, 0.f), assets));
+				break;
+			case gunshotAim:
+				//magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 1.f), bulletSpeed, gunshotDistance, assets));
+				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 0.75f), bulletSpeed, gunshotDistance, assets));
+				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 0.50f), bulletSpeed, gunshotDistance, assets));
+				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 0.25f), bulletSpeed, gunshotDistance, assets));
+				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 0.f), bulletSpeed, gunshotDistance, assets));
+				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, -0.25f), bulletSpeed, gunshotDistance, assets));
+				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, -0.50f), bulletSpeed, gunshotDistance, assets));
+				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, -0.75f), bulletSpeed, gunshotDistance, assets));
+				//magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, -1.f), bulletSpeed, gunshotDistance, assets));
+				break;
+			}
+		}
+	}
 }

@@ -12,7 +12,11 @@
 class CPlayer :  public CMob
 {
 private:
+
+
 	//Attributs
+	// 
+	// S'occupe des améliorations spéciales du personnage
 	//S'occupe des animations du personnage
 	CAnimation anim;
 	//La barre de vie est une liste de sprite représentant chacun un point de vie
@@ -25,7 +29,7 @@ private:
 	bool isMovingDown;
 	bool isMovingLeft;
 	bool isMovingRight;
-
+	//Booléen pour l'autoAim
 	float score;
 
 	//grr paw
@@ -37,14 +41,22 @@ private:
 	void setSprite();
 	void initStat();
 public:
+	bool hasLevelUp = false;
+	bool seekForTarget=false;
 	CGunslinger BAW;
 	CPlayer();
 	CPlayer(CAssetManager* a);
 	virtual ~CPlayer();
 
 	//Méthodes
-	float getScore();
-	void addToScore(float scoreToAdd);
+	float getScore()
+	{
+		return score;
+	}
+	void addToScore(float scoreToAdd)
+	{
+		score += scoreToAdd;
+	}
 	void initLifeBar();
 	void updateCollision(CEntity& b);
 	void gainXP(int levelofEntity);
@@ -60,4 +72,6 @@ public:
 	bool checkGlobalCollisions();
 	void resetMovement();
 	CGunslinger* getBAW() { return &BAW; }
+	void traitermisc(std::string& misc);
+	void updateMisc();
 };

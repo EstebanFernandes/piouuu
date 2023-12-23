@@ -12,7 +12,6 @@ private:
 	float score;
 	int rank;
 	std::string playerName = "None";
-
 	CScoreboard scoreboard;
 	GameDataRef data;
 	sf::Shader Shader;
@@ -40,8 +39,6 @@ public:
 		character = characterParam;
 		score = scoreParam;
 		askedScore = false;
-		setRank();
-		updateCharacter();
 	}
 	void STEInit();
 	void STEHandleInput();
@@ -53,24 +50,17 @@ public:
 template <class MType>
 void CGameOver<MType>::STEInit()
 {
-	sf::RenderWindow& Renderwindow = data->window;
-	sf::Texture textur;
-	textur.create(Renderwindow.getSize().x, Renderwindow.getSize().y);
-	textur.update(Renderwindow);
-
-	if (textur.copyToImage().saveToFile("filename.jpg"))
-	{
-		std::cout << "screenshot saved to filename.jpg" << std::endl;
-	}
-	texta = textur;
-	//	texta = data->assets.GetTexture("endScreen");
+	setRank();
+	updateCharacter();
+	texta.create(data->window.getSize().x, data->window.getSize().y);
+	texta.update(data->window);
 	if (!Shader.loadFromFile("vertexbandw.vert", "fragbandw.frag"))
 	{
 		std::cout << "bof";
 
 	}
-	Shader.setUniform("texture", sf::Shader::CurrentTexture);
 	backGroundImage.setTexture(texta);
+	Shader.setUniform("texture", sf::Shader::CurrentTexture);
 
 
 	if (rank > 10) {
@@ -203,7 +193,6 @@ inline void CGameOver<MType>::updateCharacter()
 
 			float bulletSpeedTemp = 2.0f;
 			if (charactersInfo[i][9] != "" && typeid(std::stof(charactersInfo[i][9])) == typeid(float)) bulletSpeedTemp = std::stof(charactersInfo[i][9]);
-
 			character.setCharacterStats(maxHealthPointTemp, moveSpeedTemp, canonNumberTemp, damagePerBulletTemp, attackSpeedTemp, bulletSpeedTemp);
 		}
 	}
@@ -231,6 +220,7 @@ inline void CGameOver<MType>::setRank()
 		std::cout << "score : " << score << ", ton rang : " << rank << " (c'est naze)" << std::endl;
 	}
 	else {
+		rank = index + 2;
 		//T'ES NUL, pas top 100
 	}
 }

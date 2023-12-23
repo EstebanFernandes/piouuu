@@ -38,8 +38,10 @@ public:
 	std::vector<CCard> cards;
 
 	bool isEllipseVisible = true;
+	bool isMoving = false;
 	CCarousel()
 	{
+		isMoving = false;
 		isMovingLeft = false;
 		isMovingRight = false;
 		ellipse = EllipseShape(sf::Vector2f(400.f, 100.f));
@@ -56,7 +58,7 @@ public:
 		int newMax = (int)ellipse.getPointCount();
 		for (int i = 0; i<nbEntity; i++)
 		{
-			currentIndex[i] = 100 + i * (int) n;
+			currentIndex[i] = (newMax/2) + i * (int) n;
 			if (currentIndex[i] >= newMax)
 				currentIndex[i] -= newMax;
 			setPositionofEntity(currentIndex[i], i);
@@ -65,7 +67,11 @@ public:
 		plusIndex = (int)n;
 		nextIndex = currentIndex;
 	}
-	void move( bool Direction = LeftMove) {
+	bool move( bool Direction = LeftMove) {
+		if (nextIndex[0] != currentIndex[0])
+		{
+			return false;
+		}
 		int plusoumoins = 0;
 		if(Direction== LeftMove)
 		{
@@ -87,6 +93,8 @@ public:
 			else if (nextIndex[i] < 0)
 				nextIndex[i] += (int)ellipse.getPointCount();
 		}
+		isMoving = true;
+		return true;
 	}
 	void Drawable::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 		if(isEllipseVisible)
@@ -96,34 +104,33 @@ public:
 				temp[i] = abs(temp[i] - maxPoint / 2);
 		for(int i=0;i<cards.size();i++)
 		{ 
-			int max = 0;
+			int max = -1;
 			int index = 0;
-			for (int i = 0; i < temp.size(); i++)
+			for (int j = 0; j < temp.size(); j++)
 			{
-				if (max < temp[i])
+				if (max < temp[j])
 				{
-					max = temp[i];
-					index = i;
+					max = temp[j];
+					index = j;
 				}
 			}
 			target.draw(cards[index]);
-			temp[index] = 0;
+			temp[index] = -10;
 		}
 	}
 	void update(float deltaTime) {
-		bool ismoving = false;
 		int plusoumoins = 0;
 		if (isMovingLeft)
 		{
 			plusoumoins++;
-			ismoving = true;
 		}
 		else if (isMovingRight)
 		{
 			plusoumoins--;
-			ismoving = true;
 		}
-		if (ismoving) {
+		if (nextIndex[0] == currentIndex[0])
+			isMoving = false;
+		if (isMoving) {
 			for (int i = 0; i < cards.size(); i++)
 			{
 				cards[i].update(deltaTime);
@@ -155,13 +162,18 @@ public:
 			}
 			carouselClock.restart();
 		}
+		else
+		{
+			for (int i = 0; i < cards.size(); i++)
+				cards[i].update(deltaTime);
+		}
 	}
 	//fonction qui renvoie la carte selectionné, si on est en mouvement 
 	CCard* getselectedCard()
 	{
 		for (int i = 0; i < currentIndex.size(); i++)
 		{
-			if (currentIndex[i] == 100)
+			if (currentIndex[i] == (int)ellipse.getPointCount()/2)
 				return &cards[i];
 		}
 		return NULL;

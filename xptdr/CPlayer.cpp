@@ -6,7 +6,7 @@
 void CPlayer::setSprite()
 {
 	getSprite().setScale(0.7f, 0.7f);
-	getSprite().setPosition((assets->sCREEN_WIDTH / 4) - (getSprite().getGlobalBounds().width/2), (assets->sCREEN_HEIGHT / 2) - (getSprite().getGlobalBounds().height/2));
+	getSprite().setPosition((assets->sCREEN_WIDTH / 4.f) - (getSprite().getGlobalBounds().width/2), (assets->sCREEN_HEIGHT / 2.f) - (getSprite().getGlobalBounds().height/2.f));
 }
 
 void CPlayer::initStat()
@@ -49,6 +49,49 @@ void CPlayer::resetMovement()
 	isMovingUp = false;
 }
 
+void CPlayer::traitermisc(std::string& misc)
+{
+	const std::vector<std::string> supportedMisc{ "autoAim","velocUp" ,"doubleTirs1","doubleTirs2","gunshot"};
+	int pos = (int)(std::find(supportedMisc.begin(), supportedMisc.end(), misc) - supportedMisc.begin());
+	if (pos >= supportedMisc.size()) {
+		std::cout << "Rien a été trouvé\n";
+	}
+	else{
+		switch (pos)
+		{
+		case 0:
+			//auto aim
+			BAW.addBulletMode(true,BAW.autoAim);
+			break;
+			//Velocity up
+		case 1:
+
+			break;
+			//doubleTirs1
+		case 2:
+			BAW.addBulletMode(false, BAW.doubleTirs1);
+			break;
+			//doubleTirs2
+		case 3:
+			BAW.addBulletMode(false, BAW.doubleTirs2);
+			break;
+			//gunshot
+		case 4:
+			BAW.addBulletMode(false, BAW.gunshotAim);
+			break;
+		}
+			misc.insert(0, "+");
+	}
+}
+
+void CPlayer::updateMisc()
+{
+	for (int i = 0; i < specificites.size(); i++)
+	{
+		traitermisc(specificites[i]);
+	}
+}
+
  
 CPlayer::CPlayer()
 {
@@ -67,15 +110,6 @@ CPlayer::~CPlayer()
 {
 }
 
-float CPlayer::getScore()
-{
-	return score;
-}
-
-void CPlayer::addToScore(float scoreToAdd)
-{
-	score += scoreToAdd;
-}
 
 void CPlayer::initLifeBar()
 {
@@ -165,10 +199,15 @@ void CPlayer::updateMovement(float dt)
 	}
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		//Si se temps est trop faible on ne fait rien, 
+		//Si ce temps est trop faible on ne fait rien, 
 		if (bulletClock.getElapsedTime().asSeconds() >= 1.f / attackSpeed) {
 			sf::Vector2f r(getSprite().getPosition().x + getSprite().getGlobalBounds().width, getSprite().getPosition().y + (getSprite().getGlobalBounds().height / 2));
-			BAW.iNeedMoreBullets(r, damagePerBullet);
+				if (BAW.typeBalle == 3)
+					seekForTarget = true;
+				if (BAW.typeTir == pow(2,(int)BAW.gunshotAim))
+					BAW.setGunShotDistance(250.f);
+				BAW.iNeedMoreBullets(r, damagePerBullet,bulletSpeed);
+
 			// vient juste le restart le timer à la fin 
 			bulletClock.restart();
 		}
@@ -188,45 +227,11 @@ void CPlayer::renderLifeBar(sf::RenderTarget& target)
 
 void CPlayer::updateCollision(CEntity& b)
 {
-	/*switch (b.getType())
-	{
-	case Enemy:
-		if (checkCollisions(b))
-		{
-			if(b.isDead==false)
-			{
-				if (b.isHitting == false)
-				{
-					reduceHP(b.getDamage());
-					b.isHitting = true;
-				}
-			}
-			else if (isHitting == true)
-				b.isHitting = false;
-		}
-		break;
-			
-	case EnemyFire:
-		if (checkCollisions(b))
-		{
-			b.needDelete = true;
-			reduceHP(b.getDamage());
-		}
-		break;
-	case PowerUp:
-		if (checkCollisions(b))
-			b.needDelete = true;
-	}*/
+	
 }
 void CPlayer::gainXP(int levelofEntity)
 {
 	xp += 3 + 3 * levelofEntity;
-	if (xp >= maxXp)
-	{
-		level++;
-		xp = 0;
-		maxXp += 10;
-	}
 }
 void CPlayer::updateLifeBar()
 {
@@ -253,16 +258,19 @@ void CPlayer::updateLifeBar()
 	if (healthPoint <= 0)
 		needDelete = true;
 }
-void CPlayer::iNeedMoreBullet()
-{
-	BAW.iNeedMoreBullets(getSprite().getPosition(),damagePerBullet,bulletSpeed);
-}
 void CPlayer::updateEntity(float dt)
 {
 	updateMovement(dt);
 	checkGlobalCollisions();
-		updateFx();
+	updateFx();
 	updateLifeBar();
+ 	if (xp >= maxXp&& hasLevelUp==false)
+	{
+		level++;
+		xp -= maxXp;
+		maxXp += 10;
+		hasLevelUp = true;
+	}
 	BAW.updateEntity(dt);
 }
 

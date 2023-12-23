@@ -74,5 +74,15 @@ public:
 		reduceHP(damage);
 		hasBeenHit = false;
 	}
+
+	sf::Vector2f getDistance(CMob& player) {
+
+		sf::Vector2f posMob = getSprite().getPosition();
+		sf::Vector2f pos = player.getSprite().getPosition();
+		sf::Vector2f dir;
+		dir.x = posMob.x - pos.x;
+		dir.y = posMob.y - pos.y;
+		return dir;
+	}
 };
 

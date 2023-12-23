@@ -6,7 +6,9 @@ CGameMenu::CGameMenu(GameDataRef _data) : data(_data)
 
 void CGameMenu::STEInit()
 {
-	backGroundImage.setTexture(data->assets.GetTexture("pauseScreen"));
+	texta.create(data->window.getSize().x, data->window.getSize().y);
+	texta.update(data->window);
+	backGroundImage.setTexture(texta);
 	resume.setFont(data->assets.GetFont("Lato"));
 	resume.setString("Reprendre");
 	resume.setCharacterSize(30);
@@ -37,7 +39,6 @@ void CGameMenu::STEHandleInput()
 			{
 				resumeClicked = true;
 			ahah =	resumeClock.restart().Zero;
-				//data->machine.RemoveState();
 			}
 			else if (data->inputs.IsTextClicked(quitToMMenu, sf::Mouse::Left, data->window))
 			{

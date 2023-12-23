@@ -5,11 +5,13 @@
 #include "CPlayer.h"
 #include "CGameMenu.h"
 #include <sstream>
-#include"CEnemy.h"
+#include"RoamingEnnemy.h"
+#include"ShootingEnemy.h"
 #include"CGameOver.h"
 #include"CEntity.h"
 #include"CBackground.h"
 #include "CHittingEntity.h"
+#include <list>
 class CGameState : public CState
 {
 protected:
@@ -19,7 +21,6 @@ protected:
 	CPlayer player1;
 	std::vector<CHittingEntity*> entityList;
 	int enemyNumber = 0;
-private:
 	//engine related
 	//Background related:
 	CBackground BG1;
@@ -38,7 +39,12 @@ public:
 	~CGameState();
 	void STEInit();
 	void STEHandleInput();
-	void addEnemy();
+	/**
+	* Possibilities :
+	* - roaming, a standard enemy
+	* - shooter, an enemy with a big GUN PIOU PIOU
+	*/
+	void addEnemy(std::string enemyName);
 	void STEUpdate(float delta);
 	void updateBackground(float delta);
 	virtual void GameOver() = 0;
@@ -47,6 +53,8 @@ public:
 	void renderBackground();
 	void STEDraw(float delta);
 	void STEResume();
+	void STEPause();
 	void setData(GameDataRef dataa) { data = dataa; }
+	GameDataRef getData();
 };
 
