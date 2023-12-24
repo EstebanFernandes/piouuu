@@ -26,6 +26,28 @@ public:
 	void DeleteTexture(std::string name) {
 		Textures.erase(name);
 	}
+	//Méthodes pour gérer la musique
+	void InitialiserMusiques();
+
+	void jouerMusique(const std::string& id) {
+		musiqueManager.jouerMusique(id);
+	}
+
+	void pauseMusique(const std::string& id) {
+		musiqueManager.pauseMusique(id);
+	}
+
+	void reprendreMusique(const std::string& id) {
+		musiqueManager.resumeMusique(id);
+	}
+
+	void stopMusique(const std::string& id) {
+		musiqueManager.stopMusique(id);
+	}
+
+	void volumeMusique(const std::string& id, float volume) {
+		musiqueManager.volumeMusique(id, volume);
+	}
 	//Cette méthode permet de changer de fullscren à pas fullscreen, 
 	//on passe en paramètre la fenêtre et le booléen isFullScreen
 	void changeScreenType(sf::RenderWindow & R, bool& isFullScreen);

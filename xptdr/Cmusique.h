@@ -17,6 +17,9 @@ public:
     // Met en pause la musique
     void pauseMusique(const std::string& id);
 
+    // Remet la musique à jouer
+    void resumeMusique(const std::string& id);
+
     // Arrête la musique
     void stopMusique(const std::string& id);
 

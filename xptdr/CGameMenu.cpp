@@ -6,6 +6,7 @@ CGameMenu::CGameMenu(GameDataRef _data) : data(_data)
 
 void CGameMenu::STEInit()
 {
+	data->assets.pauseMusique("PartieJour");
 	texta.create(data->window.getSize().x, data->window.getSize().y);
 	texta.update(data->window);
 	backGroundImage.setTexture(texta);
@@ -38,18 +39,21 @@ void CGameMenu::STEHandleInput()
 			}if (data->inputs.IsTextClicked(resume, sf::Mouse::Left, data->window))
 			{
 				resumeClicked = true;
-			ahah =	resumeClock.restart().Zero;
+				ahah =	resumeClock.restart().Zero;
+				data->assets.reprendreMusique("PartieJour");
 			}
 			else if (data->inputs.IsTextClicked(quitToMMenu, sf::Mouse::Left, data->window))
 			{
 				data->machine.RemoveState();
 				data->machine.AddState(StateRef(new CMainMenuState(data)), true);
+				data->assets.stopMusique("PartieJour");
 			}
 			if (event.type == sf::Event::KeyReleased) {
 				if (event.key.code == sf::Keyboard::Escape)
 				{
 					resumeClicked = true;
 					resumeClock.restart();
+					data->assets.reprendreMusique("PartieJour");
 				}
 			}
 

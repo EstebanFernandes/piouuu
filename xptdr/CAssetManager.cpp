@@ -1,5 +1,6 @@
 #include "CAssetManager.h"
 
+
 void CAssetManager::LoadTexture(std::string name, std::string fileName)
 {
 	sf::Texture tex;
@@ -29,6 +30,12 @@ void CAssetManager::LoadFont(std::string name, std::string fileName)
 sf::Font& CAssetManager::GetFont(std::string name)
 {
 	return Fonts.at(name);
+}
+
+void CAssetManager::InitialiserMusiques()
+{
+	musiqueManager.ajouterMusique("MenuPrincipal", "res\\sfx\\musique_menu_test.mp3");
+	musiqueManager.ajouterMusique("PartieJour", "res\\sfx\\Partie_de_jour.mp3");
 }
 
 void CAssetManager::changeScreenType(sf::RenderWindow& window, bool& isFullScreen)

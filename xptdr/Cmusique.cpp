@@ -23,6 +23,14 @@ void Cmusique::pauseMusique(const std::string& id)
     }
 }
 
+void Cmusique::resumeMusique(const std::string& id)
+{
+    auto it = musiques.find(id);
+    if (it != musiques.end() && it->second->getStatus() == sf::Music::Paused) {
+        it->second->play(); 
+    }
+}
+
 void Cmusique::stopMusique(const std::string& id)
 {
     auto it = musiques.find(id);

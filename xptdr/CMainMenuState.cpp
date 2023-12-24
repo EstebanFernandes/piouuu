@@ -8,6 +8,7 @@ CMainMenuState::CMainMenuState(GameDataRef _data) : data(_data)
 
 void CMainMenuState::STEInit()
 {
+	data->assets.jouerMusique("MenuPrincipal");
 	index = 0;
 	data->assets.LoadFont("Lato", FONT_FILE_PATH); //Load la police d'écriture
 

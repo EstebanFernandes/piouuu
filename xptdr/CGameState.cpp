@@ -77,6 +77,7 @@ void CGameState::STEInit()
 	initPlayer();
 	initBackground();
 	initEnemy();
+	data->assets.jouerMusique("PartieJour");
 }
 
 void CGameState::STEHandleInput()
@@ -331,7 +332,7 @@ void CGameState::STEDraw(float delta)
 
 void CGameState::STEResume()
 {
-		data->assets.DeleteTexture("pauseScreen");
+	data->assets.DeleteTexture("pauseScreen");
 	gameClock.restart();
 	CESTBON = false;
 	player1.resetMovement();
