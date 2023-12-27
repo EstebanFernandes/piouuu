@@ -107,9 +107,8 @@ void CCharacterSelection::STEHandleInput()
 			 if (!carousel.isMoving)
 			 {
 				 data->machine.AddState(StateRef(new CTestGame(data, chosenCharacter)), true);
-
-			 }
-		 }
+				 data->assets.stopMusique("MenuPrincipal");
+			}
 			break;
 		case sf::Event::Closed:
 			data->window.close();

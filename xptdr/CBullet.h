@@ -2,7 +2,6 @@
 #include "SFML/Graphics.hpp"
 #include "DEFINITIONS.h"
 #include "CEntity.h"
-#include "SFML/Audio.hpp"
 
 class CBullet : public CEntity
 {

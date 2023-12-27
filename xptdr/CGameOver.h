@@ -96,6 +96,7 @@ void CGameOver<MType>::STEInit()
 	buttonList.push_back(restartButton);
 	buttonList.push_back(menuButton);
 	//data->machine.AddState(StateRef(new CScoreboard(data, score)), false);
+	data->assets.stopMusique("PartieJour");
 }
 template <class MType>
 void CGameOver<MType>::STEHandleInput()
