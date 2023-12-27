@@ -8,7 +8,7 @@ CCharacter::CCharacter(std::string imagePathParam, std::string nameParam, std::s
 	isAnimated = animated;
 
 	moveSpeed = 0.5f;
-	maxHealthPoint = 20;
+	maxHealthPoint = 20.f;
 	healthPoint = maxHealthPoint;
 	xp = 0;
 	maxXp = 10;
@@ -34,7 +34,7 @@ CCharacter::CCharacter()
 	bulletSpeed = 2.0f;
 }
 
-void CCharacter::setCharacterStats(int maxHealthPointParam, float moveSpeedParam, int canonNumberParam, int damagePerBulletParam, float attackSpeedParam, float BulletSpeedParam)
+void CCharacter::setCharacterStats(float maxHealthPointParam, float moveSpeedParam, int canonNumberParam, int damagePerBulletParam, float attackSpeedParam, float BulletSpeedParam)
 {
 	maxHealthPoint = maxHealthPointParam;
 	moveSpeed = moveSpeedParam;
@@ -89,7 +89,7 @@ bool CCharacter::matchTypewithValue(std::string type, std::string value)
 					healthPoint = healthPoint - std::stoi(value.substr(1));
 					break;
 				default:
-					healthPoint = std::stoi(value);
+					healthPoint = std::stof(value);
 					break;
 				}
 				break;
@@ -106,7 +106,7 @@ bool CCharacter::matchTypewithValue(std::string type, std::string value)
 					maxHealthPoint = maxHealthPoint - std::stoi(value.substr(1));
 					break;
 				default:
-					maxHealthPoint = std::stoi(value);
+					maxHealthPoint = std::stof(value);
 					break;
 				}
 				break;

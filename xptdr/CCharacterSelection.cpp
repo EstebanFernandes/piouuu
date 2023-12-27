@@ -18,8 +18,8 @@ void CCharacterSelection::loadCharacters()
 		characterList.push_back(CCharacter(charactersInfo[i][1], charactersInfo[i][0], charactersInfo[i][2], charactersInfo[i][3] == "animated"));
 		data->assets.LoadTexture(charactersInfo[i][0], charactersInfo[i][1]);
 
-		int maxHealthPointTemp = 20;
-		if (charactersInfo[i][4] != "" && typeid(std::stoi(charactersInfo[i][4])) == typeid(int)) maxHealthPointTemp = std::stoi(charactersInfo[i][4]);
+		float maxHealthPointTemp = 20;
+		if (charactersInfo[i][4] != "" && typeid(std::stof(charactersInfo[i][4])) == typeid(int)) maxHealthPointTemp = std::stof(charactersInfo[i][4]);
 
 		float moveSpeedTemp = 0.5f;
 		if (charactersInfo[i][5] != "" && typeid(std::stof(charactersInfo[i][5])) == typeid(float)) moveSpeedTemp = std::stof(charactersInfo[i][5]);

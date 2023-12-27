@@ -11,7 +11,8 @@
 #include"CEntity.h"
 #include"CBackground.h"
 #include "CHittingEntity.h"
-#include <list>
+#include "Boss.h"
+
 class CGameState : public CState
 {
 protected:
@@ -20,7 +21,7 @@ protected:
 	sf::Clock gameClock;
 	CPlayer player1;
 	std::vector<CHittingEntity*> entityList;
-	int enemyNumber = 0;
+	int* enemyNumber = new int();
 	//engine related
 	//Background related:
 	CBackground BG1;
@@ -43,6 +44,7 @@ public:
 	* Possibilities :
 	* - roaming, a standard enemy
 	* - shooter, an enemy with a big GUN PIOU PIOU
+	* - boss, first prototype of a boss
 	*/
 	void addEnemy(std::string enemyName);
 	void STEUpdate(float delta);
@@ -57,4 +59,3 @@ public:
 	void setData(GameDataRef dataa) { data = dataa; }
 	GameDataRef getData();
 };
-

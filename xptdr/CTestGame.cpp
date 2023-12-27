@@ -50,6 +50,10 @@ void CTestGame::STEHandleInput()
 			{
 				addEnemy("shooter");
 			}
+			if (event.key.code == sf::Keyboard::B)
+			{
+				addEnemy("boss");
+			}
 			if (event.key.code == sf::Keyboard::T)
 
 			{

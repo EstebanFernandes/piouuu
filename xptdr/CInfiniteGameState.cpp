@@ -35,7 +35,7 @@ void CInfiniteGameState::STEHandleInput()
 
 void CInfiniteGameState::STEUpdate(float delta)
 {
-	while(enemyNumber < 2 + (1 * player1.getLevel()))
+	while(*enemyNumber < 2 + (1 * player1.getLevel()))
 	{
 		addEnemy("roaming");
 	}

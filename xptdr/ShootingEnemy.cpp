@@ -2,16 +2,16 @@
 
 ShootingEnemy::ShootingEnemy(CAssetManager* assetParam) {
 	BAW.assets = assetParam;
-	initPositionX = assetParam->sCREEN_WIDTH * 2.f;
 	initEnnemy(assetParam);
+	initPositionX = assetParam->sCREEN_WIDTH * 1.05f;
+	setSprite();
 	moveSpeed = 5.f;
 	attackSpeed = 1.f;
-	isAShooter = true;
 }
 
 void ShootingEnemy::updateMovement(float delta)
 {
-	if (checkGlobalCollisions())
+	if (checkGlobalCollisions() && isPositionated)
 		needDelete = true;
 	updateLifeBar();
 	if (onAvance == true && !isPositionated)
@@ -24,7 +24,7 @@ void ShootingEnemy::updateMovement(float delta)
 
 void ShootingEnemy::enemyShoot()
 {
-	if (bulletClock.getElapsedTime().asSeconds() >= 1.f / attackSpeed) {
+	if (bulletClock.getElapsedTime().asSeconds() >= 1.f / attackSpeed && isPositionated) {
 		sf::Vector2f r(getSprite().getPosition().x + getSprite().getGlobalBounds().width, getSprite().getPosition().y + (getSprite().getGlobalBounds().height / 2));
 		BAW.iNeedMoreBullets(r, damagePerBullet, bulletSpeed, sf::Vector2f(-1,0));
 		// vient juste le restart le timer à la fin 

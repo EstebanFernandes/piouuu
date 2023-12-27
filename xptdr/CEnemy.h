@@ -21,7 +21,6 @@ protected:
 	bool gavexP=false;
 	int damage;
 
-	bool isAShooter = false;
 
 	void initEnnemy(CAssetManager* a);
 	void initEnnemy(CAssetManager* a, std::string nameParam, std::string imageFileParam);
@@ -47,14 +46,15 @@ public:
 		//directionY = RandomFloat(minDirY, maxDirY);
 		level = 0;
 		damage = 3;
-		maxHealthPoint = 20+15*level;
+		maxHealthPoint = 20.f+15.f*level;
 		healthPoint = maxHealthPoint;
 		//float rad = atan2(abs(directionY), abs(directionX));
 		//float degree =rad * (180.f / (float)M_PIl);
   		//getSprite().rotate(degree);
 
 	}
-	bool getIsAShooter();
+	void setScoreGived(float scoreGivedParam);
+	float getScoreGived();
 	//renvoie true si l'animation d'explosion est finie
 	bool updateExplosionSprite();
 	void setSprite();

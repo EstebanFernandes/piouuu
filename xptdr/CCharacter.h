@@ -13,8 +13,8 @@ protected :
 	int level;
 	int xp;
 	int maxXp;
-	int healthPoint;
-	int maxHealthPoint;
+	float healthPoint;
+	float maxHealthPoint;
 	float moveSpeed;
 	bool isAnimated;
 
@@ -33,23 +33,39 @@ public:
 	CCharacter(std::string imagePathParam, std::string nameParam, std::string descriptionParam, bool animated);
 	CCharacter();
 
-	void setCharacterStats(int maxHealthPointParam, float moveSpeedParam, int canonNumberParam, int damagePerBulletParam, float attackSpeedParam, float BulletSpeedParam);
+	void setCharacterStats(float maxHealthPointParam, float moveSpeedParam, int canonNumberParam, int damagePerBulletParam, float attackSpeedParam, float BulletSpeedParam);
 
 	std::string getImageName();
 	std::string getName();
 	std::string getDescription();
-	int getMaxHealth() { return maxHealthPoint; }
-	int getLifePoint() { return healthPoint; }
+
+	float getMaxHealth() { return maxHealthPoint; }
+	void setMaxHealth(float maxHealthParam) { maxHealthPoint = maxHealthParam; healthPoint = maxHealthParam; }
+
+	float getLifePoint() { return healthPoint; }
+	void setLifePoint(float lifePointParam) { healthPoint = lifePointParam; }
+
 	int getLevel() { return level; }
+	void setLevel(int levelParam) { level = levelParam; }
+
 	int getXp() { return xp; }
 	int getMaxXp() { return maxXp; }
+
 	int getDamagePerBullet() { return damagePerBullet; }
+	void setDamagePerBullet(int damagePerBulletParam) { damagePerBullet = damagePerBulletParam; }
+
 	bool getAnimated() { return isAnimated; }
+
 	float getMoveSpeed() { return moveSpeed;  }
+	void setMoveSpeed(float moveSpeedParam) { moveSpeed = moveSpeedParam; }
 
 	int getCanonNumber() { return canonNumber;  }
+
 	float getAttackSpeed() { return attackSpeed; }
+	void setAttackSpeed(float attackSpeedParam) { attackSpeed = attackSpeedParam; }
+
 	float getBulletSpeed() { return bulletSpeed; }
+	void setBulletSpeed(float bulletSpeedParam) { bulletSpeed = bulletSpeedParam; }
 	bool matchTypewithValue(std::string type, std::string value);
 	static std::string returnTypeStylish(std::string type,std::string value);
 };

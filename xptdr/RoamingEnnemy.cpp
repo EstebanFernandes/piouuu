@@ -7,7 +7,6 @@ RoamingEnnemy::RoamingEnnemy(CAssetManager* assetParam) {
 	float maxDirY = 0.16f * (1.f-(initPositionY / ySpawnMax));
 	float minDirY = -(0.16f* initPositionY / (float)ySpawnMax);
 	directionY = RandomFloat(minDirY, maxDirY);
-
 	moveSpeed = 19.f;
 }
 

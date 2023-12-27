@@ -74,6 +74,7 @@ void CGameState::initBackground()
 }
 void CGameState::STEInit()
 {
+	*enemyNumber = 0;
 	initPlayer();
 	initBackground();
 	initEnemy();
@@ -113,12 +114,17 @@ void CGameState::addEnemy(std::string enemyName)
 	if (enemyName == "roaming") {
 		RoamingEnnemy* enemy = new RoamingEnnemy(&(data->assets));
 		entityList.push_back(enemy);
-		enemyNumber++;
+		(*enemyNumber) ++;
 	}
 	else if (enemyName == "shooter") {
 		ShootingEnemy* enemy = new ShootingEnemy(&(data->assets));
 		entityList.push_back(enemy);
-		enemyNumber++;
+		(*enemyNumber) ++;
+	}
+	else if (enemyName == "boss") {
+		Boss* enemy = new Boss(&(data->assets), &player1, &entityList, enemyNumber);
+		entityList.push_back(enemy);
+		(*enemyNumber) ++;
 	}
 	else {
 		std::cout << "tentative d'invocation d'un ennemi qui n'existe pas";
@@ -179,108 +185,6 @@ void CGameState::updateBackground(float delta)
 
 void CGameState::updateCollision(float dt)
 {
-	////top
-	//if (moto->getGlobalBounds().top  <= 0)
-	//{
-	//	//moto->resetVelocityY();
-	//	moto->setPositionEntity(
-	//		moto->getGlobalBounds().left,0);
-	//}
-	////bot
-	//if (moto->getGlobalBounds().top + moto->getGlobalBounds().height >= data->window.getSize().y)
-	//{
-	//	//moto->resetVelocityY();
-	//	moto->setPositionEntity(
-	//		moto->getGlobalBounds().left,
-	//		data->window.getSize().y- moto->getGlobalBounds().height
-	//	);
-	//}
-	////gauche
-	//if (moto->getGlobalBounds().left <= 0)
-	//{
-	//	//moto->resetVelocityX();
-	//	moto->setPositionEntity(0,moto->getGlobalBounds().top);
-	//}
-	////droite
-	//if (moto->getGlobalBounds().left + moto->getGlobalBounds().width >= SCREEN_WIDTH)
-	//{
-	//	//moto->resetVelocityX();
-	//	moto->setPositionEntity(
-	//		SCREEN_WIDTH-moto->getGlobalBounds().width,
-	//		moto->getGlobalBounds().top
-	//	);
-	//}
-
-	////Collision between bullet and enemy
-	//std::vector<CBullet>& r = moto->getBullets();
-	//size_t temp = r.size();
-	//size_t temp2 = enemyList.size();
-	//	//update collision between bullets and boundaries
-	//moto->updateBullets(dt);
-	//temp = r.size();
-	//if (temp != 0)
-	//{
-	//	//Update collison for each bullet with eachenemies
-	//	for (int i = 0; i < temp;i++)
-	//	{
-	//		for (int j = 0; j<temp2 ;j++)
-	//		{
-	//		CEnemy& enemyI = enemyList[j];
-	//			if (temp == 0)
-	//				break;
-	//			else {
-	//				if (enemyI.isDead ==false)
-	//				{
-	//					if (r[i].checkCollisions(enemyI.getGlobalBounds()))
-	//					{
-	//						enemyI.reduceHP(r[i].getDamage());
-	//						r.erase(r.begin() + i);
-	//						if (i != 0)
-	//							i--;
-	//						if (enemyI.getLifePoint() <= 0)
-	//						{
-	//							enemyI.onAvance = false;
-	//							enemyI.isDead = true;
-	//						}
-	//					}
-	//				}
-	//			}
-	//		temp = r.size();
-	//		}
-	//	}
-	//}
-
-	//for (int i = 0; i < temp2; i++)
-	//{
-	//	CEnemy& enemyI = enemyList[i];
-	//	//Si l'ops est mort on boucle jusqu'à ce que l'animation d'explosion soit fini
-	//	if (enemyI.isDead == true)
-	//	{
-	//		if (enemyI.updateExplosionSprite())
-	//		{
-	//			moto->gainXP(enemyI.getLevel());
-	//			enemyList.erase(enemyList.begin() + i); //efface la balle et permet de ne pas avoir trop d'élement
-	//			temp2--;
-	//			if (i != 0)
-	//				i--;
-	//		}
-	//	}
-	//	else {//Sinon on regarde si l'ennemi passe à travers le joueur
-	//		if (enemyI.isHitting == false)
-	//		{
-	//			if (enemyI.updateEntity(moto->getGlobalBounds(),dt))
-	//			{
-	//				//Fonctionne pas
-	//				moto->getSprite().setColor(sf::Color::Green);
-	//				moto->reduceHP(3);
-	//				enemyI.isHitting = true;
-	//			}
-	//		} //Sinon on check normal les collisions avec le bord de l'écran
-	//		else if(enemyI.updateEntity(moto->getGlobalBounds(), dt)==false)
-	//			enemyI.isHitting = false;
-	//		enemyI.updateMovement(dt);
-	//	}
-	//}
 }
 
 
@@ -297,7 +201,7 @@ void CGameState::initEnemy()
 void CGameState::deleteEntity(int& i)
 {
 	if (entityList[i]->getType() == 1) {
-		enemyNumber--;
+		(*enemyNumber) --;
 		
 	}
 	delete entityList[i];
