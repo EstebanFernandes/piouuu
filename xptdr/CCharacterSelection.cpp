@@ -88,34 +88,37 @@ void CCharacterSelection::STEHandleInput()
 		switch (event.type)
 		{
 		case sf::Event::KeyPressed:
-		 if (event.key.code == sf::Keyboard::D)
+			if (event.key.code == sf::Keyboard::D)
 			{
 				if (!carousel.isMoving)
 					isMovingLeft = true;
 			}
-		 else if (event.key.code == sf::Keyboard::U)
-		 {
-			 carousel.displayScale();
-		 }
+			else if (event.key.code == sf::Keyboard::U)
+			{
+				carousel.displayScale();
+			}
 			else if (event.key.code == sf::Keyboard::Q)
 			{
 				if (!carousel.isMoving)
 					isMovingRight = true;
 			}
 			else if (event.key.code == sf::Keyboard::Enter)
-		 {
-			 if (!carousel.isMoving)
-			 {
-				 data->machine.AddState(StateRef(new CTestGame(data, chosenCharacter)), true);
-				 data->assets.stopMusique("MenuPrincipal");
-			}
-			break;
+			{
+				if (!carousel.isMoving)
+				{
+					data->machine.AddState(StateRef(new CTestGame(data, chosenCharacter)), true);
+					data->assets.stopMusique("MenuPrincipal");
+				}
+				break;
 		case sf::Event::Closed:
 			data->window.close();
 			break;
+			}
 		}
 	}
 }
+
+
 
 
 void CCharacterSelection::STEUpdate(float delta)

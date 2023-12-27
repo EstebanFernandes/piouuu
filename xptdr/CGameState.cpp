@@ -76,7 +76,7 @@ void CGameState::STEInit()
 {
 	initPlayer();
 	initBackground();
-	initEnemy();
+	//initEnemy();
 	data->assets.jouerMusique("PartieJour");
 }
 
