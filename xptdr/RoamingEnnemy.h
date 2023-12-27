@@ -5,7 +5,7 @@ class RoamingEnnemy : public CEnemy
 {
 private:
 	float directionY;
-	float directionX = -3.f;
+	float directionX = -1.f;
 public:
 	RoamingEnnemy(CAssetManager* asset);
 	void updateMovement(float delta);

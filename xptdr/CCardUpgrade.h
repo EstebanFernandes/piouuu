@@ -17,7 +17,6 @@ public:
 	void setPosition(sf::Vector2f r);
 	//resize le text pour qu'il ne dépasse pas, ne descend pas en dessous de la taille de caractère 20
 	//Va falloir faire un truc pour rendre plus jolie les noms des types, surement plus dans upgradestate cela dit
-	void resizeText(sf::Text& textToResize);
 	void update(float deltaTime);
 	void reduceScale();
 	//Fonction qui resize une liste de texte compte tenu d'une bordure en hauteur et en largeur

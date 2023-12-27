@@ -69,7 +69,7 @@ CCardUpgrade::CCardUpgrade( std::vector<std::string> Upgrade_, std::vector<std::
 			temp.setFillColor(sf::Color::White);
 			temp.setFont(asset->GetFont("Lato"));
 			temp.setCharacterSize(35);
-			int posY = YSizepris+ padding+ (int)temp.getGlobalBounds().height*i ;
+			int posY = (int)YSizepris+ padding+ (int)temp.getGlobalBounds().height*i ;
 			temp.setPosition(pos.x + (xSize - temp.getGlobalBounds().width) / 2, posY);
 			Stats.push_back(temp);
 		}
@@ -111,45 +111,16 @@ void CCardUpgrade::setPosition(sf::Vector2f r)
 	cardBack.setPosition(pos);
 	cardTitle.setPosition(pos.x + (xSize - cardTitle.getGlobalBounds().width) / 2, pos.y);
 	int YSizepris = (int)(ySize * 0.3f);
-	int padding = 5.f;
+	int padding = 5;
 	for (int i = 0; i < Stats.size(); i++)
 	{
-		int posY = pos.y + YSizepris;
-		Stats[i].setPosition(pos.x + (xSize - Stats[i].getGlobalBounds().width) / 2.f, posY);
+		int posY = (int)pos.y + YSizepris;
+		Stats[i].setPosition(pos.x + (xSize - Stats[i].getGlobalBounds().width) / 2.f, (float)posY);
 		YSizepris += padding + (int)(Stats[i].getGlobalBounds().height);
 	}
 	cardDescription.setPosition(pos.x + (xSize - cardDescription.getGlobalBounds().width) / 2, pos.y + ySize * 0.8f);
 }
 
-void CCardUpgrade::resizeText(sf::Text& textToResize)
-{
-	while(textToResize.getGlobalBounds().width >=
-cardBack.getGlobalBounds().width - cardBack.getGlobalBounds().width * 0.05f &&
-		  textToResize.getCharacterSize()>=20)
-	{
-		textToResize.setCharacterSize(textToResize.getCharacterSize() - 1);
-	}
-	int dividedIn =1;
-	std::string basicString = textToResize.getString();
-	while (textToResize.getGlobalBounds().width >= cardBack.getGlobalBounds().width - cardBack.getGlobalBounds().width * 0.05f)
-	{
-		dividedIn++;
-		std::string temp = basicString;
-		for (int i = 1; i < dividedIn; i++)
-		{
-			int R = (int)(temp.size() / (float)(dividedIn))*i;
-			for (int j = R; j < temp.size(); j++)
-			{
-				if (temp[j] == ' ')
-				{
-					temp.insert(j, "\n");
-					textToResize.setString(temp);
-					break;
-				}  
-			}
-		}
-	}
-}
 
 void CCardUpgrade::update(float deltaTime)
 {

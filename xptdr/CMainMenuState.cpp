@@ -10,7 +10,9 @@ void CMainMenuState::STEInit()
 {
 	index = 0;
 	data->assets.LoadFont("Lato", FONT_FILE_PATH); //Load la police d'écriture
-
+	info.setCharacterSize(12);
+	info.setFillColor(sf::Color::White);
+	info.setFont(data->assets.GetFont("Lato"));
 	data->assets.LoadTexture("Title",
 		MAIN_MENU_TITLE_PATH); // On charge les textures
 
@@ -123,6 +125,10 @@ void CMainMenuState::resizeScreen()
 
 void CMainMenuState::STEUpdate(float delta)
 {
+	std::stringstream ss;
+	sf::Vector2i mousePositionScreen = sf::Mouse::getPosition(data->window);
+	ss << "mouse position : \n" << "Window : " << mousePositionScreen.x << " " << mousePositionScreen.y << "\n";
+	info.setString(ss.str());
 }
 
 void CMainMenuState::choosedButton()
@@ -173,6 +179,7 @@ void CMainMenuState::STEDraw(float delta)
 	data->window.draw(CMMTitle);
 	for (int i = 0; i < buttons.size(); i++)
 		data->window.draw(buttons[i]);
+	data->window.draw(info);
 	data->window.display();
 }
 

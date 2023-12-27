@@ -59,7 +59,7 @@ void CEnemy::initEnnemy(CAssetManager* a)
 	setType(Enemy);
 	assets = a;
 	imageName = "enemyImage";
-	setTexture(imageName, ENEMYPNG_FILEPATH);
+	setTexture(imageName);
 	getSprite().setScale(0.2f, 0.2f);
 	initAnimation();
 	initStat();

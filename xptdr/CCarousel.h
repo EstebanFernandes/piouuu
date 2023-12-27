@@ -9,18 +9,20 @@ class CCarousel : public sf::Drawable
 private:
 	int maxPoint;
 	void setPositionofEntity(int curIndex,int i) {
-		float scaleNumber = 1.f;
-		if (curIndex > maxPoint / 2)
-			scaleNumber = abs(curIndex - maxPoint) / (float)(maxPoint / 2);
-		else if (curIndex == 0)
-			scaleNumber = 1.f / maxPoint;
-		else
-			scaleNumber = curIndex / (float)(maxPoint / 2);
-		scaleNumber = 0.7f * scaleNumber;
-		cards[i].setScale(0.3f + scaleNumber, 0.3f + scaleNumber);
-		cards[i].setPosition(sf::Vector2f(ellipse.getPoint(curIndex).x + ellipse.getGlobalBounds().left - cards[i].getGlobalBounds().width / 2,
-			ellipse.getPoint(curIndex).y + ellipse.getGlobalBounds().top));
+		CCard& currentCard = cards[i];
+		float yPosition = ellipse.getPoint(curIndex).y + ellipse.getGlobalBounds().top;
+		float b = ellipse.getPoint((size_t)maxPoint / 2).y+ellipse.getPosition().y;
+		float a = b + cardDefaultHeight;
+		float z = (a-yPosition  ) / (a-b) * (200 - 100) + 100;
+		float scaleNumber = 100 / z;
+		scaleNumber = scaleNumber*2.f;
+		cards[i].setScale(scaleNumber,scaleNumber);
+		cards[i].setPosition(sf::Vector2f(
+			ellipse.getPoint(curIndex).x + ellipse.getGlobalBounds().left - cards[i].getGlobalBounds().width / 2,
+			yPosition));
+		//std::cout << i << " " << scaleNumber<<std::endl;
 	}
+	float cardDefaultHeight = 0.f;
 public:
 	//cette horloge sert à limiter la vitesse de défilement carousel
 	sf::Clock carouselClock;
@@ -49,6 +51,7 @@ public:
 		maxPoint = (int)ellipse.getPointCount();
 	}
 	void addCard(CCard card) {
+		cardDefaultHeight = card.getGlobalBounds().height;
 		cards.push_back(card);
 		size_t nbEntity = (int)cards.size();
 		size_t n = (size_t)maxPoint / nbEntity;
@@ -148,17 +151,7 @@ public:
 				else if (curIndex == -1)
 					curIndex = maxPoint - 1;
 				//SetScale of point
-				float scaleNumber = 1.f;
-				if (curIndex > maxPoint / 2)
-					scaleNumber = abs(curIndex - maxPoint) / (float)(maxPoint / 2);
-				else if (curIndex == 0)
-					scaleNumber = 1.f / maxPoint;
-				else
-					scaleNumber = curIndex / (float)(maxPoint / 2);
-				scaleNumber = 0.7f * scaleNumber;
-				cards[i].setScale(0.3f + scaleNumber, 0.3f + scaleNumber);
-				cards[i].setPosition(sf::Vector2f(ellipse.getPoint(curIndex).x + ellipse.getGlobalBounds().left - cards[i].getGlobalBounds().width / 2,
-					ellipse.getPoint(curIndex).y + ellipse.getGlobalBounds().top));
+				setPositionofEntity(curIndex, i);
 			}
 			carouselClock.restart();
 		}
@@ -191,6 +184,27 @@ public:
 	void setEllipseVisibility(bool r)
 	{
 		isEllipseVisible = r;
+	}
+	sf::FloatRect getGlobalBounds();
+	void setCardsScale(sf::Vector2f scale)
+	{
+		for (int i = 0; i < cards.size(); i++)
+		{
+			cards[i].setScale(scale);
+		}
+	}
+	void updatePos() {
+		for (int i = 0; i < cards.size(); i++)
+		{
+			int& curIndex = currentIndex[i];
+			setPositionofEntity(curIndex, i);
+		}
+	}
+	void displayScale() {
+		for (int i = 0; i < cards.size(); i++)
+		{
+			std::cout << cards[i].getScale().x << " " << cards[i].getScale().y << std::endl;
+		}
 	}
 };
 

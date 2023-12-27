@@ -61,7 +61,6 @@ public:
 	void updateCollision(CEntity& b);
 	void gainXP(int levelofEntity);
 	void updateLifeBar();
-	void iNeedMoreBullet();
 	void updateEntity(float dt);
 	void PLYupdateMovement(sf::Event event);
 	void updateMovement(float dt);
