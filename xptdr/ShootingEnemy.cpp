@@ -24,8 +24,10 @@ void ShootingEnemy::updateMovement(float delta)
 
 void ShootingEnemy::enemyShoot()
 {
-	if (bulletClock.getElapsedTime().asSeconds() >= 1.f / attackSpeed && isPositionated) {
-		sf::Vector2f r(getSprite().getPosition().x + getSprite().getGlobalBounds().width, getSprite().getPosition().y + (getSprite().getGlobalBounds().height / 2));
+	if (bulletClock.getElapsedTime().asSeconds() >= 1.f / attackSpeed) {
+		sf::Vector2f r(
+			getSprite().getPosition().x - getGlobalBounds().width/2.f,
+			getSprite().getPosition().y );
 		BAW.iNeedMoreBullets(r, damagePerBullet, bulletSpeed, sf::Vector2f(-1,0));
 		// vient juste le restart le timer à la fin 
 		bulletClock.restart();

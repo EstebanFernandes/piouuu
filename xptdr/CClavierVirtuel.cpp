@@ -52,17 +52,17 @@ void CClavierVirtuel::STEInit()
 	CapsLock.setSize(sf::Vector2f(4.f, 4.f));
 
 	//ahouais.setSize(sf::Vector2f(200.f, 50.f));
-	ahouais.setSize(sf::Vector2f(keyboardBlackSprite.getGlobalBounds().width * 0.5, 50.f));
+	ahouais.setSize(sf::Vector2f(keyboardBlackSprite.getGlobalBounds().width * 0.5f, 50.f));
 	//ahouais.setPosition((float)data->assets.sCREEN_WIDTH / 2.f, (float)data->assets.sCREEN_HEIGHT * 0.3f);
-	ahouais.setPosition(keyboardBlackSprite.getPosition().x + ((keyboardBlackSprite.getGlobalBounds().width - ahouais.getLocalBounds().width) * 0.5), (float)data->assets.sCREEN_HEIGHT * 0.3f);
+	ahouais.setPosition(keyboardBlackSprite.getPosition().x + ((keyboardBlackSprite.getGlobalBounds().width - ahouais.getLocalBounds().width) * 0.5f), (float)data->assets.sCREEN_HEIGHT * 0.3f);
 
-	nameText.setPosition(ahouais.getPosition().x * 1.01, ahouais.getPosition().y * 1.03);
+	nameText.setPosition(ahouais.getPosition().x * 1.01, ahouais.getPosition().y * 1.03f);
 	nameText.setCharacterSize(30);
 	nameText.setFillColor(sf::Color::Black);
 	nameText.setFont(data->assets.GetFont("Lato"));
 	nameText.setString(name);
 
-	bar.setSize(sf::Vector2f(ahouais.getLocalBounds().width * 0.005, ahouais.getLocalBounds().height * 0.80));
+	bar.setSize(sf::Vector2f(ahouais.getLocalBounds().width * 0.005f, ahouais.getLocalBounds().height * 0.80f));
 	bar.setPosition(nameText.getPosition());
 	bar.setFillColor(sf::Color::Black);
 

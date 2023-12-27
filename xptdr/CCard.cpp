@@ -54,7 +54,6 @@ CCard::CCard(std::string title, std::string description, std::string imageName, 
 
 	cardBack.setFillColor(sf::Color::Black);
 	cardBack.setSize(sf::Vector2f(xSize, ySize));
-
 	pos.x = (screenwidth / 2) - (getGlobalBounds().width / 2);
 	pos.y = (screenheight / 2) - (getGlobalBounds().height / 2);
 

@@ -10,13 +10,13 @@ private:
 	sf::Clock animationTimer;
 public:
 	CPowerUp(CAssetManager* a);
+	CPowerUp(sf::Vector2f pos,CAssetManager* a);
 	void setSprite()
 	{
 		currentFrame = sf::IntRect(0, 0, 68, 68);
 		anim = CAnimation(getPointerSprite(), currentFrame, 4, 0.1f);
 		getSprite().setTexture((*assets).GetTexture("lifePowerUp"));
 		getSprite().setTextureRect(currentFrame);
-		getSprite().setPosition((float)assets->sCREEN_WIDTH, 300.f);
 	}
 	void updatewPlayer(float delta, CPlayer& player);
 	void updateEntity(float dt)

@@ -1,6 +1,6 @@
 #pragma once
 #include"CGameState.h"
-#include "CPowerUp.h"
+
 #include"CGrapheUpdate.h"
 class CTestGame : public CGameState
 {
@@ -14,6 +14,7 @@ public:
 	CTestGame(GameDataRef _data); 
 	CTestGame(GameDataRef _data, CCharacter characterParam);
 	void STEInit();
+	void initAssets();
 	void STEHandleInput();
 	void STEUpdate(float delta);
 	void addPowerUp();

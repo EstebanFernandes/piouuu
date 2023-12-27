@@ -48,25 +48,37 @@ void CCharacterSelection::STEInit()
 	loadCharacters();
 	data->assets.LoadFont("Lato", FONT_FILE_PATH); //Load la police d'écriture
 
+	ui.setCharacterSize(12);
+	ui.setFillColor(sf::Color::White);
+	ui.setFont(data->assets.GetFont("Lato"));
 	//temp
 
 	//on a load les personnages donc on va les mettre dans le carousel
 	int maxPoint = (int)carousel.ellipse.getPointCount();
 	int nbCharacter = (int)characterList.size();
 
-	carousel.setSize(sf::Vector2f(screenwidth*0.35f, screenwidth*0.03f));
-	sf::Vector2f carouselPos((float)screenwidth / 2 - carousel.ellipse.getGlobalBounds().width/2,
-		(float)screenheight * 0.02f);
-	carousel.setCarouselPosition(carouselPos);
-	carousel.setEllipseVisibility(false);
+	Title.setFont(data->assets.GetFont("Lato"));
+	Title.setCharacterSize(50);
+	Title.setString("Sélection du personnage");
+	Title.setPosition(
+		screenwidth / 2.f - Title.getGlobalBounds().width / 2.f,
+		screenheight*0.1f - Title.getGlobalBounds().height / 2.f);
+	carousel.setSize(sf::Vector2f(screenwidth * 0.35f, screenwidth * 0.05f));
+	carousel.setEllipseVisibility(true);
 	for (int i = 0; i < characterList.size(); i++)
 	{
 		chosenCharacter = characterList[i];
 		CCard temp(chosenCharacter.getName(), chosenCharacter.getDescription(), chosenCharacter.getName(), &(data->assets), chosenCharacter.getAnimated());
+		temp.setSize(sf::Vector2f(screenwidth / 4.5f, screenheight * 0.5f));
 		temp.setOutlineThickNess(10.f);
 		carousel.addCard(temp);
 	}
 	chosenCharacter = characterList[0];
+	float xPosition = screenwidth / 2.f - carousel.ellipse.getGlobalBounds().width / 2.f;
+	float yPosition = screenheight * 0.20f;
+	carousel.setCarouselPosition(sf::Vector2f(xPosition,
+		yPosition));
+	carousel.updatePos();
 }
 
 void CCharacterSelection::STEHandleInput()
@@ -76,10 +88,14 @@ void CCharacterSelection::STEHandleInput()
 		switch (event.type)
 		{
 		case sf::Event::KeyPressed:
-		 if (event.key.code == sf::Keyboard::D)
+			if (event.key.code == sf::Keyboard::D)
 			{
 				if (!carousel.isMoving)
 					isMovingLeft = true;
+			}
+			else if (event.key.code == sf::Keyboard::U)
+			{
+				carousel.displayScale();
 			}
 			else if (event.key.code == sf::Keyboard::Q)
 			{
@@ -88,16 +104,21 @@ void CCharacterSelection::STEHandleInput()
 			}
 			else if (event.key.code == sf::Keyboard::Enter)
 			{
-			 if(!carousel.isMoving)
-				 data->machine.AddState(StateRef(new CTestGame(data, chosenCharacter)), true);
-			}
-			break;
+				if (!carousel.isMoving)
+				{
+					data->machine.AddState(StateRef(new CTestGame(data, chosenCharacter)), true);
+					data->assets.stopMusique("MenuPrincipal");
+				}
+				break;
 		case sf::Event::Closed:
 			data->window.close();
 			break;
+			}
 		}
 	}
 }
+
+
 
 
 void CCharacterSelection::STEUpdate(float delta)
@@ -121,12 +142,20 @@ void CCharacterSelection::STEUpdate(float delta)
 				isMovingRight = false;
 	}
 	carousel.update(delta);
+	float e = carousel.ellipse.getPoint(carousel.ellipse.getPointCount() / 2).y+ carousel.ellipse.getPosition().y;
+	std::stringstream ss;
+	mousePositionScreen = sf::Mouse::getPosition(data->window);
+	ss << "mouse position : \n" << "Window : " << mousePositionScreen.x << " " << mousePositionScreen.y << "\n"
+		<< "point le plus bas du carousel : " << e <<std::endl;
+	ui.setString(ss.str());
 }
 
 void CCharacterSelection::STEDraw(float delta)
 {
 	data->window.clear(sf::Color(174, 177, 184));
 	data->window.draw(carousel);
+	data->window.draw(Title);
+	data->window.draw(ui);
 	data->window.display();
 }
 

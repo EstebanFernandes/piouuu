@@ -6,13 +6,15 @@
 #include"CAssetManager.h"
 #include"CEntity.h"
 #include"CCharacter.h"
-//Héritage de entité, classe de base qui permet de gérer les mobs (joueurs, npc,ennemies)
+//Heritage of CEntity and CCharacter, basic class to handle mob (entity with life bar and stats)
 class CMob : public CEntity, public CCharacter
 {
 protected :
-
+	//Boolean that tell if the mob has been hit
 	bool hasBeenHit = false;
+	//Red thin line that represents the current hp of the mob
 	sf::RectangleShape lifeBar;
+	//background of the life bar
 	sf::RectangleShape lifeBarBackground;
 
 	bool isInvulnerable = false;
@@ -39,8 +41,8 @@ public:
 	void setPositionEntity(const float x, const float y) {
 		sf::Sprite& temp = getSprite();
 		getSprite().setPosition(x, y);
-		float _x = x + (temp.getGlobalBounds().width / 2) - (lifeBarBackground.getGlobalBounds().width / 2);
-		float _y = y - ((temp.getGlobalBounds().height / 4));
+		float _x = x - (lifeBarBackground.getGlobalBounds().width / 2);
+		float _y = y -temp.getGlobalBounds().width/2.f - ((temp.getGlobalBounds().height / 4));
 		lifeBar.setPosition(_x, _y);
 		lifeBarBackground.setPosition(_x, _y);
 	}

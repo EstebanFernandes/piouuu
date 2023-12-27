@@ -86,5 +86,53 @@ public:
 	void setOutlineThickNess(float r) { cardBack.setOutlineThickness(r); }
 	sf::Vector2f getPosition() { return cardBack.getPosition(); }
 	sf::Vector2f getSize() { return cardBack.getSize(); }
+	void setSize(sf::Vector2f newSize) {
+		sf::Vector2f scale(newSize.x/ xSize, newSize.y/ ySize );
+		xSize = newSize.x;
+		ySize = newSize.y;
+		
+		cardBack.setSize(sf::Vector2f(xSize, ySize));
+		cardTitle.setCharacterSize((unsigned int)((float)cardTitle.getCharacterSize() * scale.x));
+		resizeText(cardTitle);
+		cardTitle.setPosition(pos.x + (xSize - cardTitle.getGlobalBounds().width) / 2, pos.y);
+		
+		cardImage.setPosition(pos.x + ((xSize - cardImage.getGlobalBounds().height) / 2.0f), pos.y + ySize / 2);
+		
+		cardDescription.setCharacterSize((unsigned int)((float)cardDescription.getCharacterSize() * scale.x));
+		resizeText(cardDescription);
+		cardDescription.setPosition(pos.x + (xSize - cardDescription.getGlobalBounds().width) / 2, pos.y + ySize * 0.6f);
+	}
+	void resizeText(sf::Text& textToResize)
+	{
+		while (textToResize.getGlobalBounds().width >=
+			cardBack.getGlobalBounds().width - cardBack.getGlobalBounds().width * 0.05f &&
+			textToResize.getCharacterSize() >= 20)
+		{
+			textToResize.setCharacterSize(textToResize.getCharacterSize() - 1);
+		}
+		int dividedIn = 1;
+		std::string basicString = textToResize.getString();
+		while (textToResize.getGlobalBounds().width >= cardBack.getGlobalBounds().width - cardBack.getGlobalBounds().width * 0.05f)
+		{
+			dividedIn++;
+			std::string temp = basicString;
+			for (int i = 1; i < dividedIn; i++)
+			{
+				int R = (int)(temp.size() / (float)(dividedIn)) * i;
+				for (int j = R; j < temp.size(); j++)
+				{
+					if (temp[j] == ' ')
+					{
+						temp.insert(j, "\n");
+						textToResize.setString(temp);
+						break;
+					}
+				}
+			}
+		}
+	}
+	sf::Vector2f getScale() {
+		return cardBack.getScale();
+	}
 };
 

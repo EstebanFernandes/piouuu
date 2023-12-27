@@ -5,7 +5,7 @@
 #define Balle = true
 #define tirBool = false
 #define nbBullet 5
-#define nbAim 4
+#define nbAim 5
 class CGunslinger : public CEntity
 {
 private:
@@ -13,6 +13,9 @@ private:
 	void updatebyIndex(float dt, int index);
 	void pushByIndex(int index);
 	float gunshotDistance;
+	std::string nameBulletSkin = "";
+	sf::Sound bulletSound;
+sf::SoundBuffer bulletSoundBuffer;
 public:
 	typedef enum
 	{
@@ -22,19 +25,25 @@ public:
 		explosiveBullet,
 		gunshot
 	} typeBullet;
+	//ça va fonctionner comme un nombre binaire on additione selon l'indice de l'enum au carré et après on décompose à chaque fois 
 
 	typedef enum
 	{
 		doubleTirs1=1,
 		doubleTirs2,
-		gunshotAim
+		gunshotAim,
+		circleShot
 	} typeAim;
-	//ça va fonctionner comme un nombre binaire on additione selon l'indice de l'enum au carré et après on décompose à chaque fois 
 	int typeTir;
 	int typeBalle;
 	CGunslinger();
 	void setSprite(){}
 	void updateEntity(float dt);
+	//Setters for bullet's skin, must've been initialized before, this method will just load the bullet's skin from the asset manager.
+	void setBulletAsset(std::string assetName) {
+		if (assetName != "")
+			nameBulletSkin = assetName;
+	}
 	void renderEntity(sf::RenderTarget& target);
 	void updateCollision(CEntity& b);
 	void iNeedMoreBullets(sf::Vector2f pos, int damage);

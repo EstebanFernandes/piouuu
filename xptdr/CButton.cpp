@@ -11,6 +11,7 @@ CButton::CButton(GameDataRef dataParam)
 	//temp la taille
 	setSize(300, 150);
 	setPos(0, 0);
+	text.setLineSpacing(0.f);
 }
 
 CButton::CButton(GameDataRef dataParam, float xSizeParam, float ySizeParam)
@@ -37,7 +38,14 @@ void CButton::setSize(float xSizeParam, float ySizeParam)
 void CButton::setPos(float xParam, float yParam)
 {
 	back.setPosition(sf::Vector2f(xParam, yParam));
-	text.setPosition(xParam + (back.getGlobalBounds().width - text.getLocalBounds().getSize().x) / 2.f, yParam + (back.getGlobalBounds().height - text.getLocalBounds().getSize().y) / 2.f);
+	sf::FloatRect backBounds = back.getGlobalBounds();
+	sf::FloatRect textBounds = text.getGlobalBounds();
+	float xPositionText = xParam + backBounds.width / 2.f - textBounds.width / 2.f;
+	float yPositionText = yParam + backBounds.height / 2.f - textBounds.height / 2.f;
+	text.setPosition(xPositionText, yPositionText);
+	xPositionText -= text.getGlobalBounds().left - xPositionText;
+	yPositionText -= text.getGlobalBounds().top - yPositionText;
+	text.setPosition(xPositionText,yPositionText);
 }
 
 void CButton::setColor(sf::Color colorParam)
@@ -64,6 +72,7 @@ void CButton::setString(std::string strParam)
 {
 	text.setString(strParam);
 	resizeText(text);
+	//setPos(back.getPosition().x, back.getPosition().y);
 }
 
 void CButton::setScale(sf::Vector2f scale)
@@ -96,34 +105,55 @@ void CButton::setScale(sf::Vector2f scale)
 
 void CButton::resizeText(sf::Text& textToResize)
 {
-	while (textToResize.getGlobalBounds().width >=
-		back.getGlobalBounds().width - back.getGlobalBounds().width * 0.05f &&
-		textToResize.getCharacterSize() >= 20)
+	if (textToResize.getGlobalBounds().width >= back.getGlobalBounds().width)
 	{
-		textToResize.setCharacterSize(textToResize.getCharacterSize() - 1);
-	}
-	int dividedIn = 1;
-	std::string basicString = textToResize.getString();
-	while (textToResize.getGlobalBounds().width >= back.getGlobalBounds().width - back.getGlobalBounds().width * 0.05f)
-	{
-		dividedIn++;
-		std::string temp = basicString;
-		for (int i = 1; i < dividedIn; i++)
+		while (textToResize.getGlobalBounds().width >=
+			back.getGlobalBounds().width - back.getGlobalBounds().width * 0.05f &&
+			textToResize.getCharacterSize() >= 20)
 		{
-			int R = (int)(temp.size() / (float)(dividedIn)) * i;
-			for (int j = R; j < temp.size(); j++)
+			textToResize.setCharacterSize(textToResize.getCharacterSize() - 1);
+		}
+		int dividedIn = 1;
+		std::string basicString = textToResize.getString();
+		while (textToResize.getGlobalBounds().width >= back.getGlobalBounds().width - back.getGlobalBounds().width * 0.05f)
+		{
+			dividedIn++;
+			std::string temp = basicString;
+			for (int i = 1; i < dividedIn; i++)
 			{
-				if (temp[j] == ' ')
+				int R = (int)(temp.size() / (float)(dividedIn)) * i;
+				for (int j = R; j < temp.size(); j++)
 				{
-					temp.insert(j, "\n");
-					textToResize.setString(temp);
-					break;
+					if (temp[j] == ' ')
+					{
+						temp.insert(j, "\n");
+						textToResize.setString(temp);
+						break;
+					}
 				}
 			}
 		}
 	}
-	text.setPosition(back.getPosition().x + (back.getGlobalBounds().width - text.getGlobalBounds().width) / 2.f, back.getPosition().y + (back.getGlobalBounds().height - text.getGlobalBounds().height) / 2.f);
-
+	else
+	{
+		while (textToResize.getGlobalBounds().width <=
+			back.getGlobalBounds().width* 0.90f &&
+			textToResize.getGlobalBounds().height <=
+			back.getGlobalBounds().height * 0.90f)
+		{
+			textToResize.setCharacterSize(textToResize.getCharacterSize() + 1);
+		}
+	}
+	sf::FloatRect backBounds = back.getGlobalBounds();
+	sf::FloatRect textBounds = text.getGlobalBounds();
+	float xPositionText = backBounds.width / 2.f - textBounds.width / 2.f;
+	float yPositionText = backBounds.height / 2.f - textBounds.height / 2.f;
+	text.setPosition(xPositionText, yPositionText);
+	xPositionText -= text.getGlobalBounds().left - xPositionText;
+	yPositionText -= text.getGlobalBounds().top - yPositionText;
+	text.setPosition(
+		backBounds.left + backBounds.width/2.f - textBounds.width/ 2.f,
+		backBounds.top + backBounds.height/2.f - textBounds.height/ 2.f);
 }
 
 void CButton::draw(sf::RenderTarget& target, sf::RenderStates states) const {

@@ -13,6 +13,8 @@
 #include "CHittingEntity.h"
 #include "Boss.h"
 
+#include <list>
+#include "CPowerUp.h"
 class CGameState : public CState
 {
 protected:
@@ -31,8 +33,8 @@ protected:
 	bool CESTBON = false;
 	void initPlayer();
 	void initBackground();
-	void initEnemy();
 	void deleteEntity(int& i);
+	void initAsset();
 public:
 	CGameState();
 	CGameState(GameDataRef _data);
@@ -47,11 +49,12 @@ public:
 	* - boss, first prototype of a boss
 	*/
 	void addEnemy(std::string enemyName);
+	void addPowerUp(sf::Vector2f pos);
 	void STEUpdate(float delta);
 	void updateBackground(float delta);
+	// Méthode qui initialise les assets du niveau.
+	virtual void initAssets() = 0;
 	virtual void GameOver() = 0;
-	void updateCollision(float dt);
-	void DrawPlayer();
 	void renderBackground();
 	void STEDraw(float delta);
 	void STEResume();

@@ -14,6 +14,10 @@ private :
 	int currentCharacterIndex;
 	CCharacter chosenCharacter;
 	CCarousel carousel;
+	sf::Text Title;
+
+	sf::Text ui;
+	sf::Vector2i mousePositionScreen;
 
 public:
 	// Constructeur
@@ -24,4 +28,5 @@ public:
 	void STEHandleInput();
 	void STEUpdate(float delta);
 	void STEDraw(float delta);
+
 };

@@ -20,6 +20,7 @@ private:
 	std::vector<CButton> buttons;
 	std::vector<float> where;
 	sf::Sprite CMMTitle;
+	sf::Text info;
 	void choosedButton();
 	void outline(int previndex);
 public:
@@ -34,6 +35,5 @@ public:
 		//CESTBON = false;
 	}
 	void resizeScreen();
-
 };
 

@@ -27,7 +27,7 @@ void CGunslinger::updatebyIndex(float dt, int index)
 
 void CGunslinger::pushByIndex(int index)
 {
-	
+
 }
 
 CGunslinger::CGunslinger()
@@ -35,6 +35,14 @@ CGunslinger::CGunslinger()
 	typeTir = (int)pow(2,0);
 	typeBalle = (int)pow(2,0);
 	setType(Gunslinger);
+	if (bulletSoundBuffer.loadFromFile("res/sfx/Piou.wav"))
+	{
+		bulletSound.setBuffer(bulletSoundBuffer);
+	}
+	else
+	{
+		std::cout << "Erreur lors du chargement du son de tir." << std::endl;
+	}
 }
 
 void CGunslinger::updateEntity(float dt)
@@ -89,30 +97,31 @@ void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage, float bulletSpe
 		{
 			switch (i) {
 			case classic:
-				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, dir, assets));
+				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, dir, nameBulletSkin, assets));
 				break;
 			case doubleTirs1:
-				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, 0.75f), assets));
-				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, -0.75f), assets));
+				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, 0.75f),nameBulletSkin, assets));
+				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, -0.75f), nameBulletSkin, assets));
 				break;
 			case doubleTirs2:
 				pos.y += 3.f;
-				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, 0.f), assets));
+				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, 0.f), nameBulletSkin, assets));
 				pos.y -= 6.f;
-				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, 0.f), assets));
+				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, 0.f), nameBulletSkin, assets));
 				break;
 			case gunshotAim:
 				//magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 1.f), bulletSpeed, gunshotDistance, assets));
-				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 0.75f), bulletSpeed, gunshotDistance, assets));
-				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 0.50f), bulletSpeed, gunshotDistance, assets));
-				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 0.25f), bulletSpeed, gunshotDistance, assets));
-				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 0.f), bulletSpeed, gunshotDistance, assets));
-				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, -0.25f), bulletSpeed, gunshotDistance, assets));
-				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, -0.50f), bulletSpeed, gunshotDistance, assets));
-				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, -0.75f), bulletSpeed, gunshotDistance, assets));
+				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 0.75f), bulletSpeed, gunshotDistance, nameBulletSkin, assets));
+				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 0.50f), bulletSpeed, gunshotDistance, nameBulletSkin, assets));
+				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 0.25f), bulletSpeed, gunshotDistance, nameBulletSkin, assets));
+				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 0.f), bulletSpeed, gunshotDistance, nameBulletSkin, assets));
+				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, -0.25f), bulletSpeed, gunshotDistance, nameBulletSkin, assets));
+				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, -0.50f), bulletSpeed, gunshotDistance, nameBulletSkin, assets));
+				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, -0.75f), bulletSpeed, gunshotDistance, nameBulletSkin, assets));
 				//magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, -1.f), bulletSpeed, gunshotDistance, assets));
 				break;
 			}
 		}
 	}
+	bulletSound.play();
 }

@@ -15,7 +15,16 @@ CTestGame::CTestGame(GameDataRef _data, CCharacter characterParam)
 void CTestGame::STEInit()
 {
 	CGameState::STEInit();
+	initAssets();
+}
+
+void CTestGame::initAssets()
+{
 	data->assets.LoadTexture("lifePowerUp", "res\\img\\lifePowerUp.png");
+	data->assets.LoadTexture("enemyImage", ENEMYPNG_FILEPATH);
+	data->assets.LoadTexture("explosion", "res\\img\\explosion_sprite_sheet.png");
+	data->assets.LoadTexture("bulletImage", "res\\img\\bulletImage.png");
+	data->assets.LoadTexture("bulletImageRancoeur", "res\\img\\bullet_Rancoeur.png");
 }
 
 void CTestGame::STEHandleInput()
@@ -102,8 +111,8 @@ void CTestGame::STEUpdate(float delta)
 			{
 				entityList[i]->updateEntity(delta);
 				sf::Vector2f dirTemp = entityList[i]->getDistance(player1);
-				float un = std::sqrt(pow(lessDir.x,2) + pow(lessDir.y,2));
-				float deux = std::sqrt(pow(dirTemp.x,2) + pow(dirTemp.y,2));
+				float un = (float)std::sqrt(pow(lessDir.x,2) + pow(lessDir.y,2));
+				float deux = (float)std::sqrt(pow(dirTemp.x,2) + pow(dirTemp.y,2));
 				if (un > deux)
 				{
 					lessDir = dirTemp;
@@ -142,7 +151,7 @@ void CTestGame::STEUpdate(float delta)
 		"Score : " << player1.getScore() << std::endl <<
 		"Bullet number : " << player1.BAW.getVector()->size() << "\n";
 	uitext.setString(ss.str());
-	float clock = gameTime.asSeconds() * 100.f + gameClock.getElapsedTime().asSeconds() * 100.f;
+	float clock = (gameTime.asSeconds() + gameClock.getElapsedTime().asSeconds() )* 100.f;
 	clock = ceil(clock);
 	clock = clock / 100.f;
 	std::string i = std::to_string(clock);

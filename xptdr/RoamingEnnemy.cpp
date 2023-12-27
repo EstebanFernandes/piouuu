@@ -7,7 +7,11 @@ RoamingEnnemy::RoamingEnnemy(CAssetManager* assetParam) {
 	float maxDirY = 0.16f * (1.f-(initPositionY / ySpawnMax));
 	float minDirY = -(0.16f* initPositionY / (float)ySpawnMax);
 	directionY = RandomFloat(minDirY, maxDirY);
-	moveSpeed = 19.f;
+	moveSpeed = 60.f;
+	directionY = RandomFloat(minDirY, maxDirY);
+	getSprite().setOrigin(getSprite().getGlobalBounds().width / 2, getSprite().getGlobalBounds().height / 2);
+	float angle = (float)180.f+(180.f / M_PIl)* atan2(directionY, directionX);
+	getSprite().setRotation(angle);
 }
 
 void RoamingEnnemy::updateMovement(float delta)
@@ -16,5 +20,5 @@ void RoamingEnnemy::updateMovement(float delta)
 		needDelete = true;
 	updateLifeBar();
 	if (onAvance == true)
-		moveEntity(sf::Vector2f(directionX * delta * moveSpeed, directionY));
+		moveEntity(sf::Vector2f(directionX * delta * moveSpeed, directionY * delta * moveSpeed));
 }

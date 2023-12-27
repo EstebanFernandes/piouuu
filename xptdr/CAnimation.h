@@ -38,6 +38,7 @@ public:
 		timeBetweenFrames(time)
 	{
 		currentSprite = sprit;
+		currentSprite->setOrigin(currentFrame.width / 2.f, currentFrame.height / 2.f);
 		currentXFrameNumber = 0;
 	}
 

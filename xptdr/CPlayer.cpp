@@ -18,26 +18,33 @@ void CPlayer::setAssets(CAssetManager* a)
 {
 	assets = a;
 	BAW.assets = a;
-	getSprite().setTexture((*a).GetTexture(name));
+	setTexture(name);
 
 	assets->LoadTexture("lifepoint", LIFEPOINTTEXTURE);
 	if (isAnimated) anim = CAnimation(getPointerSprite(), sf::IntRect(0, 0, 153, 66), 4, 0.16f);
+	if (name.find("Rancoeur") != std::string::npos)
+		BAW.setBulletAsset("bulletImageRancoeur");
 	initLifeBar();
 	setSprite();
 }
 
 bool CPlayer::checkGlobalCollisions()
 {
+	sf::FloatRect currentBounds = getGlobalBounds();
+	sf::FloatRect nextBounds = currentBounds;
+	nextBounds.left += currentBounds.width / 2.f;
+	nextBounds.top += currentBounds.height / 2.f;
 	//Top collision and bot collision
-	if (getGlobalBounds().top <= 0)
-		setPositionEntity(getGlobalBounds().left, 0);
-	else if(getGlobalBounds().top + getGlobalBounds().height >= assets->sCREEN_HEIGHT)
-		setPositionEntity(getGlobalBounds().left, assets->sCREEN_HEIGHT - getGlobalBounds().height);
+
+	if (currentBounds.top <= 0)
+		setPositionEntity(nextBounds.left, currentBounds.height/2.f);
+	else if(currentBounds.top + currentBounds.height >= assets->sCREEN_HEIGHT)
+		setPositionEntity(nextBounds.left, assets->sCREEN_HEIGHT - currentBounds.height/2.f);
 	//Left and right collision
-	if (getGlobalBounds().left <= 0)
-		setPositionEntity(0, getGlobalBounds().top);
-	else if (getGlobalBounds().left + getGlobalBounds().width >= assets->sCREEN_WIDTH)
-		setPositionEntity(assets->sCREEN_WIDTH - getGlobalBounds().width, getGlobalBounds().top);
+	if (currentBounds.left <= 0)
+		setPositionEntity(currentBounds.width/2.f, nextBounds.top);
+	else if (currentBounds.left + currentBounds.width >= assets->sCREEN_WIDTH)
+		setPositionEntity(assets->sCREEN_WIDTH - currentBounds.width/2.f, nextBounds.top);
 	return false;
 }
 
@@ -140,14 +147,16 @@ void CPlayer::PLYupdateMovement(sf::Event event)
 	switch (event.type)
 	{
 	case sf::Event::KeyPressed :
-		if (event.key.code == sf::Keyboard::Z )
+		if (event.key.code == sf::Keyboard::Z)
 			isMovingUp = true;
-		else if(event.key.code == sf::Keyboard::Q)
+		else if (event.key.code == sf::Keyboard::Q)
 			isMovingLeft = true;
 		else if (event.key.code == sf::Keyboard::S)
 			isMovingDown = true;
 		else if (event.key.code == sf::Keyboard::D)
 			isMovingRight = true;
+		else if (event.key.code == sf::Keyboard::U)
+			rotate(-45);
 		break;
 	case sf::Event::KeyReleased:
 		if (event.key.code == sf::Keyboard::Z)
@@ -201,12 +210,14 @@ void CPlayer::updateMovement(float dt)
 	{
 		//Si ce temps est trop faible on ne fait rien, 
 		if (bulletClock.getElapsedTime().asSeconds() >= 1.f / attackSpeed) {
-			sf::Vector2f r(getSprite().getPosition().x + getSprite().getGlobalBounds().width, getSprite().getPosition().y + (getSprite().getGlobalBounds().height / 2));
+			sf::Vector2f nezdeLavion(
+				getSprite().getPosition().x + getGlobalBounds().width/2.f,
+				getSprite().getPosition().y );
 				if (BAW.typeBalle == 3)
 					seekForTarget = true;
 				if (BAW.typeTir == pow(2,(int)BAW.gunshotAim))
 					BAW.setGunShotDistance(250.f);
-				BAW.iNeedMoreBullets(r, damagePerBullet,bulletSpeed);
+				BAW.iNeedMoreBullets(nezdeLavion, damagePerBullet,bulletSpeed);
 
 			// vient juste le restart le timer à la fin 
 			bulletClock.restart();

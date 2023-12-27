@@ -79,12 +79,12 @@ void CGameOver<MType>::STEInit()
 
 	CButton restartButton = CButton(data);
 	restartButton.setString("Rejouer");
-	restartButton.setPos(data->assets.sCREEN_WIDTH *0.2f, data->assets.sCREEN_HEIGHT * 0.8f);
 	restartButton.setOutlineThickness(4);
 	restartButton.setThicknessColor(sf::Color::White);
 	restartButton.setSize(data->assets.sCREEN_WIDTH * 0.15f, data->assets.sCREEN_HEIGHT * 0.1f);
 	restartButton.setColor(sf::Color(174, 137, 100));
-
+	restartButton.setPos(data->assets.sCREEN_WIDTH *0.2f, data->assets.sCREEN_HEIGHT * 0.8f);
+	restartButton.displayButtonInfo();
 	CButton menuButton = CButton(data);
 	menuButton.setString("Menu Principal");
 	menuButton.setPos(data->assets.sCREEN_WIDTH * 0.8f, data->assets.sCREEN_HEIGHT * 0.8f);
@@ -96,6 +96,7 @@ void CGameOver<MType>::STEInit()
 	buttonList.push_back(restartButton);
 	buttonList.push_back(menuButton);
 	//data->machine.AddState(StateRef(new CScoreboard(data, score)), false);
+	data->assets.stopMusique("PartieJour");
 }
 template <class MType>
 void CGameOver<MType>::STEHandleInput()
