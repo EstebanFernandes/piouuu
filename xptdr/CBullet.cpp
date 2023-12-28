@@ -34,7 +34,7 @@ void CBullet::setSprite(std::string nameImage)
 {
 	if (nameImage == "")
 		nameImage = "bulletImage";
-	getSprite().setTexture(assets->GetTexture(nameImage));
+	setTexture(nameImage);
 }
 
 void CBullet::updateEntity(float dt)

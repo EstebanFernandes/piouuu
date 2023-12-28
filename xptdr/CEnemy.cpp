@@ -73,7 +73,7 @@ void CEnemy::initEnnemy(CAssetManager* a, std::string nameParam, std::string ima
 	enemyName = nameParam;
 	imageFile = imageFileParam;
 	a->LoadTexture(enemyName, imageFile);
-	getSprite().setTexture((a->GetTexture(enemyName)));
+	setTexture(enemyName);
 	getSprite().setScale(0.2f, 0.2f);
 	initAnimation();
 	initStat();

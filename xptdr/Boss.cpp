@@ -10,24 +10,22 @@ Boss::Boss(CAssetManager* assetsParam, CPlayer* playerParam, std::vector<CHittin
 	enemyNumber = enemyNumberParam;
 
 	initEnnemy(assets, "boss", "res\\img\\spacecraft_player_1.png");
-	initPositionX = assets->sCREEN_WIDTH * 1.15f;
-
-
-
 	getSprite().setScale(0.7f, 0.7f);
-	
+	rotate(180);
 
-
+	initPositionX = assets->sCREEN_WIDTH * 1.15f;
+	initPositionY = assets->sCREEN_HEIGHT * 0.5f;
 	explosionSprite.setScale(0.6f, 0.6f);
-	initPositionY = assets->sCREEN_HEIGHT * 0.5f - getSprite().getGlobalBounds().height/2.f;
-	setSprite();
 	moveSpeed = 3.f;
 	attackSpeed = 0.5f;
 	setMaxHealth(100);
+
+	setSprite();
+
+	//getSprite().setRotation(180);
 		
 	//getSprite().setOrigin(getSprite().getLocalBounds().width / 2.f, getSprite().getLocalBounds().height / 2.f);
 	//getSprite().setScale(0.7f, 0.7f);
-	//getSprite().rotate(180);
 
 	phasesCaps.push_back(75.f);
 	phasesCaps.push_back(50.f);
@@ -90,8 +88,9 @@ void Boss::updateEntity(float delta)
 	}
 	else if (currentPhase == 1) {
 		if (bulletClock.getElapsedTime().asSeconds() >= 1.f / attackSpeed && isPositionated) {
-			sf::Vector2f r(getSprite().getPosition().x, getSprite().getPosition().y + (getSprite().getGlobalBounds().height / 2));
-			-player1->getSprite().getPosition().y;
+			sf::Vector2f r(
+				getSprite().getPosition().x - getGlobalBounds().width / 2.f,
+				getSprite().getPosition().y);
 			BAW.iNeedMoreBullets(r, damagePerBullet, bulletSpeed, sf::Vector2f(-1, 0));
 			// vient juste le restart le timer à la fin 
 			bulletClock.restart();

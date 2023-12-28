@@ -9,7 +9,6 @@ RoamingEnnemy::RoamingEnnemy(CAssetManager* assetParam) {
 	directionY = RandomFloat(minDirY, maxDirY);
 	moveSpeed = 60.f;
 	directionY = RandomFloat(minDirY, maxDirY);
-	getSprite().setOrigin(getSprite().getGlobalBounds().width / 2, getSprite().getGlobalBounds().height / 2);
 	float angle = (float)180.f+(180.f / M_PIl)* atan2(directionY, directionX);
 	getSprite().setRotation(angle);
 }

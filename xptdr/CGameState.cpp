@@ -166,7 +166,8 @@ void CGameState::STEUpdate(float delta)
 	ss <<"Player level : "<<player1.getLevel()<<std::endl <<
 		"XP : " << player1.getXp()<<std::endl <<
 		"Max xp : " << player1.getMaxXp() << "\n"<<
-		"Score : " << player1.getScore() << std::endl << 
+		"Score : " << player1.getScore() << std::endl <<
+		"Nb ennemis : " << *enemyNumber << std::endl <<
 		"Bullet number : " << player1.BAW.getVector()->size() << "\n";
 	uitext.setString(ss.str());
 	float clock = gameTime.asSeconds() * 100.f + gameClock.getElapsedTime().asSeconds() * 100.f;
@@ -191,103 +192,23 @@ void CGameState::deleteEntity(int& i)
 {
 	if (entityList[i]->getType() == 1) {
 		{
-			enemyNumber--;
+			(*enemyNumber)--;
 			int random = 1 + (rand() % 99);
 			if (random <= 15)
 			{
-				sf::Vector2f r(entityList[i]->getGlobalBounds().getPosition().x+ entityList[i]->getGlobalBounds().width/2,
-					entityList[i]->getGlobalBounds().getPosition().y + entityList[i]->getGlobalBounds().height / 2); 
+				sf::Vector2f r(entityList[i]->getGlobalBounds().getPosition().x + entityList[i]->getGlobalBounds().width / 2,
+					entityList[i]->getGlobalBounds().getPosition().y + entityList[i]->getGlobalBounds().height / 2);
 				addPowerUp(r);
 			}
 		}
-		
-	//{
-	//	//moto->resetVelocityX();
-	//	moto->setPositionEntity(0,moto->getGlobalBounds().top);
-	//}
-	////droite
-	//if (moto->getGlobalBounds().left + moto->getGlobalBounds().width >= SCREEN_WIDTH)
-	//{
-	//	//moto->resetVelocityX();
-	//	moto->setPositionEntity(
-	//		SCREEN_WIDTH-moto->getGlobalBounds().width,
-	//		moto->getGlobalBounds().top
-	//	);
-	//}
-
-	////Collision between bullet and enemy
-	//std::vector<CBullet>& r = moto->getBullets();
-	//size_t temp = r.size();
-	//size_t temp2 = enemyList.size();
-	//	//update collision between bullets and boundaries
-	//moto->updateBullets(dt);
-	//temp = r.size();
-	//if (temp != 0)
-	//{
-	//	//Update collison for each bullet with eachenemies
-	//	for (int i = 0; i < temp;i++)
-	//	{
-	//		for (int j = 0; j<temp2 ;j++)
-	//		{
-	//		CEnemy& enemyI = enemyList[j];
-	//			if (temp == 0)
-	//				break;
-	//			else {
-	//				if (enemyI.isDead ==false)
-	//				{
-	//					if (r[i].checkCollisions(enemyI.getGlobalBounds()))
-	//					{
-	//						enemyI.reduceHP(r[i].getDamage());
-	//						r.erase(r.begin() + i);
-	//						if (i != 0)
-	//							i--;
-	//						if (enemyI.getLifePoint() <= 0)
-	//						{
-	//							enemyI.onAvance = false;
-	//							enemyI.isDead = true;
-	//						}
-	//					}
-	//				}
-	//			}
-	//		temp = r.size();
-	//		}
-	//	}
-	//}
-
-	//for (int i = 0; i < temp2; i++)
-	//{
-	//	CEnemy& enemyI = enemyList[i];
-	//	//Si l'ops est mort on boucle jusqu'à ce que l'animation d'explosion soit fini
-	//	if (enemyI.isDead == true)
-	//	{
-	//		if (enemyI.updateExplosionSprite())
-	//		{
-	//			moto->gainXP(enemyI.getLevel());
-	//			enemyList.erase(enemyList.begin() + i); //efface la balle et permet de ne pas avoir trop d'élement
-	//			temp2--;
-	//			if (i != 0)
-	//				i--;
-	//		}
-	//	}
-	//	else {//Sinon on regarde si l'ennemi passe à travers le joueur
-	//		if (enemyI.isHitting == false)
-	//		{
-	//			if (enemyI.updateEntity(moto->getGlobalBounds(),dt))
-	//			{
-	//				//Fonctionne pas
-	//				moto->getSprite().setColor(sf::Color::Green);
-	//				moto->reduceHP(3);
-	//				enemyI.isHitting = true;
-	//			}
-	//		} //Sinon on check normal les collisions avec le bord de l'écran
-	//		else if(enemyI.updateEntity(moto->getGlobalBounds(), dt)==false)
-	//			enemyI.isHitting = false;
-	//		enemyI.updateMovement(dt);
-	//	}
-	//}
+	}
+	delete entityList[i];
+	entityList.erase(entityList.begin() + i);
+	if (i != 0)
+		i--;
 }
 
-
+/*
 void CGameState::DrawPlayer()
 {
 	//moto->renderEntity(data->window);
@@ -298,23 +219,11 @@ void CGameState::initEnemy()
 	data->assets.LoadTexture("explosion", "res\\img\\explosion_sprite_sheet.png");
 }
 
-void CGameState::deleteEntity(int& i)
-{
-	if (entityList[i]->getType() == 1) {
-		enemyNumber--;
-		
-	}
-	delete entityList[i];
-	entityList.erase(entityList.begin() + i);
-	if (i != 0)
-		i--;
-}
-
 void CGameState::initAsset()
 {
 	data->assets.LoadTexture("enemyImage", ENEMYPNG_FILEPATH);
 }
-
+*/
 void CGameState::renderBackground()
 {
 	BG1.renderBackground(data->window);

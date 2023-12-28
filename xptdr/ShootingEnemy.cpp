@@ -24,7 +24,7 @@ void ShootingEnemy::updateMovement(float delta)
 
 void ShootingEnemy::enemyShoot()
 {
-	if (bulletClock.getElapsedTime().asSeconds() >= 1.f / attackSpeed) {
+	if (bulletClock.getElapsedTime().asSeconds() >= 1.f / attackSpeed && isPositionated) {
 		sf::Vector2f r(
 			getSprite().getPosition().x - getGlobalBounds().width/2.f,
 			getSprite().getPosition().y );
