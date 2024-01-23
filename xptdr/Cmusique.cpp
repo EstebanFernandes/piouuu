@@ -43,7 +43,7 @@ void Cmusique::volumeMusique(const std::string& id, float volume)
 {
     auto it = musiques.find(id);
     if (it != musiques.end()) {
-        it->second.music->setVolume(volume);
+        it->second.volumeparPiste = volume;
     }
 }
 
@@ -53,7 +53,7 @@ void Cmusique::overAllVolume(float volume)
     {
         volumeOverAll = volume;
         for (auto it = musiques.begin(); it != musiques.end(); it++) {
-            it->second.music->setVolume(it->second.music->getVolume() * (volumeOverAll / 100.f));
+            it->second.music->setVolume(it->second.volumeparPiste * (volumeOverAll / 100.f));
         }
     }
 }

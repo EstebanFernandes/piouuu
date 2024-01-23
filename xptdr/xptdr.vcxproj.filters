@@ -222,8 +222,8 @@
     <ClCompile Include="CEnemy.cpp">
       <Filter>Fichiers sources\GameRelated\Ennemies</Filter>
     </ClCompile>
-    <ClCompile Include="RoamingEnnemy.cpp">
-      <Filter>Fichiers sources\GameRelated\Ennemies</Filter>
+    <ClCompile Include="RoamingEnemy.cpp">
+      <Filter>Fichiers sources\Ennemies</Filter>
     </ClCompile>
     <ClCompile Include="ShootingEnemy.cpp">
       <Filter>Fichiers sources\GameRelated\Ennemies</Filter>
@@ -413,7 +413,7 @@
     <ClInclude Include="CEnemy.h">
       <Filter>Fichiers d%27en-tête\GameRelated\Ennemies</Filter>
     </ClInclude>
-    <ClInclude Include="RoamingEnnemy.h">
+    <ClInclude Include="RoamingEnemy.h">
       <Filter>Fichiers d%27en-tête\GameRelated\Ennemies</Filter>
     </ClInclude>
     <ClInclude Include="ShootingEnemy.h">
@@ -439,6 +439,18 @@
     </ClInclude>
     <ClInclude Include="CCheckbox.h">
       <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Ceffetsonore.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Cmusique.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="BomberEnemy.h">
+      <Filter>Fichiers d%27en-tête\Ennemies</Filter>
+    </ClInclude>
+    <ClInclude Include="RusherEnemy.h">
+      <Filter>Fichiers d%27en-tête\Ennemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -31,7 +31,15 @@ public:
     // Arrête la musique
     void stopMusique(const std::string& id);
 
-    // Règle le volume de la musique
+    /// <summary>
+    /// Règle le volume de la piste
+    /// </summary>
+    /// <param name="id"> de la musique</param>
+    /// <param name="volume"> en float</param>
     void volumeMusique(const std::string& id, float volume);
+    /// <summary>
+    /// Règle le volume générale de la musique
+    /// </summary>
+    /// <param name="volume"></param>
     void overAllVolume(float volume);
 };

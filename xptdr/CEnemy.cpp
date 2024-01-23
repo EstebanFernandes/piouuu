@@ -70,8 +70,10 @@ void CEnemy::initEnnemy(CAssetManager* a, std::string nameParam, std::string ima
 {
 	setType(Enemy);
 	assets = a;
+	enemyName = nameParam;
+	imageFile = imageFileParam;
 	a->LoadTexture(enemyName, imageFile);
-	getSprite().setTexture((a->GetTexture(enemyName)));
+	setTexture(enemyName);
 	getSprite().setScale(0.2f, 0.2f);
 	initAnimation();
 	initStat();
@@ -102,6 +104,8 @@ void CEnemy::updatewPlayer(float delta, CPlayer& player)
 {
 	if (checkCollisions(player))
 	{
+		player.reduceHP(damage);
+		/*
 		//SI on est la c'est que l'ennemi est en contact avec le jouueur
 		if (isDead == false)
 		{
@@ -112,7 +116,7 @@ void CEnemy::updatewPlayer(float delta, CPlayer& player)
 			}
 		}
 		else if (isHitting == true)
-			isHitting = false;
+			isHitting = false;*/
 	}
 	//Ici on regarde le type 
 
@@ -148,16 +152,20 @@ void CEnemy::updatewPlayer(float delta, CPlayer& player)
 	}
 }
 
-bool CEnemy::getIsAShooter()
+void CEnemy::setScoreGived(float scoreGivedParam)
 {
-	return isAShooter;
+	scoreGived = scoreGivedParam;
 }
-
 
 
 void CEnemy::specialBehaviorwithPlayer(CPlayer& player)
 {
 	player.gainXP(level);
+}
+
+float CEnemy::getScoreGived()
+{
+	return scoreGived;
 }
 
 void CEnemy::updateCollision(CEntity& b)
@@ -243,6 +251,10 @@ void CEnemy::renderEntity(sf::RenderTarget& target)
 		//std::cout << r << std::endl;
 		target.draw(explosionSprite);
 	}
+}
+void CEnemy::setPosition(int positionXParam, int PositionYParam)
+{
+	setPositionEntity((float)positionXParam , (float)PositionYParam);
 }
 /*
 void CEnemy::updateMovement(float delta)

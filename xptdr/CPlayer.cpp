@@ -240,7 +240,7 @@ void CPlayer::updateCollision(CEntity& b)
 }
 void CPlayer::gainXP(int levelofEntity)
 {
-	xp += 3 + 3 * levelofEntity;
+	xp += 4 * levelofEntity;
 }
 void CPlayer::updateLifeBar()
 {
@@ -298,12 +298,11 @@ void CPlayer::updateFx()
 	}
 	if (hasBeenHit)
 	{
-		if (hitClock.getElapsedTime().asSeconds() >= 0.5f)
-		{
-			hittype = true;
-			getSprite().setColor(sf::Color::Red);
-			hitClock.restart();
-		}
+		hittype = true;
+		getSprite().setColor(sf::Color::Red);
+		isInvulnerable = true;
+		std::cout << "debut invu" << std::endl;
+		hitClock.restart();
 	}
 	if (hittype)
 	{
@@ -311,7 +310,10 @@ void CPlayer::updateFx()
 		{
 			getSprite().setColor(sf::Color::White);
 			hitClock.restart();
+			isInvulnerable = false;
+			std::cout << "fin invu" << std::endl;
 			hittype = false;
+			hasBeenHit = false;
 		}
 	}
 }

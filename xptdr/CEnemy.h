@@ -26,7 +26,6 @@ protected:
 	bool gavexP=false;
 	int damage;
 
-	bool isAShooter = false;
 
 	void initEnnemy(CAssetManager* a);
 	void initEnnemy(CAssetManager* a, std::string nameParam, std::string imageFileParam);
@@ -43,10 +42,11 @@ public:
 		initPositionX = (float)assets->sCREEN_WIDTH;
 		level = 0;
 		damage = 3;
-		maxHealthPoint = 20+15*level;
+		maxHealthPoint = 20.f+15.f*level;
 		healthPoint = maxHealthPoint;
 	}
-	bool getIsAShooter();
+	void setScoreGived(float scoreGivedParam);
+	float getScoreGived();
 	//renvoie true si l'animation d'explosion est finie
 	bool updateExplosionSprite();
 	void setSprite();
@@ -58,6 +58,7 @@ public:
 	bool updateEntity(sf::FloatRect a,float delta);
 	void updateAnimation();
 	void renderEntity(sf::RenderTarget& target);
+	void setPosition(int positionXParam, int PositionYParam);
 
 	virtual void updateMovement(float delta) = 0;
 	virtual void enemyShoot() = 0;

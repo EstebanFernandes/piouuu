@@ -22,8 +22,8 @@ private:
 	//La barre de vie est une liste de sprite représentant chacun un point de vie
 	std::vector<sf::Sprite> lifeBar;
 	//les deux suivants servent à gérer la barre de vie
-	int previouslifePoint;
-	int previousMaxHealth;
+	float previouslifePoint;
+	float previousMaxHealth;
 
 	bool isMovingUp;
 	bool isMovingDown;

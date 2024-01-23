@@ -59,6 +59,22 @@ void CTestGame::STEHandleInput()
 			{
 				addEnemy("shooter");
 			}
+			if (event.key.code == sf::Keyboard::B)
+			{
+				addEnemy("boss");
+			}
+			if (event.key.code == sf::Keyboard::K)
+			{
+				addEnemy("bomber");
+			}
+			if (event.key.code == sf::Keyboard::L)
+			{
+				addEnemy("bomberInverse");
+			}
+			if (event.key.code == sf::Keyboard::J)
+			{
+				addEnemy("rusher");
+			}
 			if (event.key.code == sf::Keyboard::T)
 			{
 				player1.BAW.setPenetration(2);

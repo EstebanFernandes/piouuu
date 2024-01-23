@@ -16,6 +16,9 @@ protected :
 	sf::RectangleShape lifeBar;
 	//background of the life bar
 	sf::RectangleShape lifeBarBackground;
+
+	bool isInvulnerable = false;
+
 public:
 	CMob();
 	//Méthode à redéfinir 
@@ -32,7 +35,7 @@ public:
 		if (hasBeenHit)
 		{
 			lifeBar.setSize(sf::Vector2f(100.f * healthPoint / maxHealthPoint, 10.f));
-			hasBeenHit = false;
+			//hasBeenHit = false;
 		}
 	}
 	void setPositionEntity(const float x, const float y) {
@@ -63,15 +66,17 @@ public:
 		target.draw(lifeBarBackground);
 		target.draw(lifeBar);
 	}
-	void reduceHP(int damage) {
-		healthPoint -= damage;
+	void reduceHP(float damage) {
+		if (!isInvulnerable) {
+			healthPoint -= damage;
+			hasBeenHit = true;
+		}
 		if (healthPoint < 0)
 			healthPoint = 0;
 		else if (healthPoint > maxHealthPoint)
 			healthPoint = maxHealthPoint;
-		hasBeenHit = true;
 	}
-	void gainHP(int damage)
+	void gainHP(float damage)
 	{
 		reduceHP(damage);
 		hasBeenHit = false;

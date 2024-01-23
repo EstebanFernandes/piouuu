@@ -165,6 +165,7 @@ template<class MType>
 inline void CGameOver<MType>::STEResume()
 {
 	updateFileRanks();
+	// TO DO : Bien placer le scoreboard
 	scoreboard = CScoreboard(&(data->assets), 20, 20, rank);
 }
 
@@ -177,8 +178,8 @@ inline void CGameOver<MType>::updateCharacter()
 	for (int i = 1; i < charactersInfo.size(); i++) {
 		if (charactersInfo[i][0] == character.getName()) {
 
-			int maxHealthPointTemp = 20;
-			if (charactersInfo[i][4] != "" && typeid(std::stoi(charactersInfo[i][4])) == typeid(int)) maxHealthPointTemp = std::stoi(charactersInfo[i][4]);
+			float maxHealthPointTemp = 20;
+			if (charactersInfo[i][4] != "" && typeid(std::stof(charactersInfo[i][4])) == typeid(int)) maxHealthPointTemp = std::stof(charactersInfo[i][4]);
 
 			float moveSpeedTemp = 0.5f;
 			if (charactersInfo[i][5] != "" && typeid(std::stof(charactersInfo[i][5])) == typeid(float)) moveSpeedTemp = std::stof(charactersInfo[i][5]);
@@ -246,7 +247,7 @@ inline void CGameOver<MType>::updateFileRanks()
 	if (!file.is_open()) {
 		std::cout << "Can't open scoreboard file\n";
 	}
-	else {
+	else if (rank <= 100) {
 		//On complete ici pour ajouter textToAdd en position rank-1
 		while (std::getline(file, line)) {
 			lines.push_back(line);
@@ -257,6 +258,7 @@ inline void CGameOver<MType>::updateFileRanks()
 			lines.push_back(textToAdd);
 		}
 		else {
+			// top 100 : on ne rentre pas dans le classement
 			lines.insert(lines.begin() + rank - 1, textToAdd);
 		}
 

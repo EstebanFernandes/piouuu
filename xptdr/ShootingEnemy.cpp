@@ -2,21 +2,21 @@
 
 ShootingEnemy::ShootingEnemy(CAssetManager* assetParam) {
 	BAW.assets = assetParam;
-	initPositionX = assetParam->sCREEN_WIDTH * 2.f;
 	initEnnemy(assetParam);
+	initPositionX = assetParam->sCREEN_WIDTH * 1.05f;
+	setSprite();
 	moveSpeed = 5.f;
 	attackSpeed = 1.f;
-	isAShooter = true;
 }
 
 void ShootingEnemy::updateMovement(float delta)
 {
-	if (checkGlobalCollisions())
+	if (checkGlobalCollisions() && isPositionated)
 		needDelete = true;
 	updateLifeBar();
 	if (onAvance == true && !isPositionated)
 		moveEntity(sf::Vector2f(moveSpeed * -delta, 0));
-	if (!isPositionated && getSprite().getPosition().x <= assets->sCREEN_WIDTH * 0.9) {
+	if (!isPositionated && getSprite().getPosition().x <= assets->sCREEN_WIDTH - getSprite().getGlobalBounds().width / 2.f) {
 		isPositionated = true;
 		bulletClock.restart();
 	}
@@ -24,7 +24,7 @@ void ShootingEnemy::updateMovement(float delta)
 
 void ShootingEnemy::enemyShoot()
 {
-	if (bulletClock.getElapsedTime().asSeconds() >= 1.f / attackSpeed) {
+	if (bulletClock.getElapsedTime().asSeconds() >= 1.f / attackSpeed && isPositionated) {
 		sf::Vector2f r(
 			getSprite().getPosition().x - getGlobalBounds().width/2.f,
 			getSprite().getPosition().y );

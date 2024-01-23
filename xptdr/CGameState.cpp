@@ -74,6 +74,7 @@ void CGameState::initBackground()
 }
 void CGameState::STEInit()
 {
+	*enemyNumber = 0;
 	initPlayer();
 	initBackground();
 	//initEnemy();
@@ -112,14 +113,35 @@ void CGameState::STEHandleInput()
 void CGameState::addEnemy(std::string enemyName)
 {
 	if (enemyName == "roaming") {
-		RoamingEnnemy* enemy = new RoamingEnnemy(&(data->assets));
+		RoamingEnemy* enemy = new RoamingEnemy(&(data->assets));
 		entityList.push_back(enemy);
-		enemyNumber++;
+		(*enemyNumber) ++;
 	}
 	else if (enemyName == "shooter") {
 		ShootingEnemy* enemy = new ShootingEnemy(&(data->assets));
 		entityList.push_back(enemy);
-		enemyNumber++;
+		(*enemyNumber) ++;
+	}
+	else if (enemyName == "bomber") {
+		BomberEnemy* enemy = new BomberEnemy(&(data->assets));
+		entityList.push_back(enemy);
+		(*enemyNumber)++;
+	}
+	else if (enemyName == "bomberInverse") {
+		BomberEnemy* enemy = new BomberEnemy(&(data->assets));
+		enemy->changeInitalSide();
+		entityList.push_back(enemy);
+		(*enemyNumber)++;
+	}
+	else if (enemyName == "rusher") {
+		RusherEnemy* enemy = new RusherEnemy(&(data->assets));
+		entityList.push_back(enemy);
+		(*enemyNumber)++;
+	}
+	else if (enemyName == "boss") {
+		Boss* enemy = new Boss(&(data->assets), &player1, &entityList, enemyNumber);
+		entityList.push_back(enemy);
+		(*enemyNumber) ++;
 	}
 	else {
 		std::cout << "tentative d'invocation d'un ennemi qui n'existe pas";
@@ -160,7 +182,8 @@ void CGameState::STEUpdate(float delta)
 	ss <<"Player level : "<<player1.getLevel()<<std::endl <<
 		"XP : " << player1.getXp()<<std::endl <<
 		"Max xp : " << player1.getMaxXp() << "\n"<<
-		"Score : " << player1.getScore() << std::endl << 
+		"Score : " << player1.getScore() << std::endl <<
+		"Nb ennemis : " << *enemyNumber << std::endl <<
 		"Bullet number : " << player1.BAW.getVector()->size() << "\n";
 	uitext.setString(ss.str());
 	float clock = gameTime.asSeconds() * 100.f + gameClock.getElapsedTime().asSeconds() * 100.f;
@@ -185,16 +208,15 @@ void CGameState::deleteEntity(int& i)
 {
 	if (entityList[i]->getType() == 1) {
 		{
-			enemyNumber--;
+			(*enemyNumber)--;
 			int random = 1 + (rand() % 99);
 			if (random <= 15)
 			{
-				sf::Vector2f r(entityList[i]->getGlobalBounds().getPosition().x+ entityList[i]->getGlobalBounds().width/2,
-					entityList[i]->getGlobalBounds().getPosition().y + entityList[i]->getGlobalBounds().height / 2); 
+				sf::Vector2f r(entityList[i]->getGlobalBounds().getPosition().x + entityList[i]->getGlobalBounds().width / 2,
+					entityList[i]->getGlobalBounds().getPosition().y + entityList[i]->getGlobalBounds().height / 2);
 				addPowerUp(r);
 			}
 		}
-		
 	}
 	delete entityList[i];
 	entityList.erase(entityList.begin() + i);
@@ -202,11 +224,22 @@ void CGameState::deleteEntity(int& i)
 		i--;
 }
 
+/*
+void CGameState::DrawPlayer()
+{
+	//moto->renderEntity(data->window);
+}
+
+void CGameState::initEnemy()
+{
+	data->assets.LoadTexture("explosion", "res\\img\\explosion_sprite_sheet.png");
+}
+
 void CGameState::initAsset()
 {
 	data->assets.LoadTexture("enemyImage", ENEMYPNG_FILEPATH);
 }
-
+*/
 void CGameState::renderBackground()
 {
 	BG1.renderBackground(data->window);

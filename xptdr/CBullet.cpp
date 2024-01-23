@@ -44,7 +44,7 @@ void CBullet::setSprite(std::string nameImage)
 void CBullet::updateEntity(float dt)
 {
 	sf::Vector2f temp = direction;
-	temp.x = temp.x * bulletSpeed * dt * 60.f;
+	temp.x = bulletSpeed * dt * 60.f;
 	getSprite().move(temp);
 }
 

@@ -222,7 +222,12 @@ void CClavierVirtuel::UpdateText()
 		cancel = true;
 		break;
 	case '²':
-		data->machine.RemoveState();
+		if (name.size() >= numberCharMin) {
+			data->machine.RemoveState();
+		}
+		else {
+			//Signaler que nom trop court
+		}
 		break;
 	case 'à':
 
@@ -252,7 +257,7 @@ void CClavierVirtuel::UpdateText()
 			stringPosition++;
 		break;
 	default:
-		if (name.size() < 14) {
+		if (name.size() <= numberCharMax) {
 			if (capsInt == 1 || capsInt == 2) {
 				if (capsInt == 1)
 				{
