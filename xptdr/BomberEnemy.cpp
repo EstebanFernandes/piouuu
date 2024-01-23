@@ -4,11 +4,13 @@ BomberEnemy::BomberEnemy(CAssetManager* assets) : RoamingEnemy(assets)
 {
 	BAW.assets = assets;
 	BAW.setBulletAsset("bombe");
+	BAW.addBulletMode(false, 5);
 	initPositionY = assets->sCREEN_HEIGHT * 0.1f;
 	setDirectionX(-1);
 	setDirectionY(0);
 
 	setMoveSpeed(15.0f);
+	setBulletSpeed(1.2f);
 	setAttackSpeed(1.f);
 
 	setSprite();
@@ -37,7 +39,8 @@ void BomberEnemy::enemyShoot()
 		sf::Vector2f r(
 			getSprite().getPosition().x - getGlobalBounds().width / 2.f,
 			getSprite().getPosition().y);
-		BAW.iNeedMoreBullets(r, damagePerBullet, bulletSpeed, sf::Vector2f(0, 1));
+		sf::Vector2f bulletScale = sf::Vector2f(0.2f, 0.2f);
+		BAW.iNeedMoreBullets(r, damagePerBullet, bulletSpeed, sf::Vector2f(0, 1), bulletScale);
 		// vient juste le restart le timer à la fin 
 		bulletClock.restart();
 	}

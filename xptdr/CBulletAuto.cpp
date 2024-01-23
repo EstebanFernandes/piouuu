@@ -4,6 +4,12 @@ CBulletAuto::CBulletAuto()
 {
 }
 
+CBulletAuto::CBulletAuto(int daamg, sf::Vector2f pos, float bulletSpeeed, sf::Vector2f dir, int penetration, std::string nameImage, CAssetManager* as, sf::Vector2f bulletScale, bool isABombe) : CBullet(daamg, pos, dir, bulletSpeeed, penetration, nameImage, as, bulletScale)
+{
+	isABombe = true;
+	CEntity::setRotation(0);
+}
+
 
 //Pour update une balle chargée (qui peut avoir des comportements différents)
 void CBulletAuto::updateEntity(float dt)
@@ -36,7 +42,12 @@ void CBulletAuto::updateEntity(float dt)
 
 	//Normal behavior
 	sf::Vector2f temp = direction;
-	temp = temp * bulletSpeed * dt * 60.f;
+	if (!isABombe) {
+		temp.x = temp.x * bulletSpeed * dt * 60.f;
+	}
+	else {
+		temp.y = temp.y * bulletSpeed * dt * 60.f;
+	}
 	if (isGunShot)
 		gunshotDistance += temp.x;
 	getSprite().move(temp);

@@ -14,20 +14,25 @@ CBullet::CBullet(int damaage, sf::Vector2f pos, sf::Vector2f dir , int penetrati
 	assets = assetss;
 	setSprite(nameImage);
 	direction = dir;
-	setDirectionSprite();
+	if (!isABombe) {
+		setDirectionSprite();
+	}
 	damage = damaage;
 	getSprite().setPosition(pos);
 }
 
-CBullet::CBullet(int damaage, sf::Vector2f pos, sf::Vector2f dir, float bulletSpeed_, int penetration, std::string nameImage, CAssetManager* assetss)
+CBullet::CBullet(int damaage, sf::Vector2f pos, sf::Vector2f dir, float bulletSpeed_, int penetration, std::string nameImage, CAssetManager* assetss, sf::Vector2f bulletScale)
 {
 	this->penetration = penetration;
 	bulletSpeed = bulletSpeed_;
 	setType(FriendlyFire);
 	assets = assetss;
 	setSprite(nameImage);
+	getSprite().setScale(bulletScale);
 	direction = dir;
-	setDirectionSprite();
+	if (!isABombe) {
+		setDirectionSprite();
+	}
 	damage = damaage;
 	getSprite().setPosition(pos);
 }
@@ -44,7 +49,12 @@ void CBullet::setSprite(std::string nameImage)
 void CBullet::updateEntity(float dt)
 {
 	sf::Vector2f temp = direction;
-	temp.x = bulletSpeed * dt * 60.f;
+	if (!isABombe) {
+		temp.x = bulletSpeed * dt * 60.f;
+	}
+	else {
+		temp.y = bulletSpeed * dt * 60.f;
+	}
 	getSprite().move(temp);
 }
 
