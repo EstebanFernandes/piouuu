@@ -89,6 +89,11 @@ void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage, float bulletSpe
 
 void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage, float bulletSpeed, sf::Vector2f dir)
 {
+	iNeedMoreBullets(pos, damage, bulletSpeed, dir, sf::Vector2f(1.f,1.f));
+}
+
+void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage, float bulletSpeed, sf::Vector2f dir, sf::Vector2f bulletScale)
+{
 	std::bitset<nbAim> temp = std::bitset<nbAim>(typeTir);
 	//magazine.push_back(CBullet(damage, pos, sf::Vector2f(1, 0), assets));
 	for (int i = 0; i < temp.size(); i++)
@@ -97,28 +102,31 @@ void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage, float bulletSpe
 		{
 			switch (i) {
 			case classic:
-				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, dir, penetration, nameBulletSkin, assets));
+				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, dir, penetration, nameBulletSkin, assets, bulletScale));
 				break;
 			case doubleTirs1:
-				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, 0.75f), penetration, nameBulletSkin, assets));
-				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, -0.75f), penetration, nameBulletSkin, assets));
+				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, 0.75f), penetration, nameBulletSkin, assets, bulletScale));
+				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, -0.75f), penetration, nameBulletSkin, assets, bulletScale));
 				break;
 			case doubleTirs2:
 				pos.y += 3.f;
-				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, 0.f), penetration, nameBulletSkin, assets));
+				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, 0.f), penetration, nameBulletSkin, assets, bulletScale));
 				pos.y -= 6.f;
-				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, 0.f), penetration, nameBulletSkin, assets));
+				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, sf::Vector2f(1.f, 0.f), penetration, nameBulletSkin, assets, bulletScale));
 				break;
 			case gunshotAim:
 				//magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 1.f), bulletSpeed, gunshotDistance, assets));
-				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 0.75f), bulletSpeed, gunshotDistance, penetration, nameBulletSkin, assets));
-				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 0.50f), bulletSpeed, gunshotDistance, penetration, nameBulletSkin, assets));
-				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 0.25f), bulletSpeed, gunshotDistance, penetration, nameBulletSkin, assets));
-				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 0.f), bulletSpeed, gunshotDistance, penetration, nameBulletSkin, assets));
-				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, -0.25f), bulletSpeed, gunshotDistance,penetration, nameBulletSkin, assets));
-				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, -0.50f), bulletSpeed, gunshotDistance, penetration, nameBulletSkin, assets));
-				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, -0.75f), bulletSpeed, gunshotDistance, penetration, nameBulletSkin, assets));
+				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 0.75f), bulletSpeed, gunshotDistance, penetration, nameBulletSkin, assets, bulletScale));
+				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 0.50f), bulletSpeed, gunshotDistance, penetration, nameBulletSkin, assets, bulletScale));
+				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 0.25f), bulletSpeed, gunshotDistance, penetration, nameBulletSkin, assets, bulletScale));
+				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, 0.f), bulletSpeed, gunshotDistance, penetration, nameBulletSkin, assets, bulletScale));
+				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, -0.25f), bulletSpeed, gunshotDistance, penetration, nameBulletSkin, assets, bulletScale));
+				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, -0.50f), bulletSpeed, gunshotDistance, penetration, nameBulletSkin, assets, bulletScale));
+				magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, -0.75f), bulletSpeed, gunshotDistance, penetration, nameBulletSkin, assets, bulletScale));
 				//magasine.push_back(CBulletAuto(damage, pos, sf::Vector2f(1.f, -1.f), bulletSpeed, gunshotDistance, assets));
+				break;
+			case bombe:
+				magasine.push_back(CBulletAuto(damage, pos, bulletSpeed, dir, penetration, nameBulletSkin, assets, bulletScale, true));
 				break;
 			}
 		}
@@ -129,8 +137,32 @@ void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage, float bulletSpe
 void CGunslinger::shootTowardDirection(sf::Vector2f initPos, sf::Vector2f targetPos,int damage,float bulletSpeed)
 {
 	sf::Vector2f dir;
+	sf::Vector2f otherPos = initPos - targetPos;
+	/*
+	if (targetPos.x < initPos.x) {
+		dir.x = -1;
+	}
+	else if (targetPos.x > initPos.x) {
+		dir.x = 1;
+	}
+	else {
+		dir.x = 0;
+	}
+	*/
+	float a = otherPos.y / otherPos.x;
+
+	dir.x = -1 / std::sqrt(1 + std::pow(a, 2));
+	dir.y = a * dir.x;
+
+	if (otherPos.x < 0) {
+		dir.x = dir.x * -1;
+		dir.y = dir.y * -1;
+	}
+
+	/*
 	dir = targetPos - initPos;
-	float max = std::abs(std::max(dir.x, dir.y));
+	float max = std::abs(std::min(dir.x, dir.y));
 	dir = dir / max;
+	*/
 	iNeedMoreBullets(initPos, damage, bulletSpeed, dir);
 }

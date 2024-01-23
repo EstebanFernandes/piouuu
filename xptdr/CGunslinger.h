@@ -5,7 +5,7 @@
 #define Balle = true
 #define tirBool = false
 #define nbBullet 5
-#define nbAim 5
+#define nbAim 6
 class CGunslinger : public CEntity
 {
 private:
@@ -15,8 +15,8 @@ private:
 	float gunshotDistance;
 	std::string nameBulletSkin = "";
 	sf::Sound bulletSound;
-sf::SoundBuffer bulletSoundBuffer;
-int penetration = 0;
+	sf::SoundBuffer bulletSoundBuffer;
+	int penetration = 0;
 public:
 	typedef enum
 	{
@@ -33,7 +33,8 @@ public:
 		doubleTirs1=1,
 		doubleTirs2,
 		gunshotAim,
-		circleShot
+		circleShot,
+		bombe
 	} typeAim;
 	int typeTir;
 	int typeBalle;
@@ -50,6 +51,8 @@ public:
 	void iNeedMoreBullets(sf::Vector2f pos, int damage);
 	void iNeedMoreBullets(sf::Vector2f pos, int damage,float bulletSpeed);
 	void iNeedMoreBullets(sf::Vector2f pos, int damage, float bulletSpeed, sf::Vector2f dir);
+
+	void iNeedMoreBullets(sf::Vector2f pos, int damage, float bulletSpeed, sf::Vector2f dir, sf::Vector2f bulletScale);
 
 	
 	/// <summary>
@@ -98,12 +101,11 @@ public:
 				{
 					switch (m)
 					{
-					
 					case gunshotAim:
 						typeBalle += (int)pow(2, m);
 						break;
 					default:
-						typeTir  = (int)pow(2, m);
+						typeTir = (int)pow(2, m);
 						break;
 					}
 				}

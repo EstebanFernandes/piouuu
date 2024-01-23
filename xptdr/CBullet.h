@@ -7,9 +7,11 @@ class CBullet : public CEntity
 {
 protected:
 	sf::Vector2f direction;
+	sf::Vector2f bulletScale;
 	float bulletSpeed = 2.f;
 	int damage;
 	int penetration = 0;
+	bool isABombe = false;
 	//pas encore sur mais ça se réfléchit
 	std::vector<CEntity*> entityHitting;
 public :
@@ -17,7 +19,7 @@ public :
 	CBullet(int damaage, sf::Vector2f pos, sf::Vector2f dir, int penetration
 		,std::string nameImage, CAssetManager* assetss);
 	CBullet(int damaage, sf::Vector2f pos, sf::Vector2f dir, float bulletSpeed, int penetration
-		,std::string nameImage, CAssetManager* assetss);
+		,std::string nameImage, CAssetManager* assetss, sf::Vector2f bulletScale);
 	void setSprite(std::string nameImage);
 	void updateEntity(float dt);
 	void updateCollision(CEntity& b);

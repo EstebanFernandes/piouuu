@@ -17,7 +17,11 @@ Boss::Boss(CAssetManager* assetsParam, CPlayer* playerParam, std::vector<CHittin
 	initPositionY = assets->sCREEN_HEIGHT * 0.5f;
 	explosionSprite.setScale(0.6f, 0.6f);
 	moveSpeed = 3.f;
-	attackSpeed = 0.5f;
+	attackSpeed = 1.75f;
+
+	setDamagePerBullet(0);
+
+	setBulletSpeed(1.0f);
 	setMaxHealth(100);
 
 	setSprite();
@@ -113,10 +117,8 @@ void Boss::updateEntity(float delta)
 			sf::Vector2f r(
 				getSprite().getPosition().x - getGlobalBounds().width / 2.f,
 				getSprite().getPosition().y);
-			//BAW.iNeedMoreBullets(r, damagePerBullet, bulletSpeed, sf::Vector2f(-1, 0));
 
-			
-			BAW.iNeedMoreBullets(r, damagePerBullet, bulletSpeed, player1->getSprite().getPosition());
+			BAW.shootTowardDirection(r, player1->getSprite().getPosition(), damagePerBullet, bulletSpeed);
 			// vient juste le restart le timer à la fin
 			bulletClock.restart();
 		}
