@@ -16,6 +16,7 @@ private:
 	std::string nameBulletSkin = "";
 	sf::Sound bulletSound;
 sf::SoundBuffer bulletSoundBuffer;
+int penetration = 0;
 public:
 	typedef enum
 	{
@@ -50,7 +51,12 @@ public:
 	void iNeedMoreBullets(sf::Vector2f pos, int damage,float bulletSpeed);
 	void iNeedMoreBullets(sf::Vector2f pos, int damage, float bulletSpeed, sf::Vector2f dir);
 
-	//Spécialement pour les balles autoguidés
+	
+	/// <summary>
+	/// Spécialement pour les balles autoguidés
+	/// permet de changer de cible
+	/// </summary>
+	/// <param name="r"></param>
 	void changeTarget(CMob* r) {       
 		for (int i = 0; i < magasine.size(); i++)
 		{
@@ -122,5 +128,24 @@ public:
 	{
 		gunshotDistance = e;
 	}
+	/// <summary>
+	/// set the penetration for any bullet
+	/// </summary>
+	/// <param name="param">= penetration of the ammo</param>
+	void setPenetration(int param)
+	{
+		if (param >= 0)
+			penetration = param;
+	}
+
+	/// <summary>
+	///	fonction qui tire de la position de base à la position d'une cible
+	/// 	
+	/// </summary>
+	/// <param name="initPos">la position de base</param>
+	/// <param name="targetPos"> la position de la cible</param>
+	/// <param name="damage"> les dommages de la balle</param>
+	/// <param name="bulletSpeed">la vitesse de la balle</param>
+	void shootTowardDirection(sf::Vector2f initPos, sf::Vector2f targetPos, int damage, float bulletSpeed);
 };
 

@@ -73,4 +73,5 @@ public:
 	CGunslinger* getBAW() { return &BAW; }
 	void traitermisc(std::string& misc);
 	void updateMisc();
+	void updateAfterKillingEntity();
 };

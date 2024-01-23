@@ -48,6 +48,10 @@ public:
 	void volumeMusique(const std::string& id, float volume) {
 		musiqueManager.volumeMusique(id, volume);
 	}
+
+	void setOverAllvolumeMusique(float volume) {
+		musiqueManager.overAllVolume(volume);
+	}
 	//Cette méthode permet de changer de fullscren à pas fullscreen, 
 	//on passe en paramètre la fenêtre et le booléen isFullScreen
 	void changeScreenType(sf::RenderWindow & R, bool& isFullScreen);

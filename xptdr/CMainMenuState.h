@@ -10,8 +10,8 @@
 #include"SFML/Audio.hpp"
 #include"EllipseShape.h"
 #include"CButton.h"
-
-class CMainMenuState : public CState
+#include"InterfaceState.h"
+class CMainMenuState : public CState, public InterfaceState
 {
 private:
 	int index;

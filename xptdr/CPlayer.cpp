@@ -155,8 +155,6 @@ void CPlayer::PLYupdateMovement(sf::Event event)
 			isMovingDown = true;
 		else if (event.key.code == sf::Keyboard::D)
 			isMovingRight = true;
-		else if (event.key.code == sf::Keyboard::U)
-			rotate(-45);
 		break;
 	case sf::Event::KeyReleased:
 		if (event.key.code == sf::Keyboard::Z)

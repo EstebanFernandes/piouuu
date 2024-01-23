@@ -59,6 +59,7 @@ void CMainMenuState::STEInit()
 	CMMTitle.setPosition((data->assets.sCREEN_WIDTH / 2) - CMMTitle.getGlobalBounds().width / 2,
 		CMMTitle.getGlobalBounds().height * 0.7f);
 	buttons[index].setOutlineThickness(3.f);
+	applymaxMinCharSize(buttons);
 }
 
 void CMainMenuState::STEHandleInput()

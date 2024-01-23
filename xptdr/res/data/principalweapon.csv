@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;Tir Visé;;;;;;;;
 La première colonne n'est pas lu par le parser, c'est juste pour nous;<start>;<name>Classique;;;;Balle/seconde;;;;;<start>;<name>Différent;;;Balle/seconde;;;;;
 ;<column>;<id>;<previd>;<var>name;<var>description;<var>damagePerBullet;<var>attackSpeed;<var>bulletSpeed;<var>misc;<endLine>;<column>;<id>;<previd>;<var>name;<var>description;<var>damagePerBullet;<var>attackSpeed;<var>bulletSpeed;<var>misc;<endLine>
-1;;0;;Double Tirs;Amélioration plutôt cool qui permet de faire des trucs pas maaaaaaaaal je trouve après ça dépend des gens quoi ;*1.5;*0.8;*1.1;doubleTirs1;;1;0;;Tir auto-guidé;Pour les gros nuls comme toi;*1.1;*0.8;*1,4;autoAim;
+1;;0;;Double Tirs;Amélioration plutôt cool qui permet de faire des trucs pas maaaaaaaaal je trouve après ça dépend des gens quoi ;*1.5;*0.8;*1.1;doubleTirs1;;1;0;;Tir auto-guidé;Pour les gros nuls comme toi;*1.1;*0.8;0.2;autoAim;
 4;;1;0;côte à côte !;Nos ingénieurs ont fixé la ballistique ! ;*1.1;*1.2;*1.1;doubleTirs2;;4;1;0;quoicoubeh;"Le ""amazon prime"" des améliorations !";1.0;;1;velocUp;
 4;;2;0;Dégat +;ça va tabasser là;*1.5;*1.2;*1.0;;;4;2;0;Blue Balls;ça va tabasser là!;1.2;;1.5;;
 7;;3;1;Am‚lioration;Woah attend mais tu vas vraiment faire mal;;*1.2;*1.4;Balle explosive ;;7;3;1;Amélioration;Woah attend mais tu vas vraiment faire mal;1.2;;1;;

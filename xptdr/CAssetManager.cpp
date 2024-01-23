@@ -1,4 +1,5 @@
 #include "CAssetManager.h"
+#include <iostream>
 
 
 void CAssetManager::LoadTexture(std::string name, std::string fileName)

@@ -77,16 +77,13 @@ void CTestGame::STEHandleInput()
 				addEnemy("rusher");
 			}
 			if (event.key.code == sf::Keyboard::T)
-
 			{
-				player1.BAW.addBulletMode(true, player1.BAW.autoAim);
-				//addPowerUp();
+				player1.BAW.setPenetration(2);
 			}
 			if (event.key.code == sf::Keyboard::R)
 
 			{
-				player1.BAW.addBulletMode(false, player1.BAW.doubleTirs1);
-				//addPowerUp();
+				player1.BAW.setPenetration(0);
 			}
 			//TEMP C POUR MOURIR
 			if (event.key.code == sf::Keyboard::M)
@@ -123,13 +120,16 @@ void CTestGame::STEUpdate(float delta)
 			else
 			{
 				entityList[i]->updateEntity(delta);
-				sf::Vector2f dirTemp = entityList[i]->getDistance(player1);
-				float un = (float)std::sqrt(pow(lessDir.x,2) + pow(lessDir.y,2));
-				float deux = (float)std::sqrt(pow(dirTemp.x,2) + pow(dirTemp.y,2));
-				if (un > deux)
+				if (entityList[i]->getType() == 1&& entityList[i]->isDead==false)
 				{
-					lessDir = dirTemp;
-					nearEnemy = entityList[i];
+					sf::Vector2f dirTemp = entityList[i]->getDistance(player1);
+					float un = (float)std::sqrt(pow(lessDir.x, 2) + pow(lessDir.y, 2));
+					float deux = (float)std::sqrt(pow(dirTemp.x, 2) + pow(dirTemp.y, 2));
+					if (un > deux)
+					{
+						lessDir = dirTemp;
+						nearEnemy = entityList[i];
+					}
 				}
 			}
 		}

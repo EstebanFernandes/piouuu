@@ -149,6 +149,7 @@
     <ClCompile Include="CCharacter.cpp" />
     <ClCompile Include="CCharacterSelection.cpp" />
     <ClCompile Include="CCharacterStat.cpp" />
+    <ClCompile Include="CCheckbox.cpp" />
     <ClCompile Include="CCollision.cpp" />
     <ClCompile Include="Ceffetsonore.cpp" />
     <ClCompile Include="CEnemy.cpp" />
@@ -179,6 +180,7 @@
     <ClCompile Include="CClavierVirtuel.cpp" />
     <ClCompile Include="CScoreboard.cpp" />
     <ClCompile Include="CSettingState.cpp" />
+    <ClCompile Include="CSlider.cpp" />
     <ClCompile Include="CSommet.cpp" />
     <ClCompile Include="CSommetUpgrade.cpp" />
     <ClCompile Include="CSplashState.cpp" />
@@ -189,12 +191,14 @@
     <ClCompile Include="CTileMap.cpp" />
     <ClCompile Include="CUpgradeState.cpp" />
     <ClCompile Include="EllipseShape.cpp" />
+    <ClCompile Include="InterfaceState.cpp" />
     <ClCompile Include="lifeBarForEntity.cpp" />
     <ClCompile Include="lifeForEntity.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RoamingEnemy.cpp" />
     <ClCompile Include="RusherEnemy.cpp" />
     <ClCompile Include="ShootingEnemy.cpp" />
+    <ClCompile Include="testEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BomberEnemy.h" />
@@ -212,6 +216,7 @@
     <ClInclude Include="CCharacter.h" />
     <ClInclude Include="CCharacterSelection.h" />
     <ClInclude Include="CCharacterStat.h" />
+    <ClInclude Include="CCheckbox.h" />
     <ClInclude Include="CCollision.h" />
     <ClInclude Include="Ceffetsonore.h" />
     <ClInclude Include="CEnemy.h" />
@@ -242,6 +247,7 @@
     <ClInclude Include="CClavierVirtuel.h" />
     <ClInclude Include="CScoreboard.h" />
     <ClInclude Include="CSettingState.h" />
+    <ClInclude Include="CSlider.h" />
     <ClInclude Include="CSommet.h" />
     <ClInclude Include="CSommetUpgrade.h" />
     <ClInclude Include="CSplashState.h" />
@@ -253,11 +259,13 @@
     <ClInclude Include="CUpgradeState.h" />
     <ClInclude Include="DEFINITIONS.h" />
     <ClInclude Include="EllipseShape.h" />
+    <ClInclude Include="InterfaceState.h" />
     <ClInclude Include="lifeBarForEntity.h" />
     <ClInclude Include="lifeForEntity.h" />
     <ClInclude Include="RoamingEnemy.h" />
     <ClInclude Include="RusherEnemy.h" />
     <ClInclude Include="ShootingEnemy.h" />
+    <ClInclude Include="testEnemy.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragbandw.frag" />
