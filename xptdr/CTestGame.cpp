@@ -25,6 +25,7 @@ void CTestGame::initAssets()
 	data->assets.LoadTexture("explosion", "res\\img\\explosion_sprite_sheet.png");
 	data->assets.LoadTexture("bulletImage", "res\\img\\bulletImage.png");
 	data->assets.LoadTexture("bulletImageRancoeur", "res\\img\\bullet_Rancoeur.png");
+	data->assets.LoadTexture("bombe", "res\\img\\bombe.png");
 }
 
 void CTestGame::STEHandleInput()

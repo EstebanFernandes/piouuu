@@ -3,6 +3,7 @@
 BomberEnemy::BomberEnemy(CAssetManager* assets) : RoamingEnemy(assets)
 {
 	BAW.assets = assets;
+	BAW.setBulletAsset("bombe");
 	initPositionY = assets->sCREEN_HEIGHT * 0.1f;
 	setDirectionX(-1);
 	setDirectionY(0);
