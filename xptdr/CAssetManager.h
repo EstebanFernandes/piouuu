@@ -27,7 +27,7 @@ public:
 		Textures.erase(name);
 	}
 	//Méthodes pour gérer la musique
-	void InitialiserMusiques();
+	void InitialiserMusiques(float volumeMusic);
 
 	void jouerMusique(const std::string& id) {
 		musiqueManager.jouerMusique(id);

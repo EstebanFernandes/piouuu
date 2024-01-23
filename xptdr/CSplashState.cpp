@@ -7,7 +7,11 @@ void CSplashState::STEInit()
 {
 	data->assets.LoadTexture("Splash State Background", SPLASH_SCENE_BACKGROUND_FILEPATH);
 	CSSBackground.setTexture(data->assets.GetTexture("Splash State Background"));
-	CSSBackground.setScale(1.07f,1.f);
+	sf::Vector2f targetSize(data->assets.sCREEN_WIDTH, data->assets.sCREEN_HEIGHT);
+
+	CSSBackground.setScale(
+		targetSize.x / CSSBackground.getLocalBounds().width,
+		targetSize.y / CSSBackground.getLocalBounds().height);
 
 }
 

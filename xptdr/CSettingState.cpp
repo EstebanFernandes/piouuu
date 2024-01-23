@@ -56,7 +56,7 @@ void CSettingState::STEInit()
 {
 	float screenheight = (float)data->assets.sCREEN_HEIGHT;
 	float screenwidth = (float)data->assets.sCREEN_WIDTH;
-	keyWord = { "soundVolume","musicVolume","isFullScreen" };
+	keyWord = { "musicVolume","soundVolume","isFullScreen" };
 	value = { 100,100,0 };
 	backbutton.setFont(data->assets.GetFont("Lato"));
 	backbutton.setString("Revenir au menu principal");
@@ -71,15 +71,15 @@ void CSettingState::STEInit()
 	SoundVolume = CSlider(&(data->assets), size, "Volume des sons");
 	pos = sf::Vector2f(screenwidth / 2.f - SoundVolume.getSize().x / 2.f
 		, screenheight * 0.5f - +SoundVolume.getSize().y / 2.f);
-	fullScreenCon = CCheckbox(&(data->assets), "Plein écran");
 	SoundVolume.setPosition(pos);
+	fullScreenCon = CCheckbox(&(data->assets), "Plein écran");
 	pos = sf::Vector2f(screenwidth / 2.f - fullScreenCon.getSize().x / 2.f
 		, screenheight * 0.75f - +fullScreenCon.getSize().y / 2.f);
 	fullScreenCon.setPosition(pos);
 	//On va charger les infos du sons etc depuis ce fichier
 	CParserCSV parser = CParserCSV("res/data/settings.csv");
 	parser.displayInfo();
-	std::vector<std::vector<std::string>> settingsInfo = parser.getElements();
+	 settingsInfo = parser.getElements();
 	for (int i = 0; i < settingsInfo.size(); i++)
 	{
 		int tempIndex = matchKW(settingsInfo[i][0]);
@@ -89,10 +89,10 @@ void CSettingState::STEInit()
 			switch (tempIndex)
 			{
 			case 0:
-				SoundVolume.setValue(value[tempIndex]);
+				musicVolume.setValue(value[tempIndex]);
 				break;
 			case 1:
-				musicVolume.setValue(value[tempIndex]);
+				SoundVolume.setValue(value[tempIndex]);
 				break;
 			case 2:
 				fullScreenCon.setValue(value[tempIndex]);
@@ -143,9 +143,9 @@ void CSettingState::STEHandleInput()
 			onAction(index, 2);
 		}
 
-
 		else if (data->inputs.IsTextClicked(backbutton, sf::Mouse::Left, data->window))
 		{
+			updateSettingsFile();
 			data->machine.RemoveState();
 		}
 		outlineGood(index, previousSelec);
@@ -198,4 +198,41 @@ void CSettingState::onAction(int index, int type)
 		}
 		break;
 	}
+}
+
+void CSettingState::updateSettingsFile()
+{
+	for (int i = 0; i < settingsInfo.size(); i++)
+	{
+		int tempIndex = matchKW(settingsInfo[i][0]);
+		if (tempIndex != -1)
+		{
+			switch (tempIndex)
+			{
+			case 0:
+				settingsInfo[i][1] = std::to_string(musicVolume.getValue());
+				break;
+			case 1:
+				settingsInfo[i][1] = std::to_string(SoundVolume.getValue());
+				break;
+			case 2:
+				settingsInfo[i][1] = std::to_string(fullScreenCon.getValue());
+				break;
+			}
+		}
+	}
+	std::ofstream outputFile("res/data/settings.csv");
+	for (const auto& row : settingsInfo) {
+		for (size_t i = 0; i < row.size(); ++i) {
+			outputFile << row[i];
+
+			// Ajouter une virgule sauf pour le dernier élément
+			if (i < row.size() - 1) {
+				outputFile << ";";
+			}
+		}
+		outputFile << std::endl;  // Passer à la ligne après chaque ligne du tableau
+	}
+
+	outputFile.close();
 }
