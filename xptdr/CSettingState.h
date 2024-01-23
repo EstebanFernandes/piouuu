@@ -13,6 +13,7 @@ class CSettingState : public CState
 {
 private:
 	std::vector<std::string> keyWord;
+	std::vector<	std::vector<std::string>> settingsInfo;
 	std::vector<int> value;
 	GameDataRef data;
 	//Attributs
@@ -44,6 +45,9 @@ public:
 	void STEUpdate(float delta);
 	void STEDraw(float delta);
 	void onAction(int index, int type);
-
+	/// <summary>
+	/// Update the settings.csv file with actual information
+	/// </summary>
+	void updateSettingsFile();
 };
 

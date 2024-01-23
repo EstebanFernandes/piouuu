@@ -2,9 +2,16 @@
 #include "CSplashState.h"
 CJeu::CJeu(int width, int height, std::string title)
 {
-	data->window.create(sf::VideoMode(width, height), title, sf::Style::Close | sf::Style::Titlebar);
+	CParserCSV parser = CParserCSV("res/data/settings.csv");
+	std::vector<std::vector<std::string>> retrieveInfo = parser.getElements();
+	float volumeMusic = std::stoi(retrieveInfo[0][1]);
+	float volumeSound = std::stoi(retrieveInfo[1][1]);
+	if (std::stoi(retrieveInfo[2][1])) 
+		data->assets.changeScreenType(data->window, data->isFullScreen);
+	else
+		data->window.create(sf::VideoMode(width, height), title, sf::Style::Close | sf::Style::Titlebar);
 	data->machine.AddState(StateRef(new CSplashState(data)));
-	data->assets.InitialiserMusiques(); // Initialiser les musiques
+	data->assets.InitialiserMusiques(volumeMusic); // Initialiser les musiques
 	JEURun();
 }
 
