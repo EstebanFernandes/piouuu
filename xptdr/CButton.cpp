@@ -164,6 +164,7 @@ void CButton::resizeText(sf::Text& textToResize)
 }
 
 void CButton::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+	
 	target.draw(back);
 	target.draw(text);
 }

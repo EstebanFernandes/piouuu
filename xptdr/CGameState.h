@@ -7,6 +7,7 @@
 #include <sstream>
 #include"BomberEnemy.h"
 #include"ShootingEnemy.h"
+#include"testEnemy.h"
 #include"CGameOver.h"
 #include"CEntity.h"
 #include"CBackground.h"

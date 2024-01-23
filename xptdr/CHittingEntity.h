@@ -10,5 +10,6 @@ public:
 	//Cette méthode est à appeler sur chaque entité qui rentre en contact avec le joueur
 	virtual void updatewPlayer(float delta, CPlayer& player)=0;
 	//virtual void updatewGunslinger(float delta, CGunslinger& Gunz) = 0;
+	//virtual void die(std::vector<CHittingEntity*> r) = 0;
 };
 

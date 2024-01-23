@@ -96,11 +96,10 @@ bool CBullet::checkCollisions(CEntity& b)
 	if (CEntity::checkCollisions(b))
 	{//les deux entités sont en contact
 	//L'élement n'est pas dans la liste, donc la balle n'est pas entrain de taper cette entité
-		if (ret == entityHitting.end())
+		if (ret == entityHitting.end()&&penetration>=0)
 		{
 			if (penetration == 0)
 				needDelete = true;
-			else
 				penetration--;
 			entityHitting.push_back(&b);
 			return true;

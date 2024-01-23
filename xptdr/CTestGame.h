@@ -6,6 +6,7 @@ class CTestGame : public CGameState
 {
 private:
 	std::vector<CGrapheUpdate> Upgradegraphs;
+	//std::vector<CBulletAuto*> persistant;
 	int currentLevelOfplayer = 0;
 	bool isThistheEnd = false;
 	bool hasLevelUp = false;

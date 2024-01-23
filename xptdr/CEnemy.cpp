@@ -39,20 +39,7 @@ void CEnemy::initAnimation()
 	explosionSprite.setScale(0.1f, 0.1f);
 }
 
-/*
-CEnemy::CEnemy(CAssetManager* a, std::string nameParam, std::string imageFileParam)
-{
-	setType(Enemy);
-	assets = a;
-	a->LoadTexture(enemyName, imageFile);
-	getSprite().setTexture((a->GetTexture(enemyName)));
-	getSprite().setScale(0.2f, 0.2f);
-	initAnimation();
-	initStat();
-	initPositionX = (float)assets->sCREEN_WIDTH;
-	setSprite();
-}
-*/
+
 
 void CEnemy::initEnnemy(CAssetManager* a)
 {
@@ -97,6 +84,7 @@ void CEnemy::updateEntity(float delta)
 		if (updateExplosionSprite() == true)
 			needDelete = true;
 	}	
+	updateLifeBar();
 		updateMovement(delta);
 }
 
@@ -256,15 +244,3 @@ void CEnemy::setPosition(int positionXParam, int PositionYParam)
 {
 	setPositionEntity((float)positionXParam , (float)PositionYParam);
 }
-/*
-void CEnemy::updateMovement(float delta)
-{
-		if (checkGlobalCollisions())
-			needDelete = true;
-		updateLifeBar();
-		if(onAvance==true)
-			moveEntity(sf::Vector2f(directionX * delta * 19.f, directionY));
-
-
-}
-*/

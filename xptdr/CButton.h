@@ -14,6 +14,7 @@ private:
 	float ySize;
 	//method that resize taking in consideration the back of the button
 	void resizeText(sf::Text& textToResize);
+	bool isBackVisible = true;
 public:
 	CButton() {
 		xSize = 0;
@@ -62,6 +63,13 @@ public:
 	void centerText();
 	unsigned int getCharacterSize() {
 		return text.getCharacterSize();
+	}
+	void changeBackVisibilty(bool f) { 
+		isBackVisible = f;
+		if (isBackVisible)
+			back.setFillColor(sf::Color::Black);
+		else
+			back.setFillColor(sf::Color(255, 255, 255, 0));
 	}
 };
 

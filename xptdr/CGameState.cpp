@@ -133,6 +133,11 @@ void CGameState::addEnemy(std::string enemyName)
 		entityList.push_back(enemy);
 		(*enemyNumber)++;
 	}
+	else if (enemyName == "pantin") {
+		testEnemy* enemy = new testEnemy(&(data->assets), sf::Mouse::getPosition(data->window), 50);
+		entityList.push_back(enemy);
+		(*enemyNumber)++;
+	}
 	else if (enemyName == "rusher") {
 		RusherEnemy* enemy = new RusherEnemy(&(data->assets));
 		entityList.push_back(enemy);
@@ -216,8 +221,10 @@ void CGameState::deleteEntity(int& i)
 					entityList[i]->getGlobalBounds().getPosition().y + entityList[i]->getGlobalBounds().height / 2);
 				addPowerUp(r);
 			}
+
 		}
 	}
+	//entityList[i]->die(entityList);
 	delete entityList[i];
 	entityList.erase(entityList.begin() + i);
 	if (i != 0)

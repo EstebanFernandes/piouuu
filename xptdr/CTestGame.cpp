@@ -64,6 +64,10 @@ void CTestGame::STEHandleInput()
 			{
 				addEnemy("boss");
 			}
+			if (event.key.code == sf::Keyboard::H)
+			{
+				addEnemy("pantin");
+			}
 			if (event.key.code == sf::Keyboard::K)
 			{
 				addEnemy("bomber");
@@ -216,6 +220,7 @@ void CTestGame::STEResume()
 	player1.updateMisc();
 	if (player1.hasLevelUp == true && currentLevelOfplayer == player1.getLevel())
 		player1.hasLevelUp = false;
+
 }
 
 void CTestGame::STEPause()
