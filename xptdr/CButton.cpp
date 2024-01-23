@@ -84,24 +84,25 @@ void CButton::setScale(sf::Vector2f scale)
 	setPos(back.getPosition());
 }
 
-//void CButton::setCharacterSize(unsigned int charSize)
-//{
-//	unsigned int prevCharSize = text.getCharacterSize();
-//	int sum = 0;
-//	text.setCharacterSize(charSize);
-//	if (prevCharSize > charSize)
-//		sum++;
-//	else if (prevCharSize < charSize)
-//		sum--;
-//		while (text.getGlobalBounds().width * 0.95f >= back.getGlobalBounds().width)
-//		{
-//			back.setSize(sf::Vector2f(back.getSize().x + 1, back.getSize().y));
-//		}
-//		while (text.getGlobalBounds().width * 0.95f >= back.getGlobalBounds().width)
-//		{
-//			back.setSize(sf::Vector2f(back.getSize().x + 1, back.getSize().y));
-//		}
-//}
+void CButton::setCharacterSize(unsigned int charSize)
+{
+	text.setCharacterSize(charSize);
+	centerText();
+}
+
+void CButton::centerText()
+{
+	sf::FloatRect backBounds = back.getGlobalBounds();
+	sf::FloatRect textBounds = text.getGlobalBounds();
+	float xPositionText = backBounds.width / 2.f - textBounds.width / 2.f;
+	float yPositionText = backBounds.height / 2.f - textBounds.height / 2.f;
+	text.setPosition(xPositionText, yPositionText);
+	xPositionText -= text.getGlobalBounds().left - xPositionText;
+	yPositionText -= text.getGlobalBounds().top - yPositionText;
+	text.setPosition(
+		backBounds.left + backBounds.width / 2.f - textBounds.width / 2.f,
+		backBounds.top + backBounds.height / 2.f - textBounds.height / 2.f);
+}
 
 void CButton::resizeText(sf::Text& textToResize)
 {

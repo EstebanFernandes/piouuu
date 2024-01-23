@@ -120,13 +120,14 @@ void CEnemy::updatewPlayer(float delta, CPlayer& player)
 	size_t temp =guns->size();
 	for (size_t i = 0; i < temp; i++)
 	{
-		if (checkCollisions((*guns)[i])&& isDead==false)
+		
+		if (isDead == false)
 		{
-			reduceHP((*guns)[i].getDamage());
-			guns->erase(guns->begin() + i);
-			if (i != 0)
-				i--;
-			temp--;
+
+			if ((*guns)[i].checkCollisions((*this)))
+			{
+				reduceHP((*guns)[i].getDamage());
+			}
 		}
 	}
 	if (healthPoint <= 0)
@@ -141,6 +142,8 @@ void CEnemy::updatewPlayer(float delta, CPlayer& player)
 			player.gainXP(level);
 			gavexP=true;
 			player.addToScore(scoreGived);
+			if (player.BAW.typeTir == 1)
+				player.seekForTarget = true;
 		}
 	}
 }

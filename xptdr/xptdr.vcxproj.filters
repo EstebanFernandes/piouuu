@@ -52,11 +52,11 @@
     <Filter Include="Fichiers sources\UI">
       <UniqueIdentifier>{ba67ec23-cbae-47cb-b9dc-14d771664836}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Fichiers sources\Ennemies">
-      <UniqueIdentifier>{a8b914fe-3b12-4c13-af04-3ce9f3e3a2c1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Fichiers d%27en-tête\Ennemies">
+    <Filter Include="Fichiers d%27en-tête\GameRelated\Ennemies">
       <UniqueIdentifier>{132b9a68-9402-4a14-aa14-2ab3e71b07cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\GameRelated\Ennemies">
+      <UniqueIdentifier>{a8b914fe-3b12-4c13-af04-3ce9f3e3a2c1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -220,16 +220,34 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="CEnemy.cpp">
-      <Filter>Fichiers sources\Ennemies</Filter>
+      <Filter>Fichiers sources\GameRelated\Ennemies</Filter>
     </ClCompile>
     <ClCompile Include="RoamingEnnemy.cpp">
-      <Filter>Fichiers sources\Ennemies</Filter>
+      <Filter>Fichiers sources\GameRelated\Ennemies</Filter>
     </ClCompile>
     <ClCompile Include="ShootingEnemy.cpp">
-      <Filter>Fichiers sources\Ennemies</Filter>
+      <Filter>Fichiers sources\GameRelated\Ennemies</Filter>
     </ClCompile>
     <ClCompile Include="Boss.cpp">
-      <Filter>Fichiers d%27en-tête\Ennemies</Filter>
+      <Filter>Fichiers d%27en-tête\GameRelated\Ennemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Ceffetsonore.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Cmusique.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="CSlider.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="InterfaceState.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="testEnemy.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="CCheckbox.cpp">
+      <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -393,16 +411,34 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="CEnemy.h">
-      <Filter>Fichiers d%27en-tête\Ennemies</Filter>
+      <Filter>Fichiers d%27en-tête\GameRelated\Ennemies</Filter>
     </ClInclude>
     <ClInclude Include="RoamingEnnemy.h">
-      <Filter>Fichiers d%27en-tête\Ennemies</Filter>
+      <Filter>Fichiers d%27en-tête\GameRelated\Ennemies</Filter>
     </ClInclude>
     <ClInclude Include="ShootingEnemy.h">
-      <Filter>Fichiers d%27en-tête\Ennemies</Filter>
+      <Filter>Fichiers d%27en-tête\GameRelated\Ennemies</Filter>
     </ClInclude>
     <ClInclude Include="Boss.h">
-      <Filter>Fichiers d%27en-tête\Ennemies</Filter>
+      <Filter>Fichiers d%27en-tête\GameRelated\Ennemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Ceffetsonore.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Cmusique.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="CSlider.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="InterfaceState.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="testEnemy.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="CCheckbox.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

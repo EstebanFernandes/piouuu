@@ -4,6 +4,11 @@
 #include "DEFINITIONS.h"
 #include<ctime>
 #include <math.h>  
+/// <summary>
+/// Class abstraite, méthode à redéfinir :
+/// void enemyShoot(); et 
+/// void updateMovement(float delta);
+/// </summary>
 class CEnemy : public CHittingEntity
 {
 protected:
@@ -27,12 +32,6 @@ protected:
 	void initEnnemy(CAssetManager* a, std::string nameParam, std::string imageFileParam);
 public:
 	bool onAvance = true;
-	/*
-	CEnemy();
-	CEnemy(CAssetManager* a);
-	CEnemy(CAssetManager* a, std::string nameParam, std::string imageFileParam);
-	CEnemy(float xcoordinate, CAssetManager* a);
-	*/
 	void initAnimation();
 	void initStat() {
 
@@ -42,17 +41,10 @@ public:
 		int a = assets->sCREEN_HEIGHT - (int)getGlobalBounds().height;
 		initPositionY = rand() % a; 
 		initPositionX = (float)assets->sCREEN_WIDTH;
-		//float maxDirY = 0.16f * (1.f-(initPositionY / a));
-		//float minDirY = -(0.16f* initPositionY / (float)a);
-		//directionY = RandomFloat(minDirY, maxDirY);
 		level = 0;
 		damage = 3;
 		maxHealthPoint = 20+15*level;
 		healthPoint = maxHealthPoint;
-		//float rad = atan2(abs(directionY), abs(directionX));
-		//float degree =rad * (180.f / (float)M_PIl);
-  		//getSprite().rotate(degree);
-
 	}
 	bool getIsAShooter();
 	//renvoie true si l'animation d'explosion est finie

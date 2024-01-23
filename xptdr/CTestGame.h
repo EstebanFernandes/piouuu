@@ -13,6 +13,7 @@ public:
 
 	CTestGame(GameDataRef _data); 
 	CTestGame(GameDataRef _data, CCharacter characterParam);
+
 	void STEInit();
 	void initAssets();
 	void STEHandleInput();

@@ -34,7 +34,6 @@ public:
 	void setOutlineThickness(float fParam);
 	void setThicknessColor(sf::Color colorParam);
 	void setString(std::string strParam);
-	//void setCharacterSize(unsigned int charSize);
 	void setScale(sf::Vector2f scale);
 	sf::FloatRect getGlobalBounds() {
 		return back.getGlobalBounds();
@@ -55,6 +54,12 @@ public:
 	void setTextPosition(sf::Vector2f pos)
 	{
 		text.setPosition(pos);
+	}
+	//set the size of the text of the button and center the text
+	void setCharacterSize(unsigned int charSize);
+	void centerText();
+	unsigned int getCharacterSize() {
+		return text.getCharacterSize();
 	}
 };
 
