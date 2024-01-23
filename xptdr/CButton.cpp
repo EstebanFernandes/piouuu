@@ -14,6 +14,12 @@ CButton::CButton(GameDataRef dataParam)
 	text.setLineSpacing(0.f);
 }
 
+CButton::CButton(GameDataRef dataParam, std::string title, float xSize, float ySize)
+ : CButton(dataParam,xSize,ySize)
+{
+	setString(title);
+}
+
 CButton::CButton(GameDataRef dataParam, float xSizeParam, float ySizeParam)
 {
 	data = dataParam;

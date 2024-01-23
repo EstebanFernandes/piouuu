@@ -32,7 +32,7 @@ public:
 	void STEDraw(float delta);
 	void STEResume()
 	{
-		//CESTBON = false;
+		resizeScreen();
 	}
 	void resizeScreen();
 };

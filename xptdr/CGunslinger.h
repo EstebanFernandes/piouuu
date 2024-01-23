@@ -98,24 +98,12 @@ public:
 				{
 					switch (m)
 					{
-					case classic:
-						typeTir = 1;
-						break;
-
-					case doubleTirs1:
-						typeTir  = (int)pow(2, m);
-						break;
-					case doubleTirs2:
-						typeTir = (int)pow(2, m);
-						break;
+					
 					case gunshotAim:
-						typeTir = (int)pow(2, m);
 						typeBalle += (int)pow(2, m);
 						break;
 					default:
-					/*	typeTir += (int)pow(2, m);
-						if (bit[0] == 1)
-							typeTir--;*/
+						typeTir  = (int)pow(2, m);
 						break;
 					}
 				}
