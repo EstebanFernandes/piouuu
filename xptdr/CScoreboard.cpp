@@ -102,7 +102,7 @@ void CScoreboard::initText()
 			" : " + elements[i][2] + " points avec le " + elements[i][1] + "\n");
 		textToDisplay.push_back(scorer);
 	}
-	if (boldRank > 10) {
+	if (boldRank > 10 && boldRank <= 100) {
 		scorer.setString("...");
 		textToDisplay.push_back(scorer);
 

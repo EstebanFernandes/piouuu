@@ -35,6 +35,10 @@ private:
 	float score;
 	int rank;
 	std::string* playerName;
+
+	int numberCharMin = 3;
+	int numberCharMax = 13;
+
 public:
 	CClavierVirtuel(GameDataRef _data, float scoreParam, int rankParam, std::string &playerNameParam);
 	void keyboardInit();

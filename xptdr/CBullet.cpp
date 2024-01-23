@@ -40,7 +40,7 @@ void CBullet::setSprite(std::string nameImage)
 void CBullet::updateEntity(float dt)
 {
 	sf::Vector2f temp = direction;
-	temp.x = temp.x * bulletSpeed * dt * 60.f;
+	temp.x = bulletSpeed * dt * 60.f;
 	getSprite().move(temp);
 }
 
@@ -56,7 +56,7 @@ void CBullet::renderEntity(sf::RenderTarget& target)
 
 void CBullet::setDirectionSprite()
 {
-	float firstPart = atan2(direction.y, direction.y);
+	float firstPart = atan2(direction.y, direction.x);
 	float angle = (180.f / 3.1415926535897932384626f) * firstPart;
 	//ce premier cas de figure induit que le sprite va de droite à gauche, dans ce cas si son angle
 	// est supérieur à 90 degré il faut le flip pour qu'il soit dans le bon sens
@@ -66,6 +66,6 @@ void CBullet::setDirectionSprite()
 		angle += 360;
 	}
 	else
-		std::cout<<"";
+		std::cout<<"ba" << std::endl;
 	setRotation(angle);
 }

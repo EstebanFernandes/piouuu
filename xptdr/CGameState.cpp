@@ -113,7 +113,7 @@ void CGameState::STEHandleInput()
 void CGameState::addEnemy(std::string enemyName)
 {
 	if (enemyName == "roaming") {
-		RoamingEnnemy* enemy = new RoamingEnnemy(&(data->assets));
+		RoamingEnemy* enemy = new RoamingEnemy(&(data->assets));
 		entityList.push_back(enemy);
 		(*enemyNumber) ++;
 	}
@@ -121,6 +121,22 @@ void CGameState::addEnemy(std::string enemyName)
 		ShootingEnemy* enemy = new ShootingEnemy(&(data->assets));
 		entityList.push_back(enemy);
 		(*enemyNumber) ++;
+	}
+	else if (enemyName == "bomber") {
+		BomberEnemy* enemy = new BomberEnemy(&(data->assets));
+		entityList.push_back(enemy);
+		(*enemyNumber)++;
+	}
+	else if (enemyName == "bomberInverse") {
+		BomberEnemy* enemy = new BomberEnemy(&(data->assets));
+		enemy->changeInitalSide();
+		entityList.push_back(enemy);
+		(*enemyNumber)++;
+	}
+	else if (enemyName == "rusher") {
+		RusherEnemy* enemy = new RusherEnemy(&(data->assets));
+		entityList.push_back(enemy);
+		(*enemyNumber)++;
 	}
 	else if (enemyName == "boss") {
 		Boss* enemy = new Boss(&(data->assets), &player1, &entityList, enemyNumber);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RoamingEnnemy.h"
+#include "RoamingEnemy.h"
 #include "ShootingEnemy.h"
 
 
@@ -30,10 +30,12 @@ private:
 	Life phase indicator for life-related phase switchs
 	*/
 	int currentLifePhase = 1;
-	sf::Clock invulnerabilityClock;
 
 	CGunslinger BAW;
+
+	sf::Clock invulnerabilityClock;
 	sf::Clock bulletClock;
+	sf::Clock invokeClock;
 
 public:
 	Boss(CAssetManager* assetsParam, CPlayer* playerParam, std::vector<CHittingEntity*>* entityListParam, int* enemyNumber);
@@ -44,6 +46,7 @@ public:
 	- shooter : the shooting enemy
 	*/
 	void addEnemy(std::string enemyName);
+	void addEnemyColumn();
 	//définition de méthodes virtuelles
 
 	void updateMovement(float delta);

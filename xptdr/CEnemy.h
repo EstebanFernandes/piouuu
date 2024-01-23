@@ -66,6 +66,7 @@ public:
 	bool updateEntity(sf::FloatRect a,float delta);
 	void updateAnimation();
 	void renderEntity(sf::RenderTarget& target);
+	void setPosition(int positionXParam, int PositionYParam);
 
 	virtual void updateMovement(float delta) = 0;
 	virtual void enemyShoot() = 0;

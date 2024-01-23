@@ -16,7 +16,7 @@ void ShootingEnemy::updateMovement(float delta)
 	updateLifeBar();
 	if (onAvance == true && !isPositionated)
 		moveEntity(sf::Vector2f(moveSpeed * -delta, 0));
-	if (!isPositionated && getSprite().getPosition().x <= assets->sCREEN_WIDTH * 0.9) {
+	if (!isPositionated && getSprite().getPosition().x <= assets->sCREEN_WIDTH - getSprite().getGlobalBounds().width / 2.f) {
 		isPositionated = true;
 		bulletClock.restart();
 	}

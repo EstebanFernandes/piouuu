@@ -249,6 +249,10 @@ void CEnemy::renderEntity(sf::RenderTarget& target)
 		target.draw(explosionSprite);
 	}
 }
+void CEnemy::setPosition(int positionXParam, int PositionYParam)
+{
+	setPositionEntity((float)positionXParam , (float)PositionYParam);
+}
 /*
 void CEnemy::updateMovement(float delta)
 {

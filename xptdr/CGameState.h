@@ -5,13 +5,14 @@
 #include "CPlayer.h"
 #include "CGameMenu.h"
 #include <sstream>
-#include"RoamingEnnemy.h"
+#include"BomberEnemy.h"
 #include"ShootingEnemy.h"
 #include"CGameOver.h"
 #include"CEntity.h"
 #include"CBackground.h"
 #include "CHittingEntity.h"
 #include "Boss.h"
+#include "RusherEnemy.h"
 
 #include <list>
 #include "CPowerUp.h"
@@ -42,12 +43,16 @@ public:
 	~CGameState();
 	void STEInit();
 	void STEHandleInput();
-	/**
-	* Possibilities :
-	* - roaming, a standard enemy
-	* - shooter, an enemy with a big GUN PIOU PIOU
-	* - boss, first prototype of a boss
-	*/
+	
+	/// <summary>
+	/// Possibilities :
+	///	 -roaming, a standard enemy
+	///	 -shooter, an enemy with a big GUN PIOU PIOU
+	/// - bomber, a bomber man
+	/// - bomberInverse, a bomber man who start to the oposite side
+	/// - rusher, a quick guy
+	///	 -boss, first prototype of a boss
+	/// </summary>
 	void addEnemy(std::string enemyName);
 	void addPowerUp(sf::Vector2f pos);
 	void STEUpdate(float delta);

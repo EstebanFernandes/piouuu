@@ -165,6 +165,7 @@ template<class MType>
 inline void CGameOver<MType>::STEResume()
 {
 	updateFileRanks();
+	// TO DO : Bien placer le scoreboard
 	scoreboard = CScoreboard(&(data->assets), 20, 20, rank);
 }
 
@@ -246,7 +247,7 @@ inline void CGameOver<MType>::updateFileRanks()
 	if (!file.is_open()) {
 		std::cout << "Can't open scoreboard file\n";
 	}
-	else {
+	else if (rank <= 100) {
 		//On complete ici pour ajouter textToAdd en position rank-1
 		while (std::getline(file, line)) {
 			lines.push_back(line);
@@ -257,6 +258,7 @@ inline void CGameOver<MType>::updateFileRanks()
 			lines.push_back(textToAdd);
 		}
 		else {
+			// top 100 : on ne rentre pas dans le classement
 			lines.insert(lines.begin() + rank - 1, textToAdd);
 		}
 
