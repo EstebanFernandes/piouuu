@@ -66,13 +66,11 @@ void CEnemy::initEnnemy(CAssetManager* a)
 	setSprite();
 }
 
-void CEnemy::initEnnemy(CAssetManager* a, std::string nameParam, std::string imageFileParam)
+void CEnemy::initEnnemy(CAssetManager* a, std::string nameParam)
 {
 	setType(Enemy);
 	assets = a;
 	enemyName = nameParam;
-	imageFile = imageFileParam;
-	a->LoadTexture(enemyName, imageFile);
 	setTexture(enemyName);
 	getSprite().setScale(0.2f, 0.2f);
 	initAnimation();

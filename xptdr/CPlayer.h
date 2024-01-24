@@ -5,7 +5,7 @@
 #include "CPhysics.h"
 #include"CBullet.h"
 #include "CMob.h"
-#include "CGunslinger.h"
+#include "LaserGenerator.h"
 #include "CAnimation.h"
 #include"SFML/Audio.hpp"
 //CLASSE qui représente un joueur

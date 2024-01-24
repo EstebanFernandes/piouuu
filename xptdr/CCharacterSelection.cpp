@@ -36,6 +36,23 @@ void CCharacterSelection::loadCharacters()
 		float bulletSpeedTemp = 2.0f;
 		if (charactersInfo[i][9] != "" && typeid(std::stof(charactersInfo[i][9])) == typeid(float)) bulletSpeedTemp = std::stof(charactersInfo[i][9]);
 
+		//ICI, mettre les miscs identifiés dans la liste
+		if (charactersInfo[i][10] != "") {
+
+			int startIndex = 0, endIndex = 0;
+
+			for (int j = 0; j <= charactersInfo[i][10].size(); j++) {
+
+				// If we reached the end of the word or the end of the input.
+				if (charactersInfo[i][10][j] == '/' || j == (charactersInfo[i][10].size())) {
+					endIndex = j;
+					std::string temp;
+					temp.append(charactersInfo[i][10], startIndex, endIndex - startIndex);
+					characterList[i-1].specificites.push_back(temp);
+					startIndex = endIndex + 1;
+				}
+			}
+		}
 		characterList[i - 1].setCharacterStats(maxHealthPointTemp, moveSpeedTemp, canonNumberTemp, damagePerBulletTemp, attackSpeedTemp, bulletSpeedTemp);
 
 	}
@@ -123,14 +140,14 @@ void CCharacterSelection::STEHandleInput()
 
 void CCharacterSelection::STEUpdate(float delta)
 {
-	if (isMovingLeft)
+	if (isMovingRight)
 	{
 			currentCharacterIndex = (currentCharacterIndex + 1) % characterList.size();
 			chosenCharacter = characterList[currentCharacterIndex];
-			if (carousel.move(LeftMove))
-				isMovingLeft = false;
+			if (carousel.move(RightMove))
+				isMovingRight = false;
 	}
-	if (isMovingRight)
+	if (isMovingLeft)
 	{
 			if (currentCharacterIndex == 0) {
 				currentCharacterIndex = (int)characterList.size() - 1;
@@ -138,8 +155,8 @@ void CCharacterSelection::STEUpdate(float delta)
 			else
 				currentCharacterIndex = (currentCharacterIndex - 1) % characterList.size();
 			chosenCharacter = characterList[currentCharacterIndex];
-			if (carousel.move(RightMove))
-				isMovingRight = false;
+			if (carousel.move(LeftMove))
+				isMovingLeft = false;
 	}
 	carousel.update(delta);
 	float e = carousel.ellipse.getPoint(carousel.ellipse.getPointCount() / 2).y+ carousel.ellipse.getPosition().y;

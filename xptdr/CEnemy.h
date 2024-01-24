@@ -12,7 +12,6 @@
 class CEnemy : public CHittingEntity
 {
 protected:
-	std::string imageFile = ENEMYPNG_FILEPATH;
 	std::string enemyName = "baseEnemy";
 
 	sf::IntRect currentFrame;
@@ -28,7 +27,7 @@ protected:
 
 
 	void initEnnemy(CAssetManager* a);
-	void initEnnemy(CAssetManager* a, std::string nameParam, std::string imageFileParam);
+	void initEnnemy(CAssetManager* a, std::string nameParam);
 public:
 	bool onAvance = true;
 	void initAnimation();

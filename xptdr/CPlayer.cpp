@@ -58,7 +58,7 @@ void CPlayer::resetMovement()
 
 void CPlayer::traitermisc(std::string& misc)
 {
-	const std::vector<std::string> supportedMisc{ "autoAim","velocUp" ,"doubleTirs1","doubleTirs2","gunshot"};
+	const std::vector<std::string> supportedMisc{ "autoAim","velocUp" ,"doubleTirs1","doubleTirs2","gunshot", "laser"};
 	int pos = (int)(std::find(supportedMisc.begin(), supportedMisc.end(), misc) - supportedMisc.begin());
 	if (pos >= supportedMisc.size()) {
 		std::cout << "Rien a été trouvé\n";
@@ -85,6 +85,9 @@ void CPlayer::traitermisc(std::string& misc)
 			//gunshot
 		case 4:
 			BAW.addBulletMode(false, BAW.gunshotAim);
+			break;
+		case 5:
+			BAW = LaserGenerator();
 			break;
 		}
 			misc.insert(0, "+");

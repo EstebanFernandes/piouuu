@@ -10,6 +10,7 @@ CTestGame::CTestGame(GameDataRef _data, CCharacter characterParam)
 {
 	setData(_data);
 	player1.updateStates(characterParam);
+	player1.updateMisc();
 }
 
 void CTestGame::STEInit()
@@ -26,6 +27,7 @@ void CTestGame::initAssets()
 	data->assets.LoadTexture("bulletImage", "res\\img\\bulletImage.png");
 	data->assets.LoadTexture("bulletImageRancoeur", "res\\img\\bullet_Rancoeur.png");
 	data->assets.LoadTexture("bombe", "res\\img\\bombe.png");
+	data->assets.LoadTexture("boss", "res\\img\\spacecraft_player_1.png");
 }
 
 void CTestGame::STEHandleInput()

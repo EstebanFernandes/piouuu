@@ -27,6 +27,8 @@ void CMob::updateStates(CCharacter characterParam)
 	damagePerBullet = characterParam.getDamagePerBullet();
 	attackSpeed = characterParam.getAttackSpeed();
 	bulletSpeed = characterParam.getBulletSpeed();
+
+	specificites = characterParam.specificites;
 }
 
 

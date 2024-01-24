@@ -9,7 +9,7 @@ Boss::Boss(CAssetManager* assetsParam, CPlayer* playerParam, std::vector<CHittin
 	assets = assetsParam;
 	enemyNumber = enemyNumberParam;
 
-	initEnnemy(assets, "boss", "res\\img\\spacecraft_player_1.png");
+	initEnnemy(assets, "boss");
 	getSprite().setScale(0.7f, 0.7f);
 	rotate(180);
 
