@@ -20,9 +20,11 @@ public:
 		ySize = 0;
 	}
 	CButton(GameDataRef dataParam);
+	CButton(GameDataRef dataParam, std::string title, float xSize, float ySize);
 	CButton(GameDataRef dataParam, float xSize, float ySize);
 	void Drawable::draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	//method that set the size of the back of the button and resize the text to fit in
+	void setSize(sf::Vector2f f) { setSize(f.x, f.y); }
 	void setSize(float xSizeParam, float ySizeParam);
 	//set the position of the Button
 	void setPos(float xParam, float yParam);

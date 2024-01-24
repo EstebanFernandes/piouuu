@@ -78,6 +78,7 @@ void CSlider::setPosition(float x, float y)
 		line.getGlobalBounds().left,
 		line.getGlobalBounds().top + line.getGlobalBounds().height / 2.f
 	);
+	setCursor();
 }
 
 void CSlider::setName(std::string newName)

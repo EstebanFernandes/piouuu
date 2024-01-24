@@ -115,14 +115,16 @@ void CMainMenuState::resizeScreen()
 		scale.y = 720.f / data->assets.sCREEN_HEIGHT;
 	}
 	CMMTitle.setScale(scale);
+	sf::Vector2f size(data->assets.sCREEN_WIDTH * 0.15f, data->assets.sCREEN_HEIGHT * 0.1f);
 	CMMTitle.setPosition((data->assets.sCREEN_WIDTH / 2) - CMMTitle.getGlobalBounds().width / 2,
 		CMMTitle.getGlobalBounds().height * 0.7f);
 	for (int i = 0; i < buttons.size(); i++)
 	{
-		buttons[i].setScale(scale);
+		buttons[i].setSize(size);
 		buttons[i].setPos((data->assets.sCREEN_WIDTH / 2) - buttons[i].getGlobalBounds().width / 2,
 			(data->assets.sCREEN_HEIGHT * where[i]));
 	}
+	InterfaceState::applymaxMinCharSize(buttons);
 }
 
 void CMainMenuState::STEUpdate(float delta)

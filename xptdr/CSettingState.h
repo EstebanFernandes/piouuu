@@ -7,6 +7,7 @@
 #include <SFML/Audio.hpp>
 #include"CSlider.h"
 #include"CCheckbox.h"
+#include "CButton.h"
 //Setting state, handle music/sound volume and full screen option
 //a file text will save settings to be independant from any 
 class CSettingState : public CState
@@ -22,7 +23,7 @@ private:
 	/// index pour savoir sur quel controleur on se trouve (de base sur 0)
 	/// </summary>
 	int index;
-	sf::Text backbutton;
+	 CButton backbutton;
 	CSlider musicVolume;
 	CSlider SoundVolume;
 	CCheckbox fullScreenCon;
@@ -49,5 +50,9 @@ public:
 	/// Update the settings.csv file with actual information
 	/// </summary>
 	void updateSettingsFile();
+	/// <summary>
+	/// méthode a appelé pour mettre en place tous les élements
+	/// </summary>
+	void resizeScreen();
 };
 
