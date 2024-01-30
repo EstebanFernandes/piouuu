@@ -8,9 +8,10 @@
 #include"CSlider.h"
 #include"CCheckbox.h"
 #include "CButton.h"
+#include "InterfaceState.h"
 //Setting state, handle music/sound volume and full screen option
 //a file text will save settings to be independant from any 
-class CSettingState : public CState
+class CSettingState : public CState, public InterfaceState
 {
 private:
 	std::vector<std::string> keyWord;

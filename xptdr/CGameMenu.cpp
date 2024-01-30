@@ -31,7 +31,7 @@ void CGameMenu::STEInit()
 	texta.create(data->window.getSize().x, data->window.getSize().y);
 	texta.update(data->window);
 	backGroundImage.setTexture(texta);
-	CButton temp = CButton(data);
+	CButton temp(&(data->assets));
 	temp.setString("Reprendre");
 	temp.setSize(data->assets.sCREEN_WIDTH * 0.3f, data->assets.sCREEN_HEIGHT * 0.1f);
 	temp.changeBackVisibilty(false);
@@ -126,8 +126,8 @@ void CGameMenu::STEDraw(float delta)
 	if(resumeClicked)
 		data->window.draw(decompte);
 	else {
-	for (int i = 0; i < buttons.size(); i++)
-		data->window.draw(buttons[i]);
+		for (int i = 0; i < buttons.size(); i++)
+			data->window.draw(buttons[i]);
 	}
 	data->window.display();
 }
@@ -136,7 +136,7 @@ void CGameMenu::STEDraw(float delta)
 void CGameMenu::resizeScreen()
 {
 	sf::Vector2f size(data->assets.sCREEN_WIDTH * 0.3f, data->assets.sCREEN_HEIGHT * 0.1f);
-	sf::Vector2f targetSize(data->assets.sCREEN_WIDTH, data->assets.sCREEN_HEIGHT);
+	sf::Vector2f targetSize((float)data->assets.sCREEN_WIDTH, (float)data->assets.sCREEN_HEIGHT);
 
 	backGroundImage.setScale(
 		targetSize.x / backGroundImage.getLocalBounds().width,
@@ -144,8 +144,13 @@ void CGameMenu::resizeScreen()
 	for (int i = 0; i < buttons.size(); i++)
 	{
 		buttons[i].setSize(size);
-		buttons[i].setPos((data->assets.sCREEN_WIDTH / 2) - buttons[i].getGlobalBounds().width / 2,
+		buttons[i].setPosition((data->assets.sCREEN_WIDTH / 2) - buttons[i].getGlobalBounds().width / 2,
 			(data->assets.sCREEN_HEIGHT * where[i]));
 	}
-	InterfaceState::applymaxMinCharSize(buttons);
+	std::vector<CUI*> mdrr;
+	for (int i = 0; i < buttons.size(); i++)
+	{
+		mdrr.push_back(&buttons[i]);
+	}
+	applymaxMinCharSize(mdrr);
 }

@@ -77,7 +77,6 @@ void CGameState::STEInit()
 	*enemyNumber = 0;
 	initPlayer();
 	initBackground();
-	//initEnemy();
 	data->assets.jouerMusique("PartieJour");
 }
 
@@ -134,7 +133,8 @@ void CGameState::addEnemy(std::string enemyName)
 		(*enemyNumber)++;
 	}
 	else if (enemyName == "pantin") {
-		testEnemy* enemy = new testEnemy(&(data->assets), sf::Mouse::getPosition(data->window), 50);
+		sf::Vector2f mousePos((float)sf::Mouse::getPosition(data->window).x, (float)sf::Mouse::getPosition(data->window).y);
+		testEnemy* enemy = new testEnemy(&(data->assets), mousePos, 50);
 		entityList.push_back(enemy);
 		(*enemyNumber)++;
 	}

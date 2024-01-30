@@ -2,11 +2,21 @@
 
 ShootingEnemy::ShootingEnemy(CAssetManager* assetParam) {
 	BAW.assets = assetParam;
+	BAW.assets->addSFX("bulletSound", &BAW.bulletSound);
 	initEnnemy(assetParam);
 	initPositionX = assetParam->sCREEN_WIDTH * 1.05f;
 	setSprite();
 	moveSpeed = 5.f;
 	attackSpeed = 1.f;
+	bulletSpeed = 0.2f;
+	BAW.referenceStat =CWeaponStat((float)damagePerBullet, bulletSpeed, sf::Vector2f(-1.f, 0.f), 0, "",BAW.bulletScale);
+}
+
+ShootingEnemy::ShootingEnemy(CAssetManager* asset, CMob* target_)
+	:ShootingEnemy(asset)
+{
+	target = target_;
+	hasTarget = true;
 }
 
 void ShootingEnemy::updateMovement(float delta)
@@ -28,7 +38,11 @@ void ShootingEnemy::enemyShoot()
 		sf::Vector2f r(
 			getSprite().getPosition().x - getGlobalBounds().width/2.f,
 			getSprite().getPosition().y );
-		BAW.iNeedMoreBullets(r, damagePerBullet, bulletSpeed, sf::Vector2f(-1,0));
+		if (hasTarget)
+		{
+			sf::Vector2f posPlayer = target->getSprite().getPosition();
+			BAW.shootTowardDirection(r, posPlayer);
+		}
 		// vient juste le restart le timer à la fin 
 		bulletClock.restart();
 	}
@@ -44,21 +58,14 @@ void ShootingEnemy::updateEntity(float delta)
 {
 	CEnemy::updateEntity(delta);
 	BAW.updateEntity(delta);
-	enemyShoot();
+	if (!isDead)
+		enemyShoot();
 }
 
 void ShootingEnemy::updatewPlayer(float delta, CPlayer& player)
 {
 	CEnemy::updatewPlayer(delta, player);
-	std::vector<CBulletAuto>* bullets = BAW.getVector();
-	size_t temp = bullets->size();
-	for (int i = 0; i < temp; i++) {
-		if (player.checkCollisions((*bullets)[i])) {
-			player.reduceHP((*bullets)[i].getDamage());
-			bullets->erase(bullets->begin() + i);
-			if (i != 0)
-				i--;
-			temp--;
-		}
-	}
+	updateShootWithPlayer(player);
+	if (needDelete)
+		transferBullet(BAW);
 }

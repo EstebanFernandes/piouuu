@@ -1,6 +1,6 @@
 Name;ImageLink;Description;isAnimated;maxHealthPoint;moveSpeed;canonNumber;damagePerBullet;attackSpeed;bulletSpeed;Misc
 lavion;res/img/characters/BaseCharacterSpriteSheet.png;Toujours un classique;animated;;;;;3.0;;
-Rancoeur;res/img/characters/RancoeurSpriteSheet.png;Reviens aux origines;animated;;0.5;;5;;;
+Rancoeur;res/img/characters/RancoeurSpriteSheet.png;Damage on time;animated;;0.5;;5;;;dot
 Avion 2;res/img/characters/BaseCharacterSpriteSheet.png;Le même en gros;animated;;;;;3.0;;
 DOUBLE;res/img/characters/BaseCharacterSpriteSheet.png;Toujours un classique;animated;;;;;3.0;;
 Rancoeur2;res/img/characters/RancoeurSpriteSheet.png;Reviens aux origines;animated;;0.5;;5;;;

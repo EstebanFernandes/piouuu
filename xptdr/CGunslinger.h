@@ -1,60 +1,71 @@
 #pragma once
-#include"CEntity.h"
 #include"CBulletAuto.h"
 #include <bitset>
+#include"dot.h"
+#include"CWeaponStat.h"
 #define Balle = true
-#define tirBool = false
-#define nbBullet 5
+#define Tir = false
+#define nbBullet 4
 #define nbAim 6
 class CGunslinger : public CEntity
 {
 private:
 	std::vector<CBulletAuto> magasine;
-	void updatebyIndex(float dt, int index);
-	void pushByIndex(int index);
-	float gunshotDistance;
-	std::string nameBulletSkin = "";
-	sf::Sound bulletSound;
-	sf::SoundBuffer bulletSoundBuffer;
-	int penetration = 0;
+	/// <summary>
+	/// Fonction qui initialise tous les buffs selon les stats dans reference Stat ainsi que le nommbre "type balle"
+	/// </summary>
+	/// <param name="ref"></param>
+	void initBuff(CBulletAuto& ref);
 public:
+	sf::Sound bulletSound;
+	~CGunslinger() {
+		assets->deleteSound(&bulletSound);
+	}
+	sf::Vector2f bulletScale = sf::Vector2f(1.f, 1.f);
+
+	/// <summary>
+	/// On utilise cette balle pour définir le comportement de toute celle que l'on va tiré, on peut ajouter des effets dessus,
+	/// modifier ses stats.
+	/// </summary>
+	CWeaponStat referenceStat;
 	typedef enum
 	{
 		classic,
-		autoAim,
-		dot,
+		dotBullet,
 		explosiveBullet,
-		gunshot
+		fire
 	} typeBullet;
-	//ça va fonctionner comme un nombre binaire on additione selon l'indice de l'enum au carré et après on décompose à chaque fois 
 
+	/// <summary>
+	/// Pour définir le comportement du tir on choisit l'un de ceux ci dessous
+	/// </summary>
 	typedef enum
 	{
 		doubleTirs1=1,
 		doubleTirs2,
+		autoAim,
 		gunshotAim,
 		circleShot,
 		bombe
 	} typeAim;
-	int typeTir;
-	int typeBalle;
+	int typeBalle = 0;
+	int typeTir = 0;
 	CGunslinger();
 	void setSprite(){}
 	void updateEntity(float dt);
 	//Setters for bullet's skin, must've been initialized before, this method will just load the bullet's skin from the asset manager.
 	void setBulletAsset(std::string assetName) {
-		if (assetName != "")
-			nameBulletSkin = assetName;
+		referenceStat.nameImage = assetName;
 	}
 	void renderEntity(sf::RenderTarget& target);
-	void updateCollision(CEntity& b);
-	void iNeedMoreBullets(sf::Vector2f pos, int damage);
-	void iNeedMoreBullets(sf::Vector2f pos, int damage,float bulletSpeed);
-	void iNeedMoreBullets(sf::Vector2f pos, int damage, float bulletSpeed, sf::Vector2f dir);
-
-	void iNeedMoreBullets(sf::Vector2f pos, int damage, float bulletSpeed, sf::Vector2f dir, sf::Vector2f bulletScale);
-
+	/// <summary>
+	/// à terme on utilise que celle là
+	/// </summary>
+	/// <param name="pos"></param>
+	void iNeedMoreBullets(sf::Vector2f pos);
 	
+	void addShootType(int type);
+	void addBulletType(int type);
 	/// <summary>
 	/// Spécialement pour les balles autoguidés
 	/// permet de changer de cible
@@ -70,53 +81,17 @@ public:
 	std::vector<CBulletAuto>* getVector() { 
 			return &magasine;
 	}
+	std::vector<CBulletAuto>& getReferenceVector() { return magasine; }
 	//Fonction qui ajoute un type de balle ou de tir, on spécifie si on veut en garder d'autres ou pas, c'est la fonction la plus importante de cette classe
-	void addBulletMode(bool type,int m) {
-		if (type)
-		{
-			if (m >= 0 && m <= nbBullet - 1)
-			{
-				std::bitset<nbBullet> bit = std::bitset<nbBullet>(typeBalle);
-				if (bit[m] == 0)
-				{
-					switch (m)
-					{
-					case classic:
-						typeBalle = 1;
-						break;
-					default:
-						typeBalle += (int)pow(2, m);
-						break;
-					}
-				}
-				else
-					std::cout << "amélioration déjà mise\n";
-			}
-		}
-		else {
-			if (m >= 0 && m <= nbAim-1)
-			{
-				std::bitset<nbAim> bit = std::bitset<nbAim>(typeTir);
-				if (bit[m] == 0)
-				{
-					switch (m)
-					{
-					case gunshotAim:
-						typeBalle += (int)pow(2, m);
-						break;
-					default:
-						typeTir = (int)pow(2, m);
-						break;
-					}
-				}
-				else
-					std::cout << "amélioration déjà mise\n";
-			}
-		}
-	}
+	/// <summary>
+	/// Fonction qu'on utilise pour parametrer notre balle avant de l'ajouter dans le magasine
+	/// </summary>
+	/// <param name="index"></param>
+	void addByIndex(CBulletAuto&,int index);
+	
 	void setGunShotDistance(float e)
 	{
-		gunshotDistance = e;
+		referenceStat.maxDistance = e;
 	}
 	/// <summary>
 	/// set the penetration for any bullet
@@ -125,7 +100,7 @@ public:
 	void setPenetration(int param)
 	{
 		if (param >= 0)
-			penetration = param;
+			referenceStat.penetration = param;
 	}
 
 	/// <summary>
@@ -136,6 +111,6 @@ public:
 	/// <param name="targetPos"> la position de la cible</param>
 	/// <param name="damage"> les dommages de la balle</param>
 	/// <param name="bulletSpeed">la vitesse de la balle</param>
-	void shootTowardDirection(sf::Vector2f initPos, sf::Vector2f targetPos, int damage, float bulletSpeed);
+	void shootTowardDirection(sf::Vector2f initPos, sf::Vector2f targetPos);
 };
 

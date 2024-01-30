@@ -9,12 +9,12 @@ Boss::Boss(CAssetManager* assetsParam, CPlayer* playerParam, std::vector<CHittin
 	assets = assetsParam;
 	enemyNumber = enemyNumberParam;
 
-	initEnnemy(assets, "boss", "res\\img\\spacecraft_player_1.png");
+	initEnnemy(assets);
 	getSprite().setScale(0.7f, 0.7f);
 	rotate(180);
-
-	initPositionX = assets->sCREEN_WIDTH * 1.15f;
-	initPositionY = assets->sCREEN_HEIGHT * 0.5f;
+	setTexture("boss");
+	initPositionX = ((float)assets->sCREEN_WIDTH) * 1.15f;
+	initPositionY = (int)(((float)assets->sCREEN_HEIGHT) * 0.5f);
 	explosionSprite.setScale(0.6f, 0.6f);
 	moveSpeed = 3.f;
 	attackSpeed = 1.75f;
@@ -26,14 +26,10 @@ Boss::Boss(CAssetManager* assetsParam, CPlayer* playerParam, std::vector<CHittin
 
 	setSprite();
 
-	//getSprite().setRotation(180);
-		
-	//getSprite().setOrigin(getSprite().getLocalBounds().width / 2.f, getSprite().getLocalBounds().height / 2.f);
-	//getSprite().setScale(0.7f, 0.7f);
-
 	phasesCaps.push_back(75.f);
 	phasesCaps.push_back(50.f);
 	phasesCaps.push_back(25.f);
+	BAW.referenceStat = CWeaponStat((float)damagePerBullet, bulletSpeed, sf::Vector2f(-1.f, 0.f), 0, "", BAW.bulletScale);
 }
 
 void Boss::addEnemy(std::string enemyName)
@@ -59,7 +55,7 @@ void Boss::addEnemy(std::string enemyName)
 void Boss::addEnemyColumn()
 {
 	RoamingEnemy enemyTest = RoamingEnemy(assets);
-	int enemyColumnNumber = assets->sCREEN_HEIGHT / enemyTest.getSprite().getGlobalBounds().height;
+	int enemyColumnNumber = assets->sCREEN_HEIGHT / (int)enemyTest.getSprite().getGlobalBounds().height;
 	int enemyMissing = std::rand() % enemyColumnNumber;
 	for (int i = 0; i < enemyColumnNumber; i++) {
 		if (i != enemyMissing) {
@@ -118,7 +114,7 @@ void Boss::updateEntity(float delta)
 				getSprite().getPosition().x - getGlobalBounds().width / 2.f,
 				getSprite().getPosition().y);
 
-			BAW.shootTowardDirection(r, player1->getSprite().getPosition(), damagePerBullet, bulletSpeed);
+			BAW.shootTowardDirection(r, player1->getSprite().getPosition());
 			// vient juste le restart le timer à la fin
 			bulletClock.restart();
 		}
@@ -128,18 +124,9 @@ void Boss::updateEntity(float delta)
 void Boss::updatewPlayer(float delta, CPlayer& player)
 {
 	CEnemy::updatewPlayer(delta, player);
-
-	std::vector<CBulletAuto>* bullets = BAW.getVector();
-	size_t temp = bullets->size();
-	for (int i = 0; i < temp; i++) {
-		if (player.checkCollisions((*bullets)[i])) {
-			player.reduceHP((*bullets)[i].getDamage());
-			bullets->erase(bullets->begin() + i);
-			if (i != 0)
-				i--;
-			temp--;
-		}
-	}
+	updateShootWithPlayer(player);
+	if (needDelete)
+		transferBullet(BAW);
 }
 
 void Boss::renderEntity(sf::RenderTarget& target)

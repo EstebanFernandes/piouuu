@@ -1,20 +1,17 @@
 #pragma once
 
 #include "RoamingEnemy.h"
-
-class BomberEnemy : public RoamingEnemy
+#include"InterfaceShootingEnemy.h"
+class BomberEnemy : public RoamingEnemy,public InterfaceShootingEnemy
 {
 private:
-	CGunslinger BAW;
-	sf::Clock bulletClock;
 	bool isFacingLeft = true;
 public:
 	BomberEnemy(CAssetManager* assets);
-
+	BomberEnemy(CAssetManager* assets,bool isFacingLeft_);
 	void changeInitalSide();
-
+	void changeInitialSide(bool RTL);
 	void enemyShoot();
-
 	//redéfinition de CEnemy
 	void renderEntity(sf::RenderTarget& target);
 	//redéfinition de CEnemy

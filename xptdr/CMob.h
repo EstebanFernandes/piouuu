@@ -6,6 +6,12 @@
 #include"CAssetManager.h"
 #include"CEntity.h"
 #include"CCharacter.h"
+#include "effetspecial.h"
+
+struct buff{
+	effetspecial* effet;
+	bool isActive;
+};
 //Heritage of CEntity and CCharacter, basic class to handle mob (entity with life bar and stats)
 class CMob : public CEntity, public CCharacter
 {
@@ -17,9 +23,12 @@ protected :
 	//background of the life bar
 	sf::RectangleShape lifeBarBackground;
 
-	bool isInvulnerable = false;
+	std::vector<buff> buffs;
 
+	bool isInvulnerable = false;
+	void onHit(CMob& b);
 public:
+	std::vector<buff>& getBuffs() { return buffs; }
 	CMob();
 	//Méthode à redéfinir 
 
@@ -91,5 +100,22 @@ public:
 		dir.y = posMob.y - pos.y;
 		return dir;
 	}
+	/// <summary>
+	/// Fonction qui ajoute un buff, on passe en paramètre si le buff est active ou non
+	/// </summary>
+	/// <param name="r"></param>
+	/// <param name="isActive"></param>
+	void addBuff(effetspecial* r, bool isActive) {
+		buff temp;
+		temp.effet = r;
+		temp.isActive = isActive;
+		if (isActive)
+		{
+			r->resetClock();
+			r->action();
+		}
+		buffs.push_back(temp);
+	}
+	void updateBuff(float delta);
 };
 

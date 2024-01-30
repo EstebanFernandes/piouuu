@@ -15,7 +15,6 @@ private:
 
 
 	//Attributs
-	// 
 	// S'occupe des améliorations spéciales du personnage
 	//S'occupe des animations du personnage
 	CAnimation anim;
@@ -36,10 +35,13 @@ private:
 	sf::Clock bulletClock;
 
 	sf::Clock hitClock;
+	//Liste des effets sur les balles, on les ajoutes avant de tirer 
+	std::vector<effetspecial*> effectByBullet;
 	bool hittype = false;
 	// Constrcuteurs et destruceurs 
 	void setSprite();
 	void initStat();
+
 public:
 	bool hasLevelUp = false;
 	bool seekForTarget=false;
@@ -58,7 +60,6 @@ public:
 		score += scoreToAdd;
 	}
 	void initLifeBar();
-	void updateCollision(CEntity& b);
 	void gainXP(int levelofEntity);
 	void updateLifeBar();
 	void updateEntity(float dt);
@@ -73,5 +74,9 @@ public:
 	CGunslinger* getBAW() { return &BAW; }
 	void traitermisc(std::string& misc);
 	void updateMisc();
-	void updateAfterKillingEntity();
+	void AAA() {
+		specificites.push_back("dot");
+		traitermisc(specificites.back());
+	}
+	void iNeedMoreBullet();
 };

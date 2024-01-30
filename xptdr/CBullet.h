@@ -1,9 +1,8 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 #include "DEFINITIONS.h"
-#include "CEntity.h"
-
-class CBullet : public CEntity
+#include"CMob.h"
+class CBullet : public CMob
 {
 protected:
 	sf::Vector2f direction;
@@ -13,7 +12,11 @@ protected:
 	int penetration = 0;
 	bool isABombe = false;
 	//pas encore sur mais ça se réfléchit
-	std::vector<CEntity*> entityHitting;
+	std::vector<CMob*> entityHitting;
+	/// <summary>
+	/// On charge les buffs sur l'ennemi
+	/// </summary>
+	/// <param name="b"></param>
 public :
 	CBullet();
 	CBullet(int damaage, sf::Vector2f pos, sf::Vector2f dir, int penetration
@@ -22,7 +25,6 @@ public :
 		,std::string nameImage, CAssetManager* assetss, sf::Vector2f bulletScale);
 	void setSprite(std::string nameImage);
 	void updateEntity(float dt);
-	void updateCollision(CEntity& b);
 	void renderEntity(sf::RenderTarget& target);
 	//Surchagrge pour les collisions entre objet
 	int getDamage() { return damage; }
@@ -31,15 +33,17 @@ public :
 	//L'appel de cette fonction suppose que la direction de la balle a été déclarée
 	void setDirectionSprite();
 
-	//méthode qu'on appelle quand la balle rentre on contacte avec quelque chose, selon la p
-	//pénétration on veut ou non faire quelque chose
-	void CONTACT();
 	/// <summary>
 	/// Méthode surchargé qui a un comportement différent du checkCollision de base
 	/// 
 	/// </summary>
 	/// <param name="b"></param>
 	/// <returns></returns>
-	bool checkCollisions(CEntity& b);
+	bool checkCollisions(CMob& b);
+	void setBulletPos(sf::Vector2f pos) {
+		getSprite().setPosition(pos);
+	}
+
+
 };
 

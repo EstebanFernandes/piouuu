@@ -3,7 +3,6 @@
 #include <SFML/Graphics.hpp>
 #include<iostream>
 #include <string>
-//#include"DEF"
 #include"CAssetManager.h"
 //Abstract class to handle entity, it has the least attribut that an entity should have
 class CEntity
@@ -13,6 +12,7 @@ private :
 	sf::Sprite ENTsprite;
 	//Type of the entity, deprecated but we didnt delete it 
 	int type = undefined;
+	
 public:
 	//Boolean that say if the entity is hitting (often the player)
 	bool isHitting = false;
@@ -40,8 +40,6 @@ public:
 	virtual void updateEntity(float dt) = 0;
 	//Method use to draw the entity, the target is in pretty much every case the window
 	virtual void renderEntity(sf::RenderTarget& target) = 0;
-	//Deprecated, but used it in the previous collision system
-	virtual void updateCollision(CEntity& b) = 0;
 	//Method that load the texture in the asset manager and set the texture on the sprite
 	//	||BE CAREFUL|| this function the origin of the sprite in the middle of it.
 	/*void setTexture(std::string name, std::string filename) {
@@ -71,7 +69,7 @@ public:
 	void setPositionEntity(sf::Vector2f i) {
 		ENTsprite.setPosition(i);
 	}
-	int getType() { return type; }
+	const int getType() { return type; }
 	void setType(int Type) { type = Type; }
 	bool checkCollisions(CEntity& b)
 	{
@@ -107,6 +105,11 @@ public:
 	void setRotation(float angle)
 	{
 		ENTsprite.setRotation(angle);
+	}
+
+	void setSprite(const CEntity& r)
+	{
+		ENTsprite = r.ENTsprite;
 	}
 };
 

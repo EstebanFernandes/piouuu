@@ -1,6 +1,17 @@
 #include "CMob.h"
 
-CMob::CMob() 
+void CMob::onHit(CMob& b)
+{
+	for (std::vector<buff>::iterator it = buffs.begin();
+		it != buffs.end();)
+	{
+		it->effet->changeTarget(&b);
+		b.addBuff(it->effet, true);;
+		it = buffs.erase(it);
+	}
+}
+
+CMob::CMob()
 { 
 	healthPoint = 0;
 	maxHealthPoint = 0;
@@ -29,4 +40,20 @@ void CMob::updateStates(CCharacter characterParam)
 	bulletSpeed = characterParam.getBulletSpeed();
 }
 
+void CMob::updateBuff(float delta)
+{
+	for (int index=0; index <buffs.size(); index++)
+	{
+		
+		effetspecial* temp = buffs[index].effet;
+		temp->update(delta);
+		if (temp->needDelete)
+		{
+			delete(temp);
+			buffs.erase(buffs.begin() + index);
+		if (index != 0)
+			index--;
+		}
+	}
+}
 

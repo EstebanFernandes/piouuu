@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClCompile Include="BomberEnemy.cpp" />
     <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="bulletStorage.cpp" />
     <ClCompile Include="CAnimation.cpp" />
     <ClCompile Include="CArc.cpp" />
     <ClCompile Include="CAssetManager.cpp" />
@@ -189,8 +190,13 @@
     <ClCompile Include="CTestGame.cpp" />
     <ClCompile Include="CTile.cpp" />
     <ClCompile Include="CTileMap.cpp" />
+    <ClCompile Include="CUI.cpp" />
     <ClCompile Include="CUpgradeState.cpp" />
+    <ClCompile Include="CWeaponStat.cpp" />
+    <ClCompile Include="dot.cpp" />
+    <ClCompile Include="effetspecial.cpp" />
     <ClCompile Include="EllipseShape.cpp" />
+    <ClCompile Include="InterfaceShootingEnemy.cpp" />
     <ClCompile Include="InterfaceState.cpp" />
     <ClCompile Include="lifeBarForEntity.cpp" />
     <ClCompile Include="lifeForEntity.cpp" />
@@ -198,11 +204,13 @@
     <ClCompile Include="RoamingEnemy.cpp" />
     <ClCompile Include="RusherEnemy.cpp" />
     <ClCompile Include="ShootingEnemy.cpp" />
+    <ClCompile Include="SpecialEffect.cpp" />
     <ClCompile Include="testEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BomberEnemy.h" />
     <ClInclude Include="Boss.h" />
+    <ClInclude Include="bulletStorage.h" />
     <ClInclude Include="CAnimation.h" />
     <ClInclude Include="CArc.h" />
     <ClInclude Include="CAssetManager.h" />
@@ -256,15 +264,21 @@
     <ClInclude Include="CTestGame.h" />
     <ClInclude Include="CTile.h" />
     <ClInclude Include="CTileMap.h" />
+    <ClInclude Include="CUI.h" />
     <ClInclude Include="CUpgradeState.h" />
+    <ClInclude Include="CWeaponStat.h" />
     <ClInclude Include="DEFINITIONS.h" />
+    <ClInclude Include="dot.h" />
+    <ClInclude Include="effetspecial.h" />
     <ClInclude Include="EllipseShape.h" />
+    <ClInclude Include="InterfaceShootingEnemy.h" />
     <ClInclude Include="InterfaceState.h" />
     <ClInclude Include="lifeBarForEntity.h" />
     <ClInclude Include="lifeForEntity.h" />
     <ClInclude Include="RoamingEnemy.h" />
     <ClInclude Include="RusherEnemy.h" />
     <ClInclude Include="ShootingEnemy.h" />
+    <ClInclude Include="SpecialEffect.h" />
     <ClInclude Include="testEnemy.h" />
   </ItemGroup>
   <ItemGroup>

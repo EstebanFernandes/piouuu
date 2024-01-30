@@ -2,10 +2,7 @@
 
 #include "RoamingEnemy.h"
 #include "ShootingEnemy.h"
-
-
-
-class Boss : public CEnemy
+class Boss : public CEnemy, public InterfaceShootingEnemy
 {
 private:
 	bool isPositionated = false;

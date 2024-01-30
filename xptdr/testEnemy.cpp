@@ -1,12 +1,12 @@
 #include "testEnemy.h"
 
-testEnemy::testEnemy(CAssetManager* a, sf::Vector2i pos, int hp)
+testEnemy::testEnemy(CAssetManager* a, sf::Vector2f pos, int hp)
 {
 	initEnnemy(a);
-	maxHealthPoint = hp;
+	maxHealthPoint = (float)hp;
 	healthPoint = maxHealthPoint;
 	setSprite();
-	setPosition((float)pos.x, (float)pos.y);
+	setPosition(pos.x, pos.y);
 }
 
 void testEnemy::updateMovement(float delta)

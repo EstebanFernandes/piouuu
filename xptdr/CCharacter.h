@@ -43,7 +43,12 @@ public:
 	void setMaxHealth(float maxHealthParam) { maxHealthPoint = maxHealthParam; healthPoint = maxHealthParam; }
 
 	float getLifePoint() { return healthPoint; }
-	void setLifePoint(float lifePointParam) { healthPoint = lifePointParam; }
+	void setLifePoint(float lifePointParam) { 
+		if (lifePointParam < 0)
+			healthPoint = 0;
+		else
+			healthPoint = lifePointParam;
+	}
 
 	int getLevel() { return level; }
 	void setLevel(int levelParam) { level = levelParam; }

@@ -69,7 +69,7 @@ void CSettingState::STEInit()
 	musicVolume = CSlider(&(data->assets),size,"Volume de la musique");
 	SoundVolume = CSlider(&(data->assets), size, "Volume des sons");
 	fullScreenCon = CCheckbox(&(data->assets), "Plein écran");
-	backbutton = CButton(data, "Revenir au menu principal", 300.f, 100.f);
+	backbutton = CButton(&(data->assets) , "Retour", 300.f, 100.f);
 	resizeScreen();
 
 
@@ -177,6 +177,7 @@ void CSettingState::onAction(int index, int type)
 			SoundVolume.slideLeft();
 		else if (type == 1)
 			SoundVolume.slideRight();
+		data->assets.setOverAllvolumeSon((float)SoundVolume.getValue());
 		break;
 	case 2:
 		if (type == 2)
@@ -247,10 +248,17 @@ void CSettingState::resizeScreen()
 	pos = sf::Vector2f(screenwidth / 2.f - SoundVolume.getSize().x / 2.f
 		, screenheight * 0.4f - +SoundVolume.getSize().y / 2.f);
 	SoundVolume.setPosition(pos);
+	fullScreenCon.setSize(size);
 	pos = sf::Vector2f(screenwidth / 2.f - fullScreenCon.getSize().x / 2.f
 		, screenheight * 0.6f - +fullScreenCon.getSize().y / 2.f);
 	fullScreenCon.setPosition(pos);
 	backbutton.setSize(size);
-	backbutton.setPos((data->assets.sCREEN_WIDTH / 2) - (backbutton.getGlobalBounds().width / 2),
+	backbutton.setPosition((data->assets.sCREEN_WIDTH / 2) - (backbutton.getGlobalBounds().width / 2),
 		data->assets.sCREEN_HEIGHT * 0.8f);
+	std::vector<CUI*> mdrr;
+	mdrr.push_back(&SoundVolume);
+	mdrr.push_back(&musicVolume);
+	mdrr.push_back(&fullScreenCon);
+	mdrr.push_back(&backbutton);
+	applymaxMinCharSize(mdrr);
 }

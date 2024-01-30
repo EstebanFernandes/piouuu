@@ -71,32 +71,27 @@ void CCheckbox::setPosition(float x, float y)
 	interiorBack.left = interiorPos.x;
 	if (hasTitle)//Le slider n'a pas la même tête s'il n'a pas de titre
 	{
-		sf::Vector2f namePos = sf::Vector2f(interiorBack.left + interiorBack.width / 2.f - nameOfCheckbox.getGlobalBounds().width / 2.f,
-			interiorBack.top);
+		float ouais = nameOfCheckbox.getGlobalBounds().width + box.getGlobalBounds().width;
+		float inter = (interiorBack.width - ouais) / 2.f;
+		sf::Vector2f namePos = sf::Vector2f(interiorPos.x + inter,
+			interiorPos.y + (interiorBack.height - nameOfCheckbox.getGlobalBounds().height) / 2.f);
 		nameOfCheckbox.setPosition(namePos);
 		namePos.x -= nameOfCheckbox.getGlobalBounds().left - namePos.x;
 		namePos.y -= nameOfCheckbox.getGlobalBounds().top - namePos.y;
-		nameOfCheckbox.setPosition(namePos);
-		box.setPosition(nameOfCheckbox.getGlobalBounds().width + nameOfCheckbox.getGlobalBounds().left,
-			interiorBack.top);
-			check1.setPosition(box.getPosition().x+box.getSize().x / 2.f,
-				box.getPosition().y + box.getSize().y / 2.f);
-			check2.setPosition(box.getPosition().x + box.getSize().x / 2.f,
-				box.getPosition().y + box.getSize().y / 2.f);
+		box.setPosition(
+			interiorPos.x + inter + nameOfCheckbox.getGlobalBounds().width,
+			interiorPos.y + (interiorBack.height - (box.getGlobalBounds().height+box.getOutlineThickness())) / 2.f);
+		check1.setPosition(box.getPosition().x + box.getSize().x / 2.f,
+			box.getPosition().y + box.getSize().y / 2.f);
+		check2.setPosition(box.getPosition().x + box.getSize().x / 2.f,
+			box.getPosition().y + box.getSize().y / 2.f);
 	}
 
 }
 void CCheckbox::setSize(float x, float y)
 {
-}
-void CCheckbox::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-	target.draw(back);
-	target.draw(box);
-	if (isSelected)
-	{
-		target.draw(check1);
-		target.draw(check2);
-	}
-	if (hasTitle)
-		target.draw(nameOfCheckbox);
+	back.setSize(sf::Vector2f(x, y));
+	interiorBack.height = y-padding.y * y;
+	interiorBack.width = x-padding.x * x;
+	setPosition(interiorBack.getPosition());
 }

@@ -70,7 +70,7 @@ CCardUpgrade::CCardUpgrade( std::vector<std::string> Upgrade_, std::vector<std::
 			temp.setFont(asset->GetFont("Lato"));
 			temp.setCharacterSize(35);
 			int posY = (int)YSizepris+ padding+ (int)temp.getGlobalBounds().height*i ;
-			temp.setPosition(pos.x + (xSize - temp.getGlobalBounds().width) / 2, posY);
+			temp.setPosition(pos.x + (xSize - temp.getGlobalBounds().width) / 2, (float)posY);
 			Stats.push_back(temp);
 		}
 	}

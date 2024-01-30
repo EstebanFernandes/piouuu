@@ -12,24 +12,24 @@ public:
 	/// </summary>
 	/// <param name="buttonlist"></param>
 	/// <returns></returns>
-	int getLargestCharSize(std::vector<CButton*>& buttonlist) {
+	int getLargestCharSize(std::vector<CUI*>& uiList) {
 		
 		unsigned int max = 0;
-		for (int i = 0; i < buttonlist.size(); i++)
+		for (int i = 0; i < uiList.size(); i++)
 		{
-			unsigned int tempMax = buttonlist[i]->getCharacterSize();
+			unsigned int tempMax = uiList[i]->getCharacterSize();
 			if (tempMax > max)
 				max = tempMax;
 		}
 		return max;
 	}
 
-	int getMinCharSize(std::vector<CButton>& buttonlist) {
+	int getMinCharSize(std::vector<CUI*>& uiList) {
 
 		unsigned int max =100000;
-		for (int i = 0; i < buttonlist.size(); i++)
+		for (int i = 0; i < uiList.size(); i++)
 		{
-			unsigned int tempMax = buttonlist[i].getCharacterSize();
+			unsigned int tempMax = uiList[i]->getCharacterSize();
 			if (max> tempMax)
 				max = tempMax;
 		}
@@ -37,15 +37,15 @@ public:
 	}
 
 	/// <summary>
-	/// Apply the min character size thats possible on the vector of button pass in parameter
+	/// Apply the min character size thats possible on the vector of UI pass in parameter
 	/// </summary>
 	/// <param name="buttonlist"></param>
-	void applymaxMinCharSize(std::vector<CButton>& buttonlist)
+	void applymaxMinCharSize(std::vector<CUI*>& uiList)
 	{
-		unsigned int charSize = getMinCharSize(buttonlist);
-		for (int i = 0; i < buttonlist.size(); i++)
+		unsigned int charSize = getMinCharSize(uiList);
+		for (int i = 0; i < uiList.size(); i++)
 		{
-			buttonlist[i].setCharacterSize(charSize);
+			uiList[i]->setCharacterSize(charSize);
 		}
 	}
 };

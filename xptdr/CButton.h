@@ -1,43 +1,35 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-#include "CJeu.h"
+#include"CUI.h"
+#include<iostream>
 //This class represent a button, You can define the text inside, the font and the size of it
-class CButton : public sf::Drawable
+class CButton : public CUI
 {
 private:
-	GameDataRef data;
 	sf::Text text;
-	sf::RectangleShape back;
 	//width of the button
 	float xSize;
 	//Height of the button
 	float ySize;
 	//method that resize taking in consideration the back of the button
 	void resizeText(sf::Text& textToResize);
-	bool isBackVisible = true;
 public:
 	CButton() {
 		xSize = 0;
 		ySize = 0;
 	}
-	CButton(GameDataRef dataParam);
-	CButton(GameDataRef dataParam, std::string title, float xSize, float ySize);
-	CButton(GameDataRef dataParam, float xSize, float ySize);
-	void Drawable::draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	CButton(CAssetManager* a);
+	CButton(CAssetManager* a, std::string title, float xSize, float ySize);
+	CButton(CAssetManager* a, float xSize, float ySize);
 	//method that set the size of the back of the button and resize the text to fit in
 	void setSize(sf::Vector2f f) { setSize(f.x, f.y); }
 	void setSize(float xSizeParam, float ySizeParam);
 	//set the position of the Button
-	void setPos(float xParam, float yParam);
-	void setPos(sf::Vector2f pos) {
-		setPos(pos.x, pos.y);
-	}
-	void setColor(sf::Color colorParam);
+	void setPosition(float xParam, float yParam);
 	void setFontColor(sf::Color colorParam);
 	void setOutlineThickness(float fParam);
 	void setThicknessColor(sf::Color colorParam);
-	void setString(std::string strParam);
 	void setScale(sf::Vector2f scale);
+	void setString(std::string strParam);
 	sf::FloatRect getGlobalBounds() {
 		return back.getGlobalBounds();
 	}
@@ -64,12 +56,10 @@ public:
 	unsigned int getCharacterSize() {
 		return text.getCharacterSize();
 	}
-	void changeBackVisibilty(bool f) { 
-		isBackVisible = f;
-		if (isBackVisible)
-			back.setFillColor(sf::Color::Black);
-		else
-			back.setFillColor(sf::Color(255, 255, 255, 0));
+	void Drawable::draw(sf::RenderTarget& target, sf::RenderStates states) const
+	{
+		target.draw(back);
+		target.draw(text);
 	}
 };
 

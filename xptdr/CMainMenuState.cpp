@@ -17,10 +17,10 @@ void CMainMenuState::STEInit()
 	data->assets.LoadTexture("Title",
 		MAIN_MENU_TITLE_PATH); // On charge les textures
 
-	CButton temp = CButton(data);
+	CButton temp(&(data->assets));
 	temp.setString("Jouer");
 	temp.setSize(data->assets.sCREEN_WIDTH * 0.15f, data->assets.sCREEN_HEIGHT * 0.1f);
-	temp.setPos((data->assets.sCREEN_WIDTH / 2) - temp.getGlobalBounds().width / 2,
+	temp.setPosition((data->assets.sCREEN_WIDTH / 2) - temp.getGlobalBounds().width / 2,
 		(data->assets.sCREEN_HEIGHT * 0.2f));
 	where.push_back(0.2f);
 	buttons.push_back(temp);
@@ -28,28 +28,28 @@ void CMainMenuState::STEInit()
 
 
 	temp.setString("Mode infini");
-	temp.setPos((data->assets.sCREEN_WIDTH / 2) - temp.getGlobalBounds().width / 2,
+	temp.setPosition((data->assets.sCREEN_WIDTH / 2) - temp.getGlobalBounds().width / 2,
 		data->assets.sCREEN_HEIGHT * 0.35f);
 	where.push_back(0.35f);
 	buttons.push_back(temp);
 
 	temp.setString("Comment jouer");
 	//temp.setCharacterSize(50);
-	temp.setPos((data->assets.sCREEN_WIDTH / 2) - temp.getGlobalBounds().width / 2,
+	temp.setPosition((data->assets.sCREEN_WIDTH / 2) - temp.getGlobalBounds().width / 2,
 		data->assets.sCREEN_HEIGHT * 0.5f);
 	where.push_back(0.5f);
 	buttons.push_back(temp);
 
 	temp.setString("Reglages");
 	//temp.setCharacterSize(50);
-	temp.setPos((data->assets.sCREEN_WIDTH / 2) - (temp.getGlobalBounds().width / 2),
+	temp.setPosition((data->assets.sCREEN_WIDTH / 2) - (temp.getGlobalBounds().width / 2),
 		data->assets.sCREEN_HEIGHT * 0.65f);
 	where.push_back(0.65f);
 	buttons.push_back(temp);
 
 	temp.setString("Quitter");
 	//temp.setCharacterSize(50);
-	temp.setPos((data->assets.sCREEN_WIDTH / 2) - temp.getGlobalBounds().width / 2,
+	temp.setPosition((data->assets.sCREEN_WIDTH / 2) - temp.getGlobalBounds().width / 2,
 		(data->assets.sCREEN_HEIGHT * 0.8f));
 	where.push_back(0.8f);
 	buttons.push_back(temp);
@@ -59,7 +59,12 @@ void CMainMenuState::STEInit()
 	CMMTitle.setPosition((data->assets.sCREEN_WIDTH / 2) - CMMTitle.getGlobalBounds().width / 2,
 		CMMTitle.getGlobalBounds().height * 0.7f);
 	buttons[index].setOutlineThickness(3.f);
-	applymaxMinCharSize(buttons);
+	std::vector<CUI*> mdrr;
+	for (int i = 0; i < buttons.size(); i++)
+	{
+		mdrr.push_back(&buttons[i]);
+	}
+	applymaxMinCharSize(mdrr);
 }
 
 void CMainMenuState::STEHandleInput()
@@ -121,10 +126,15 @@ void CMainMenuState::resizeScreen()
 	for (int i = 0; i < buttons.size(); i++)
 	{
 		buttons[i].setSize(size);
-		buttons[i].setPos((data->assets.sCREEN_WIDTH / 2) - buttons[i].getGlobalBounds().width / 2,
+		buttons[i].setPosition((data->assets.sCREEN_WIDTH / 2) - buttons[i].getGlobalBounds().width / 2,
 			(data->assets.sCREEN_HEIGHT * where[i]));
 	}
-	InterfaceState::applymaxMinCharSize(buttons);
+	std::vector<CUI*> mdrr;
+	for (int i = 0; i < buttons.size(); i++)
+	{
+		mdrr.push_back(&buttons[i]);
+	}
+	applymaxMinCharSize(mdrr);
 }
 
 void CMainMenuState::STEUpdate(float delta)

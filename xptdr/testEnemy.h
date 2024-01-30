@@ -8,7 +8,7 @@ class testEnemy : public CEnemy
 {
 
 public:
-	testEnemy(CAssetManager* a,sf::Vector2i pos, int hp);
+	testEnemy(CAssetManager* a,sf::Vector2f pos, int hp);
 	void updateMovement(float delta);
 	void enemyShoot();
 };

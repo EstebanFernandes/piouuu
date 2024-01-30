@@ -28,7 +28,7 @@ void CParserCSV::lineAnalysis()
 	if (col > imaxCol)
 		imaxCol = col;
 }
-
+ 
 CParserCSV::CParserCSV()
 {
 	imaxCol = -1;

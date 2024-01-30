@@ -33,11 +33,41 @@ sf::Font& CAssetManager::GetFont(std::string name)
 	return Fonts.at(name);
 }
 
-void CAssetManager::InitialiserMusiques(float volumeMusic)
+void CAssetManager::deleteEverythingBut(std::string name)
+{
+	auto itt = Textures.find(name);
+	if (itt != Textures.end())
+	{
+		for (auto it = Textures.cbegin(); it != Textures.cend() /* not hoisted */; /* no increment */)
+		{
+			if (name!=it->first)
+			{
+				Textures.erase(it++);    // or "it = m.erase(it)" since C++11
+			}
+			else
+			{
+				++it;
+			}
+		}
+	}
+}
+
+void CAssetManager::LoadSFX(std::string name, std::string fileName)
+{
+	sonManager.stockSound(name, fileName);
+}
+
+void CAssetManager::addSFX(std::string name,sf::Sound* son)
+{
+	return sonManager.addSound(name,son);
+}
+
+void CAssetManager::InitialiserMusiques(float volumeMusic,float volumeSon)
 {
 	musiqueManager.ajouterMusique("MenuPrincipal", "res\\sfx\\musique_menu_test.mp3");
 	musiqueManager.ajouterMusique("PartieJour", "res\\sfx\\Partie_de_jour.mp3");
 	setOverAllvolumeMusique(volumeMusic);
+	setOverAllvolumeSon(volumeSon);
 }
 
 void CAssetManager::changeScreenType(sf::RenderWindow& window, bool& isFullScreen)
@@ -57,6 +87,11 @@ void CAssetManager::changeScreenType(sf::RenderWindow& window, bool& isFullScree
 		window.create(sf::VideoMode(sCREEN_WIDTH, sCREEN_HEIGHT),"PIOU PIOU", sf::Style::Close | sf::Style::Titlebar);
 	}
 	window.setFramerateLimit(60);
+}
+
+void CAssetManager::checkSound()
+{
+	sonManager.checkVect();
 }
 
 

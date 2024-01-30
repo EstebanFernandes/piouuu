@@ -7,7 +7,12 @@ protected:
 	float scoreGived;
 public:
 	CHittingEntity() { scoreGived = 0; }
-	//Cette méthode est à appeler sur chaque entité qui rentre en contact avec le joueur
+	~CHittingEntity(){}
+	/// <summary>
+	/// Cette méthode est à appeler sur chaque entité qui rentre en contact avec le joueur
+	/// </summary>
+	/// <param name="delta"></param>
+	/// <param name="player"></param>
 	virtual void updatewPlayer(float delta, CPlayer& player)=0;
 	//virtual void updatewGunslinger(float delta, CGunslinger& Gunz) = 0;
 	//virtual void die(std::vector<CHittingEntity*> r) = 0;

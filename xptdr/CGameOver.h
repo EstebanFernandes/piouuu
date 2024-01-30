@@ -77,17 +77,17 @@ void CGameOver<MType>::STEInit()
 	textGameOver.setPosition((data->assets.sCREEN_WIDTH / 2) - (textGameOver.getGlobalBounds().width / 2),
 		(data->assets.sCREEN_HEIGHT * 0.15f));
 
-	CButton restartButton = CButton(data);
+	CButton restartButton(&(data->assets));
 	restartButton.setString("Rejouer");
 	restartButton.setOutlineThickness(4);
 	restartButton.setThicknessColor(sf::Color::White);
 	restartButton.setSize(data->assets.sCREEN_WIDTH * 0.15f, data->assets.sCREEN_HEIGHT * 0.1f);
 	restartButton.setColor(sf::Color(174, 137, 100));
-	restartButton.setPos(data->assets.sCREEN_WIDTH *0.2f, data->assets.sCREEN_HEIGHT * 0.8f);
+	restartButton.setPosition(data->assets.sCREEN_WIDTH *0.2f, data->assets.sCREEN_HEIGHT * 0.8f);
 	restartButton.displayButtonInfo();
-	CButton menuButton = CButton(data);
+	CButton menuButton(&(data->assets));
 	menuButton.setString("Menu Principal");
-	menuButton.setPos(data->assets.sCREEN_WIDTH * 0.8f, data->assets.sCREEN_HEIGHT * 0.8f);
+	menuButton.setPosition(data->assets.sCREEN_WIDTH * 0.8f, data->assets.sCREEN_HEIGHT * 0.8f);
 	menuButton.setThicknessColor(sf::Color::White);
 	menuButton.setSize(data->assets.sCREEN_WIDTH * 0.15f, data->assets.sCREEN_HEIGHT * 0.1f);
 	menuButton.setColor(sf::Color(174, 137, 100));

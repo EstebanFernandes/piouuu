@@ -222,9 +222,6 @@
     <ClCompile Include="CEnemy.cpp">
       <Filter>Fichiers sources\GameRelated\Ennemies</Filter>
     </ClCompile>
-    <ClCompile Include="RoamingEnemy.cpp">
-      <Filter>Fichiers sources\Ennemies</Filter>
-    </ClCompile>
     <ClCompile Include="ShootingEnemy.cpp">
       <Filter>Fichiers sources\GameRelated\Ennemies</Filter>
     </ClCompile>
@@ -247,6 +244,36 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="CCheckbox.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="BomberEnemy.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="dot.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="effetspecial.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="RoamingEnemy.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="RusherEnemy.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="CWeaponStat.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="bulletStorage.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="InterfaceShootingEnemy.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="SpecialEffect.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -446,11 +473,32 @@
     <ClInclude Include="Cmusique.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="BomberEnemy.h">
-      <Filter>Fichiers d%27en-tête\Ennemies</Filter>
+    <ClInclude Include="dot.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="effetspecial.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="RusherEnemy.h">
-      <Filter>Fichiers d%27en-tête\Ennemies</Filter>
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="CWeaponStat.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="InterfaceShootingEnemy.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="SpecialEffect.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="BomberEnemy.h">
+      <Filter>Fichiers d%27en-tête\GameRelated\Ennemies</Filter>
+    </ClInclude>
+    <ClInclude Include="bulletStorage.h">
+      <Filter>Fichiers d%27en-tête\GameRelated\Ennemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

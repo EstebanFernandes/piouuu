@@ -36,7 +36,6 @@ protected:
 	void initPlayer();
 	void initBackground();
 	void deleteEntity(int& i);
-	void initAsset();
 public:
 	CGameState();
 	CGameState(GameDataRef _data);
@@ -50,8 +49,8 @@ public:
 	///	 -roaming, a standard enemy
 	///	 -shooter, an enemy with a big GUN PIOU PIOU
 	/// - bomber, a bomber man
-	/// - bomberInverse, a bomber man who start to the oposite side
-	/// - rusher, a quick guy
+	/// - bomberInverse, a bomberman, mon cousin félix who start to the oposite side
+	/// - rusher, a quick guy			qu'est-ce qu'ils sont beaux
 	///	 -boss, first prototype of a boss
 	/// </summary>
 	void addEnemy(std::string enemyName);

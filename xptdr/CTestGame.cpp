@@ -1,6 +1,54 @@
 #include "CTestGame.h"
 #include"CUpgradeState.h"
 #include<math.h>
+#include"dot.h"
+void CTestGame::addEnemy(std::string enemyName)
+{
+	if (enemyName == "roaming") {
+		RoamingEnemy* enemy = new RoamingEnemy(&(data->assets));
+		entityList.push_back(enemy);
+		(*enemyNumber)++;
+	}
+	else if (enemyName == "shooter") {
+		ShootingEnemy* enemy = new ShootingEnemy(&(data->assets),&player1);
+		enemy->setBulletStorage(&bulletstorage);
+		entityList.push_back(enemy);
+		(*enemyNumber)++;
+	}
+	else if (enemyName == "bomber") {
+		BomberEnemy* enemy = new BomberEnemy(&(data->assets));
+		enemy->setBulletStorage(&bulletstorage);
+		entityList.push_back(enemy);
+		(*enemyNumber)++;
+	}
+	else if (enemyName == "bomberInverse") {
+		BomberEnemy* enemy = new BomberEnemy(&(data->assets), false);
+		enemy->setBulletStorage(&bulletstorage);
+		entityList.push_back(enemy);
+		(*enemyNumber)++;
+	}
+	else if (enemyName == "pantin") {
+		sf::Vector2f mousePos((float)sf::Mouse::getPosition(data->window).x, (float)sf::Mouse::getPosition(data->window).y);
+		testEnemy* enemy = new testEnemy(&(data->assets), mousePos, 50);
+		entityList.push_back(enemy);
+		(*enemyNumber)++;
+	}
+	else if (enemyName == "rusher") {
+		RusherEnemy* enemy = new RusherEnemy(&(data->assets));
+		entityList.push_back(enemy);
+		(*enemyNumber)++;
+	}
+	else if (enemyName == "boss") {
+		Boss* enemy = new Boss(&(data->assets), &player1, &entityList, enemyNumber);
+		enemy->setBulletStorage(&bulletstorage);
+		entityList.push_back(enemy);
+		(*enemyNumber)++;
+	}
+	else {
+		std::cout << "tentative d'invocation d'un ennemi qui n'existe pas";
+	}
+
+}
 CTestGame::CTestGame(GameDataRef _data)
 {
 	setData(_data);
@@ -14,18 +62,27 @@ CTestGame::CTestGame(GameDataRef _data, CCharacter characterParam)
 
 void CTestGame::STEInit()
 {
-	CGameState::STEInit();
 	initAssets();
+	CGameState::STEInit();
+	bulletstorage = bulletStorage(&(data->assets));
+	entityList.push_back(&bulletstorage);
 }
 
 void CTestGame::initAssets()
 {
+	data->assets.deleteEverythingBut(player1.getName());
+	data->assets.clearSoundBuffer();
+	data->assets.LoadTexture("lifepoint", LIFEPOINTTEXTURE);
+	data->assets.LoadTexture("bomber", "res\\img\\lance-bombe.png");
 	data->assets.LoadTexture("lifePowerUp", "res\\img\\lifePowerUp.png");
 	data->assets.LoadTexture("enemyImage", ENEMYPNG_FILEPATH);
 	data->assets.LoadTexture("explosion", "res\\img\\explosion_sprite_sheet.png");
 	data->assets.LoadTexture("bulletImage", "res\\img\\bulletImage.png");
 	data->assets.LoadTexture("bulletImageRancoeur", "res\\img\\bullet_Rancoeur.png");
 	data->assets.LoadTexture("bombe", "res\\img\\bombe.png");
+	data->assets.LoadTexture("boss", "res\\img\\spacecraft_player_1.png");
+	data->assets.LoadSFX("bulletSound", "res\\sfx\\Piou.wav");
+	data->assets.LoadSFX("enemyRush", "res\\sfx\\vaisseau_fonce.wav");
 }
 
 void CTestGame::STEHandleInput()
@@ -82,12 +139,8 @@ void CTestGame::STEHandleInput()
 			}
 			if (event.key.code == sf::Keyboard::T)
 			{
-				player1.BAW.setPenetration(2);
-			}
-			if (event.key.code == sf::Keyboard::R)
-
-			{
-				player1.BAW.setPenetration(0);
+				player1.AAA();
+				//player1.addBuff(new dot(&player1,1.f,0.5f,4.f), true);
 			}
 			//TEMP C POUR MOURIR
 			if (event.key.code == sf::Keyboard::M)
@@ -110,8 +163,9 @@ void CTestGame::STEUpdate(float delta)
 	//On check d'abord les collisions entre le joueur et les entités. ensuite on update
 	player1.updateEntity(delta);
 	size_t temp = entityList.size();
+	int previousMax = (int)temp;
 	//Si c'est un AutoAim
-	if (player1.BAW.typeBalle != 1)
+	if (player1.BAW.typeTir == player1.BAW.autoAim)
 	{
 		for (int i = 0; i < temp; i++)
 		{
@@ -159,6 +213,10 @@ void CTestGame::STEUpdate(float delta)
 	if (player1.needDelete)
 		GameOver();
 
+	if (previousMax != temp)
+	{
+		data->assets.checkSound();
+	}
 	//Information / Clock updates
 	sf::Vector2f tempw = player1.getSprite().getPosition();
 	std::stringstream ss;

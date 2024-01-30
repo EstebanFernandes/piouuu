@@ -1,6 +1,6 @@
 #pragma once
 #include"CBullet.h"
-#include"CMob.h"
+#include"CWeaponStat.h"
 class CBulletAuto : public CBullet
 {
 private :
@@ -10,9 +10,9 @@ private :
 public:
 	bool isMobSet = false;
 	bool isGunShot = false;
-	void setSprite() {
-	}
 	CBulletAuto();
+	CBulletAuto(CWeaponStat stat, CAssetManager* a);
+	CBulletAuto(int damage, float bulletSpeed, sf::Vector2f dir,int penetration, std::string nameImage, sf::Vector2f bulletScale_, CAssetManager* a);
 
 	//méthode classico classique
 	CBulletAuto(int daamg, sf::Vector2f pos, float bulletSpeeed, sf::Vector2f dir,int penetration, std::string nameImage, CAssetManager* as, sf::Vector2f bulletScale) :
@@ -34,7 +34,10 @@ public:
 		isGunShot = true;
 		setRotation();
 	}
-	
+	void setDirection(sf::Vector2f d)
+	{
+		direction = d;
+	}
 	void updateEntity(float dt);
 	void setMob(CMob* m) {
 		mob = m;
@@ -44,5 +47,11 @@ public:
 	void setRotation() {
 	}
 
+	void setSprite(std::string n) { CBullet::setSprite(n); }
+	void setSprite(){}
+	void setGunShotDistance(float distance) {
+		gunShotTotalDistance = distance;
+		isGunShot = true;
+	}
 };
 
