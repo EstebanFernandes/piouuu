@@ -200,6 +200,7 @@
     <ClCompile Include="RusherEnemy.cpp" />
     <ClCompile Include="ShootingEnemy.cpp" />
     <ClCompile Include="testEnemy.cpp" />
+    <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BomberEnemy.h" />
@@ -268,6 +269,7 @@
     <ClInclude Include="RusherEnemy.h" />
     <ClInclude Include="ShootingEnemy.h" />
     <ClInclude Include="testEnemy.h" />
+    <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragbandw.frag" />

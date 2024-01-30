@@ -1,12 +1,12 @@
 #pragma once
-#include"CEntity.h"
 #include"CBulletAuto.h"
+#include "Weapon.h"
 #include <bitset>
 #define Balle = true
 #define tirBool = false
 #define nbBullet 5
 #define nbAim 6
-class CGunslinger : public CEntity
+class CGunslinger : public Weapon
 {
 private:
 	std::vector<CBulletAuto> magasine;
@@ -40,13 +40,13 @@ public:
 	int typeBalle;
 	CGunslinger();
 	void setSprite(){}
-	void updateEntity(float dt);
+	void updateWeapon(float dt);
 	//Setters for bullet's skin, must've been initialized before, this method will just load the bullet's skin from the asset manager.
 	void setBulletAsset(std::string assetName) {
 		if (assetName != "")
 			nameBulletSkin = assetName;
 	}
-	void renderEntity(sf::RenderTarget& target);
+	void renderWeapon(sf::RenderTarget& target);
 	void updateCollision(CEntity& b);
 	void iNeedMoreBullets(sf::Vector2f pos, int damage);
 	void iNeedMoreBullets(sf::Vector2f pos, int damage,float bulletSpeed);

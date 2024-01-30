@@ -32,9 +32,10 @@ void CGunslinger::pushByIndex(int index)
 
 CGunslinger::CGunslinger()
 {
+	setTypeArme(gunslinger);
 	typeTir = (int)pow(2,0);
 	typeBalle = (int)pow(2,0);
-	setType(Gunslinger);
+	//setType(Gunslinger);
 	if (bulletSoundBuffer.loadFromFile("res/sfx/Piou.wav"))
 	{
 		bulletSound.setBuffer(bulletSoundBuffer);
@@ -45,7 +46,7 @@ CGunslinger::CGunslinger()
 	}
 }
 
-void CGunslinger::updateEntity(float dt)
+void CGunslinger::updateWeapon(float dt)
 {
 	std::bitset<nbBullet> temp = std::bitset<nbBullet>(typeBalle);
 	for (int i = 0; i < temp.size(); i++)
@@ -57,7 +58,7 @@ void CGunslinger::updateEntity(float dt)
 	}
 }
 
-void CGunslinger::renderEntity(sf::RenderTarget& target)
+void CGunslinger::renderWeapon(sf::RenderTarget& target)
 {
 		for (size_t i = 0; i < magasine.size(); i++)
 		{

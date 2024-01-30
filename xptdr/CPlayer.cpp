@@ -17,13 +17,14 @@ void CPlayer::initStat()
 void CPlayer::setAssets(CAssetManager* a)
 {
 	assets = a;
-	BAW.assets = a;
+	mainWeapon = new CGunslinger();
+	mainWeapon->assets = a;
 	setTexture(name);
 
 	assets->LoadTexture("lifepoint", LIFEPOINTTEXTURE);
 	if (isAnimated) anim = CAnimation(getPointerSprite(), sf::IntRect(0, 0, 153, 66), 4, 0.16f);
 	if (name.find("Rancoeur") != std::string::npos)
-		BAW.setBulletAsset("bulletImageRancoeur");
+		mainWeapon->setBulletAsset("bulletImageRancoeur");
 	initLifeBar();
 	setSprite();
 }
@@ -54,6 +55,28 @@ void CPlayer::resetMovement()
 	isMovingLeft = false;
 	isMovingRight = false;
 	isMovingUp = false;
+}
+
+Weapon* CPlayer::getMainWeapon()
+{
+	return mainWeapon;
+}
+
+void CPlayer::setMainWeapon(Weapon* weaponParam)
+{
+	delete mainWeapon;
+	mainWeapon = weaponParam;
+}
+
+Weapon* CPlayer::getSecondaryWeapon()
+{
+	return secondaryWeapon;
+}
+
+void CPlayer::setSecondaryWeapon(Weapon* weaponParam)
+{
+	delete secondaryWeapon;
+	secondaryWeapon = weaponParam;
 }
 
 void CPlayer::traitermisc(std::string& misc)
@@ -87,7 +110,6 @@ void CPlayer::traitermisc(std::string& misc)
 			BAW.addBulletMode(false, BAW.gunshotAim);
 			break;
 		case 5:
-			BAW = LaserGenerator();
 			break;
 		}
 			misc.insert(0, "+");
@@ -118,6 +140,8 @@ CPlayer::CPlayer(CAssetManager* a)
 
 CPlayer::~CPlayer()
 {
+	delete mainWeapon;
+	delete secondaryWeapon;
 }
 
 
@@ -158,6 +182,8 @@ void CPlayer::PLYupdateMovement(sf::Event event)
 			isMovingDown = true;
 		else if (event.key.code == sf::Keyboard::D)
 			isMovingRight = true;
+		if (event.key.code == sf::Keyboard::V && !lasers.isLaserActive())
+			lasers.changeActivity();
 		break;
 	case sf::Event::KeyReleased:
 		if (event.key.code == sf::Keyboard::Z)
@@ -168,6 +194,8 @@ void CPlayer::PLYupdateMovement(sf::Event event)
 			isMovingDown = false;
 		else if (event.key.code == sf::Keyboard::D)
 			isMovingRight = false;
+		if (event.key.code == sf::Keyboard::V && lasers.isLaserActive())
+			lasers.changeActivity();
 		break;
 	default:
 		break;
@@ -283,14 +311,20 @@ void CPlayer::updateEntity(float dt)
 		maxXp += 10;
 		hasLevelUp = true;
 	}
-	BAW.updateEntity(dt);
+	mainWeapon->updateWeapon(dt);
+
+	//tempn on update le laser
+	sf::Vector2f laserPos;
+	laserPos.x = getSprite().getPosition().x + getSprite().getGlobalBounds().width / 2.f;
+	laserPos.y = getSprite().getPosition().y;
+	lasers.updateLasers(dt, laserPos, assets->sCREEN_WIDTH);
 }
 
 void CPlayer::renderEntity(sf::RenderTarget& target)
 {
 	target.draw(getSprite());
 	renderLifeBar(target);
-	BAW.renderEntity(target);
+	mainWeapon->renderWeapon(target);
 }
 
 

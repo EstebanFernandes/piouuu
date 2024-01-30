@@ -119,6 +119,9 @@ void CEnemy::updatewPlayer(float delta, CPlayer& player)
 	//Ici on regarde le type 
 
 	std::vector<CBulletAuto>* guns = player.getBAW()->getVector();
+	if (player.lasers.checkCollisions(*this)) {
+		reduceHP(player.getDamagePerBullet());
+	}
 	size_t temp =guns->size();
 	for (size_t i = 0; i < temp; i++)
 	{

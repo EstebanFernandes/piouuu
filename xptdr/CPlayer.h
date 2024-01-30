@@ -15,7 +15,7 @@ private:
 
 
 	//Attributs
-	// 
+
 	// S'occupe des améliorations spéciales du personnage
 	//S'occupe des animations du personnage
 	CAnimation anim;
@@ -37,16 +37,29 @@ private:
 
 	sf::Clock hitClock;
 	bool hittype = false;
+
+	/// <summary>
+	/// pointeur vers l'arme principal
+	/// </summary>
+	Weapon* mainWeapon = nullptr;
+
+	/// <summary>
+	/// pointeur vers l'arme secondaire
+	/// </summary>
+	Weapon* secondaryWeapon = nullptr;
+
 	// Constrcuteurs et destruceurs 
 	void setSprite();
 	void initStat();
 public:
+	//temp, pour test les lasers
+	LaserGenerator lasers;
+
 	bool hasLevelUp = false;
 	bool seekForTarget=false;
-	CGunslinger BAW;
 	CPlayer();
 	CPlayer(CAssetManager* a);
-	virtual ~CPlayer();
+	~CPlayer();
 
 	//Méthodes
 	float getScore()
@@ -70,7 +83,10 @@ public:
 	void setAssets(CAssetManager* a);
 	bool checkGlobalCollisions();
 	void resetMovement();
-	CGunslinger* getBAW() { return &BAW; }
+	Weapon* getMainWeapon();
+	void setMainWeapon(Weapon* weaponParam);
+	Weapon* getSecondaryWeapon();
+	void setSecondaryWeapon(Weapon* weaponParam);
 	void traitermisc(std::string& misc);
 	void updateMisc();
 	void updateAfterKillingEntity();

@@ -222,14 +222,8 @@
     <ClCompile Include="CEnemy.cpp">
       <Filter>Fichiers sources\GameRelated\Ennemies</Filter>
     </ClCompile>
-    <ClCompile Include="RoamingEnemy.cpp">
-      <Filter>Fichiers sources\Ennemies</Filter>
-    </ClCompile>
     <ClCompile Include="ShootingEnemy.cpp">
       <Filter>Fichiers sources\GameRelated\Ennemies</Filter>
-    </ClCompile>
-    <ClCompile Include="Boss.cpp">
-      <Filter>Fichiers d%27en-tête\GameRelated\Ennemies</Filter>
     </ClCompile>
     <ClCompile Include="Ceffetsonore.cpp">
       <Filter>Fichiers sources</Filter>
@@ -247,6 +241,24 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="CCheckbox.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="BomberEnemy.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="LaserGenerator.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="RoamingEnemy.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="RusherEnemy.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>Fichiers sources\GameRelated\Ennemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -447,10 +459,16 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="BomberEnemy.h">
-      <Filter>Fichiers d%27en-tête\Ennemies</Filter>
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="LaserGenerator.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="RusherEnemy.h">
-      <Filter>Fichiers d%27en-tête\Ennemies</Filter>
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
