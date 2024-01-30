@@ -1,9 +1,11 @@
 #include "CBullet.h"
 
 
+
+
 CBullet::CBullet()
 {
-
+	damage=0;
 }
 
 CBullet::CBullet(int damaage, sf::Vector2f pos, sf::Vector2f dir , int penetration
@@ -58,10 +60,6 @@ void CBullet::updateEntity(float dt)
 	getSprite().move(temp);
 }
 
-void CBullet::updateCollision(CEntity& b)
-{
-	
-}
 
 void CBullet::renderEntity(sf::RenderTarget& target)
 {
@@ -81,38 +79,33 @@ void CBullet::setDirectionSprite()
 	setRotation(angle);
 }
 
-void CBullet::CONTACT()
-{
-	if (penetration == 0)
-		needDelete = true;
-	else
-		penetration--;
-	isHitting = true;
-}
 
-bool CBullet::checkCollisions(CEntity& b)
+
+
+
+bool CBullet::checkCollisions(CMob& b)
 {
 	auto ret = std::find(entityHitting.begin(), entityHitting.end(), &b);
 	if (CEntity::checkCollisions(b))
 	{//les deux entités sont en contact
 	//L'élement n'est pas dans la liste, donc la balle n'est pas entrain de taper cette entité
-		if (ret == entityHitting.end())
+		if (ret == entityHitting.end() && penetration >= 0)
 		{
 			if (penetration == 0)
 				needDelete = true;
-			else
-				penetration--;
+			penetration--;
 			entityHitting.push_back(&b);
+			onHit(b);
 			return true;
 		}
 
 	}
-	else {//Les deux entités ne sont en contact
+	else {//Les deux entités ne sont plus en contact
 		if (ret != entityHitting.end())
 		{
 			entityHitting.erase(ret);
 		}
-		
+
 	}
 	return false;
 }

@@ -1,7 +1,40 @@
 #include "CBulletAuto.h"
 
-CBulletAuto::CBulletAuto()
+CBulletAuto::CBulletAuto() : CBullet()
 {
+
+}
+
+CBulletAuto::CBulletAuto(CWeaponStat stat,CAssetManager* a)
+{
+	penetration = stat.penetration;
+	damage = (int)stat.bulletDamage;
+	bulletSpeed = stat.bulletSpeed;
+	direction = stat.dir;
+	setType(FriendlyFire);
+	assets = a;
+	setSprite(stat.nameImage);
+	getSprite().setScale(stat.bulletScale);
+	bulletScale = stat.bulletScale;
+	if (stat.maxDistance != -1)
+	{
+		isGunShot = true;
+		gunShotTotalDistance = stat.maxDistance;
+	}
+}
+
+CBulletAuto::CBulletAuto(int damage, float bulletSpeed, sf::Vector2f dir, int penetration, std::string nameImage, sf::Vector2f bulletScale_, CAssetManager* a)
+{
+	this->penetration = penetration;
+	this->damage = damage;
+	this->bulletSpeed = bulletSpeed;
+	direction = dir;
+	setType(FriendlyFire);
+	assets = a;
+	setSprite(nameImage);
+	getSprite().setScale(bulletScale_);
+	bulletScale = bulletScale_;
+
 }
 
 CBulletAuto::CBulletAuto(int daamg, sf::Vector2f pos, float bulletSpeeed, sf::Vector2f dir, int penetration, std::string nameImage, CAssetManager* as, sf::Vector2f bulletScale, bool isABombe) : CBullet(daamg, pos, dir, bulletSpeeed, penetration, nameImage, as, bulletScale)

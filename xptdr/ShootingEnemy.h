@@ -1,17 +1,19 @@
 #pragma once
 #include "CEnemy.h"
-
-class ShootingEnemy : public CEnemy
+#include"InterfaceShootingEnemy.h"
+class ShootingEnemy : public CEnemy, public InterfaceShootingEnemy
 {
 private:
 	bool isPositionated = false;
-	CGunslinger BAW;
-	sf::Clock bulletClock;
+	CMob* target;
+	bool hasTarget = false;
 public:
 	ShootingEnemy(CAssetManager* asset);
+	ShootingEnemy(CAssetManager* asset, CMob* target);
 	void updateMovement(float delta);
 	void enemyShoot();
-
+	~ShootingEnemy() {
+	}
 	//redéfinition de CEnemy
 	void renderEntity(sf::RenderTarget& target);
 	//redéfinition de CEnemy

@@ -9,6 +9,7 @@ private:
 	bool isRushing = false;
 	bool isRed = false;
 	int counter = 0;
+	sf::Sound fxRush;
 	sf::Clock colorSwitchClock;
 	sf::Clock redColorSwitchClock;
 public:

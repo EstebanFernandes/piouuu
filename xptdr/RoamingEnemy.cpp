@@ -17,6 +17,12 @@ RoamingEnemy::RoamingEnemy(CAssetManager* assetParam) {
 	getSprite().setRotation(angle);
 }
 
+RoamingEnemy::RoamingEnemy(CAssetManager* asset, CMob* target_) :
+	RoamingEnemy(asset)
+{
+	target = target_;
+}
+
 void RoamingEnemy::updateMovement(float delta)
 {
 	if (checkGlobalCollisions())
@@ -30,12 +36,20 @@ void RoamingEnemy::setDirectionY(float directionYParam)
 {
 	directionY = directionYParam;
 	float angle = (float)180.f + (180.f / M_PIl) * atan2(directionY, directionX);
-	getSprite().setRotation(angle);
+	setRotation(angle);
 }
 
 void RoamingEnemy::setDirectionX(float directionXParam)
 {
 	directionX = directionXParam;
 	float angle = (float)180.f + (180.f / M_PIl) * atan2(directionY, directionX);
-	getSprite().setRotation(angle);
+	setRotation(angle);
+}
+
+void RoamingEnemy::setDirection(sf::Vector2f dir)
+{
+	directionX = dir.x;
+	directionY = dir.y;
+	float angle = (float)180.f + (180.f / M_PIl) * atan2(directionY, directionX);
+	setRotation(angle);
 }

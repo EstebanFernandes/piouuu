@@ -40,7 +40,7 @@ CScoreboard::CScoreboard(CAssetManager* assetParam, int boldRankParam)
 		textToDisplay[i].setFillColor(sf::Color::White);
 		textToDisplay[i].setFont(asset->GetFont("Lato"));
 		//taille
-		textToDisplay[i].setPosition(scoreboardBack.getPosition().x, scoreboardBack.getPosition().y * 0.9 + i * scoreboardBack.getGlobalBounds().height / (textToDisplay.size()+1));
+		textToDisplay[i].setPosition(scoreboardBack.getPosition().x, scoreboardBack.getPosition().y * 0.9f + i * scoreboardBack.getGlobalBounds().height / (textToDisplay.size()+1));
 	}
 }
 
@@ -69,7 +69,7 @@ CScoreboard::CScoreboard(CAssetManager* assetParam, float x, float y, int boldRa
 		textToDisplay[i].setFillColor(sf::Color::White);
 		textToDisplay[i].setFont(asset->GetFont("Lato"));
 		//taille
-		textToDisplay[i].setPosition(scoreboardBack.getPosition().x, scoreboardBack.getPosition().y*0.9 + i * scoreboardBack.getGlobalBounds().height / (textToDisplay.size() + 1));
+		textToDisplay[i].setPosition(scoreboardBack.getPosition().x, scoreboardBack.getPosition().y*0.9f + i * scoreboardBack.getGlobalBounds().height / (textToDisplay.size() + 1));
 	}
 	
 }
@@ -82,12 +82,12 @@ void CScoreboard::setSize(float xSizeParam, float ySizeParam)
 
 void CScoreboard::setPosAuto()
 {
-	pos = sf::Vector2f((asset->sCREEN_WIDTH - xSize) / 2, asset->sCREEN_HEIGHT * 0.1);
+	pos = sf::Vector2f((asset->sCREEN_WIDTH - xSize) / 2, asset->sCREEN_HEIGHT * 0.1f);
 	scoreboardBack.setPosition(pos);
 
 	for (int i = 0; i < textToDisplay.size(); i++) {
 		//taille
-		textToDisplay[i].setPosition(scoreboardBack.getPosition().x, scoreboardBack.getPosition().y * 0.9 + i * scoreboardBack.getGlobalBounds().height / textToDisplay.size());
+		textToDisplay[i].setPosition(scoreboardBack.getPosition().x, scoreboardBack.getPosition().y * 0.9f + i * scoreboardBack.getGlobalBounds().height / textToDisplay.size());
 	}
 }
 

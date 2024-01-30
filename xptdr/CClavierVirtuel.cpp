@@ -56,7 +56,7 @@ void CClavierVirtuel::STEInit()
 	//ahouais.setPosition((float)data->assets.sCREEN_WIDTH / 2.f, (float)data->assets.sCREEN_HEIGHT * 0.3f);
 	ahouais.setPosition(keyboardBlackSprite.getPosition().x + ((keyboardBlackSprite.getGlobalBounds().width - ahouais.getLocalBounds().width) * 0.5f), (float)data->assets.sCREEN_HEIGHT * 0.3f);
 
-	nameText.setPosition(ahouais.getPosition().x * 1.01, ahouais.getPosition().y * 1.03f);
+	nameText.setPosition(ahouais.getPosition().x * 1.01f, ahouais.getPosition().y * 1.03f);
 	nameText.setCharacterSize(30);
 	nameText.setFillColor(sf::Color::Black);
 	nameText.setFont(data->assets.GetFont("Lato"));

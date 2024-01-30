@@ -85,6 +85,18 @@ void CSlider::setName(std::string newName)
 {
 }
 
+void CSlider::setSize(float x, float y, int charSize)
+{
+	back.setSize(sf::Vector2f(x, y));
+	interiorBack.width = back.getGlobalBounds().width - back.getGlobalBounds().width * (2 * padding.x);
+	interiorBack.height = back.getGlobalBounds().height - back.getGlobalBounds().height * (2 * padding.y);
+	line.setSize(sf::Vector2f(interiorBack.width, interiorBack.height * 0.03f));
+	if (hasTitle && charSize != -1)
+		NameOfSlider.setCharacterSize(charSize);
+	if (charSize != -1)
+		textPercentage.setCharacterSize(charSize);
+}
+
 void CSlider::setCursor()
 {
 	float width = line.getGlobalBounds().width;
@@ -94,29 +106,14 @@ void CSlider::setCursor()
 	);
 	textPercentage.setString(std::to_string(value) + "%");
 }
-
-void CSlider::setSize(float x, float y,unsigned int charSize =-1)
-{
-	back.setSize(sf::Vector2f(x,y));
-	interiorBack.width = back.getGlobalBounds().width - back.getGlobalBounds().width * (2*padding.x);
-	interiorBack.height = back.getGlobalBounds().height - back.getGlobalBounds().height * (2 * padding.y);
-	line.setSize(sf::Vector2f(interiorBack.width, interiorBack.height * 0.03f));
-	if (hasTitle && charSize != -1)
+void CSlider::setCharacterSize(unsigned int charSize) {
+	if (hasTitle)
+	{
 		NameOfSlider.setCharacterSize(charSize);
-	if (charSize != -1)
 		textPercentage.setCharacterSize(charSize);
+	}
+	//interiorBack.height = NameOfSlider.getGlobalBounds().height+
 }
 
-void CSlider::setOutlineThickness(float thickness)
-{
-	back.setOutlineThickness(thickness);
-}
 
-void CSlider::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-	target.draw(back);
-	target.draw(line);
-	target.draw(cursor);
-	if(hasTitle)
-		target.draw(NameOfSlider);
-	target.draw(textPercentage);
-}
+

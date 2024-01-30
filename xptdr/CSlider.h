@@ -1,13 +1,11 @@
 #pragma once
 #define Horizontal true
 #define Vertical false
-#include"SFML/Graphics.hpp"
-#include"CAssetManager.h"
+#include"CUI.h"
 //Class that represent a slider 
-class CSlider : public sf::Drawable
+class CSlider :public CUI
 {
 private:
-	CAssetManager* asset;
 	//represent the line of the slider
 	sf::RectangleShape line;
 	sf::CircleShape cursor;
@@ -24,15 +22,6 @@ private:
 	//only two style, horizontal or vertical
 	bool style;
 	bool hasTitle;
-	sf::RectangleShape back;
-	/// <summary>
-	/// Le padding est l'écartement entre le back et la ligne du slider (le padding est le même à droite et à gauche)
-	/// </summary>
-	sf::Vector2f padding = sf::Vector2f(0.05f,0.05f);
-	/// <summary>
-	/// Rectangle intérieur dans lequel on met les élements, on tient ici compte du padding
-	/// </summary>
-	sf::FloatRect interiorBack;
 	/// <summary>
 	/// method that set the cursor within the value, minimum point and width of the slider
 	/// </summary>
@@ -98,22 +87,36 @@ public:
 			slideRight();
 	}
 
-	void setSize(float x, float y, unsigned int charSize);
-	void setSize(sf::Vector2f size,unsigned int charSize = -1) {
+	void setSize(float x, float y,  int charSize=-1);
+	void setSize(sf::Vector2f size, int charSize = -1) {
 		setSize(size.x, size.y, charSize);
 	}
 	void setPosition(sf::Vector2f pos)
 	{
 		setPosition(pos.x, pos.y);
 	}
-	void Drawable::draw(sf::RenderTarget& target, sf::RenderStates states) const;
-	void setOutlineThickness(float thickness);
 	void setValue(int valuee)
 	{
 		if (valuee >= 0 && valuee <= 100)
 			value = valuee;
 		setCursor();
 	}
-	sf::Vector2f getSize() { return back.getSize(); }
+	void setScale(sf::Vector2f scale){}
+	void setFontColor(sf::Color colorParam){}
+	void setSize(float x, float y)
+	{
+		setSize(x, y, -1);
+	}
+	void setCharacterSize(unsigned int charSize);
+	unsigned int getCharacterSize() { return NameOfSlider.getCharacterSize(); }
+	void Drawable::draw(sf::RenderTarget& target, sf::RenderStates states) const
+	{
+		target.draw(back);
+		target.draw(line);
+		target.draw(cursor);
+		if (hasTitle)
+			target.draw(NameOfSlider);
+		target.draw(textPercentage);
+	}
 };
 

@@ -77,7 +77,6 @@ void CGameState::STEInit()
 	*enemyNumber = 0;
 	initPlayer();
 	initBackground();
-	//initEnemy();
 	data->assets.jouerMusique("PartieJour");
 }
 
@@ -130,6 +129,12 @@ void CGameState::addEnemy(std::string enemyName)
 	else if (enemyName == "bomberInverse") {
 		BomberEnemy* enemy = new BomberEnemy(&(data->assets));
 		enemy->changeInitalSide();
+		entityList.push_back(enemy);
+		(*enemyNumber)++;
+	}
+	else if (enemyName == "pantin") {
+		sf::Vector2f mousePos((float)sf::Mouse::getPosition(data->window).x, (float)sf::Mouse::getPosition(data->window).y);
+		testEnemy* enemy = new testEnemy(&(data->assets), mousePos, 50);
 		entityList.push_back(enemy);
 		(*enemyNumber)++;
 	}
@@ -216,8 +221,10 @@ void CGameState::deleteEntity(int& i)
 					entityList[i]->getGlobalBounds().getPosition().y + entityList[i]->getGlobalBounds().height / 2);
 				addPowerUp(r);
 			}
+
 		}
 	}
+	//entityList[i]->die(entityList);
 	delete entityList[i];
 	entityList.erase(entityList.begin() + i);
 	if (i != 0)

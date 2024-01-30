@@ -1,6 +1,5 @@
 #pragma once
-#include"CHittingEntity.h"
-#include "CBullet.h"
+#include "CHittingEntity.h"
 #include "DEFINITIONS.h"
 #include<ctime>
 #include <math.h>  
@@ -27,7 +26,14 @@ protected:
 
 
 	void initEnnemy(CAssetManager* a);
-	void initEnnemy(CAssetManager* a, std::string nameParam);
+
+	/// <summary>
+	/// DEPRECATED
+	/// </summary>
+	/// <param name="a"></param>
+	/// <param name="nameParam"></param>
+	/// <param name="imageFileParam"></param>
+	void initEnnemy(CAssetManager* a, std::string nameParam, sf::Vector2f scale);
 public:
 	bool onAvance = true;
 	void initAnimation();
@@ -52,12 +58,9 @@ public:
 	void updateEntity(float delta);
 	void updatewPlayer( float delta,CPlayer& player);
 	void specialBehaviorwithPlayer(CPlayer& player);
-	void updateCollision(CEntity& b);
-	bool updateEntity(float leftbound,float delta);
-	bool updateEntity(sf::FloatRect a,float delta);
 	void updateAnimation();
 	void renderEntity(sf::RenderTarget& target);
-	void setPosition(int positionXParam, int PositionYParam);
+	void setPosition(float positionXParam, float PositionYParam);
 
 	virtual void updateMovement(float delta) = 0;
 	virtual void enemyShoot() = 0;

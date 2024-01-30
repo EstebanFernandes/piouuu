@@ -28,6 +28,5 @@ public:
 	{
 		target.draw(getSprite()); 
 	}
-	 void updateCollision(CEntity& b){}
 };
 

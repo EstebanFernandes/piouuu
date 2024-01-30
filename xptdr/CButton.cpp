@@ -1,34 +1,34 @@
 #include "CButton.h"
 
-CButton::CButton(GameDataRef dataParam)
+CButton::CButton(CAssetManager* a)
 {
-	data = dataParam;
-	text.setFont(data->assets.GetFont("Lato"));
+	asset = a;
+	text.setFont(asset->GetFont("Lato"));
 	text.setString("Button");
 	setColor(sf::Color::Black);
 	setFontColor(sf::Color::White);
 
 	//temp la taille
 	setSize(300, 150);
-	setPos(0, 0);
+	setPosition(0, 0);
 	text.setLineSpacing(0.f);
 }
 
-CButton::CButton(GameDataRef dataParam, std::string title, float xSize, float ySize)
- : CButton(dataParam,xSize,ySize)
+CButton::CButton(CAssetManager* a, std::string title, float xSize, float ySize)
+ : CButton(a,xSize,ySize)
 {
 	setString(title);
 }
 
-CButton::CButton(GameDataRef dataParam, float xSizeParam, float ySizeParam)
+CButton::CButton(CAssetManager* a, float xSizeParam, float ySizeParam)
 {
-	data = dataParam;
-	text.setFont(data->assets.GetFont("Lato"));
+	asset = a;
+	text.setFont(asset->GetFont("Lato"));
 	text.setString("Button");
 	setColor(sf::Color::Black);
 	setFontColor(sf::Color::White);
 
-	setPos(0, 0);
+	setPosition(0, 0);
 	setSize(xSizeParam, ySizeParam);
 }
 
@@ -41,7 +41,7 @@ void CButton::setSize(float xSizeParam, float ySizeParam)
 
 }
 
-void CButton::setPos(float xParam, float yParam)
+void CButton::setPosition(float xParam, float yParam)
 {
 	back.setPosition(sf::Vector2f(xParam, yParam));
 	sf::FloatRect backBounds = back.getGlobalBounds();
@@ -54,10 +54,6 @@ void CButton::setPos(float xParam, float yParam)
 	text.setPosition(xPositionText,yPositionText);
 }
 
-void CButton::setColor(sf::Color colorParam)
-{
-	back.setFillColor(colorParam);
-}
 
 void CButton::setFontColor(sf::Color colorParam)
 {
@@ -87,7 +83,7 @@ void CButton::setScale(sf::Vector2f scale)
 	xSize = back.getGlobalBounds().width;
 	ySize = back.getGlobalBounds().height;
 	text.setScale(scale);
-	setPos(back.getPosition());
+	CUI::setPosition(back.getPosition());
 }
 
 void CButton::setCharacterSize(unsigned int charSize)
@@ -163,7 +159,3 @@ void CButton::resizeText(sf::Text& textToResize)
 		backBounds.top + backBounds.height/2.f - textBounds.height/ 2.f);
 }
 
-void CButton::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-	target.draw(back);
-	target.draw(text);
-}

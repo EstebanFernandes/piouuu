@@ -1,35 +1,6 @@
 #include "CEnemy.h"
 
-/*
-CEnemy::CEnemy()
-{
-}
 
-CEnemy::CEnemy(CAssetManager* a)
-{
-	setType(Enemy);
-	assets = a;
-	imageName = "enemyImage";
-	setTexture(imageName, ENEMYPNG_FILEPATH);
-	getSprite().setScale(0.2f, 0.2f);
-	initAnimation();
-	initStat();
-	initPositionX = (float)assets->sCREEN_WIDTH;
-	setSprite();
-	std::cout << "bah oui !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
-}
-CEnemy::CEnemy(float xcoordinate, CAssetManager* a) 
-{
-	assets = a;
-	imageName = "enemyImage";
-	setTexture(imageName, ENEMYPNG_FILEPATH);
-	initPositionX = xcoordinate;
-	getSprite().setScale(0.2f, 0.2f);
-	initAnimation();
-	initStat();
-	setSprite();
-}
-*/
 void CEnemy::initAnimation()
 {
 	CAssetManager &a = *assets;
@@ -39,20 +10,7 @@ void CEnemy::initAnimation()
 	explosionSprite.setScale(0.1f, 0.1f);
 }
 
-/*
-CEnemy::CEnemy(CAssetManager* a, std::string nameParam, std::string imageFileParam)
-{
-	setType(Enemy);
-	assets = a;
-	a->LoadTexture(enemyName, imageFile);
-	getSprite().setTexture((a->GetTexture(enemyName)));
-	getSprite().setScale(0.2f, 0.2f);
-	initAnimation();
-	initStat();
-	initPositionX = (float)assets->sCREEN_WIDTH;
-	setSprite();
-}
-*/
+
 
 void CEnemy::initEnnemy(CAssetManager* a)
 {
@@ -66,13 +24,13 @@ void CEnemy::initEnnemy(CAssetManager* a)
 	setSprite();
 }
 
-void CEnemy::initEnnemy(CAssetManager* a, std::string nameParam)
+void CEnemy::initEnnemy(CAssetManager* a, std::string nameParam, sf::Vector2f scale)
 {
 	setType(Enemy);
 	assets = a;
 	enemyName = nameParam;
 	setTexture(enemyName);
-	getSprite().setScale(0.2f, 0.2f);
+	getSprite().setScale(scale);
 	initAnimation();
 	initStat();
 	setSprite();
@@ -94,27 +52,19 @@ void CEnemy::updateEntity(float delta)
 	{
 		if (updateExplosionSprite() == true)
 			needDelete = true;
-	}	
+	}
+	else {
+		updateLifeBar();
 		updateMovement(delta);
+		updateBuff(delta);
+	}
 }
 
 void CEnemy::updatewPlayer(float delta, CPlayer& player)
 {
-	if (checkCollisions(player))
+	if (checkCollisions(player)&&isDead==false)
 	{
-		player.reduceHP(damage);
-		/*
-		//SI on est la c'est que l'ennemi est en contact avec le jouueur
-		if (isDead == false)
-		{
-			if (isHitting == false)
-			{
-				player.reduceHP(damage);
-				isHitting = true;
-			}
-		}
-		else if (isHitting == true)
-			isHitting = false;*/
+		player.reduceHP((float)damage);
 	}
 	//Ici on regarde le type 
 
@@ -131,7 +81,7 @@ void CEnemy::updatewPlayer(float delta, CPlayer& player)
 
 			if ((*guns)[i].checkCollisions((*this)))
 			{
-				reduceHP((*guns)[i].getDamage());
+				reduceHP((float)(*guns)[i].getDamage());
 			}
 		}
 	}
@@ -169,52 +119,7 @@ float CEnemy::getScoreGived()
 	return scoreGived;
 }
 
-void CEnemy::updateCollision(CEntity& b)
-{
-	/*switch (b.getType())
-	{
-	case FriendlyFire:
-		if (checkCollisions(b))
-			reduceHP(b.getDamage());
-		break;
-	case Player:
-		if (checkCollisions(b))
-		{
-			if(isHitting==false)
-			{
-				b.damagetaken -= getDamage();
-				isHitting = true;
-			}
-		}
-		else if (isHitting == true)
-			isHitting = false;
-		break;
-	default:
-		break;
-	}*/
-}
 
-bool CEnemy::updateEntity(float leftbound, float delta)
-{
-	if (isDead == true)
-		return updateExplosionSprite();
-	if(getSprite().getGlobalBounds().left + getSprite().getGlobalBounds().width>leftbound)
-	{ 
-
-		return false;
-	}
-	onAvance = false;
-	return true;
-}
-
-bool CEnemy::updateEntity(sf::FloatRect a,float delta)
-{
-	if (!getSprite().getGlobalBounds().intersects(a))
-	{
-		return false;
-	}
-	return true;
-}
 
 void CEnemy::updateAnimation()
 {
@@ -253,19 +158,7 @@ void CEnemy::renderEntity(sf::RenderTarget& target)
 		target.draw(explosionSprite);
 	}
 }
-void CEnemy::setPosition(int positionXParam, int PositionYParam)
+void CEnemy::setPosition(float positionXParam, float PositionYParam)
 {
-	setPositionEntity((float)positionXParam , (float)PositionYParam);
+	setPositionEntity(positionXParam ,PositionYParam);
 }
-/*
-void CEnemy::updateMovement(float delta)
-{
-		if (checkGlobalCollisions())
-			needDelete = true;
-		updateLifeBar();
-		if(onAvance==true)
-			moveEntity(sf::Vector2f(directionX * delta * 19.f, directionY));
-
-
-}
-*/

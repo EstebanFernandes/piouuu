@@ -36,6 +36,8 @@ private:
 	sf::Clock bulletClock;
 
 	sf::Clock hitClock;
+	//Liste des effets sur les balles, on les ajoutes avant de tirer 
+	std::vector<effetspecial*> effectByBullet;
 	bool hittype = false;
 
 	/// <summary>
@@ -51,6 +53,7 @@ private:
 	// Constrcuteurs et destruceurs 
 	void setSprite();
 	void initStat();
+
 public:
 	//temp, pour test les lasers
 	LaserGenerator lasers;
@@ -71,7 +74,6 @@ public:
 		score += scoreToAdd;
 	}
 	void initLifeBar();
-	void updateCollision(CEntity& b);
 	void gainXP(int levelofEntity);
 	void updateLifeBar();
 	void updateEntity(float dt);
@@ -89,5 +91,9 @@ public:
 	void setSecondaryWeapon(Weapon* weaponParam);
 	void traitermisc(std::string& misc);
 	void updateMisc();
-	void updateAfterKillingEntity();
+	void AAA() {
+		specificites.push_back("dot");
+		traitermisc(specificites.back());
+	}
+	void iNeedMoreBullet();
 };

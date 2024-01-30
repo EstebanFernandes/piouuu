@@ -1,34 +1,59 @@
 #include "BomberEnemy.h"
 
-BomberEnemy::BomberEnemy(CAssetManager* assets) : RoamingEnemy(assets)
+BomberEnemy::BomberEnemy(CAssetManager* assets) 
 {
+	setType(Enemy);
+	this->assets = assets;
+	enemyName = "bomber";
+	setTexture(enemyName);
+	initAnimation();
+	level = 0;
+	damage = 3;
+	maxHealthPoint = 20.f + 15.f * level;
+	healthPoint = maxHealthPoint;
+	setSprite();
 	BAW.assets = assets;
-	BAW.setBulletAsset("bombe");
-	BAW.addBulletMode(false, 5);
-	initPositionY = assets->sCREEN_HEIGHT * 0.1f;
-	setDirectionX(-1);
-	setDirectionY(0);
-
+	initPositionX = assets->sCREEN_WIDTH+ getSprite().getGlobalBounds().width;
+	initPositionY = (int) (assets->sCREEN_HEIGHT*0.1f);
+	setSprite();
 	setMoveSpeed(15.0f);
 	setBulletSpeed(1.2f);
 	setAttackSpeed(1.f);
+	setRotation(180.f);
+	BAW.addShootType(BAW.bombe);
+	sf::Vector2f bulletScale = sf::Vector2f(0.2f, 0.2f);
+	BAW.referenceStat = CWeaponStat((float)damagePerBullet, bulletSpeed, sf::Vector2f(0.f, 1.f),0, "bombe", bulletScale);
+}
 
+BomberEnemy::BomberEnemy(CAssetManager* assets, bool isFacingLeft_) :
+	BomberEnemy(assets)
+{
+	changeInitialSide(isFacingLeft_);
 	setSprite();
+	setTexture("bomber");
 }
 
 void BomberEnemy::changeInitalSide()
 {
-	//rotate(180);
 	if (isFacingLeft) {
-		initPositionX = 0 + getSprite().getGlobalBounds().width;
+
+		initPositionX = getSprite().getGlobalBounds().width;
 		setDirectionX(1);
 		isFacingLeft = false;
-		setSprite();
 	}
 	else {
-		initPositionX = assets->sCREEN_HEIGHT;
+		initPositionX = (float)assets->sCREEN_HEIGHT;
 		setDirectionX(-1);
 		isFacingLeft = true;
+	}
+}
+
+void BomberEnemy::changeInitialSide(bool RTL)
+{
+	if (RTL==false) {
+		initPositionX = getSprite().getGlobalBounds().width/2.f;
+		setDirectionX(1);
+		isFacingLeft = false;
 		setSprite();
 	}
 }
@@ -40,7 +65,7 @@ void BomberEnemy::enemyShoot()
 			getSprite().getPosition().x - getGlobalBounds().width / 2.f,
 			getSprite().getPosition().y);
 		sf::Vector2f bulletScale = sf::Vector2f(0.2f, 0.2f);
-		BAW.iNeedMoreBullets(r, damagePerBullet, bulletSpeed, sf::Vector2f(0, 1), bulletScale);
+		BAW.iNeedMoreBullets(r);
 		// vient juste le restart le timer à la fin 
 		bulletClock.restart();
 	}
@@ -56,21 +81,14 @@ void BomberEnemy::updateEntity(float delta)
 {
 	RoamingEnemy::updateEntity(delta);
 	BAW.updateEntity(delta);
-	enemyShoot();
+	if(!isDead)
+		enemyShoot();
 }
 
 void BomberEnemy::updatewPlayer(float delta, CPlayer& player)
 {
 	RoamingEnemy::updatewPlayer(delta, player);
-	std::vector<CBulletAuto>* bullets = BAW.getVector();
-	size_t temp = bullets->size();
-	for (int i = 0; i < temp; i++) {
-		if (player.checkCollisions((*bullets)[i])) {
-			player.reduceHP((*bullets)[i].getDamage());
-			bullets->erase(bullets->begin() + i);
-			if (i != 0)
-				i--;
-			temp--;
-		}
-	}
+	updateShootWithPlayer(player);
+	if (needDelete)
+		transferBullet(BAW);
 }

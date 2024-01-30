@@ -40,6 +40,7 @@ public:
 		currentSprite = sprit;
 		currentSprite->setOrigin(currentFrame.width / 2.f, currentFrame.height / 2.f);
 		currentXFrameNumber = 0;
+		switchFrames();
 	}
 
 	void setSprite(sf::Sprite* sprit)
@@ -53,6 +54,7 @@ public:
 		NumberofFrame = nbframe;
 		timeBetweenFrames = time;
 		currentXFrameNumber = 0;
+		switchFrames();
 	}
 
 	void updateAnimation() {
@@ -60,12 +62,16 @@ public:
 			currentXFrameNumber = 0;
 		if (animationTimer.getElapsedTime().asSeconds() > timeBetweenFrames)
 		{
-			currentFrame.left = currentXFrameNumber * currentFrame.width;
-			currentFrame.top = currentYFrameNumber * currentFrame.height;
-			currentSprite->setTextureRect(currentFrame);
+			switchFrames();
 			currentXFrameNumber++;
 			animationTimer.restart();
 		}
+	}
+
+	void switchFrames() {
+			currentFrame.left = currentXFrameNumber * currentFrame.width;
+			currentFrame.top = currentYFrameNumber * currentFrame.height;
+			currentSprite->setTextureRect(currentFrame);
 	}
 	void setDifferentAnimation(int t) {
 		currentYFrameNumber=t;
@@ -89,5 +95,6 @@ public:
 	sf::Sprite* getSprite() {
 		return currentSprite;
 	}
+
 };
 
