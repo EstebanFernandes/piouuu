@@ -8,8 +8,9 @@ ShootingEnemy::ShootingEnemy(CAssetManager* assetParam) {
 	setSprite();
 	moveSpeed = 5.f;
 	attackSpeed = 1.f;
-	bulletSpeed = 0.2f;
+	bulletSpeed = 2.f;
 	BAW.referenceStat =CWeaponStat((float)damagePerBullet, bulletSpeed, sf::Vector2f(-1.f, 0.f), 0, "",BAW.bulletScale);
+	BAW.setWeaponPos(sf::Vector2f(getGlobalBounds().width / 2.f, 0.f));
 }
 
 ShootingEnemy::ShootingEnemy(CAssetManager* asset, CMob* target_)
@@ -35,13 +36,10 @@ void ShootingEnemy::updateMovement(float delta)
 void ShootingEnemy::enemyShoot()
 {
 	if (bulletClock.getElapsedTime().asSeconds() >= 1.f / attackSpeed && isPositionated) {
-		sf::Vector2f r(
-			getSprite().getPosition().x - getGlobalBounds().width/2.f,
-			getSprite().getPosition().y );
 		if (hasTarget)
 		{
 			sf::Vector2f posPlayer = target->getSprite().getPosition();
-			BAW.shootTowardDirection(r, posPlayer);
+			BAW.shootTowardDirection(getSprite().getPosition(), posPlayer);
 		}
 		// vient juste le restart le timer à la fin 
 		bulletClock.restart();
@@ -51,13 +49,13 @@ void ShootingEnemy::enemyShoot()
 void ShootingEnemy::renderEntity(sf::RenderTarget& target)
 {
 	CEnemy::renderEntity(target);
-	BAW.renderEntity(target);
+	BAW.renderWeapon(target);
 }
 
 void ShootingEnemy::updateEntity(float delta)
 {
 	CEnemy::updateEntity(delta);
-	BAW.updateEntity(delta);
+	BAW.updateWeapon(delta);
 	if (!isDead)
 		enemyShoot();
 }

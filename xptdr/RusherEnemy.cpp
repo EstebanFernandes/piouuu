@@ -7,6 +7,14 @@ RusherEnemy::RusherEnemy(CAssetManager* assetParam)
 	initPositionX = assetParam->sCREEN_WIDTH * 1.05f;
 	setMoveSpeed(5.f);
 	setSprite();
+	direction = sf::Vector2f(-1.f, 0.f);
+	target = NULL;
+}
+
+RusherEnemy::RusherEnemy(CAssetManager* assets, CMob* target_)
+	: RusherEnemy(assets)
+{
+	target = target_;
 }
 
 void RusherEnemy::updateMovement(float delta)
@@ -17,7 +25,8 @@ void RusherEnemy::updateMovement(float delta)
 	// On avance pour se placer ou si il est l'heure de rush
 	if ((onAvance == true && !isPositionated) || isRushing)
 	{
-		moveEntity(sf::Vector2f(moveSpeed * -delta, 0));
+		sf::Vector2f avance = direction * moveSpeed * delta;
+		moveEntity(avance);
 	}
 	if (!isPositionated && getSprite().getPosition().x <= assets->sCREEN_WIDTH - getSprite().getGlobalBounds().width / 2.f) {
 		isPositionated = true;
@@ -43,6 +52,13 @@ void RusherEnemy::updateEntity(float delta)
 		setMoveSpeed(120.f);
 		isRushing = true;
 		if(fxRush.getStatus()== fxRush.Stopped)//  ca permet de s'assurer que le son n'est joué qu'une fois
-		fxRush.play();
+		{
+			if (target != NULL)
+			{
+				direction = utilities::dirAtoB(getSprite().getPosition(), target->getSprite().getPosition());
+				setRotation(utilities::getAngleFromDirection(direction));
+			}
+			fxRush.play();
+		}
 	}
 }

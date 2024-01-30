@@ -4,6 +4,7 @@
 #include<iostream>
 #include <string>
 #include"CAssetManager.h"
+#include"utilities.h"
 //Abstract class to handle entity, it has the least attribut that an entity should have
 class CEntity
 {

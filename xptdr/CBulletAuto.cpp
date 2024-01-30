@@ -1,5 +1,4 @@
 #include "CBulletAuto.h"
-
 CBulletAuto::CBulletAuto() : CBullet()
 {
 
@@ -52,12 +51,7 @@ void CBulletAuto::updateEntity(float dt)
 	{
 		sf::Vector2f pos = getSprite().getPosition();
 		sf::Vector2f posMob = mob->getSprite().getPosition();
-		sf::Vector2f dir;
-		dir.x = posMob.x - pos.x;
-		dir.y = posMob.y - pos.y;
-		float max = std::abs(std::max(dir.x, dir.y));
-		dir = dir / max;
-		direction = dir;
+		direction = utilities::dirAtoB(pos, posMob);
 		setDirectionSprite();
 	}
 	else if (mob != NULL && mob->isDead == true)
@@ -75,12 +69,9 @@ void CBulletAuto::updateEntity(float dt)
 
 	//Normal behavior
 	sf::Vector2f temp = direction;
-	if (!isABombe) {
-		temp.x = temp.x * bulletSpeed * dt * 60.f;
-	}
-	else {
-		temp.y = temp.y * bulletSpeed * dt * 60.f;
-	}
+	temp = temp * bulletSpeed * dt * 60.f;
+	
+
 	if (isGunShot)
 		gunshotDistance += temp.x;
 	getSprite().move(temp);

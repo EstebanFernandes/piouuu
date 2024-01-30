@@ -283,6 +283,7 @@
     <ClInclude Include="ShootingEnemy.h" />
     <ClInclude Include="SpecialEffect.h" />
     <ClInclude Include="testEnemy.h" />
+    <ClInclude Include="utilities.h" />
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>

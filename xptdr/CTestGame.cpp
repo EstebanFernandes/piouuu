@@ -34,7 +34,7 @@ void CTestGame::addEnemy(std::string enemyName)
 		(*enemyNumber)++;
 	}
 	else if (enemyName == "rusher") {
-		RusherEnemy* enemy = new RusherEnemy(&(data->assets));
+		RusherEnemy* enemy = new RusherEnemy(&(data->assets),&player1);
 		entityList.push_back(enemy);
 		(*enemyNumber)++;
 	}
@@ -166,7 +166,7 @@ void CTestGame::STEUpdate(float delta)
 	size_t temp = entityList.size();
 	int previousMax = (int)temp;
 	//Si c'est un AutoAim
-	if (player1.BAW.typeTir == player1.BAW.autoAim)
+	if (player1.getMainWeapon()->getTypeArme() == 0)//fonctionne pas
 	{
 		for (int i = 0; i < temp; i++)
 		{
@@ -194,7 +194,7 @@ void CTestGame::STEUpdate(float delta)
 		}
 		if (player1.seekForTarget == true && nearEnemy!=NULL)
 		{
-				player1.BAW.changeTarget(nearEnemy);
+				//player1.BAW.changeTarget(nearEnemy);
 			player1.seekForTarget = false;
 		}
 	}
@@ -225,7 +225,7 @@ void CTestGame::STEUpdate(float delta)
 		"XP : " << player1.getXp() << std::endl <<
 		"Max xp : " << player1.getMaxXp() << "\n" <<
 		"Score : " << player1.getScore() << std::endl <<
-		"Bullet number : " << player1.BAW.getVector()->size() << "\n";
+		"Bullet number : " << "\n";
 	uitext.setString(ss.str());
 	float clock = (gameTime.asSeconds() + gameClock.getElapsedTime().asSeconds() )* 100.f;
 	clock = ceil(clock);

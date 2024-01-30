@@ -12,8 +12,11 @@ private:
 	sf::Sound fxRush;
 	sf::Clock colorSwitchClock;
 	sf::Clock redColorSwitchClock;
+	CMob* target;
+	sf::Vector2f direction;
 public:
 	RusherEnemy(CAssetManager* assets);
+	RusherEnemy(CAssetManager* assets,CMob* target_);
 	void updateMovement(float delta);
 
 	void updateEntity(float delta);

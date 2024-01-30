@@ -19,13 +19,13 @@ void CPlayer::setAssets(CAssetManager* a)
 	assets = a;
 	mainWeapon = new CGunslinger();
 	mainWeapon->assets = a;
-	assets->addSFX("bulletSound", &BAW.bulletSound);
+	//assets->addSFX("bulletSound", &BAW.bulletSound);
 	setTexture(name);
 
 	if (isAnimated) anim = CAnimation(getPointerSprite(), sf::IntRect(0, 0, 153, 66), 4, 0.16f);
 	std::string nameImage;
-	if (name.find("Rancoeur") != std::string::npos)
-		BAW.setBulletAsset("bulletImageRancoeur");
+	//if (name.find("Rancoeur") != std::string::npos)
+		//BAW.setBulletAsset("bulletImageRancoeur");
 	initLifeBar();
 	setSprite();
 }
@@ -93,7 +93,7 @@ void CPlayer::traitermisc(std::string& misc)
 		{
 		case 0:
 			//auto aim
-			BAW.addShootType(BAW.autoAim);
+			//BAW.addShootType(BAW.autoAim);
 			break;
 			//Velocity up
 		case 1:
@@ -101,16 +101,16 @@ void CPlayer::traitermisc(std::string& misc)
 			break;
 			//doubleTirs1
 		case 2:
-			BAW.addShootType(BAW.doubleTirs1);
+			//BAW.addShootType(BAW.doubleTirs1);
 			break;
 			//doubleTirs2
 		case 3:
-			BAW.addShootType(BAW.doubleTirs2);
+			//BAW.addShootType(BAW.doubleTirs2);
 			break;
 			//gunshot
 		case 4:
-			BAW.addShootType(BAW.gunshotAim);
-			BAW.setGunShotDistance(250.f);
+		//	BAW.addShootType(BAW.gunshotAim);
+		//	BAW.setGunShotDistance(250.f);
 			break;
 		}
 			misc.insert(0, "+");
@@ -128,6 +128,8 @@ void CPlayer::updateMisc()
 void CPlayer::iNeedMoreBullet()
 {
 }
+
+
 
 
  
@@ -188,8 +190,11 @@ void CPlayer::PLYupdateMovement(sf::Event event)
 			isMovingDown = true;
 		else if (event.key.code == sf::Keyboard::D)
 			isMovingRight = true;
-		if (event.key.code == sf::Keyboard::V && !lasers.isLaserActive())
-			lasers.changeActivity();
+		if (event.key.code == sf::Keyboard::V &&dashClock.getElapsedTime().asSeconds()>=cdDash)
+		{
+			wantToDash = true;
+			dashClock.restart();
+		}
 		break;
 	case sf::Event::KeyReleased:
 		if (event.key.code == sf::Keyboard::Z)
@@ -200,8 +205,8 @@ void CPlayer::PLYupdateMovement(sf::Event event)
 			isMovingDown = false;
 		else if (event.key.code == sf::Keyboard::D)
 			isMovingRight = false;
-		if (event.key.code == sf::Keyboard::V && lasers.isLaserActive())
-			lasers.changeActivity();
+		if (event.key.code == sf::Keyboard::V)
+			wantToDash = false;
 		break;
 	default:
 		break;
@@ -209,69 +214,69 @@ void CPlayer::PLYupdateMovement(sf::Event event)
 
 	}
 }
+void CPlayer::updateDash(float delta)
+{
+	if (distancethrought < dashDistance)
+	{
+		distancethrought += utilities::renvoieNormeVecteur(dir * msDash * delta * 60.f);
+		moveEntity(dir * msDash * delta * 60.f);
+	}
+	else {//Le dash est fini
+		dashClock.restart();
+		isDashing = false;
+		distancethrought = 0.f;
+		wantToDash = false;
+	}
+}
 
 void CPlayer::updateMovement(float dt)
 {
-	sf::Vector2f direction;
-	if (isMovingUp)
-		direction.y -= 1.f;
-	if (isMovingDown)
-		direction.y += 1.f;
-	if (isMovingLeft)
-		direction.x -= 1.f;
-	if (isMovingRight)
-		direction.x += 1.f;
-	if (direction.y == 1.f)
-		anim.setDifferentAnimation(2);
-	else if (direction.y == -1.f)
-		anim.setDifferentAnimation(1);
-	else
-		anim.resetAnimation();
-	direction = direction * moveSpeed * dt * 60.f;
-	moveEntity(direction.x, direction.y);
-	//if (isMovingUp == true)
-	//{
-	//	moveEntity(0.f, -moveSpeed * dt*60.f);
-	//	if (getAnimated()) {
-	//		anim.setDifferentAnimation(1);
-	//	}
-	//}
-	//else if (isAnimated && anim.getCurrentYFrameNumber() == 1) {
-	//	anim.resetAnimation();
-	//}
-	//	
-	/*if (isMovingDown == true)
+	if (isDashing)
 	{
-		if (isAnimated) {
+		updateDash(dt);
+	}
+	else {
+		sf::Vector2f direction;
+		if (isMovingUp)
+			direction.y -= 1.f;
+		if (isMovingDown)
+			direction.y += 1.f;
+		if (isMovingLeft)
+			direction.x -= 1.f;
+		if (isMovingRight)
+			direction.x += 1.f;
+		if (direction.y == 1.f)
 			anim.setDifferentAnimation(2);
+		else if (direction.y == -1.f)
+			anim.setDifferentAnimation(1);
+		else
+			anim.resetAnimation();
+		dir = direction;
+		if (wantToDash)
+		{
+			isDashing = true;
+			if (dir == sf::Vector2f(0.f, 0.f))
+				dir = sf::Vector2f(1.f, 0.f);
 		}
-		moveEntity(0.f, moveSpeed * dt * 60.f);
-	}
-	else if (isAnimated && anim.getCurrentYFrameNumber() == 2)
-		anim.resetAnimation();
-		
-	if (isMovingLeft == true)
-	{
-		moveEntity(-moveSpeed * dt * 60.f,0.f);
-	}
-	if (isMovingRight == true)
-	{
-		moveEntity(moveSpeed * dt * 60.f, 0.f);
-	}*/
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-	{
-		//Si ce temps est trop faible on ne fait rien, 
-		if (bulletClock.getElapsedTime().asSeconds() >= 1.f / attackSpeed) {
-			sf::Vector2f nezdeLavion(
-				getSprite().getPosition().x + getGlobalBounds().width/2.f,
-				getSprite().getPosition().y );
-				if (BAW.typeTir == BAW.autoAim)
-					seekForTarget = true;
-				BAW.iNeedMoreBullets(nezdeLavion);
+		else
+			moveEntity(direction * moveSpeed * dt * 60.f);
 
-			// vient juste le restart le timer à la fin 
-			bulletClock.restart();
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			//Si ce temps est trop faible on ne fait rien, 
+			if (bulletClock.getElapsedTime().asSeconds() >= 1.f / attackSpeed) {
+				sf::Vector2f nezdeLavion(
+					getSprite().getPosition().x + getGlobalBounds().width/2.f,
+					getSprite().getPosition().y );
+					//if (BAW.typeTir == BAW.autoAim)
+						//seekForTarget = true;
+					//BAW.iNeedMoreBullets(nezdeLavion);
+
+				// vient juste le restart le timer à la fin 
+				bulletClock.restart();
+			}
 		}
+
 	}
 }
 

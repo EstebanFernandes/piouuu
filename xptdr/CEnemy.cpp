@@ -68,39 +68,39 @@ void CEnemy::updatewPlayer(float delta, CPlayer& player)
 	}
 	//Ici on regarde le type 
 
-	std::vector<CBulletAuto>* guns = player.getBAW()->getVector();
-	if (player.lasers.checkCollisions(*this)) {
-		reduceHP(player.getDamagePerBullet());
-	}
-	size_t temp =guns->size();
-	for (size_t i = 0; i < temp; i++)
-	{
-		
-		if (isDead == false)
-		{
+	//std::vector<CBulletAuto>* guns = player.getMainWeapon()
+	//if (player.lasers.checkCollisions(*this)) {
+	//	reduceHP(player.getDamagePerBullet());
+	//}
+	//size_t temp =guns->size();
+	//for (size_t i = 0; i < temp; i++)
+	//{
+	//	
+	//	if (isDead == false)
+	//	{
 
-			if ((*guns)[i].checkCollisions((*this)))
-			{
-				reduceHP((float)(*guns)[i].getDamage());
-			}
-		}
-	}
-	if (healthPoint <= 0)
-	{
-		isDead = true;
-		onAvance = false;
-	}
-	if (isDead == true)
-	{
-		if(gavexP==false)
-		{
-			player.gainXP(level);
-			gavexP=true;
-			player.addToScore(scoreGived);
-			if (player.BAW.typeTir == 1)
-				player.seekForTarget = true;
-		}
-	}
+	//		if ((*guns)[i].checkCollisions((*this)))
+	//		{
+	//			reduceHP((float)(*guns)[i].getDamage());
+	//		}
+	//	}
+	//}
+	//if (healthPoint <= 0)
+	//{
+	//	isDead = true;
+	//	onAvance = false;
+	//}
+	//if (isDead == true)
+	//{
+	//	if(gavexP==false)
+	//	{
+	//		player.gainXP(level);
+	//		gavexP=true;
+	//		player.addToScore(scoreGived);
+	//		//if (player.BAW.typeTir == 1)
+	//			//player.seekForTarget = true;
+	//	}
+	//}
 }
 
 void CEnemy::setScoreGived(float scoreGivedParam)

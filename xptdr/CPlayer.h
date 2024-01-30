@@ -12,8 +12,6 @@
 class CPlayer :  public CMob
 {
 private:
-
-
 	//Attributs
 
 	// S'occupe des améliorations spéciales du personnage
@@ -29,12 +27,18 @@ private:
 	bool isMovingDown;
 	bool isMovingLeft;
 	bool isMovingRight;
+	bool wantToDash=false;
+	bool isDashing = false;
 	//Booléen pour l'autoAim
 	float score;
-
+	sf::Vector2f dir;
 	//grr paw
 	sf::Clock bulletClock;
-
+	sf::Clock dashClock;
+	float cdDash = 0.5f;
+	float dashDistance = 100.f;
+	float distancethrought=0.f;
+	float msDash = 1.f;
 	sf::Clock hitClock;
 	//Liste des effets sur les balles, on les ajoutes avant de tirer 
 	std::vector<effetspecial*> effectByBullet;
@@ -96,4 +100,5 @@ public:
 		traitermisc(specificites.back());
 	}
 	void iNeedMoreBullet();
+	void updateDash(float delta);
 };

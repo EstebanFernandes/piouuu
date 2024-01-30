@@ -18,7 +18,6 @@ CGunslinger::CGunslinger()
 	setTypeArme(gunslinger);
 	typeTir = 0;
 	typeBalle = (int)pow(2, 0);
-	setType(Gunslinger);
 	
 }
 
@@ -48,36 +47,38 @@ void CGunslinger::updateWeapon(float dt)
 
 void CGunslinger::iNeedMoreBullets(sf::Vector2f pos)
 {
+	pos += weaponPos;
 	CBulletAuto reference(referenceStat, assets);
 	reference.setBulletPos(pos);
 	initBuff(reference);
 	switch (typeTir) {
-	case classic:
-	case autoAim:
-		
-		magasine.push_back(reference);
-		break;
-	case doubleTirs1:
-	{
-		for (int i = 0; i < 2; i++)
+		case classic:
+		case autoAim:
+
+			magasine.push_back(reference);
+			break;
+		case doubleTirs1:
 		{
-			if(i==0)
+			for (int i = 0; i < 2; i++)
 			{
-				reference.setDirection(sf::Vector2f(1.f, -0.75f));
-				magasine.push_back(reference);
-				bulletSound.play();
-			}
-			else {
-				initBuff(reference);
-				reference.setDirection(sf::Vector2f(1.f, 0.75f));
-				magasine.push_back(reference);
+				if (i == 0)
+				{
+					reference.setDirection(sf::Vector2f(1.f, -0.75f));
+					magasine.push_back(reference);
+					bulletSound.play();
+				}
+				else {
+					initBuff(reference);
+					reference.setDirection(sf::Vector2f(1.f, 0.75f));
+					magasine.push_back(reference);
+				}
 			}
 		}
-	}
-	break;
-	case doubleTirs2:
-	{
-		std::cout << "Erreur lors du chargement du son de tir." << std::endl;
+		break;
+		case doubleTirs2:
+		{
+			std::cout << "Erreur lors du chargement du son de tir." << std::endl;
+		}
 	}
 }
 
@@ -126,35 +127,7 @@ void CGunslinger::addByIndex(CBulletAuto& ref , int index)
 
 void CGunslinger::shootTowardDirection(sf::Vector2f initPos, sf::Vector2f targetPos)
 {
-	sf::Vector2f dir;
-	sf::Vector2f otherPos = initPos - targetPos;
-	/*
-	if (targetPos.x < initPos.x) {
-		dir.x = -1;
-	}
-	else if (targetPos.x > initPos.x) {
-		dir.x = 1;
-	}
-	else {
-		dir.x = 0;
-	}
-	*/
-	float a = otherPos.y / otherPos.x;
-
-	dir.x = -1.f / (float)std::sqrt(1 + std::pow(a, 2));
-	dir.y = a * dir.x;
-
-	if (otherPos.x < 0) {
-		dir.x = dir.x * -1;
-		dir.y = dir.y * -1;
-	}
-
-	/*
-	dir = targetPos - initPos;
-	float max = std::abs(std::min(dir.x, dir.y));
-	dir = dir / max;
-	*/
-	referenceStat.dir = dir;
-	std::cout << "direction in x : " << dir.x << " in y : " << dir.y<<std::endl;
+	referenceStat.dir = utilities::dirAtoB(initPos, targetPos);
+	//std::cout << "direction in x : " << dir.x << " in y : " << dir.y<<std::endl;
 	iNeedMoreBullets(initPos);
 }

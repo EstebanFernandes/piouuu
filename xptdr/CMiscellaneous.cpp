@@ -10,7 +10,7 @@ void CMiscellaneous::traitermisc(std::string& misc)
 	switch (pos)
 	{
 		//auto aim
-		player->BAW.addShootType(player->BAW.autoAim);
+		//player->BAW.addShootType(player->BAW.autoAim);
 	case 0:
 
 		break;
@@ -20,15 +20,15 @@ void CMiscellaneous::traitermisc(std::string& misc)
 		break;
 		//doubleTirs1
 	case 2:
-		player->BAW.addShootType( player->BAW.doubleTirs1);
+		//player->BAW.addShootType( player->BAW.doubleTirs1);
 		break;
 		//doubleTirs2
 	case 3:
-		player->BAW.addShootType(player->BAW.doubleTirs2);
+		//player->BAW.addShootType(player->BAW.doubleTirs2);
 		break;
 		//gunshot
 	case 4:
-		player->BAW.addShootType(player->BAW.gunshotAim);
+		//player->BAW.addShootType(player->BAW.gunshotAim);
 		break;
 		misc.insert(0, "+");
 

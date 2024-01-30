@@ -59,6 +59,7 @@ public:
 		referenceStat.nameImage = assetName;
 	}
 	void renderWeapon(sf::RenderTarget& target);
+	
 	/// <summary>
 	/// à terme on utilise que celle là
 	/// </summary>

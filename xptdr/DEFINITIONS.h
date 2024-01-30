@@ -21,4 +21,3 @@
 
 //characters
 #define CHARACTERBACKGROUND "res/img/characters/characterBackground.gif"
-

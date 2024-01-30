@@ -4,13 +4,11 @@
 class RoamingEnemy : public CEnemy
 {
 private:
-	float directionY;
-	float directionX = -1.f;
+	sf::Vector2f direction;
 	CMob* target;
 public:
 	RoamingEnemy();
 	RoamingEnemy(CAssetManager* asset);
-	RoamingEnemy(CAssetManager* asset,CMob* target_);
 	void updateMovement(float delta);
 	void enemyShoot() {}
 

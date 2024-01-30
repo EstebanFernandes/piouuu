@@ -24,6 +24,10 @@ void LaserGenerator::renderWeapon(sf::RenderTarget& target)
 	}
 }
 
+void LaserGenerator::updateWeapon(float dt)
+{
+}
+
 /// <summary>
 /// 
 /// </summary>
@@ -82,7 +86,7 @@ bool LaserGenerator::checkCollisions(CEntity& b)
 			cible.entity = &b;
 			cible.damageCooldown = sf::Clock();
 			ciblesLasers.push_back(cible);
-			index = ciblesLasers.size() - 1;
+			index = (int)ciblesLasers.size() - 1;
 			return true;
 		}
 
