@@ -7,6 +7,7 @@ void CMiscellaneous::traitermisc(std::string& misc)
 	if (pos >= supportedMisc.size()) {
 		std::cout << "La string est vide\n";
 	}
+	/*
 	switch (pos)
 	{
 		//auto aim
@@ -32,5 +33,5 @@ void CMiscellaneous::traitermisc(std::string& misc)
 		break;
 		misc.insert(0, "+");
 
-	}
+	}*/
 }

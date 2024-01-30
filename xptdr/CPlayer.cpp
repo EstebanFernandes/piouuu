@@ -17,15 +17,17 @@ void CPlayer::initStat()
 void CPlayer::setAssets(CAssetManager* a)
 {
 	assets = a;
-	mainWeapon = new CGunslinger();
 	mainWeapon->assets = a;
-	assets->addSFX("bulletSound", &BAW.bulletSound);
+	assets->addSFX("bulletSound", &mainWeapon->bulletSound);
 	setTexture(name);
 
 	if (isAnimated) anim = CAnimation(getPointerSprite(), sf::IntRect(0, 0, 153, 66), 4, 0.16f);
 	std::string nameImage;
-	if (name.find("Rancoeur") != std::string::npos)
-		BAW.setBulletAsset("bulletImageRancoeur");
+	if (name.find("Rancoeur") != std::string::npos) {
+		mainWeapon->setBulletAsset("bulletImageRancoeur");
+		nameImage = "bulletImageRancoeur";
+	}
+	mainWeapon->getWeaponStats() = CWeaponStat((float)damagePerBullet, bulletSpeed, sf::Vector2f(1.f, 0.f), 0, nameImage, sf::Vector2f(1.f, 1.f), attackSpeed);
 	initLifeBar();
 	setSprite();
 }
@@ -88,32 +90,12 @@ void CPlayer::traitermisc(std::string& misc)
 	if (pos >= supportedMisc.size()) {
 		std::cout << "Rien a été trouvé\n";
 	}
-	else{
-		switch (pos)
-		{
-		case 0:
-			//auto aim
-			BAW.addShootType(BAW.autoAim);
-			break;
-			//Velocity up
-		case 1:
-
-			break;
-			//doubleTirs1
-		case 2:
-			BAW.addShootType(BAW.doubleTirs1);
-			break;
-			//doubleTirs2
-		case 3:
-			BAW.addShootType(BAW.doubleTirs2);
-			break;
-			//gunshot
-		case 4:
-			BAW.addShootType(BAW.gunshotAim);
-			BAW.setGunShotDistance(250.f);
-			break;
-		}
-			misc.insert(0, "+");
+	else if (pos==6) {
+		setMainWeapon(new LaserGenerator(assets));
+	}
+	else {
+		mainWeapon->traiterMisc(pos);
+		misc.insert(0, "+");
 	}
 }
 
@@ -188,8 +170,6 @@ void CPlayer::PLYupdateMovement(sf::Event event)
 			isMovingDown = true;
 		else if (event.key.code == sf::Keyboard::D)
 			isMovingRight = true;
-		if (event.key.code == sf::Keyboard::V && !lasers.isLaserActive())
-			lasers.changeActivity();
 		break;
 	case sf::Event::KeyReleased:
 		if (event.key.code == sf::Keyboard::Z)
@@ -200,14 +180,13 @@ void CPlayer::PLYupdateMovement(sf::Event event)
 			isMovingDown = false;
 		else if (event.key.code == sf::Keyboard::D)
 			isMovingRight = false;
-		if (event.key.code == sf::Keyboard::V && lasers.isLaserActive())
-			lasers.changeActivity();
 		break;
 	default:
 		break;
 
 
 	}
+	mainWeapon->weaponControls(event);
 }
 
 void CPlayer::updateMovement(float dt)
@@ -258,21 +237,6 @@ void CPlayer::updateMovement(float dt)
 	{
 		moveEntity(moveSpeed * dt * 60.f, 0.f);
 	}*/
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-	{
-		//Si ce temps est trop faible on ne fait rien, 
-		if (bulletClock.getElapsedTime().asSeconds() >= 1.f / attackSpeed) {
-			sf::Vector2f nezdeLavion(
-				getSprite().getPosition().x + getGlobalBounds().width/2.f,
-				getSprite().getPosition().y );
-				if (BAW.typeTir == BAW.autoAim)
-					seekForTarget = true;
-				BAW.iNeedMoreBullets(nezdeLavion);
-
-			// vient juste le restart le timer à la fin 
-			bulletClock.restart();
-		}
-	}
 }
 
 
@@ -330,13 +294,19 @@ void CPlayer::updateEntity(float dt)
 		maxXp += 10;
 		hasLevelUp = true;
 	}
+	sf::Vector2f nezdeLavion( getSprite().getPosition().x + getGlobalBounds().width / 2.f,
+		getSprite().getPosition().y);
+	mainWeapon->setWeaponPos(nezdeLavion);
 	mainWeapon->updateWeapon(dt);
+	mainWeapon->weaponShoot();
 
+	/*
 	//tempn on update le laser
 	sf::Vector2f laserPos;
 	laserPos.x = getSprite().getPosition().x + getSprite().getGlobalBounds().width / 2.f;
 	laserPos.y = getSprite().getPosition().y;
 	lasers.updateLasers(dt, laserPos, assets->sCREEN_WIDTH);
+	*/
 }
 
 void CPlayer::renderEntity(sf::RenderTarget& target)

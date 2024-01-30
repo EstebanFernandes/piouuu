@@ -28,15 +28,19 @@ private:
 
 public:
 	LaserGenerator();
+	LaserGenerator(CAssetManager* assetsParam);
 
-	void renderWeapon(sf::RenderTarget& target);
-	//void CGunslinger::iNeedMoreBullets(sf::Vector2f pos, int damage, float bulletSpeed, sf::Vector2f dir, sf::Vector2f bulletScale);
-	void updateWeapon(float dt);
-	void updateLasers(float delta, sf::Vector2f playerPos, int screenWidth);
-	bool checkCollisions(CEntity& b);
+	
 
 	//redéfinitions de Weapon
 	void setBulletAsset(std::string assetName) {};
+	void traiterMisc(int misc) {}; void renderWeapon(sf::RenderTarget& target);
+	void weaponControls(sf::Event event);
+	void weaponShoot();
+	void updateWeapon(float dt);
+	void updateLasers(float delta, sf::Vector2f playerPos, int screenWidth);
+	bool checkCollisions(CMob& b);
+	void changeTarget(CMob* r) {};
 
 	bool isLaserActive();
 	void changeActivity();

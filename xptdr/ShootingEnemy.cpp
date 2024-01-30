@@ -9,7 +9,7 @@ ShootingEnemy::ShootingEnemy(CAssetManager* assetParam) {
 	moveSpeed = 5.f;
 	attackSpeed = 1.f;
 	bulletSpeed = 0.2f;
-	BAW.referenceStat =CWeaponStat((float)damagePerBullet, bulletSpeed, sf::Vector2f(-1.f, 0.f), 0, "",BAW.bulletScale);
+	BAW.getWeaponStats() = CWeaponStat((float)damagePerBullet, bulletSpeed, sf::Vector2f(-1.f, 0.f), 0, "", BAW.bulletScale, attackSpeed);
 }
 
 ShootingEnemy::ShootingEnemy(CAssetManager* asset, CMob* target_)
@@ -51,13 +51,13 @@ void ShootingEnemy::enemyShoot()
 void ShootingEnemy::renderEntity(sf::RenderTarget& target)
 {
 	CEnemy::renderEntity(target);
-	BAW.renderEntity(target);
+	BAW.renderWeapon(target);
 }
 
 void ShootingEnemy::updateEntity(float delta)
 {
 	CEnemy::updateEntity(delta);
-	BAW.updateEntity(delta);
+	BAW.updateWeapon(delta);
 	if (!isDead)
 		enemyShoot();
 }

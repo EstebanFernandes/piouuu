@@ -29,7 +29,7 @@ Boss::Boss(CAssetManager* assetsParam, CPlayer* playerParam, std::vector<CHittin
 	phasesCaps.push_back(75.f);
 	phasesCaps.push_back(50.f);
 	phasesCaps.push_back(25.f);
-	BAW.referenceStat = CWeaponStat((float)damagePerBullet, bulletSpeed, sf::Vector2f(-1.f, 0.f), 0, "", BAW.bulletScale);
+	BAW.getWeaponStats() = CWeaponStat((float)damagePerBullet, bulletSpeed, sf::Vector2f(-1.f, 0.f), 0, "", BAW.bulletScale, attackSpeed);
 }
 
 void Boss::addEnemy(std::string enemyName)
@@ -88,7 +88,7 @@ void Boss::updateMovement(float delta)
 void Boss::updateEntity(float delta)
 {
 	CEnemy::updateEntity(delta);
-	BAW.updateEntity(delta);
+	BAW.updateWeapon(delta);
 
 	//check for a phase switch
 	if (currentLifePhase != phasesCaps.size()+1 && healthPoint / maxHealthPoint <= phasesCaps[currentLifePhase - 1]/100.f) {
@@ -132,7 +132,7 @@ void Boss::updatewPlayer(float delta, CPlayer& player)
 void Boss::renderEntity(sf::RenderTarget& target)
 {
 	CEnemy::renderEntity(target);
-	BAW.renderEntity(target);
+	BAW.renderWeapon(target);
 }
 
 void Boss::changePhase()

@@ -67,8 +67,8 @@ void CEnemy::updatewPlayer(float delta, CPlayer& player)
 		player.reduceHP((float)damage);
 	}
 	//Ici on regarde le type 
-
-	std::vector<CBulletAuto>* guns = player.getBAW()->getVector();
+	/*
+	std::vector<CBulletAuto>* guns = player.getMainWeapon()->getVector();
 	if (player.lasers.checkCollisions(*this)) {
 		reduceHP(player.getDamagePerBullet());
 	}
@@ -85,6 +85,10 @@ void CEnemy::updatewPlayer(float delta, CPlayer& player)
 			}
 		}
 	}
+	*/
+	if (player.getMainWeapon()->checkCollisions(*this)) {
+		reduceHP(player.getDamagePerBullet());
+	}
 	if (healthPoint <= 0)
 	{
 		isDead = true;
@@ -97,7 +101,7 @@ void CEnemy::updatewPlayer(float delta, CPlayer& player)
 			player.gainXP(level);
 			gavexP=true;
 			player.addToScore(scoreGived);
-			if (player.BAW.typeTir == 1)
+			if (player.getMainWeapon()->typeTir == 1)
 				player.seekForTarget = true;
 		}
 	}

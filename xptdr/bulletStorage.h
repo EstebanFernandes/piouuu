@@ -14,8 +14,8 @@ public:
 	void updateMovement(float delta){}
 	void enemyShoot(){}
 	void updatewPlayer(float delta, CPlayer& player);
-	void updateEntity(float delta) { saveBullet.updateEntity(delta); }
-	void renderEntity(sf::RenderTarget& target) { saveBullet.renderEntity(target); }
+	void updateEntity(float delta) { saveBullet.updateWeapon(delta); }
+	void renderEntity(sf::RenderTarget& target) { saveBullet.renderWeapon(target); }
 	void saveBullets(CGunslinger& otherGunslinger);
 };
 

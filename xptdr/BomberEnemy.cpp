@@ -22,7 +22,7 @@ BomberEnemy::BomberEnemy(CAssetManager* assets)
 	setRotation(180.f);
 	BAW.addShootType(BAW.bombe);
 	sf::Vector2f bulletScale = sf::Vector2f(0.2f, 0.2f);
-	BAW.referenceStat = CWeaponStat((float)damagePerBullet, bulletSpeed, sf::Vector2f(0.f, 1.f),0, "bombe", bulletScale);
+	BAW.getWeaponStats() = CWeaponStat((float)damagePerBullet, bulletSpeed, sf::Vector2f(0.f, 1.f), 0, "bombe", bulletScale, attackSpeed);
 }
 
 BomberEnemy::BomberEnemy(CAssetManager* assets, bool isFacingLeft_) :
@@ -74,13 +74,13 @@ void BomberEnemy::enemyShoot()
 void BomberEnemy::renderEntity(sf::RenderTarget& target)
 {
 	RoamingEnemy::renderEntity(target);
-	BAW.renderEntity(target);
+	BAW.renderWeapon(target);
 }
 
 void BomberEnemy::updateEntity(float delta)
 {
 	RoamingEnemy::updateEntity(delta);
-	BAW.updateEntity(delta);
+	BAW.updateWeapon(delta);
 	if(!isDead)
 		enemyShoot();
 }
