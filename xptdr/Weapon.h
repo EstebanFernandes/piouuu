@@ -65,6 +65,10 @@ public:
 	void setTypeArme(int type);
 	int getTypeArme();
 	CWeaponStat& getWeaponStats();
+	/// <summary>
+	/// Défini la position relative de l'arme par rapport au centre de l'arme
+	/// </summary>
+	/// <param name="pos"></param>
 	void setWeaponStats(CWeaponStat statsParam);
 
 	// à redéfinir
@@ -77,10 +81,5 @@ public:
 	virtual void updateWeapon(float dt) = 0;
 	virtual void renderWeapon(sf::RenderTarget& target) = 0;
 	virtual void setBulletAsset(std::string assetName) = 0;
-	/// <summary>
-	/// Défini la position relative de l'arme par rapport au centre de l'arme
-	/// </summary>
-	/// <param name="pos"></param>
-	void setWeaponPos(sf::Vector2f pos) { weaponPos = pos; }
 };
 

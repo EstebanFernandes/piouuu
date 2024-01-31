@@ -4,8 +4,9 @@
 #include "CCLavierVirtuel.h"
 #include "CScoreboard.h"
 #include "CButton.h"
+#include"InterfaceState.h"
 
-template <class MType> class CGameOver : public CState
+template <class MType> class CGameOver : public CState, public InterfaceState
 {
 private:
 	bool askedScore;
@@ -95,6 +96,12 @@ void CGameOver<MType>::STEInit()
 
 	buttonList.push_back(restartButton);
 	buttonList.push_back(menuButton);
+	std::vector<CUI*> mdrr;
+	for (int i = 0; i < buttonList.size(); i++)
+	{
+		mdrr.push_back(&buttonList[i]);
+	}
+	InterfaceState::applymaxMinCharSize(mdrr);
 	//data->machine.AddState(StateRef(new CScoreboard(data, score)), false);
 	data->assets.stopMusique("PartieJour");
 }
