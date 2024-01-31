@@ -3,7 +3,6 @@
 #include "Weapon.h"
 #include <bitset>
 #include"dot.h"
-#include"CWeaponStat.h"
 #define Balle = true
 #define Tir = false
 #define nbBullet 4
@@ -12,54 +11,33 @@ class CGunslinger : public Weapon
 {
 private:
 	std::vector<CBulletAuto> magasine;
+
+	//grr paw
+	sf::Clock bulletClock;
+
 	/// <summary>
 	/// Fonction qui initialise tous les buffs selon les stats dans reference Stat ainsi que le nommbre "type balle"
 	/// </summary>
 	/// <param name="ref"></param>
 	void initBuff(CBulletAuto& ref);
 public:
-	sf::Sound bulletSound;
 	~CGunslinger() {
-		assets->deleteSound(&bulletSound);
 	}
 	sf::Vector2f bulletScale = sf::Vector2f(1.f, 1.f);
 
-	/// <summary>
-	/// On utilise cette balle pour définir le comportement de toute celle que l'on va tiré, on peut ajouter des effets dessus,
-	/// modifier ses stats.
-	/// </summary>
-	CWeaponStat referenceStat;
-	typedef enum
-	{
-		classic,
-		dotBullet,
-		explosiveBullet,
-		fire
-	} typeBullet;
 
-	/// <summary>
-	/// Pour définir le comportement du tir on choisit l'un de ceux ci dessous
-	/// </summary>
-	typedef enum
-	{
-		doubleTirs1=1,
-		doubleTirs2,
-		autoAim,
-		gunshotAim,
-		circleShot,
-		bombe
-	} typeAim;
-	int typeBalle = 0;
-	int typeTir = 0;
 	CGunslinger();
 	void setSprite(){}
 	void updateWeapon(float dt);
+	void weaponControls(sf::Event event);
+	void weaponShoot();
 	//Setters for bullet's skin, must've been initialized before, this method will just load the bullet's skin from the asset manager.
 	void setBulletAsset(std::string assetName) {
-		referenceStat.nameImage = assetName;
+		getWeaponStats().nameImage = assetName;
 	}
 	void renderWeapon(sf::RenderTarget& target);
-	
+	void traiterMisc(int misc);
+	bool checkCollisions(CMob& b);
 	/// <summary>
 	/// à terme on utilise que celle là
 	/// </summary>
@@ -93,7 +71,7 @@ public:
 	
 	void setGunShotDistance(float e)
 	{
-		referenceStat.maxDistance = e;
+		getWeaponStats().maxDistance = e;
 	}
 	/// <summary>
 	/// set the penetration for any bullet
@@ -101,8 +79,9 @@ public:
 	/// <param name="param">= penetration of the ammo</param>
 	void setPenetration(int param)
 	{
-		if (param >= 0)
-			referenceStat.penetration = param;
+		if (param >= 0) {
+			getWeaponStats().penetration = param;
+		}
 	}
 
 	/// <summary>

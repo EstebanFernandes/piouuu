@@ -44,41 +44,68 @@ void CGunslinger::updateWeapon(float dt)
 	}
 }
 
+void CGunslinger::weaponControls(sf::Event event)
+{
+	
+}
+
+void CGunslinger::weaponShoot()
+{
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		//Si ce temps est trop faible on ne fait rien, 
+		if (bulletClock.getElapsedTime().asSeconds() >= 1.f / getWeaponStats().attackSpeed) {
+			//Calcul de la pos de l'arme
+			/*
+			sf::Vector2f nezdeLavion(
+				getSprite().getPosition().x + getGlobalBounds().width / 2.f,
+				getSprite().getPosition().y);
+			if (BAW.typeTir == BAW.autoAim)
+				seekForTarget = true;
+			*/
+
+			iNeedMoreBullets(getWeaponPos());
+
+			// vient juste le restart le timer à la fin 
+			bulletClock.restart();
+		}
+	}
+}
+
 
 void CGunslinger::iNeedMoreBullets(sf::Vector2f pos)
 {
-	pos += weaponPos;
-	CBulletAuto reference(referenceStat, assets);
+	CBulletAuto reference(getWeaponStats(), assets);
 	reference.setBulletPos(pos);
 	initBuff(reference);
 	switch (typeTir) {
-		case classic:
-		case autoAim:
+	case classic:
+	case autoAim:
 
-			magasine.push_back(reference);
-			break;
-		case doubleTirs1:
+		magasine.push_back(reference);
+		break;
+	case doubleTirs1:
+	{
+		for (int i = 0; i < 2; i++)
 		{
-			for (int i = 0; i < 2; i++)
+			if (i == 0)
 			{
-				if (i == 0)
-				{
-					reference.setDirection(sf::Vector2f(1.f, -0.75f));
-					magasine.push_back(reference);
-					bulletSound.play();
-				}
-				else {
-					initBuff(reference);
-					reference.setDirection(sf::Vector2f(1.f, 0.75f));
-					magasine.push_back(reference);
-				}
+				reference.setDirection(sf::Vector2f(1.f, -0.75f));
+				magasine.push_back(reference);
+				bulletSound.play();
+			}
+			else {
+				initBuff(reference);
+				reference.setDirection(sf::Vector2f(1.f, 0.75f));
+				magasine.push_back(reference);
 			}
 		}
-		break;
-		case doubleTirs2:
-		{
-			std::cout << "Erreur lors du chargement du son de tir." << std::endl;
-		}
+	}
+	break;
+	case doubleTirs2:
+	{
+		std::cout << "Erreur lors du chargement du son de tir." << std::endl;
+	}
 	}
 }
 
@@ -89,6 +116,47 @@ void CGunslinger::renderWeapon(sf::RenderTarget& target)
 		{
 			magasine[i].renderEntity(target);
 		}
+}
+
+void CGunslinger::traiterMisc(int misc)
+{
+	switch (misc)
+	{
+	case 0:
+		//auto aim
+		addShootType(autoAim);
+		break;
+		//Velocity up
+	case 1:
+
+		break;
+		//doubleTirs1
+	case 2:
+		addShootType(doubleTirs1);
+		break;
+		//doubleTirs2
+	case 3:
+		addShootType(doubleTirs2);
+		break;
+		//gunshot
+	case 4:
+		addShootType(gunshotAim);
+		setGunShotDistance(250.f);
+		break;
+	}
+}
+
+bool CGunslinger::checkCollisions(CMob& b)
+{
+	for (size_t i = 0; i < magasine.size(); i++)
+	{
+
+		if (magasine[i].checkCollisions(b))
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 void CGunslinger::addShootType(int type)
@@ -120,14 +188,14 @@ void CGunslinger::addByIndex(CBulletAuto& ref , int index)
 	case classic:
 		break;
 	case dotBullet:
-		ref.addBuff(new dot(NULL, referenceStat.dotDamage, referenceStat.dotCD, referenceStat.dotTimer), false);
+		ref.addBuff(new dot(NULL, getWeaponStats().dotDamage, getWeaponStats().dotCD, getWeaponStats().dotTimer), false);
 	}
 }
 
 
 void CGunslinger::shootTowardDirection(sf::Vector2f initPos, sf::Vector2f targetPos)
 {
-	referenceStat.dir = utilities::dirAtoB(initPos, targetPos);
+	getWeaponStats().dir = utilities::dirAtoB(initPos, targetPos);
 	//std::cout << "direction in x : " << dir.x << " in y : " << dir.y<<std::endl;
 	iNeedMoreBullets(initPos);
 }

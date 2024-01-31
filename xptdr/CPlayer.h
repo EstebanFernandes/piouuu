@@ -47,7 +47,7 @@ private:
 	/// <summary>
 	/// pointeur vers l'arme principal
 	/// </summary>
-	Weapon* mainWeapon = nullptr;
+	Weapon* mainWeapon = new CGunslinger();
 
 	/// <summary>
 	/// pointeur vers l'arme secondaire
@@ -59,8 +59,6 @@ private:
 	void initStat();
 
 public:
-	//temp, pour test les lasers
-	LaserGenerator lasers;
 
 	bool hasLevelUp = false;
 	bool seekForTarget=false;

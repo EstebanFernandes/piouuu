@@ -10,7 +10,7 @@ CWeaponStat::CWeaponStat()
 	dotTimer=0.f;
 }
 
-CWeaponStat::CWeaponStat(float bulletDamage_, float bulletSpeed_, sf::Vector2f dir_, unsigned int penetration_, std::string nameImage_, sf::Vector2f bulletScale_)
+CWeaponStat::CWeaponStat(float bulletDamage_, float bulletSpeed_, sf::Vector2f dir_, unsigned int penetration_, std::string nameImage_, sf::Vector2f bulletScale_, float attackSpeedParam)
 {
 	bulletDamage = bulletDamage_;
 	bulletSpeed = bulletSpeed_;
@@ -18,6 +18,7 @@ CWeaponStat::CWeaponStat(float bulletDamage_, float bulletSpeed_, sf::Vector2f d
 	penetration = penetration_;
 	nameImage = nameImage_;
 	bulletScale = bulletScale_;
+	attackSpeed = attackSpeedParam;
 }
 
 void CWeaponStat::paramDot(float dotDamage_, float dotCD_, float dotTimer_)

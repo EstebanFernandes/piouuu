@@ -29,7 +29,7 @@ Boss::Boss(CAssetManager* assetsParam, CPlayer* playerParam, std::vector<CHittin
 	phasesCaps.push_back(75.f);
 	phasesCaps.push_back(50.f);
 	phasesCaps.push_back(25.f);
-	BAW.referenceStat = CWeaponStat((float)damagePerBullet, bulletSpeed, sf::Vector2f(-1.f, 0.f), 0, "", BAW.bulletScale);
+	BAW.getWeaponStats() = CWeaponStat((float)damagePerBullet, bulletSpeed, sf::Vector2f(-1.f, 0.f), 0, "", BAW.bulletScale, attackSpeed);
 	BAW.setWeaponPos(sf::Vector2f(getGlobalBounds().width / 2.f, 0.f));
 }
 

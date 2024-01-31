@@ -16,6 +16,11 @@ LaserGenerator::LaserGenerator()
 	laserZone.setFillColor(sf::Color(255, 0, 0, 100));
 }
 
+LaserGenerator::LaserGenerator(CAssetManager* assetsParam) : LaserGenerator()
+{
+	assets = assetsParam;
+}
+
 void LaserGenerator::renderWeapon(sf::RenderTarget& target)
 {
 	if (isActive) {
@@ -24,8 +29,24 @@ void LaserGenerator::renderWeapon(sf::RenderTarget& target)
 	}
 }
 
+void LaserGenerator::weaponControls(sf::Event event)
+{
+
+}
+
+void LaserGenerator::weaponShoot()
+{
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !isLaserActive()) {
+		changeActivity();
+	}
+	else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && isLaserActive()) {
+		changeActivity();
+	}
+}
+
 void LaserGenerator::updateWeapon(float dt)
 {
+	updateLasers(dt, getWeaponPos(), assets->sCREEN_WIDTH);
 }
 
 /// <summary>
@@ -59,7 +80,7 @@ void LaserGenerator::updateLasers(float delta, sf::Vector2f laserStartingPos, in
 	laserZone.setPosition(laserZonePos);
 }
 
-bool LaserGenerator::checkCollisions(CEntity& b)
+bool LaserGenerator::checkCollisions(CMob& b)
 {
 	//étape 1 : vérifier si l'entité est déjà dans la liste
 	bool present = false;

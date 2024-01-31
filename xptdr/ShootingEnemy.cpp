@@ -8,8 +8,8 @@ ShootingEnemy::ShootingEnemy(CAssetManager* assetParam) {
 	setSprite();
 	moveSpeed = 5.f;
 	attackSpeed = 1.f;
-	bulletSpeed = 2.f;
-	BAW.referenceStat =CWeaponStat((float)damagePerBullet, bulletSpeed, sf::Vector2f(-1.f, 0.f), 0, "",BAW.bulletScale);
+	bulletSpeed = 0.2f;
+	BAW.getWeaponStats() = CWeaponStat((float)damagePerBullet, bulletSpeed, sf::Vector2f(-1.f, 0.f), 0, "", BAW.bulletScale, attackSpeed);
 	BAW.setWeaponPos(sf::Vector2f(getGlobalBounds().width / 2.f, 0.f));
 }
 
