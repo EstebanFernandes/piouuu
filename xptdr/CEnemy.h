@@ -75,7 +75,7 @@ public:
 		return (random * range) + min;
 	}
 	/// <summary>
-	/// 
+	/// Cette fonction prend une position, si celle ci vaut -1 qlq part on applique celle de base (random en Y et tout à droite pour 
 	/// </summary>
 	/// <param name="pos"></param>
 	virtual void initPosition(sf::Vector2f pos = sf::Vector2f(-1.f, -1.f))
@@ -93,7 +93,7 @@ public:
 			initPositionY = rand() % a;
 		}
 		else {
-			initPositionY = pos.y;
+			initPositionY = (int)pos.y;
 		}
 	}
 };

@@ -1,0 +1,10 @@
+<level isRandom="1" isInfinite="1">
+ <!-- ouais ouais mdrrr-->
+	<pattern  order="1" name="flappyBird" random ="1">
+		<wave >
+		
+			<enemy type="ShootingEnemy" pos="50%;50%"/>
+</wave>
+
+	</pattern>
+</level>

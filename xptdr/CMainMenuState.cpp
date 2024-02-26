@@ -203,6 +203,6 @@ void CMainMenuState::STEResume()
 	resizeScreen();
 	if (chara.getCanonNumber() < 40)
 	{
-		data->machine.AddState(StateRef(new CLevelGameState(data, chara, "C:/Users/scizz/source/repos/testXML/essai.xml")), true);
+		data->machine.AddState(StateRef(new CLevelGameState(data, chara, "res/level/essai.xml")), true);
 	}
 }
