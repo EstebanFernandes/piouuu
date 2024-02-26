@@ -1,0 +1,28 @@
+;;;;;;;;;;;;Tir Visé;;;;;;;;
+La première colonne n'est pas lu par le parser, c'est juste pour nous;<start>;<name>R2D2;;;;Balle/seconde;;;;;<start>;<name>Double tirs;;;Balle/seconde;;;;;
+;<column>;<id>;<previd>;<var>name;<var>description;<var>damagePerBullet;<var>attackSpeed;<var>bulletSpeed;<var>misc;<endLine>;<column>;<id>;<previd>;<var>name;<var>description;<var>damagePerBullet;<var>attackSpeed;<var>bulletSpeed;<var>misc;<endLine>
+1;;0;;R2D2;R2-D2 était un droïde astromécano de série R2. Il participa à plusieurs conflits majeurs de la galaxie, notamment la Guerre des Clones du côté de la République Galactique, puis la Guerre Civile Galactique du côté de l'Alliance Rebelle.\n Ce petit robot diablement efficace s'occupera de tirer pour vous, vous pouvez changer la cible avec la touche de tir;*1.5;*0.8;*1.1;autoAim;;1;0;;Double Tirs;ça flingue;*1.1;*1.1;;doubleTirs1;
+4;;1;0;Sniper;Nos ingénieurs ont fixé la ballistique ! ;*1.1;*1.2;*1.1;doubleTirs2;;4;1;0;Triple Tirs;Ouais y a pas d'effort là;;;;velocUp;
+4;;2;0;Dégat +;ça va tabasser là;*1.5;*1.2;*1.0;;;4;2;0;Spin;ça tourne;*1.2;;1.5;;
+7;;3;1;Am‚lioration;Woah attend mais tu vas vraiment faire mal;;*1.2;*1.4;Balle explosive ;;7;3;1;Amélioration;Woah attend mais tu vas vraiment faire mal;1.2;;1;;
+7;;4;2;Bullets in the blue  sky;Le nom c'est une ref à une chanson de U2 ( la confiture etc etc);;*1.5;*1.4;;;7;4;2;Bullets in the blue  sky;Le nom c'est une ref … une chanson de U2 ( la confiture etc etc);1.5;;1;;
+10;;5;3;Triple canon;T'abuse !;;;;;;10;5;3;Triple canon;T'abuse l…;1;3;1;;
+10;;6;4;I Need More Bullets;Glizzy overdrive activated;;;;;;10;6;4;I Need More Bullets;Glizzy overdrive activated;;;1;;
+;;<endColumn>;;;;;;;;;;<endColumn>;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;
+Fichier qui est lui par le jeu et qui permet de voir toutes les différentes améliorations pour l'arme principale;;;;;;;;Si une valeur est un float ou un int il faut préciser le type d'opération qu'on effectue desssus, * + - et rien équivaut à une affectation;;;;;;;;;;;;
+Ce qui est colorié en jaune est obligatoire en terme de placements sur un tableau ;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;<start>;<name>Sniper;;;;;;;;
+<start>;<name>fusil à pompe (on a tout pris à Cuphead);;;;;;;;;;<column>;<id>;<previd>;<var>name;<var>description;<var>damagePerBullet;<var>attackSpeed;<var>bulletSpeed;<var>moveSpeed;<endLine>
+<column>;<id>;<previd>;<var>name;<var>description;<var>damagePerBullet;<var>attackSpeed;<var>bulletSpeed;<var>misc;<var>moveSpeed;<endLine>;1;0;;Sniper;One Shot;*5;*0.2;*5;;
+1;0;;Gunshot;très bon pour gérer le corps à corps;1.2;4;1.1;gunshot;;;4;1;0;Balle blindée;Avec ça on va percer c'est sur!;*2;;1;;
+4;1;0;Balle blindée;Avec ça on va percer c'est sur!;;;;;;;4;2;0;Main Leste;Deux atouts piqué;*1.2;*1.5;;;
+4;2;0;Main Leste;Deux atouts piqué;;;;;;;;3;0;Sprinter;;*1.2;;;*1.4;
+;3;0;Sprinter;;;;;;;;7;4;1;Amélioration;Woah attend mais tu vas vraiment faire mal;*1.2;;1;;
+7;4;1;Amélioration;Woah attend mais tu vas vraiment faire mal;;;;;;;7;5;2;Bullets in the blue  sky;Le nom c'est une ref … une chanson de U2 ( la confiture etc etc);*1.5;;1;;
+7;5;2;Bullets in the blue  sky;Le nom c'est une ref … une chanson de U2 ( la confiture etc etc);;;;;;;10;6;3;Triple canon;T'abuse l…;*1.5;3;1;;
+10;6;3;Triple canon;T'abuse l…;;;;;;;10;7;4;I Need More Bullets;Glizzy overdrive activated;;;1;;
+10;7;4;I Need More Bullets;Glizzy overdrive activated;;;;;;;;<endColumn>;;;;;;;;
+;<endColumn>;;;;;;;;;;;;;;;;;;;

@@ -10,6 +10,7 @@ private:
 public:
 	ShootingEnemy(CAssetManager* asset);
 	ShootingEnemy(CAssetManager* asset, CMob* target);
+	ShootingEnemy(CAssetManager* asset, CMob* target_,CCharacter& stat,CWeaponStat WeaponStat,sf::Vector2f pos);
 	void updateMovement(float delta);
 	void enemyShoot();
 	~ShootingEnemy() {
@@ -23,5 +24,15 @@ public:
 	* Permet de faire des dégats aux joueurs avec les tirs des ennemis
 	*/
 	void updatewPlayer(float delta, CPlayer& player);
+	CEnemy* clone() override {
+		initPosition(initPos);
+		setSprite();
+		return new ShootingEnemy(*this);
+	}
+	void setSprite()
+	{
+		setLifeBar();
+		setPositionEntity((float)assets->sCREEN_WIDTH, (float)initPositionY);
+	}
 };
 

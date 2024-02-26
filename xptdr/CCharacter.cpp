@@ -30,7 +30,7 @@ CCharacter::CCharacter()
 	damagePerBullet = 5;
 	attackSpeed = 8.f;
 	level = 0;
-	canonNumber = 1;
+	canonNumber = 40;
 	bulletSpeed = 2.0f;
 }
 
@@ -42,6 +42,17 @@ void CCharacter::setCharacterStats(float maxHealthPointParam, float moveSpeedPar
 	damagePerBullet = damagePerBulletParam;
 	attackSpeed = attackSpeedParam;
 	bulletSpeed = BulletSpeedParam;
+	healthPoint = maxHealthPoint;
+}
+
+void CCharacter::setCharacterStats(CCharacter ch)
+{
+	maxHealthPoint = ch.maxHealthPoint;
+	moveSpeed = ch.moveSpeed;
+	canonNumber = ch.canonNumber;
+	damagePerBullet = ch.damagePerBullet;
+	attackSpeed = ch.attackSpeed;
+	bulletSpeed = ch.bulletSpeed;
 	healthPoint = maxHealthPoint;
 }
 

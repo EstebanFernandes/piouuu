@@ -2,6 +2,7 @@
 #include "CState.h"
 #include <string>
 #include "CJeu.h"
+#include"CPlayer.h"
 #include"CHugoDecrypte.h"
 #include"CCardUpgrade.h"
 //état qui gère les améliorations du joueur 1
@@ -10,10 +11,12 @@ class CUpgradeState : public CState
 private:
 	GameDataRef data;
 	int nbOfGraph;
+	int type;
 	//Liste des graphes qui suivent les améliorations du joueur
 	std::vector<CGrapheUpdate>* Graphs;
 	//Pointeur sur le joueur afin d'accéder plus facilement à ces stats
-	CCharacter* pointerToPlayer1;
+	CPlayer* pointerToPlayer1;
+	Weapon* pointerToWeapon;
 	int levelofPlayer;
 	//Liste qui gère les améliorations une fois que l'on arrive à la fin d'un arbre
 	std::vector<std::string> listUpgradeMax;
@@ -37,12 +40,15 @@ private:
 		{
 		case 0:
 			fileName = "res/data/principalweapon.csv";
+			type = 0;
 			break;
 		case 1:
-			fileName = "";
+			fileName = "res/data/secondaryweapon.csv";
+			type = 1;
 			break;
 		case 2:
 			fileName = "";
+			type = 2;
 			break;
 		}
 		if (fileName == "")
@@ -99,9 +105,11 @@ private:
 	//Méthodes et constructeurs
 	int whichKindofUpgrade() {
 		int temp = levelofPlayer;
-		while (temp >= 3)
-			temp -= 3;
-		return temp-1;
+		int res = temp % 3;
+		if (res == 2)
+			res = 1;
+		type = res;
+		return res;
 	}
 
 	void CreateCard(std::vector<std::string> type)
@@ -131,10 +139,15 @@ private:
 		}
 	}
 	void plusStats();
+	void applyStats();
+	float setValue(float init, std::string modif);
+	int setValue(int init, std::string modif);
+	bool matchTypeWithValue(std::string type, std::string value);
 public:
-	CUpgradeState(GameDataRef d, CCharacter* player, std::vector<CGrapheUpdate>* pointerToPlayerGraphs);
+	CUpgradeState(GameDataRef d, CPlayer* player, std::vector<CGrapheUpdate>* pointerToPlayerGraphs);
 	void STEInit(); 
 	void STEHandleInput();
 	void STEUpdate(float delta);
 	void STEDraw(float delta);
+	
 };

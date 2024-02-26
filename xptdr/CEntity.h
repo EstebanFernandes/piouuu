@@ -61,7 +61,7 @@ public:
 	
 	sf::Sprite& getSprite() { return ENTsprite; }
 	sf::Sprite* getPointerSprite() { return &ENTsprite; }
-	sf::FloatRect getGlobalBounds() {
+	sf::FloatRect getGlobalBounds() const {
 		return ENTsprite.getGlobalBounds();
 	}
 	void setPositionEntity(const float x, const float y) {
@@ -111,6 +111,25 @@ public:
 	void setSprite(const CEntity& r)
 	{
 		ENTsprite = r.ENTsprite;
+	}
+	//Fonction qui renverse le sprite selon une symétrie axiale
+	void flipSprite() {
+		sf::IntRect temp(ENTsprite.getTextureRect());
+		if (temp.left != 0)
+		{
+			temp.left = 0;
+		}
+		else
+		{
+			temp.left = temp.width;
+		}
+			temp.width = -temp.width;
+		ENTsprite.setTextureRect(temp);
+	}
+	bool isSpriteFlip() {
+		if (ENTsprite.getTextureRect().left != 0)
+			return true;
+		return false;
 	}
 };
 

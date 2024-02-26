@@ -16,10 +16,15 @@ private:
 	sf::Vector2f direction;
 public:
 	RusherEnemy(CAssetManager* assets);
+	RusherEnemy(CAssetManager* assets,CCharacter stat ,sf::Vector2f pos, CMob* target_);
 	RusherEnemy(CAssetManager* assets,CMob* target_);
 	void updateMovement(float delta);
 
 	void updateEntity(float delta);
 	void enemyShoot() {};
+	CEnemy* clone()  override {
+		initPosition();
+		return new RusherEnemy(*this);
+	}
 };
 

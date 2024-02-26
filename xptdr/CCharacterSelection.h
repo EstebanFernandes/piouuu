@@ -15,13 +15,17 @@ private :
 	CCharacter chosenCharacter;
 	CCarousel carousel;
 	sf::Text Title;
-
+	CCharacter* returnChar = NULL;
 	sf::Text ui;
 	sf::Vector2i mousePositionScreen;
 
 public:
 	// Constructeur
 	CCharacterSelection(GameDataRef _data);
+	CCharacterSelection(GameDataRef _data, CCharacter* ch)
+		: CCharacterSelection(_data) {
+		returnChar = ch;
+	}
 	void loadCharacters();
 
 	void STEInit();

@@ -14,22 +14,75 @@ void CPlayer::initStat()
 	score = 0;
 }
 
+void CPlayer::setValue(float& init, std::string modif)
+{
+	switch (modif[0])
+	{
+	case '*':
+		init = init * std::stof(modif.substr(1));
+		break;
+	case '+':
+		init = init + std::stof(modif.substr(1));
+		break;
+	case '-':
+		init = init - std::stof(modif.substr(1));
+		break;
+	default:
+		init = std::stoi(modif);
+		break;
+	}
+}
+
+void CPlayer::setValue(int& init, std::string modif)
+{
+	switch (modif[0])
+	{
+	case '*':
+		init = init * std::stoi(modif.substr(1));
+		break;
+	case '+':
+		init = init + std::stoi(modif.substr(1));
+		break;
+	case '-':
+		init = init - std::stoi(modif.substr(1));
+		break;
+	default:
+		init = std::stoi(modif);
+		break;
+	}
+}
+
 void CPlayer::setAssets(CAssetManager* a)
 {
 	assets = a;
 	mainWeapon->assets = a;
+	secondaryWeapon->assets = a;
+	assets->addSFX("bulletSound", &secondaryWeapon->bulletSound);
 	assets->addSFX("bulletSound", &mainWeapon->bulletSound);
 	setTexture(name);
 
 	if (isAnimated) anim = CAnimation(getPointerSprite(), sf::IntRect(0, 0, 153, 66), 4, 0.16f);
 	std::string nameImage;
+	CWeaponStat ws((float)damagePerBullet, bulletSpeed, sf::Vector2f(1.f, 0.f), 0, nameImage, sf::Vector2f(1.f, 1.f), attackSpeed);
+	mainWeapon->setWeaponStats(ws);
 	if (name.find("Rancoeur") != std::string::npos) {
 		mainWeapon->setBulletAsset("bulletImageRancoeur");
 		nameImage = "bulletImageRancoeur";
 	}
-	mainWeapon->getWeaponStats() = CWeaponStat((float)damagePerBullet, bulletSpeed, sf::Vector2f(1.f, 0.f), 0, nameImage, sf::Vector2f(1.f, 1.f), attackSpeed);
+	if (name.find("Golden") != std::string::npos) {
+		mainWeapon->setBulletAsset("bulletImageGolden");
+		nameImage = "bulletImageGolden";
+	}
+
 	initLifeBar();
 	setSprite();
+	mainWeapon->setTouche(sf::Keyboard::Num1);
+	ws.dir = sf::Vector2f(0.f, 1.f);
+	secondaryWeapon->setWeaponStats(ws);
+	secondaryWeapon->setBulletAsset("bulletSecond");
+	secondaryWeapon->setTouche(sf::Keyboard::Num2);
+	sf::Vector2f temp(0.f, -1.f);
+	secondaryWeapon->getWeaponStats().addDir(temp);
 }
 
 bool CPlayer::checkGlobalCollisions()
@@ -85,7 +138,7 @@ void CPlayer::setSecondaryWeapon(Weapon* weaponParam)
 
 void CPlayer::traitermisc(std::string& misc)
 {
-	const std::vector<std::string> supportedMisc{ "autoAim","velocUp" ,"doubleTirs1","doubleTirs2","gunshot","dot", "laser" };
+	const std::vector<std::string> supportedMisc{ "autoAim","velocUp" ,"doubleTirs1","doubleTirs2","gunshot","dot", "laser","explosiveBullet"};
 	int pos = (int)(std::find(supportedMisc.begin(), supportedMisc.end(), misc) - supportedMisc.begin());
 	if (pos >= supportedMisc.size()) {
 		std::cout << "Rien a été trouvé\n";
@@ -97,6 +150,26 @@ void CPlayer::traitermisc(std::string& misc)
 		mainWeapon->traiterMisc(pos);
 		misc.insert(0, "+");
 	}
+}
+
+void CPlayer::traitermisc(std::string& misc, Weapon* curWeapon)
+{
+	const std::vector<std::string> supportedMisc{ "autoAim","velocUp" ,"doubleTirs1","doubleTirs2","gunshot","dot", "laser","explosiveBullet" };
+	int pos = (int)(std::find(supportedMisc.begin(), supportedMisc.end(), misc) - supportedMisc.begin());
+	if (pos >= supportedMisc.size()) {
+		std::cout << "Rien a été trouvé\n";
+	}
+	else if (pos == 6) {
+		CWeaponStat a = curWeapon->getWeaponStats();
+		delete curWeapon;
+		curWeapon = new LaserGenerator(assets);
+		curWeapon->setWeaponStats(a);
+	}
+	else {
+		curWeapon->traiterMisc(pos);
+	}
+		misc.insert(0, "+");
+		specificites.push_back(misc);
 }
 
 void CPlayer::updateMisc()
@@ -195,7 +268,6 @@ void CPlayer::PLYupdateMovement(sf::Event event)
 
 
 	}
-	mainWeapon->weaponControls(event);
 }
 void CPlayer::updateDash(float delta)
 {
@@ -211,6 +283,7 @@ void CPlayer::updateDash(float delta)
 		wantToDash = false;
 	}
 }
+
 
 void CPlayer::updateMovement(float dt)
 {
@@ -243,23 +316,6 @@ void CPlayer::updateMovement(float dt)
 		}
 		else
 			moveEntity(direction * moveSpeed * dt * 60.f);
-
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-		{
-			//Si ce temps est trop faible on ne fait rien, 
-			if (bulletClock.getElapsedTime().asSeconds() >= 1.f / attackSpeed) {
-				sf::Vector2f nezdeLavion(
-					getSprite().getPosition().x + getGlobalBounds().width/2.f,
-					getSprite().getPosition().y );
-					//if (BAW.typeTir == BAW.autoAim)
-						//seekForTarget = true;
-					//BAW.iNeedMoreBullets(nezdeLavion);
-
-				// vient juste le restart le timer à la fin 
-				bulletClock.restart();
-			}
-		}
-
 	}
 }
 
@@ -318,19 +374,14 @@ void CPlayer::updateEntity(float dt)
 		maxXp += 10;
 		hasLevelUp = true;
 	}
-	sf::Vector2f nezdeLavion( getSprite().getPosition().x + getGlobalBounds().width / 2.f,
+	sf::Vector2f nezdeLavion(getSprite().getPosition().x + getGlobalBounds().width / 2.f,
 		getSprite().getPosition().y);
+	secondaryWeapon->setWeaponPos(nezdeLavion);
+	secondaryWeapon->weaponControls(sf::Event());
+	secondaryWeapon->updateWeapon(dt);
 	mainWeapon->setWeaponPos(nezdeLavion);
+	mainWeapon->weaponControls(sf::Event());
 	mainWeapon->updateWeapon(dt);
-	mainWeapon->weaponShoot();
-
-	/*
-	//tempn on update le laser
-	sf::Vector2f laserPos;
-	laserPos.x = getSprite().getPosition().x + getSprite().getGlobalBounds().width / 2.f;
-	laserPos.y = getSprite().getPosition().y;
-	lasers.updateLasers(dt, laserPos, assets->sCREEN_WIDTH);
-	*/
 }
 
 void CPlayer::renderEntity(sf::RenderTarget& target)
@@ -338,6 +389,7 @@ void CPlayer::renderEntity(sf::RenderTarget& target)
 	target.draw(getSprite());
 	renderLifeBar(target);
 	mainWeapon->renderWeapon(target);
+	secondaryWeapon->renderWeapon(target);
 }
 
 
@@ -368,3 +420,8 @@ void CPlayer::updateFx()
 	}
 }
 
+
+bool CPlayer::matchTypewithValue(std::string type, std::string value)
+{
+	return false;
+}

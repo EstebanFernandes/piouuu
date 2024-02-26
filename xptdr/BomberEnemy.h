@@ -9,6 +9,7 @@ private:
 public:
 	BomberEnemy(CAssetManager* assets);
 	BomberEnemy(CAssetManager* assets,bool isFacingLeft_);
+	BomberEnemy(CAssetManager* assets, CCharacter stat, CWeaponStat WStat , bool isFacingLeft_);
 	void changeInitalSide();
 	void changeInitialSide(bool RTL);
 	void enemyShoot();

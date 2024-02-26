@@ -2,6 +2,7 @@
 #include "CGameState.h"
 #include "CInfiniteGameState.h"
 #include "CTestGame.h"
+#include"CLevelGameState.h"
 CMainMenuState::CMainMenuState(GameDataRef _data) : data(_data)
 {
 }
@@ -18,7 +19,7 @@ void CMainMenuState::STEInit()
 		MAIN_MENU_TITLE_PATH); // On charge les textures
 
 	CButton temp(&(data->assets));
-	temp.setString("Jouer");
+	temp.setString("Test zone");
 	temp.setSize(data->assets.sCREEN_WIDTH * 0.15f, data->assets.sCREEN_HEIGHT * 0.1f);
 	temp.setPosition((data->assets.sCREEN_WIDTH / 2) - temp.getGlobalBounds().width / 2,
 		(data->assets.sCREEN_HEIGHT * 0.2f));
@@ -152,7 +153,7 @@ void CMainMenuState::choosedButton()
 		data->machine.AddState(StateRef(new CCharacterSelection(data)), true);
 		break;
 	case 1:
-		data->machine.AddState(StateRef(new CInfiniteGameState(data)), true);
+		data->machine.AddState(StateRef(new CCharacterSelection(data,&chara)), false);
 	case 2:
 		//data->machine.AddState(StateRef(new CClavierVirtuel(data, 2, 1)), true);
 		break;
@@ -195,4 +196,13 @@ void CMainMenuState::STEDraw(float delta)
 		data->window.draw(buttons[i]);
 	data->window.draw(info);
 	data->window.display();
+}
+
+void CMainMenuState::STEResume()
+{
+	resizeScreen();
+	if (chara.getCanonNumber() < 40)
+	{
+		data->machine.AddState(StateRef(new CLevelGameState(data, chara, "C:/Users/scizz/source/repos/testXML/essai.xml")), true);
+	}
 }

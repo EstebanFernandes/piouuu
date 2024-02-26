@@ -10,6 +10,9 @@ private :
 public:
 	bool isMobSet = false;
 	bool isGunShot = false;
+	bool isExplosive = false;
+	bool isThisIt = false;
+	sf::RectangleShape hitbox;
 	CBulletAuto();
 	CBulletAuto(CWeaponStat stat, CAssetManager* a);
 	CBulletAuto(int damage, float bulletSpeed, sf::Vector2f dir,int penetration, std::string nameImage, sf::Vector2f bulletScale_, CAssetManager* a);
@@ -53,5 +56,7 @@ public:
 		gunShotTotalDistance = distance;
 		isGunShot = true;
 	}
+	bool checkCollisions(CMob& b);
+	void renderEntity(sf::RenderTarget& target);
 };
 

@@ -1,6 +1,5 @@
 #pragma once
 #include "CState.h"
-#include "CPhysics.h"
 #include <iostream>
 #include "CPlayer.h"
 #include "CGameMenu.h"
@@ -14,9 +13,10 @@
 #include "CHittingEntity.h"
 #include "Boss.h"
 #include "RusherEnemy.h"
-
 #include <list>
 #include "CPowerUp.h"
+#include"CGrapheUpdate.h"
+#include"CUpgradeState.h"
 class CGameState : public CState
 {
 protected:
@@ -24,8 +24,14 @@ protected:
 	sf::Time gameTime;
 	sf::Clock gameClock;
 	CPlayer player1;
+	float clock;
 	std::vector<CHittingEntity*> entityList;
 	int* enemyNumber = new int();
+	std::vector<CGrapheUpdate> Upgradegraphs;
+	int currentLevelOfplayer = 0;
+	bool isThistheEnd = false;
+	bool hasLevelUp = false;
+	bulletStorage bulletstorage;
 	//engine related
 	//Background related:
 	CBackground BG1;

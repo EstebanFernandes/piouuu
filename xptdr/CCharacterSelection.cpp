@@ -81,7 +81,7 @@ void CCharacterSelection::STEInit()
 		screenwidth / 2.f - Title.getGlobalBounds().width / 2.f,
 		screenheight*0.1f - Title.getGlobalBounds().height / 2.f);
 	carousel.setSize(sf::Vector2f(screenwidth * 0.35f, screenwidth * 0.05f));
-	carousel.setEllipseVisibility(true);
+	carousel.setEllipseVisibility(false);
 	for (int i = 0; i < characterList.size(); i++)
 	{
 		chosenCharacter = characterList[i];
@@ -123,7 +123,12 @@ void CCharacterSelection::STEHandleInput()
 			{
 				if (!carousel.isMoving)
 				{
-					data->machine.AddState(StateRef(new CTestGame(data, chosenCharacter)), true);
+					if(returnChar==NULL)
+						data->machine.AddState(StateRef(new CTestGame(data, chosenCharacter)), true);
+					else {
+						*returnChar = chosenCharacter;
+						data->machine.RemoveState();
+					}
 					data->assets.stopMusique("MenuPrincipal");
 				}
 				break;

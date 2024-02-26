@@ -17,5 +17,8 @@ public:
 	void updateEntity(float delta) { saveBullet.updateWeapon(delta); }
 	void renderEntity(sf::RenderTarget& target) { saveBullet.renderWeapon(target); }
 	void saveBullets(CGunslinger& otherGunslinger);
+	CEnemy* clone() override {
+		return new bulletStorage(*this);
+	}
 };
 

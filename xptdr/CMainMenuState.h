@@ -21,6 +21,7 @@ private:
 	std::vector<float> where;
 	sf::Sprite CMMTitle;
 	sf::Text info;
+	CCharacter chara;
 	void choosedButton();
 	void outline(int previndex);
 public:
@@ -30,10 +31,7 @@ public:
 	void STEHandleInput();
 	void STEUpdate(float delta);
 	void STEDraw(float delta);
-	void STEResume()
-	{
-		resizeScreen();
-	}
+	void STEResume();
 	void resizeScreen();
 };
 

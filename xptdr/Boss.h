@@ -37,6 +37,9 @@ private:
 public:
 	Boss(CAssetManager* assetsParam, CPlayer* playerParam, std::vector<CHittingEntity*>* entityListParam, int* enemyNumber);
 
+	CEnemy* clone() override {
+		return new Boss(*this);
+	}
 	/**
 	possibilities :
 	- roaming : the roaming enemy

@@ -7,14 +7,21 @@ RoamingEnemy::RoamingEnemy()
 
 RoamingEnemy::RoamingEnemy(CAssetManager* assetParam) {
 	initEnnemy(assetParam);
-
+	
+	setDirectionX(-1.0f);
 	int ySpawnMax = assets->sCREEN_HEIGHT - (int)getGlobalBounds().height;
 	float maxDirY = 0.16f * (1.f-(initPositionY / ySpawnMax));
 	float minDirY = -(0.16f* initPositionY / (float)ySpawnMax);
-	moveSpeed = 60.f;
+	moveSpeed = 0.5f;
 	direction.y = RandomFloat(minDirY, maxDirY);
 	float angle = (float)180.f+(180.f / M_PIl)* atan2(direction.y, direction.x);
 	getSprite().setRotation(angle);
+}
+
+RoamingEnemy::RoamingEnemy(CAssetManager* asset, CCharacter stat)
+	: RoamingEnemy(asset)
+{
+	setCharacterStats(stat);
 }
 
 void RoamingEnemy::updateMovement(float delta)
@@ -23,7 +30,7 @@ void RoamingEnemy::updateMovement(float delta)
 		needDelete = true;
 	updateLifeBar();
 	if (onAvance == true)
-		moveEntity(sf::Vector2f(direction.x * delta * moveSpeed, direction.y * delta * moveSpeed));
+		moveEntity(direction * delta * moveSpeed * 60.f);
 }
 
 void RoamingEnemy::setDirectionY(float directionYParam)
@@ -43,7 +50,7 @@ void RoamingEnemy::setDirectionX(float directionXParam)
 void RoamingEnemy::setDirection(sf::Vector2f dir)
 {
 	direction.x = dir.x;
-	direction.x = dir.y;
+	direction.y = dir.y;
 	float angle = (float)180.f + (180.f / M_PIl) * atan2(direction.y, direction.x);
 	setRotation(angle);
 }

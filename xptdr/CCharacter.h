@@ -33,7 +33,7 @@ public:
 	CCharacter();
 
 	void setCharacterStats(float maxHealthPointParam, float moveSpeedParam, int canonNumberParam, int damagePerBulletParam, float attackSpeedParam, float BulletSpeedParam);
-
+	void setCharacterStats(CCharacter ch);
 	std::string getImageName();
 	std::string getName();
 	std::string getDescription();
@@ -54,6 +54,8 @@ public:
 
 	int getXp() { return xp; }
 	int getMaxXp() { return maxXp; }
+	void setXp(int leve) { xp = leve; }
+	void setMaxXp(int leve) { maxXp = level; }
 
 	int getDamagePerBullet() { return damagePerBullet; }
 	void setDamagePerBullet(int damagePerBulletParam) { damagePerBullet = damagePerBulletParam; }
@@ -70,7 +72,8 @@ public:
 
 	float getBulletSpeed() { return bulletSpeed; }
 	void setBulletSpeed(float bulletSpeedParam) { bulletSpeed = bulletSpeedParam; }
-	bool matchTypewithValue(std::string type, std::string value);
+	virtual bool matchTypewithValue(std::string type, std::string value);
 	static std::string returnTypeStylish(std::string type,std::string value);
+	std::vector<std::string>& getSpecifities(){ return specificites; }
 };
 

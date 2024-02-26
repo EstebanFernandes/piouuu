@@ -17,6 +17,7 @@ protected:
 	sf::Clock animationTimer;
 	sf::Sprite explosionSprite;
 	//float directionX = -3.f;
+	sf::Vector2f initPos;
 	float initPositionX = 0;
 	int initPositionY = 0;
 	//float directionY;
@@ -42,9 +43,7 @@ public:
 		//TEMPORAIRE FAUDRA REFAIRE LES CLASSES ENNEMY
 		scoreGived = 10;
 
-		int a = assets->sCREEN_HEIGHT - (int)getGlobalBounds().height;
-		initPositionY = rand() % a; 
-		initPositionX = (float)assets->sCREEN_WIDTH;
+		initPosition();
 		level = 0;
 		damage = 3;
 		maxHealthPoint = 20.f+15.f*level;
@@ -54,7 +53,7 @@ public:
 	float getScoreGived();
 	//renvoie true si l'animation d'explosion est finie
 	bool updateExplosionSprite();
-	void setSprite();
+	virtual void setSprite();
 	void updateEntity(float delta);
 	void updatewPlayer( float delta,CPlayer& player);
 	void specialBehaviorwithPlayer(CPlayer& player);
@@ -62,6 +61,7 @@ public:
 	void renderEntity(sf::RenderTarget& target);
 	void setPosition(float positionXParam, float PositionYParam);
 
+	virtual CEnemy* clone() = 0;
 	virtual void updateMovement(float delta) = 0;
 	virtual void enemyShoot() = 0;
 
@@ -73,6 +73,28 @@ public:
 		// then add .78, giving you a float between .78 and 4.5
 		float range = max - min;
 		return (random * range) + min;
+	}
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="pos"></param>
+	virtual void initPosition(sf::Vector2f pos = sf::Vector2f(-1.f, -1.f))
+	{
+		if (pos.x == -1.f)
+		{
+			initPositionX = (float)assets->sCREEN_WIDTH-getGlobalBounds().width;
+		}
+		else {
+			initPositionX = pos.x;
+		}
+		if ( pos.y == -1.f)
+		{
+			int a = assets->sCREEN_HEIGHT - (int)getGlobalBounds().height;
+			initPositionY = rand() % a;
+		}
+		else {
+			initPositionY = pos.y;
+		}
 	}
 };
 

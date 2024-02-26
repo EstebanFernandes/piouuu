@@ -16,11 +16,11 @@ BomberEnemy::BomberEnemy(CAssetManager* assets)
 	initPositionX = assets->sCREEN_WIDTH+ getSprite().getGlobalBounds().width;
 	initPositionY = (int) (assets->sCREEN_HEIGHT*0.1f);
 	setSprite();
-	setMoveSpeed(15.0f);
+	setMoveSpeed(0.5f);
 	setBulletSpeed(1.2f);
 	setAttackSpeed(1.f);
-	setRotation(180.f);
-	setDirection(sf::Vector2f(1.f, 0.f));
+	setDirection(sf::Vector2f(-1.f, 0.f));
+	rotate(180.f);
 	BAW.addShootType(BAW.bombe);
 	sf::Vector2f bulletScale = sf::Vector2f(0.2f, 0.2f);
 	BAW.getWeaponStats() = CWeaponStat((float)damagePerBullet, bulletSpeed, sf::Vector2f(0.f, 1.f), 0, "bombe", bulletScale, attackSpeed);
@@ -33,6 +33,14 @@ BomberEnemy::BomberEnemy(CAssetManager* assets, bool isFacingLeft_) :
 	changeInitialSide(isFacingLeft_);
 	setSprite();
 	setTexture("bomber");
+}
+
+BomberEnemy::BomberEnemy(CAssetManager* assets, CCharacter stat, CWeaponStat WStat, bool isFacingLeft_)
+	: BomberEnemy(assets,isFacingLeft_)
+{
+	setCharacterStats(stat);
+	BAW.getWeaponStats() = WStat;
+	BAW.setWeaponPos(sf::Vector2f(0.f, getSprite().getGlobalBounds().height / 2.f));
 }
 
 void BomberEnemy::changeInitalSide()

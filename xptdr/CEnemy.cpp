@@ -18,6 +18,7 @@ void CEnemy::initEnnemy(CAssetManager* a)
 	assets = a;
 	imageName = "enemyImage";
 	setTexture(imageName);
+	flipSprite();
 	getSprite().setScale(0.2f, 0.2f);
 	initAnimation();
 	initStat();
@@ -66,28 +67,12 @@ void CEnemy::updatewPlayer(float delta, CPlayer& player)
 	{
 		player.reduceHP((float)damage);
 	}
-	//Ici on regarde le type 
-	/*
-	std::vector<CBulletAuto>* guns = player.getMainWeapon()->getVector();
-	if (player.lasers.checkCollisions(*this)) {
-		reduceHP(player.getDamagePerBullet());
-	}
-	size_t temp =guns->size();
-	for (size_t i = 0; i < temp; i++)
-	{
-		
-		if (isDead == false)
-		{
-
-			if ((*guns)[i].checkCollisions((*this)))
-			{
-				reduceHP((float)(*guns)[i].getDamage());
-			}
-		}
-	}
-	*/
+	
 	if (player.getMainWeapon()->checkCollisions(*this)) {
-		reduceHP(player.getDamagePerBullet());
+		reduceHP((float)player.getDamagePerBullet());
+	}
+	if (player.getSecondaryWeapon()->checkCollisions(*this)) {
+		reduceHP((float)player.getDamagePerBullet());
 	}
 	if (healthPoint <= 0)
 	{

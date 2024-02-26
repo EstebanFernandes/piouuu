@@ -78,7 +78,7 @@ void CBullet::setDirectionSprite()
 bool CBullet::checkCollisions(CMob& b)
 {
 	auto ret = std::find(entityHitting.begin(), entityHitting.end(), &b);
-	if (CEntity::checkCollisions(b))
+	if (CEntity::checkCollisions(b)&&!b.isDead)
 	{//les deux entités sont en contact
 	//L'élement n'est pas dans la liste, donc la balle n'est pas entrain de taper cette entité
 		if (ret == entityHitting.end() && penetration >= 0)

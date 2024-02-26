@@ -39,9 +39,10 @@ private:
 	float dashDistance = 100.f;
 	float distancethrought=0.f;
 	float msDash = 1.f;
+	bool isDashInvicible = false;
+	float dashDamage = 0.f;
 	sf::Clock hitClock;
 	//Liste des effets sur les balles, on les ajoutes avant de tirer 
-	std::vector<effetspecial*> effectByBullet;
 	bool hittype = false;
 
 	/// <summary>
@@ -52,14 +53,14 @@ private:
 	/// <summary>
 	/// pointeur vers l'arme secondaire
 	/// </summary>
-	Weapon* secondaryWeapon = nullptr;
+	Weapon* secondaryWeapon = new CGunslinger();
 
 	// Constrcuteurs et destruceurs 
 	void setSprite();
 	void initStat();
-
+	void setValue(float& init, std::string modif);
+	void setValue(int& init, std::string modif);
 public:
-
 	bool hasLevelUp = false;
 	bool seekForTarget=false;
 	CPlayer();
@@ -92,11 +93,18 @@ public:
 	Weapon* getSecondaryWeapon();
 	void setSecondaryWeapon(Weapon* weaponParam);
 	void traitermisc(std::string& misc);
+	void traitermisc(std::string& misc,Weapon *curWeapon);
 	void updateMisc();
 	void AAA() {
-		specificites.push_back("dot");
+		specificites.push_back("explosiveBullet");
 		traitermisc(specificites.back());
 	}
 	void iNeedMoreBullet();
 	void updateDash(float delta);
+	bool matchTypewithValue(std::string type, std::string value);
+	void setDashDistance(float dd) { dashDistance = dd; }
+	float getDashDistance() { return dashDistance; }
+	void setDashDamage(float dd) { dashDamage = dd; }
+	float getDashDamage() { return dashDamage; }
+	void setIsDashInvicible(bool isD) { isDashInvicible = isD; }
 };

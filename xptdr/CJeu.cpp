@@ -19,7 +19,6 @@ void CJeu::JEURun()
 {
 
 	data->window.setFramerateLimit(fps);
-	srand(static_cast<unsigned int>(time(nullptr)));
 	float newTime, frameTime, interpolation;
 	float currentTime = JEUClock.getElapsedTime().asSeconds();
 	float accumulator = 0.0f;

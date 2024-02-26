@@ -12,6 +12,7 @@ public:
 	bool needDelete = false;
 	virtual void update(float delta) = 0;
 	virtual void action()=0;
+	virtual effetspecial* clone() const = 0;
 	void changeTarget(CCharacter* newTarget) { target = newTarget; }
 	void resetClock() {
 		clock.restart();

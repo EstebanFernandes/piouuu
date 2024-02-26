@@ -11,5 +11,8 @@ public:
 	testEnemy(CAssetManager* a,sf::Vector2f pos, int hp);
 	void updateMovement(float delta);
 	void enemyShoot();
+	CEnemy* clone() override {
+		return new testEnemy(*this);
+	}
 };
 

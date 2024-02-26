@@ -1,0 +1,25 @@
+#pragma once
+#include"CGameState.h"
+#include"CParserXML.h"
+class CLevelGameState : public CGameState
+{
+private:
+	std::string levelFilePath;
+	Level level;
+	void deleteEntity(int& i);
+public:
+	CLevelGameState(GameDataRef _data);
+	CLevelGameState(GameDataRef _data, CCharacter characterParam,std::string filePath);
+	CLevelGameState(GameDataRef _data, CCharacter characterParam){}
+	/// <summary>
+	/// Filepath throught an xml file defining a level
+	/// </summary>
+	/// <param name="filePath"></param>
+	void STEInit();
+	void STEUpdate(float delta);
+	void initAssets();
+	void GameOver();
+	void STEResume();
+};
+
+

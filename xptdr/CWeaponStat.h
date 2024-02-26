@@ -9,6 +9,8 @@ public:
 	float bulletDamage;
 	float bulletSpeed;
 	sf::Vector2f dir;
+	//Stock les directions de l'arme (pour les armes qui tire plusieurs fois)
+	std::vector<sf::Vector2f> dir2;
 	unsigned int penetration;
 	std::string nameImage;
 	sf::Vector2f bulletScale;
@@ -20,5 +22,7 @@ public:
 	CWeaponStat();
 	CWeaponStat(float bulletDamage_, float bulletSpeed_, sf::Vector2f dir_, unsigned int penetration_, std::string nameImage_, sf::Vector2f bulletScale_, float attackSpeedParam);
 	void paramDot(float dotDamage_, float dotCD_, float dotTimer_);
+	void addDir(sf::Vector2f& dir);
+	void changeDir(sf::Vector2f& dir, int index = 0);
 };
 

@@ -1,17 +1,14 @@
 #pragma once
 #include"CBulletAuto.h"
 #include "Weapon.h"
-#include <bitset>
 #include"dot.h"
 #define Balle = true
 #define Tir = false
-#define nbBullet 4
 #define nbAim 6
 class CGunslinger : public Weapon
 {
 private:
 	std::vector<CBulletAuto> magasine;
-
 	//grr paw
 	sf::Clock bulletClock;
 
@@ -35,6 +32,7 @@ public:
 	void setBulletAsset(std::string assetName) {
 		getWeaponStats().nameImage = assetName;
 	}
+	void setWeaponStats(CWeaponStat statsParam);
 	void renderWeapon(sf::RenderTarget& target);
 	void traiterMisc(int misc);
 	bool checkCollisions(CMob& b);
@@ -45,7 +43,6 @@ public:
 	void iNeedMoreBullets(sf::Vector2f pos);
 	
 	void addShootType(int type);
-	void addBulletType(int type);
 	/// <summary>
 	/// Spécialement pour les balles autoguidés
 	/// permet de changer de cible
@@ -68,7 +65,6 @@ public:
 	/// </summary>
 	/// <param name="index"></param>
 	void addByIndex(CBulletAuto&,int index);
-	
 	void setGunShotDistance(float e)
 	{
 		getWeaponStats().maxDistance = e;

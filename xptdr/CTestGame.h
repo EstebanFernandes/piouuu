@@ -5,12 +5,6 @@
 class CTestGame : public CGameState
 {
 private:
-	std::vector<CGrapheUpdate> Upgradegraphs;
-	//std::vector<CBulletAuto*> persistant;
-	int currentLevelOfplayer = 0;
-	bool isThistheEnd = false;
-	bool hasLevelUp = false;
-	bulletStorage bulletstorage;
 	/// <summary>
 	/// Possibilities :
 	///	 -roaming, a standard enemy
@@ -20,7 +14,6 @@ private:
 	/// - rusher, a quick guy			qu'est-ce qu'ils sont beaux
 	///	 -boss, first prototype of a boss
 	/// </summary>
-	void addEnemy(std::string enemyName);
 public:
 
 	CTestGame(GameDataRef _data); 
@@ -29,11 +22,9 @@ public:
 	void STEInit();
 	void initAssets();
 	void STEHandleInput();
-	void STEUpdate(float delta);
+
 	void addPowerUp();
-	void STEDraw(float delta);
 	void GameOver();
-	void STEResume();
-	void STEPause();
+	void STEUpdate(float delta);
 };
 

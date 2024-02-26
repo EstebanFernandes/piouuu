@@ -11,6 +11,13 @@ RusherEnemy::RusherEnemy(CAssetManager* assetParam)
 	target = NULL;
 }
 
+RusherEnemy::RusherEnemy(CAssetManager* assets, CCharacter stat, sf::Vector2f pos, CMob* target_)
+	:RusherEnemy(assets,target_)
+{
+	setCharacterStats(stat);
+	initPos = pos;
+}
+
 RusherEnemy::RusherEnemy(CAssetManager* assets, CMob* target_)
 	: RusherEnemy(assets)
 {
@@ -56,6 +63,9 @@ void RusherEnemy::updateEntity(float delta)
 			if (target != NULL)
 			{
 				direction = utilities::dirAtoB(getSprite().getPosition(), target->getSprite().getPosition());
+				if (isSpriteFlip())
+					setRotation(utilities::getAngleFromDirection(direction) + 180.f);
+				else
 				setRotation(utilities::getAngleFromDirection(direction));
 			}
 			fxRush.play();

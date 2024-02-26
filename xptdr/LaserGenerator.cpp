@@ -4,15 +4,14 @@ LaserGenerator::LaserGenerator()
 {
 	setTypeArme(laser);
 	triangle.setPosition(500, 500);
-	triangle.setOrigin(triangle.getLocalBounds().width / 2.f, triangle.getLocalBounds().height / 2.f);
 	triangle.rotate(-90);
 	//triangle.setPosition();
 	triangle.setOrigin(triangle.getLocalBounds().width/2.f, triangle.getLocalBounds().height / 2.f);
 	triangle.setFillColor(sf::Color(255, 0, 0, 100));
 
 
-	laserZone = sf::RectangleShape(sf::Vector2f(laserWidth, laserHeight));
-	laserZone.setOrigin(0, laserZone.getLocalBounds().height / 2.f);
+	laserZone = sf::RectangleShape(sf::Vector2f(laserWidth, 2*laserHeight));
+	//laserZone.setOrigin(0, laserZone.getLocalBounds().height / 2.f);
 	laserZone.setFillColor(sf::Color(255, 0, 0, 100));
 }
 
@@ -31,17 +30,18 @@ void LaserGenerator::renderWeapon(sf::RenderTarget& target)
 
 void LaserGenerator::weaponControls(sf::Event event)
 {
-
+	if (sf::Keyboard::isKeyPressed(touche) && !isLaserActive()) {
+		weaponShoot();
+	}
+	else if (!sf::Keyboard::isKeyPressed(touche) && isLaserActive()) {
+		
+		weaponShoot();
+	}
 }
 
 void LaserGenerator::weaponShoot()
 {
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !isLaserActive()) {
-		changeActivity();
-	}
-	else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && isLaserActive()) {
-		changeActivity();
-	}
+	changeActivity();
 }
 
 void LaserGenerator::updateWeapon(float dt)
@@ -70,13 +70,13 @@ void LaserGenerator::updateLasers(float delta, sf::Vector2f laserStartingPos, in
 		laserWidth = (float)screenWidth - (triangle.getPosition().x + (triangle.getGlobalBounds().width / 2.f));
 	}
 	sf::Vector2f laserSize;
-	laserSize.y = laserHeight;
+	laserSize.y = triangle.getGlobalBounds().height;
 	laserSize.x = laserWidth;
 	laserZone.setSize(laserSize);
 
 	sf::Vector2f laserZonePos;
 	laserZonePos.x = triangle.getPosition().x + triangle.getGlobalBounds().width / 2.f;
-	laserZonePos.y = triangle.getPosition().y;
+	laserZonePos.y = triangle.getGlobalBounds().top;
 	laserZone.setPosition(laserZonePos);
 }
 

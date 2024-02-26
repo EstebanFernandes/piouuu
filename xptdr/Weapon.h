@@ -4,6 +4,7 @@
 #include"CWeaponStat.h"
 #include "CMob.h"
 
+#define nbBullet 4
 class Weapon
 {
 protected:
@@ -13,11 +14,13 @@ protected:
 	/// </summary>
 	sf::Vector2f weaponPos;
 
+	std::vector<effetspecial*> effetOnHit;
 	/// <summary>
 	/// On utilise cette balle pour définir le comportement de toute celle que l'on va tiré, on peut ajouter des effets dessus,
 	/// modifier ses stats.
 	/// </summary>
 	CWeaponStat referenceStat;
+	sf::Keyboard::Key touche;
 public:
 	~Weapon();
 
@@ -26,7 +29,7 @@ public:
 	/// </summary>
 	typedef enum
 	{
-		doubleTirs1 = 1,
+		doubleTirs1 = 4,
 		doubleTirs2,
 		autoAim,
 		gunshotAim,
@@ -64,13 +67,17 @@ public:
 	void setWeaponPos(sf::Vector2f posParam);
 	void setTypeArme(int type);
 	int getTypeArme();
+	void addBulletType(int index);
 	CWeaponStat& getWeaponStats();
 	/// <summary>
 	/// Défini la position relative de l'arme par rapport au centre de l'arme
 	/// </summary>
 	/// <param name="pos"></param>
-	void setWeaponStats(CWeaponStat statsParam);
-
+	virtual void setWeaponStats(CWeaponStat statsParam);
+	void setTouche(sf::Keyboard::Key touche_) {
+		touche = touche_;
+	}
+	std::vector<effetspecial*>& getEffect();
 	// à redéfinir
 
 	virtual void changeTarget(CMob* r) = 0;

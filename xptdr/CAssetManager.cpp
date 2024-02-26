@@ -74,10 +74,11 @@ void CAssetManager::changeScreenType(sf::RenderWindow& window, bool& isFullScree
 {
 	if (!isFullScreen)
 	{
+		//Borderless Fullscreen
 		isFullScreen = true;
 		sCREEN_WIDTH = 1920;
 		sCREEN_HEIGHT = 1080;
-		window.create(sf::VideoMode(sCREEN_WIDTH, sCREEN_HEIGHT), "PIOU PIOU", sf::Style::Fullscreen);
+		window.create(sf::VideoMode(sCREEN_WIDTH, sCREEN_HEIGHT), "PIOU PIOU", sf::Style::None);
 	}
 	else
 	{
