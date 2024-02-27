@@ -42,6 +42,16 @@ namespace utilities {
 		}
 		return angle;
 	}
+	/// <summary>
+	/// return the direction in float from an angle 
+	/// </summary>
+	/// <param name="dir"></param>
+	/// <returns></returns>
+	inline sf::Vector2f getDirectionFromAngle(float angle)
+	{
+		float temp = angle * (3.1415926535897932384626f / 180.f);
+		return sf::Vector2f(cos(temp), sin(temp));
+	}
 	inline float renvoieNormeVecteur(sf::Vector2f dir) {
 		return (float)sqrt(pow(dir.x,2) + pow(dir.y,2));
 	}

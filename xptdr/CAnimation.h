@@ -23,6 +23,7 @@ private:
 	int currentYFrameNumber=0;
 
 public:
+	bool isHorizontal = true;
 	//Constructeur par défaut
 	CAnimation() 
 	{
@@ -58,14 +59,22 @@ public:
 	}
 
 	void updateAnimation() {
-		if (currentXFrameNumber == NumberofFrame)
-			currentXFrameNumber = 0;
-		if (animationTimer.getElapsedTime().asSeconds() > timeBetweenFrames)
+		int* tempPointer = NULL;
+		if (isHorizontal)
 		{
-			switchFrames();
-			currentXFrameNumber++;
-			animationTimer.restart();
+			tempPointer = &currentXFrameNumber;
 		}
+		else {
+			tempPointer = &currentYFrameNumber;
+		}
+			if (*tempPointer == NumberofFrame)
+				*tempPointer = 0;
+			if (animationTimer.getElapsedTime().asSeconds() > timeBetweenFrames)
+			{
+				switchFrames();
+				*tempPointer= *tempPointer+1;
+				animationTimer.restart();
+			}
 	}
 
 	void switchFrames() {

@@ -28,12 +28,18 @@ void CTestGame::initAssets()
 	data->assets.LoadTexture("lifePowerUp", "res\\img\\lifePowerUp.png");
 	data->assets.LoadTexture("enemyImage", ENEMYPNG_FILEPATH);
 	data->assets.LoadTexture("explosion", "res\\img\\explosion_sprite_sheet.png");
+	data->assets.LoadTexture("bulletSecond", "res\\img\\characters\\bullet_Second.png");
 	data->assets.LoadTexture("bulletImage", "res\\img\\bulletImage.png");
 	data->assets.LoadTexture("bulletImageRancoeur", "res\\img\\bullet_Rancoeur.png");
 	data->assets.LoadTexture("bombe", "res\\img\\bombe.png");
 	data->assets.LoadTexture("boss", "res\\img\\spacecraft_player_1.png");
+	data->assets.LoadTexture("beginLaser", "res\\img\\laser\\beginLaser.png");
+	data->assets.LoadTexture("fullLaser", "res\\img\\laser\\fullLaser.png");
+	
+	
 	data->assets.LoadSFX("bulletSound", "res\\sfx\\Piou.wav");
 	data->assets.LoadSFX("enemyRush", "res\\sfx\\vaisseau_fonce.wav");
+	
 }
 
 void CTestGame::STEHandleInput()
@@ -58,7 +64,7 @@ void CTestGame::STEHandleInput()
 			}
 			if (event.key.code == sf::Keyboard::Space)
 			{
-				player1.gainXP(20);
+				player1.gainXP(5);
 			}
 			if (event.key.code == sf::Keyboard::A)
 			{
@@ -91,7 +97,7 @@ void CTestGame::STEHandleInput()
 			if (event.key.code == sf::Keyboard::T)
 			{
 				player1.AAA();
-				//player1.addBuff(new dot(&player1,1.f,0.5f,4.f), true);
+			
 			}
 			//TEMP C POUR MOURIR
 			if (event.key.code == sf::Keyboard::M)

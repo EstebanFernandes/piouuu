@@ -11,7 +11,7 @@ private:
 	std::vector<CBulletAuto> magasine;
 	//grr paw
 	sf::Clock bulletClock;
-
+	sf::Clock bulletClock2;
 	/// <summary>
 	/// Fonction qui initialise tous les buffs selon les stats dans reference Stat ainsi que le nommbre "type balle"
 	/// </summary>
@@ -89,5 +89,6 @@ public:
 	/// <param name="damage"> les dommages de la balle</param>
 	/// <param name="bulletSpeed">la vitesse de la balle</param>
 	void shootTowardDirection(sf::Vector2f initPos, sf::Vector2f targetPos);
+
 };
 

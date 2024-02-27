@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CGunslinger.h"
+#include "CAnimation.h"
 
 /// <summary>
 /// Associe une clock à une entité
@@ -21,10 +22,17 @@ private:
 	/// </summary>
 	std::vector<lasersCible> ciblesLasers;
 	sf::RectangleShape laserZone;
+	CAnimation bLaserAnim;
+	sf::Sprite beginLaser;
+	CAnimation fLaserAnim;
+	sf::Sprite fullLaser;
+	CAnimation eLaserAnim;
+	sf::Sprite endLaser;
 	bool isActive = false;
+	float baseHeight = 96;
+	sf::Vector2f laserScale;
 	float laserHeight = 80;
 	float laserWidth = 500;
-	sf::CircleShape  triangle = sf::CircleShape(laserHeight, 3);
 
 public:
 	LaserGenerator();

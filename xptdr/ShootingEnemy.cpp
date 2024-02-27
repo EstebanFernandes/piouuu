@@ -31,7 +31,7 @@ ShootingEnemy::ShootingEnemy(CAssetManager* asset, CMob* target_, CCharacter& st
 	BAW.setWeaponPos(sf::Vector2f(getGlobalBounds().width / 2.f, 0.f));
 	damage = stat.getDamagePerBullet();
 	initPosition(initPos);
-	BAW.addShootType(Weapon::classic);
+	BAW.addShootType(typeBullet::classic);
 }
 
 void ShootingEnemy::updateMovement(float delta)

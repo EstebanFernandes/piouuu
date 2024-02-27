@@ -43,6 +43,17 @@ void CGunslinger::updateWeapon(float dt)
 				i--;
 		}
 	}
+	if (bulletClock2.getElapsedTime().asSeconds() >= 0.05f&&typeTir==typeAim::Spin)
+	{
+		bulletClock2.restart();
+		if (angleOffset != 359.f)
+		{
+			angleOffset++;
+		}
+		else
+			angleOffset = 0;
+		std::cout << angleOffset << std::endl;
+	}
 }
 
 void CGunslinger::weaponControls(sf::Event event )
@@ -72,7 +83,10 @@ void CGunslinger::iNeedMoreBullets(sf::Vector2f pos)
 	initBuff(reference);
 	for (int i = 0; i < referenceStat.dir2.size(); i++)
 	{
-		reference.setDirection(referenceStat.dir2[i]);
+		sf::Vector2f tempDirection = referenceStat.dir2[i];
+		if (typeTir == Spin)
+			tempDirection = utilities::getDirectionFromAngle(utilities::getAngleFromDirection(tempDirection)+angleOffset);
+		reference.setDirection(tempDirection);
 		reference.setDirectionSprite();
 		magasine.push_back(reference);
 		bulletSound.play();

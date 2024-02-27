@@ -5,6 +5,26 @@
 #include "CMob.h"
 
 #define nbBullet 4
+	typedef enum
+	{
+		doubleTirs1 = 4,
+		doubleTirs2,
+		autoAim,
+		gunshotAim,
+		circleShot,
+		bombe,
+		Spin
+	} typeAim;
+
+
+	typedef enum
+	{
+		classic,
+		dotBullet,
+		explosiveBullet,
+		fire
+	} typeBullet;
+
 class Weapon
 {
 protected:
@@ -21,31 +41,13 @@ protected:
 	/// </summary>
 	CWeaponStat referenceStat;
 	sf::Keyboard::Key touche;
+	float angleOffset;
 public:
 	~Weapon();
 
 	/// <summary>
 	/// Pour définir le comportement du tir on choisit l'un de ceux ci dessous
 	/// </summary>
-	typedef enum
-	{
-		doubleTirs1 = 4,
-		doubleTirs2,
-		autoAim,
-		gunshotAim,
-		circleShot,
-		bombe
-	} typeAim;
-
-
-	typedef enum
-	{
-		classic,
-		dotBullet,
-		explosiveBullet,
-		fire
-	} typeBullet;
-
 
 	sf::Sound bulletSound;
 	typedef enum {
@@ -76,6 +78,10 @@ public:
 	virtual void setWeaponStats(CWeaponStat statsParam);
 	void setTouche(sf::Keyboard::Key touche_) {
 		touche = touche_;
+	}
+	sf::Keyboard::Key getTouche()
+	{
+		return touche;
 	}
 	std::vector<effetspecial*>& getEffect();
 	// à redéfinir

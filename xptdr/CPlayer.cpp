@@ -144,7 +144,9 @@ void CPlayer::traitermisc(std::string& misc)
 		std::cout << "Rien a été trouvé\n";
 	}
 	else if (pos==6) {
+		sf::Keyboard::Key temp = mainWeapon->getTouche();
 		setMainWeapon(new LaserGenerator(assets));
+		mainWeapon->setTouche(temp);
 	}
 	else {
 		mainWeapon->traiterMisc(pos);

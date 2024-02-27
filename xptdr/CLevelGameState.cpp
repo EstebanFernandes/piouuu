@@ -69,7 +69,7 @@ void CLevelGameState::STEUpdate(float delta)
 		size_t temp = entityList.size();
 		int previousMax = (int)temp;
 		//Si c'est un AutoAim
-		if (player1.getMainWeapon()->typeTir == player1.getMainWeapon()->autoAim)
+		if (player1.getMainWeapon()->typeTir == typeAim::autoAim)
 		{
 			for (int i = 0; i < temp; i++)
 			{

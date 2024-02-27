@@ -96,8 +96,7 @@ public:
 	void traitermisc(std::string& misc,Weapon *curWeapon);
 	void updateMisc();
 	void AAA() {
-		specificites.push_back("explosiveBullet");
-		traitermisc(specificites.back());
+		secondaryWeapon->typeTir = typeAim::Spin;
 	}
 	void iNeedMoreBullet();
 	void updateDash(float delta);

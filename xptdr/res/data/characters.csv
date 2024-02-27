@@ -2,6 +2,4 @@ Name;ImageLink;Description;isAnimated;maxHealthPoint;moveSpeed;canonNumber;damag
 lavion;res/img/characters/BaseCharacterSpriteSheet.png;Toujours un classique;animated;;;;;3.0;;
 Rancoeur;res/img/characters/RancoeurSpriteSheet.png;Reviens aux origines;animated;;0.5;;5;;;
 La Golden Show….;res/img/characters/golden.png;Plus lent que le l'itération de base, avec des lourds dégats et un style frémissant;animated;;;;;;;
-DOUBLE;res/img/characters/BaseCharacterSpriteSheet.png;Toujours un classique;animated;;;;;3.0;;
-Rancoeur2;res/img/characters/RancoeurSpriteSheet.png;Reviens aux origines;animated;;0.5;;5;;;
-LaserMan;res/img/characters/RancoeurSpriteSheet.png;Teste ce bon vieux laser;animated;;;;;;;laser
+LaserMan;res/img/characters/RancoeurSpriteSheet.png;Teste ce bon vieux laser;animated;;;;;3.0;;laser

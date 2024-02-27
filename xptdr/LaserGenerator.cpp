@@ -3,28 +3,32 @@
 LaserGenerator::LaserGenerator()
 {
 	setTypeArme(laser);
-	triangle.setPosition(500, 500);
-	triangle.rotate(-90);
-	//triangle.setPosition();
-	triangle.setOrigin(triangle.getLocalBounds().width/2.f, triangle.getLocalBounds().height / 2.f);
-	triangle.setFillColor(sf::Color(255, 0, 0, 100));
-
-
-	laserZone = sf::RectangleShape(sf::Vector2f(laserWidth, 2*laserHeight));
-	//laserZone.setOrigin(0, laserZone.getLocalBounds().height / 2.f);
-	laserZone.setFillColor(sf::Color(255, 0, 0, 100));
 }
 
-LaserGenerator::LaserGenerator(CAssetManager* assetsParam) : LaserGenerator()
+LaserGenerator::LaserGenerator(CAssetManager* assetsParam) 
+	: LaserGenerator()
 {
 	assets = assetsParam;
+	beginLaser.setTexture(assets->GetTexture("beginLaser"));
+	bLaserAnim = CAnimation(&beginLaser, sf::IntRect(0, 0, 96, 400), 4, 0.16f);
+	bLaserAnim.isHorizontal = false;
+	fullLaser.setTexture(assets->GetTexture("fullLaser"));
+	fLaserAnim = CAnimation(&fullLaser, sf::IntRect(0, 0, 1824, 400), 4, 0.16f);
+	fLaserAnim.isHorizontal = false;
+	//endLaser.setTexture(assets->GetTexture("endLaser"));
+	//eLaserAnim = CAnimation(&endLaser, sf::IntRect(0, 0, 153, 400), 4, 0.16f);
+	laserZone = sf::RectangleShape(sf::Vector2f(beginLaser.getGlobalBounds().width+fullLaser.getGlobalBounds().width, baseHeight));
+	laserZone.setOrigin(0, laserZone.getLocalBounds().height / 2.f);
+	beginLaser.setOrigin(0, beginLaser.getLocalBounds().height / 2.f);
+	fullLaser.setOrigin(0, fullLaser.getLocalBounds().height / 2.f);
 }
 
 void LaserGenerator::renderWeapon(sf::RenderTarget& target)
 {
 	if (isActive) {
-		target.draw(triangle);
-		target.draw(laserZone);
+		target.draw(beginLaser);
+		target.draw(fullLaser);
+		//target.draw(endLaser);
 	}
 }
 
@@ -47,6 +51,8 @@ void LaserGenerator::weaponShoot()
 void LaserGenerator::updateWeapon(float dt)
 {
 	updateLasers(dt, getWeaponPos(), assets->sCREEN_WIDTH);
+	bLaserAnim.updateAnimation();
+	fLaserAnim.updateAnimation();
 }
 
 /// <summary>
@@ -56,10 +62,11 @@ void LaserGenerator::updateWeapon(float dt)
 /// <param name="laserStartingPos">Postion d'où part le laser, souvent devant l'avion</param>
 void LaserGenerator::updateLasers(float delta, sf::Vector2f laserStartingPos, int screenWidth)
 {
-	sf::Vector2f laserPos;
-	laserPos.x = laserStartingPos.x + triangle.getGlobalBounds().width / 2.f;
-	laserPos.y = laserStartingPos.y;
-	triangle.setPosition(laserPos);
+	sf::Vector2f laserPos = laserStartingPos;
+	beginLaser.setPosition(laserStartingPos);
+	laserZone.setPosition(laserStartingPos);
+	laserPos.x += beginLaser.getGlobalBounds().width;
+	fullLaser.setPosition(laserPos);
 	/*
 	sf::Vector2f laserSize;
 	laserSize.y = laserHeight;
@@ -67,17 +74,12 @@ void LaserGenerator::updateLasers(float delta, sf::Vector2f laserStartingPos, in
 	laserZone.setSize(laserSize);
 	*/
 	if (laserUnlimitedRange) {
-		laserWidth = (float)screenWidth - (triangle.getPosition().x + (triangle.getGlobalBounds().width / 2.f));
+		laserWidth = (float)screenWidth - beginLaser.getPosition().x;
 	}
 	sf::Vector2f laserSize;
-	laserSize.y = triangle.getGlobalBounds().height;
+	laserSize.y = baseHeight;
 	laserSize.x = laserWidth;
 	laserZone.setSize(laserSize);
-
-	sf::Vector2f laserZonePos;
-	laserZonePos.x = triangle.getPosition().x + triangle.getGlobalBounds().width / 2.f;
-	laserZonePos.y = triangle.getGlobalBounds().top;
-	laserZone.setPosition(laserZonePos);
 }
 
 bool LaserGenerator::checkCollisions(CMob& b)
@@ -99,7 +101,7 @@ bool LaserGenerator::checkCollisions(CMob& b)
 		}
 	}
 	//On vérifie si un ennemie se trouve dans la zone
-	if (b.Enemy &&  isActive && (triangle.getGlobalBounds().intersects(b.getSprite().getGlobalBounds()) || laserZone.getGlobalBounds().intersects(b.getSprite().getGlobalBounds()))) {
+	if (b.Enemy &&  isActive && laserZone.getGlobalBounds().intersects(b.getSprite().getGlobalBounds())) {
 		
 
 		if (!present) {

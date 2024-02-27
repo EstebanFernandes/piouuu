@@ -21,7 +21,7 @@ BomberEnemy::BomberEnemy(CAssetManager* assets)
 	setAttackSpeed(1.f);
 	setDirection(sf::Vector2f(-1.f, 0.f));
 	rotate(180.f);
-	BAW.addShootType(BAW.bombe);
+	BAW.addShootType(typeAim::bombe);
 	sf::Vector2f bulletScale = sf::Vector2f(0.2f, 0.2f);
 	BAW.getWeaponStats() = CWeaponStat((float)damagePerBullet, bulletSpeed, sf::Vector2f(0.f, 1.f), 0, "bombe", bulletScale, attackSpeed);
 	BAW.setWeaponPos(sf::Vector2f(0.f, getSprite().getGlobalBounds().height / 2.f));
