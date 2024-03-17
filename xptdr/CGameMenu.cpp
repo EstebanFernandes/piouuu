@@ -8,7 +8,7 @@ void CGameMenu::choosedButton()
 		resumeClicked = true;
 		ahah = resumeClock.restart().Zero;
 		data->assets.reprendreMusique("PartieJour");
-		decompte.setFont(data->assets.GetFont("Lato"));
+		decompte.setFont(data->assets.GetFont("Nouvelle"));
 		break;
 	case 1:
 		data->machine.AddState(StateRef(new CSettingState(data)), false);

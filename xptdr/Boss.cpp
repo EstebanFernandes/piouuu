@@ -13,8 +13,8 @@ Boss::Boss(CAssetManager* assetsParam, CPlayer* playerParam, std::vector<CHittin
 	getSprite().setScale(0.7f, 0.7f);
 	rotate(180);
 	setTexture("boss");
-	initPositionX = ((float)assets->sCREEN_WIDTH) * 1.15f;
-	initPositionY = (int)(((float)assets->sCREEN_HEIGHT) * 0.5f);
+	spawnPos.x = ((float)assets->sCREEN_WIDTH) * 1.15f;
+	spawnPos.y = ((float)assets->sCREEN_HEIGHT) * 0.5f;
 	explosionSprite.setScale(0.6f, 0.6f);
 	moveSpeed = 3.f;
 	attackSpeed = 1.75f;
@@ -65,7 +65,6 @@ void Boss::addEnemyColumn()
 			enemy->setScoreGived(0);
 			enemy->setLevel(0);
 			enemy->setPositionEntity((float)assets->sCREEN_WIDTH, enemyTest.getSprite().getGlobalBounds().height / 2 + assets->sCREEN_HEIGHT * (i / (float)enemyColumnNumber));
-			enemy->setDirectionY(0);
 			entityList->push_back(enemy);
 			(*enemyNumber)++;
 		}

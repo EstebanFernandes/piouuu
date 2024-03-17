@@ -8,24 +8,10 @@ CSlider::CSlider(float width, float length)
 {
 }
 
-CSlider::CSlider(CAssetManager* a,sf::Vector2f pos, sf::Vector2f size, std::string nameOfSlider)
+CSlider::CSlider(CAssetManager* a, sf::Vector2f pos, sf::Vector2f size, std::string nameOfSlider)
+	:CSlider(a, size, nameOfSlider)
 {
-	value = 0;
-	hasTitle = true;
-	style = Horizontal;
-	asset = a;
-	textPercentage.setFont(asset->GetFont("Lato"));
-	textPercentage.setString("0%");
-	textPercentage.setCharacterSize(20);
-	NameOfSlider.setFont(asset->GetFont("Lato"));
-	NameOfSlider.setString(nameOfSlider);
-	NameOfSlider.setCharacterSize(20);
-	back.setFillColor(sf::Color::Black);
-	setSize(size);
 	setPosition(pos);
-	cursor.setRadius(5.f);
-	cursor.setOrigin(cursor.getRadius(), cursor.getRadius());
-	setCursor();
 }
 
 CSlider::CSlider(CAssetManager* a, sf::Vector2f size, std::string nameOfSlider)
@@ -34,16 +20,15 @@ CSlider::CSlider(CAssetManager* a, sf::Vector2f size, std::string nameOfSlider)
 	hasTitle = true;
 	style = Horizontal;
 	asset = a;
-	textPercentage.setFont(asset->GetFont("Lato"));
+	textPercentage.setFont(asset->GetFont("Nouvelle"));
 	textPercentage.setString("0%");
 	textPercentage.setCharacterSize(20);
-	NameOfSlider.setFont(asset->GetFont("Lato"));
+	NameOfSlider.setFont(asset->GetFont("Nouvelle"));
 	NameOfSlider.setString(nameOfSlider);
 	NameOfSlider.setCharacterSize(20);
 	back.setFillColor(sf::Color::Black);
 	setSize(size);
-	cursor.setRadius(5.f);
-	cursor.setOrigin(cursor.getRadius(), cursor.getRadius());
+	cursor.setOrigin(cursor.getLocalBounds().width / 2.f, cursor.getLocalBounds().height / 2.f);
 	setCursor();
 }
 
@@ -91,6 +76,7 @@ void CSlider::setSize(float x, float y, int charSize)
 	interiorBack.width = back.getGlobalBounds().width - back.getGlobalBounds().width * (2 * padding.x);
 	interiorBack.height = back.getGlobalBounds().height - back.getGlobalBounds().height * (2 * padding.y);
 	line.setSize(sf::Vector2f(interiorBack.width, interiorBack.height * 0.03f));
+	cursor.setSize(sf::Vector2f(line.getGlobalBounds().height * 2.f, line.getGlobalBounds().height * 2.f));
 	if (hasTitle && charSize != -1)
 		NameOfSlider.setCharacterSize(charSize);
 	if (charSize != -1)

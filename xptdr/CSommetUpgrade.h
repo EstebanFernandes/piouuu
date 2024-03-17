@@ -1,6 +1,9 @@
 #pragma once
 #include"CSommet.h"
 #include<vector>
+/// <summary>
+/// Extension de la classe CSommet, adapté aux arbres d'améliorations
+/// </summary>
 class CSommetUpgrade : public CSommet
 {
 private:

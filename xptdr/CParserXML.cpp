@@ -60,16 +60,27 @@ void CParserXML::addEnemy(std::string enemyName,std::vector<std::string> values)
     int screenheight = asset->sCREEN_HEIGHT;
     int screenwidth = asset->sCREEN_WIDTH;
     bool hasTarget = std::stoi(values[11]);
-    size_t fade = values[3].find(';');
-    sf::Vector2f pos;
+    //Ennemi
+    enemy enemyToAdd;
+    enemyToAdd.enemy = NULL;
+    enemyToAdd.spawnerTiming = std::stof(values[1]);
+    //Info sur l'ennemi direction/Position et spawn side
+    enemyInfo infoE;
+    //Spawn side
+    infoE.spawnSide = values[13];
+    //Direction
+    size_t fade = values[4].find(';');
+    infoE.direction = sf::Vector2f(std::stof(values[4].substr(0, fade)), std::stof(values[4].substr(fade + 1)));
+    //Position (soit en absolu, soit en pourcentage selon l'écran
+    fade = values[3].find(';');
     std::string posString = values[3];
     if (posString.find('%')!=std::string::npos)
     {
-        pos.x = screenwidth*(std::stof(posString.substr(0, fade-1)) / 100.f);
-        pos.y = screenheight * (std::stof(posString.substr(fade+1, posString.size()-1)) / 100.f);
+        infoE.pos.x = screenwidth*(std::stof(posString.substr(0, fade-1)) / 100.f);
+        infoE.pos.y = screenheight * (std::stof(posString.substr(fade+1, posString.size()-1)) / 100.f);
     }
     else
-        pos = sf::Vector2f(std::stof(values[3].substr(0, fade)), std::stof(values[3].substr(fade+1)));
+        infoE.pos = sf::Vector2f(std::stof(values[3].substr(0, fade)), std::stof(values[3].substr(fade+1)));
     CCharacter CS;
     CS.setMaxHealth(std::stof(values[2]));
     CS.setMoveSpeed(std::stof(values[6]));
@@ -81,58 +92,50 @@ void CParserXML::addEnemy(std::string enemyName,std::vector<std::string> values)
     W.bulletSpeed = std::stof(values[9]);
     W.attackSpeed = std::stof(values[10]);
     /*
-        flag = { "type","spawnTime","hp", "pos"  ,"dir"  ,"moveTo" ,"moveSpeed","damage","damageonHit","bulletSpeed","attackSpeed","hasTarget"};
-        = { "undefined","0"        ,"20", "-1;-1","-2;-2", "-1;-1" , "2"        , "3","3","1","0.5","0"};
+        flag = { "type","spawnTime","health", "pos","direction","moveTo","moveSpeed",
+                "damage","damageonPerBullet","bulletSpeed","attackSpeed","hasTarget","scoreGived","apparitionDirection"};
+            defaultValue = { "undefined","0","20", "-1;-1","-2;-2", "-1;-1" , "2",
+                "3","3","1","0.5","0","0","droite"};
     */
-    if (enemyName == "RoamingEnemy") {
+    if (enemyName == "roamingEnemy") {
         RoamingEnemy* temp;
-             temp = new RoamingEnemy(asset,CS);
-        enemy a;
-        a.enemy = temp;
-        a.spawnerTiming = std::stof(values[1]);
-        level.addEnemy(a);
+             temp = new RoamingEnemy(asset,CS,infoE);
+             enemyToAdd.enemy = temp;
     }
-    else if (enemyName == "ShootingEnemy") {
-        ShootingEnemy* temp = new ShootingEnemy(asset, target,CS,W,pos);
-        temp->setBulletStorage(bStorage);
-        enemy a;
-        a.enemy = temp;
-        a.spawnerTiming = std::stof(values[1]);
-        level.addEnemy(a);
+    else if (enemyName == "shootingEnemy") {
+        ShootingEnemy* temp=NULL;
+        if(hasTarget==NULL)
+        {
+            ShootingEnemy* temp = new ShootingEnemy(asset, NULL, CS, W,infoE );
+            temp->setBulletStorage(bStorage);
+            enemyToAdd.enemy = temp;
+        }
+        else
+        {
+            ShootingEnemy* temp = new ShootingEnemy(asset, target, CS, W, infoE);
+            temp->setBulletStorage(bStorage);
+            enemyToAdd.enemy = temp;
+        }
+        
     }
-    else if (enemyName == "BombingEnemy") {
-        BomberEnemy* temp = new BomberEnemy(asset);
+    else if (enemyName == "bomber") {
+        BomberEnemy* temp = new BomberEnemy(asset,CS,W,infoE);
         temp->setBulletStorage(bStorage);
-        enemy a;
-        a.enemy = temp;
-        a.spawnerTiming = std::stof(values[1]);
-        level.addEnemy(a);
-    }
-    else if (enemyName == "bomberInverse") {
-        BomberEnemy* temp = new BomberEnemy(asset, false);
-        temp->setBulletStorage(bStorage);
-        enemy a;
-        a.enemy = temp;
-        a.spawnerTiming = std::stof(values[1]);
-        level.addEnemy(a);
+        enemyToAdd.enemy = temp;
     }
     else if (enemyName == "pantin") {
-        testEnemy* temp = new testEnemy(asset,pos, (int)CS.getMaxHealth());
-        enemy a;
-        a.enemy = temp;
-        a.spawnerTiming = std::stof(values[1]);
-        level.addEnemy(a);
+        //testEnemy* temp = new testEnemy(asset,pos, (int)CS.getMaxHealth());
+        //enemyToAdd.enemy = temp;
     }
-    else if (enemyName == "RusherEnemy") {
-        RusherEnemy* temp = new RusherEnemy(asset,CS,pos,target);
-        enemy a;
-        a.enemy = temp;
-        a.spawnerTiming = std::stof(values[1]);
-        level.addEnemy(a);
+    else if (enemyName == "rusher") {
+        //RusherEnemy* temp = new RusherEnemy(asset,CS,pos,target);
+        //enemyToAdd.enemy = temp;
     }
     else {
         std::cout << "tentative d'invocation d'un ennemi qui n'existe pas";
     }
+    if(enemyToAdd.enemy!=NULL)
+        level.addEnemy(enemyToAdd);
 }
 bool CParserXML::flag(std::string name, pt::ptree::const_iterator& value)
 {
@@ -168,10 +171,10 @@ bool CParserXML::flag(std::string name, pt::ptree::const_iterator& value)
             defaultValue = { "-1" };
             break;
         case 5://Enemy
-            flag = { "type","spawnTime","hp", "pos","dir","moveTo","moveSpeed",
-                "damage","damageonHit","bulletSpeed","attackSpeed","hasTarget"};
+            flag = { "type","spawnTime","health", "pos","direction","moveTo","moveSpeed",
+                "damage","damageonPerBullet","bulletSpeed","attackSpeed","autoAim","scoreGived","apparitionDirection"};
             defaultValue = { "undefined","0","20", "-1;-1","-2;-2", "-1;-1" , "2",
-                "3","3","1","0.5","0"};
+                "3","3","1","0.5","0","0","droite"};
             break;
         }
         test = explore_children(value, flag, defaultValue);

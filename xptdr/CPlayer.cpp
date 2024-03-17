@@ -5,8 +5,10 @@
 
 void CPlayer::setSprite()
 {
-	getSprite().setScale(0.7f, 0.7f);
-	getSprite().setPosition((assets->sCREEN_WIDTH / 4.f) - (getSprite().getGlobalBounds().width/2), (assets->sCREEN_HEIGHT / 2.f) - (getSprite().getGlobalBounds().height/2.f));
+	//getSprite().setScale(0.7f, 0.7f);
+	//R2Sprite.setScale(0.7f, 0.7f);
+	//R2Offset = R2Offset * 0.7f;
+	setPositionEntity((assets->sCREEN_WIDTH / 4.f) - (getSprite().getGlobalBounds().width / 2), (assets->sCREEN_HEIGHT / 2.f) - (getSprite().getGlobalBounds().height / 2.f));
 }
 
 void CPlayer::initStat()
@@ -28,7 +30,7 @@ void CPlayer::setValue(float& init, std::string modif)
 		init = init - std::stof(modif.substr(1));
 		break;
 	default:
-		init = std::stoi(modif);
+		init = std::stof(modif);
 		break;
 	}
 }
@@ -60,7 +62,11 @@ void CPlayer::setAssets(CAssetManager* a)
 	assets->addSFX("bulletSound", &secondaryWeapon->bulletSound);
 	assets->addSFX("bulletSound", &mainWeapon->bulletSound);
 	setTexture(name);
-
+	R2Sprite.setTexture(assets->GetTexture("R2D2"));
+	R2Sprite.setOrigin(0.f, 0.f);
+	R2Anim = CAnimation(&R2Sprite, sf::IntRect(0, 0, 30, 30), 1, 0.16f);
+	R2Anim.pxbetFrames = 2;
+	R2Offset = sf::Vector2f(22.f, -6.f);
 	if (isAnimated) anim = CAnimation(getPointerSprite(), sf::IntRect(0, 0, 153, 66), 4, 0.16f);
 	std::string nameImage;
 	CWeaponStat ws((float)damagePerBullet, bulletSpeed, sf::Vector2f(1.f, 0.f), 0, nameImage, sf::Vector2f(1.f, 1.f), attackSpeed);
@@ -68,6 +74,7 @@ void CPlayer::setAssets(CAssetManager* a)
 	if (name.find("Rancoeur") != std::string::npos) {
 		mainWeapon->setBulletAsset("bulletImageRancoeur");
 		nameImage = "bulletImageRancoeur";
+		//mainWeapon->getWeaponStats().bulletScale = sf::Vector2f(1.5f, 1.5f);
 	}
 	if (name.find("Golden") != std::string::npos) {
 		mainWeapon->setBulletAsset("bulletImageGolden");
@@ -83,6 +90,8 @@ void CPlayer::setAssets(CAssetManager* a)
 	secondaryWeapon->setTouche(sf::Keyboard::Num2);
 	sf::Vector2f temp(0.f, -1.f);
 	secondaryWeapon->getWeaponStats().addDir(temp);
+	mainWeapon->setAimBoolean(&seekForTarget);
+	secondaryWeapon->setAimBoolean(&seekForTarget);
 }
 
 bool CPlayer::checkGlobalCollisions()
@@ -93,16 +102,36 @@ bool CPlayer::checkGlobalCollisions()
 	nextBounds.top += currentBounds.height / 2.f;
 	//Top collision and bot collision
 
-	if (currentBounds.top <= 0)
-		setPositionEntity(nextBounds.left, currentBounds.height/2.f);
-	else if(currentBounds.top + currentBounds.height >= assets->sCREEN_HEIGHT)
-		setPositionEntity(nextBounds.left, assets->sCREEN_HEIGHT - currentBounds.height/2.f);
+	if (currentBounds.top < 0){
+		setPositionEntity(nextBounds.left, currentBounds.height / 2.f);
+		 currentBounds = getGlobalBounds();
+		 nextBounds = currentBounds;
+		nextBounds.left += currentBounds.width / 2.f;
+		nextBounds.top += currentBounds.height / 2.f;
+	}
+	else if(currentBounds.top + currentBounds.height > assets->sCREEN_HEIGHT){
+		setPositionEntity(nextBounds.left, assets->sCREEN_HEIGHT - currentBounds.height / 2.f);
+		currentBounds = getGlobalBounds();
+		nextBounds = currentBounds;
+		nextBounds.left += currentBounds.width / 2.f;
+		nextBounds.top += currentBounds.height / 2.f;
+	}
 	//Left and right collision
 
-	if (currentBounds.left <= 0)
-		setPositionEntity(currentBounds.width/2.f, nextBounds.top);
-	else if (currentBounds.left + currentBounds.width >= assets->sCREEN_WIDTH)
-		setPositionEntity(assets->sCREEN_WIDTH - currentBounds.width/2.f, nextBounds.top);
+	if (currentBounds.left < 0){
+		setPositionEntity(currentBounds.width / 2.f, nextBounds.top);
+		currentBounds = getGlobalBounds();
+		nextBounds = currentBounds;
+		nextBounds.left += currentBounds.width / 2.f;
+		nextBounds.top += currentBounds.height / 2.f;
+	}
+	else if (currentBounds.left + currentBounds.width > assets->sCREEN_WIDTH){
+		setPositionEntity(assets->sCREEN_WIDTH - currentBounds.width / 2.f, nextBounds.top);
+		currentBounds = getGlobalBounds();
+		nextBounds = currentBounds;
+		nextBounds.left += currentBounds.width / 2.f;
+		nextBounds.top += currentBounds.height / 2.f;
+	}
 	return false;
 }
 
@@ -145,8 +174,9 @@ void CPlayer::traitermisc(std::string& misc)
 	}
 	else if (pos==6) {
 		sf::Keyboard::Key temp = mainWeapon->getTouche();
-		setMainWeapon(new LaserGenerator(assets));
+		setMainWeapon(new laserWeapon(assets));
 		mainWeapon->setTouche(temp);
+		misc.insert(0, "+");
 	}
 	else {
 		mainWeapon->traiterMisc(pos);
@@ -154,24 +184,43 @@ void CPlayer::traitermisc(std::string& misc)
 	}
 }
 
-void CPlayer::traitermisc(std::string& misc, Weapon* curWeapon)
+void CPlayer::traitermisc(std::string& misc, int type)
 {
-	const std::vector<std::string> supportedMisc{ "autoAim","velocUp" ,"doubleTirs1","doubleTirs2","gunshot","dot", "laser","explosiveBullet" };
+	const std::vector<std::string> supportedMisc{ "autoAim","velocUp" ,"doubleTirs1","doubleTirs2","gunshot","dot", "laser","explosiveBullet","spin"};
 	int pos = (int)(std::find(supportedMisc.begin(), supportedMisc.end(), misc) - supportedMisc.begin());
 	if (pos >= supportedMisc.size()) {
 		std::cout << "Rien a été trouvé\n";
 	}
 	else if (pos == 6) {
-		CWeaponStat a = curWeapon->getWeaponStats();
-		delete curWeapon;
-		curWeapon = new LaserGenerator(assets);
-		curWeapon->setWeaponStats(a);
+		if (type == 1)
+		{
+			sf::Keyboard::Key t = secondaryWeapon->getTouche();
+			CWeaponStat a = secondaryWeapon->getWeaponStats();
+			setSecondaryWeapon(new laserWeapon(assets));
+			secondaryWeapon->setWeaponStats(a);
+			secondaryWeapon->setTouche(t);
+		}
+		else if (type == 0)
+		{
+			sf::Keyboard::Key t = mainWeapon->getTouche();
+			CWeaponStat a = mainWeapon->getWeaponStats();
+			setMainWeapon(new laserWeapon(assets));
+			mainWeapon->setWeaponStats(a);
+			mainWeapon->setTouche(t);
+		}
 	}
 	else {
-		curWeapon->traiterMisc(pos);
+		if (type == 1)
+		{
+			secondaryWeapon->traiterMisc(pos);
+		}
+		else if (type == 0)
+		{
+			mainWeapon->traiterMisc(pos);
+		}
 	}
-		misc.insert(0, "+");
-		specificites.push_back(misc);
+	misc.insert(0, "+");
+	specificites.push_back(misc);
 }
 
 void CPlayer::updateMisc()
@@ -239,30 +288,30 @@ void CPlayer::PLYupdateMovement(sf::Event event)
 	switch (event.type)
 	{
 	case sf::Event::KeyPressed :
-		if (event.key.code == sf::Keyboard::Z)
+		if (event.key.code == upKey)
 			isMovingUp = true;
-		else if (event.key.code == sf::Keyboard::Q)
+		else if (event.key.code == leftKey)
 			isMovingLeft = true;
-		else if (event.key.code == sf::Keyboard::S)
+		else if (event.key.code == downKey)
 			isMovingDown = true;
-		else if (event.key.code == sf::Keyboard::D)
+		else if (event.key.code == rightKey)
 			isMovingRight = true;
-		if (event.key.code == sf::Keyboard::V &&dashClock.getElapsedTime().asSeconds()>=cdDash)
+		if (event.key.code == dashKey &&dashClock.getElapsedTime().asSeconds()>=cdDash)
 		{
 			wantToDash = true;
 			dashClock.restart();
 		}
 		break;
 	case sf::Event::KeyReleased:
-		if (event.key.code == sf::Keyboard::Z)
+		if (event.key.code == upKey)
 			isMovingUp = false;
-		else if (event.key.code == sf::Keyboard::Q)
+		else if (event.key.code == leftKey)
 			isMovingLeft = false;
-		else if (event.key.code == sf::Keyboard::S)
+		else if (event.key.code == downKey)
 			isMovingDown = false;
-		else if (event.key.code == sf::Keyboard::D)
+		else if (event.key.code == rightKey)
 			isMovingRight = false;
-		if (event.key.code == sf::Keyboard::V)
+		if (event.key.code == dashKey)
 			wantToDash = false;
 		break;
 	default:
@@ -304,11 +353,26 @@ void CPlayer::updateMovement(float dt)
 		if (isMovingRight)
 			direction.x += 1.f;
 		if (direction.y == 1.f)
+		{
+			R2Anim.setDifferentAnimation(2);
+			R2Offset.y = -8.f;
+			setPositionEntity(getSprite().getPosition());
 			anim.setDifferentAnimation(2);
+		}
 		else if (direction.y == -1.f)
+		{
+			R2Offset.y = -5.f;
+			setPositionEntity(getSprite().getPosition());
+			R2Anim.setDifferentAnimation(1);
 			anim.setDifferentAnimation(1);
+		}
 		else
+		{
+			R2Offset.y = -6.f;
+			setPositionEntity(getSprite().getPosition());
+			R2Anim.resetAnimation();
 			anim.resetAnimation();
+		}
 		dir = direction;
 		if (wantToDash)
 		{
@@ -378,7 +442,7 @@ void CPlayer::updateEntity(float dt)
 	}
 	sf::Vector2f nezdeLavion(getSprite().getPosition().x + getGlobalBounds().width / 2.f,
 		getSprite().getPosition().y);
-	secondaryWeapon->setWeaponPos(nezdeLavion);
+	secondaryWeapon->setWeaponPos(R2Sprite.getPosition());
 	secondaryWeapon->weaponControls(sf::Event());
 	secondaryWeapon->updateWeapon(dt);
 	mainWeapon->setWeaponPos(nezdeLavion);
@@ -389,9 +453,9 @@ void CPlayer::updateEntity(float dt)
 void CPlayer::renderEntity(sf::RenderTarget& target)
 {
 	target.draw(getSprite());
-	renderLifeBar(target);
 	mainWeapon->renderWeapon(target);
 	secondaryWeapon->renderWeapon(target);
+	target.draw(R2Sprite);
 }
 
 
@@ -399,6 +463,7 @@ void CPlayer::updateFx()
 {
 	if (getAnimated()) {
 		anim.updateAnimation();
+		R2Anim.updateAnimation();
 	}
 	if (hasBeenHit)
 	{

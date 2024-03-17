@@ -201,6 +201,7 @@
     <ClCompile Include="InterfaceShootingEnemy.cpp" />
     <ClCompile Include="InterfaceState.cpp" />
     <ClCompile Include="LaserGenerator.cpp" />
+    <ClCompile Include="laserWeapon.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="lifeBarForEntity.cpp" />
     <ClCompile Include="lifeForEntity.cpp" />
@@ -283,6 +284,7 @@
     <ClInclude Include="InterfaceShootingEnemy.h" />
     <ClInclude Include="InterfaceState.h" />
     <ClInclude Include="LaserGenerator.h" />
+    <ClInclude Include="laserWeapon.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="lifeBarForEntity.h" />
     <ClInclude Include="lifeForEntity.h" />

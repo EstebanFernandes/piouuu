@@ -34,7 +34,7 @@ CCardUpgrade::CCardUpgrade( std::vector<std::string> Upgrade_, std::vector<std::
 	type.erase(type.begin() + index);
 	cardTitle.setString(title);
 	cardTitle.setFillColor(sf::Color::White);
-	cardTitle.setFont(asset->GetFont("Lato"));
+	cardTitle.setFont(asset->GetFont("Nouvelle"));
 	cardTitle.setCharacterSize(75);
 	cardTitle.setPosition(pos.x + (xSize - cardTitle.getGlobalBounds().width) / 2, pos.y);
 	resizeText(cardTitle);
@@ -53,7 +53,7 @@ CCardUpgrade::CCardUpgrade( std::vector<std::string> Upgrade_, std::vector<std::
 	type.erase(type.begin() + index);
 	cardDescription.setString(description);
 	cardDescription.setFillColor(sf::Color::White);
-	cardDescription.setFont(asset->GetFont("Lato"));
+	cardDescription.setFont(asset->GetFont("Nouvelle"));
 	cardDescription.setCharacterSize(35);
 	cardDescription.setPosition(pos.x + (xSize - cardDescription.getGlobalBounds().width) / 2, pos.y + ySize * 0.8f);
 	resizeText(cardDescription);
@@ -67,7 +67,7 @@ CCardUpgrade::CCardUpgrade( std::vector<std::string> Upgrade_, std::vector<std::
 			std::string tempString = CCharacter::returnTypeStylish(type[i], Upgrade[i]) ;
 			temp.setString(tempString);
 			temp.setFillColor(sf::Color::White);
-			temp.setFont(asset->GetFont("Lato"));
+			temp.setFont(asset->GetFont("Nouvelle"));
 			temp.setCharacterSize(35);
 			int posY = (int)YSizepris+ padding+ (int)temp.getGlobalBounds().height*i ;
 			temp.setPosition(pos.x + (xSize - temp.getGlobalBounds().width) / 2, (float)posY);
@@ -93,13 +93,13 @@ CCardUpgrade::CCardUpgrade(std::string Upgrade_, std::string type_, CAssetManage
 	std::string title = type_;
 	cardTitle.setString(title);
 	cardTitle.setFillColor(sf::Color::White);
-	cardTitle.setFont(asset->GetFont("Lato"));
+	cardTitle.setFont(asset->GetFont("Nouvelle"));
 	cardTitle.setCharacterSize(75);
 	cardTitle.setPosition(pos.x + (xSize - cardTitle.getGlobalBounds().width) / 2, pos.y);
 	resizeText(cardTitle);
 	cardDescription.setString(CCharacter::returnTypeStylish(type_, Upgrade_));
 	cardDescription.setFillColor(sf::Color::White);
-	cardDescription.setFont(asset->GetFont("Lato"));
+	cardDescription.setFont(asset->GetFont("Nouvelle"));
 	cardDescription.setCharacterSize(35);
 	cardDescription.setPosition(pos.x + (xSize - cardDescription.getGlobalBounds().width) / 2,
 		pos.y + (ySize - cardDescription.getGlobalBounds().height) / 2);
@@ -110,7 +110,7 @@ void CCardUpgrade::setPosition(sf::Vector2f r)
 	pos = r;
 	cardBack.setPosition(pos);
 	cardTitle.setPosition(pos.x + (xSize - cardTitle.getGlobalBounds().width) / 2, pos.y);
-	int YSizepris = (int)(ySize * 0.3f);
+	/*int YSizepris = (int)(ySize * 0.2f);
 	int padding = 5;
 	for (int i = 0; i < Stats.size(); i++)
 	{
@@ -118,6 +118,8 @@ void CCardUpgrade::setPosition(sf::Vector2f r)
 		Stats[i].setPosition(pos.x + (xSize - Stats[i].getGlobalBounds().width) / 2.f, (float)posY);
 		YSizepris += padding + (int)(Stats[i].getGlobalBounds().height);
 	}
+	*/
+	fillSpace(Stats, sf::FloatRect(pos.x + xSize * 0.05f , pos.y + ySize * 0.2f, xSize * 0.95f, ySize * 0.6f));
 	cardDescription.setPosition(pos.x + (xSize - cardDescription.getGlobalBounds().width) / 2, pos.y + ySize * 0.8f);
 }
 
@@ -131,45 +133,63 @@ void CCardUpgrade::reduceScale()
 	sf::Vector2f scale = cardBack.getScale();
 	scale.x -= 0.1f; scale.y -= 0.1f;
 	cardBack.setScale(scale);
-	xSize = cardBack.getGlobalBounds().width;
-	ySize = cardBack.getGlobalBounds().height;
-	cardTitle.setScale(scale);
-	for (int i = 0; i < Stats.size(); i++)
-	{
-		Stats[i].setScale(scale);
-	}
-	cardDescription.setScale(scale);
+	xSize = cardBack.getGlobalBounds().width+2*cardBack.getOutlineThickness();
+	ySize = cardBack.getGlobalBounds().height + 2 * cardBack.getOutlineThickness();
+	resizeTexts();
 }
 
-void CCardUpgrade::resizeTexts(std::vector<sf::Text>& texts, sf::FloatRect border)
+void CCardUpgrade::resizeTexts()
+{//Pour replacer les textes, on va les placer selon la méthode fillSpace
+	sf::Vector2f paddings(xSize * 0.02f, ySize * 0.02f);
+	sf::FloatRect bord(pos.x, pos.y, xSize, ySize * 0.2f);
+	//PLacer titre
+	fillSpace(cardTitle, bord);
+	cardTitle.setPosition(pos.x + (xSize - cardTitle.getGlobalBounds().width) / 2.f, pos.y);
+	bord.top += ySize * 0.2f;
+	bord.height = ySize * 0.4f;
+	bord.left += paddings.x;
+	bord.width = xSize - paddings.x;
+	fillSpace(Stats, bord);
+	//Placer description
+	bord.top = ySize * 0.6f;
+	fillSpace(cardDescription, bord);
+}
+
+void CCardUpgrade::fillSpace(std::vector<sf::Text>& texts, sf::FloatRect border)
 {
-	float padding = 5.f;
-	/*while (textToResize.getGlobalBounds().width >=
-		cardBack.getGlobalBounds().width - cardBack.getGlobalBounds().width * 0.05f &&
-		textToResize.getCharacterSize() >= 20)
+	int nbText = (int)texts.size();
+	for (int i = 0; i < nbText; i++)
+		resizeText(texts[i],5,false);
+	//Espace (en hauteur) pas pris par 
+	float t = border.height - (texts[0].getGlobalBounds().height * nbText);
+	while (t < 0.f)
 	{
-		textToResize.setCharacterSize(textToResize.getCharacterSize() - 1);
+		for (int i = 0; i < nbText; i++)
+			texts[i].setCharacterSize(texts[i].getCharacterSize() - 1);
 	}
-	int dividedIn = 1;
-	std::string basicString = textToResize.getString();
-	while (textToResize.getGlobalBounds().width >= cardBack.getGlobalBounds().width - cardBack.getGlobalBounds().width * 0.05f)
+	if (t > 0.f)//C'est qu'on a la place de mettre les textes
 	{
-		dividedIn++;
-		std::string temp = basicString;
-		for (int i = 1; i < dividedIn; i++)
+		for (int i = 0; i < nbText; i++)
 		{
-			int R = (int)(temp.size() / (float)(dividedIn)) * i;
-			for (int j = R; j < temp.size(); j++)
-			{
-				if (temp[j] == ' ')
-				{
-					temp.insert(j, "\n");
-					textToResize.setString(temp);
-					break;
-				}
-			}
+			sf::Vector2f posTemp;
+			float spaceBetweenCard = t / (float)(nbText + 1);
+			posTemp.x = border.left;
+			posTemp.y = border.top+spaceBetweenCard + (spaceBetweenCard + texts[i].getGlobalBounds().height) * i;
+			utilities::readaptText(texts[i], posTemp);
 		}
-	}*/
+	}
+}
+/// <summary>
+/// Cette méthode remplit le plus d'espace possible 
+/// </summary>
+/// <param name="text"></param>
+/// <param name="border"></param>
+void CCardUpgrade::fillSpace(sf::Text& text, sf::FloatRect border)
+{
+	while (text.getGlobalBounds().width > border.width)
+	{
+		resizeText(text,5,true);
+	}
 }
 
 void CCardUpgrade::draw(sf::RenderTarget& target, sf::RenderStates states) const {

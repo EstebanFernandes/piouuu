@@ -8,10 +8,8 @@ private:
 	bool isFacingLeft = true;
 public:
 	BomberEnemy(CAssetManager* assets);
-	BomberEnemy(CAssetManager* assets,bool isFacingLeft_);
-	BomberEnemy(CAssetManager* assets, CCharacter stat, CWeaponStat WStat , bool isFacingLeft_);
-	void changeInitalSide();
-	void changeInitialSide(bool RTL);
+	BomberEnemy(CAssetManager* assets, enemyInfo info_);
+	BomberEnemy(CAssetManager* assets, CCharacter stat, CWeaponStat WStat , enemyInfo info_);
 	void enemyShoot();
 	//redéfinition de CEnemy
 	void renderEntity(sf::RenderTarget& target);
@@ -22,5 +20,6 @@ public:
 	* Permet de faire des dégats aux joueurs avec les tirs des ennemis
 	*/
 	void updatewPlayer(float delta, CPlayer& player);
+	void initDirection();
 };
 

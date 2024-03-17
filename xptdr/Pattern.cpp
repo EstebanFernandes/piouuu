@@ -36,7 +36,7 @@ bool Pattern::updatePattern(float clock, std::vector<CHittingEntity*>* ennemyLis
 		}
 	return false;
 	}
-	else if (duration<=clock)
+	else 
 	{
 		return true;
 	}

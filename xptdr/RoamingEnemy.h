@@ -3,23 +3,26 @@
 
 class RoamingEnemy : public CEnemy
 {
-private:
-	sf::Vector2f direction;
-	CMob* target;
+protected:
+	sf::Vector2f dir;
 public:
 	RoamingEnemy();
 	RoamingEnemy(CAssetManager* asset);
 	RoamingEnemy(CAssetManager* asset,CCharacter stat);
+	RoamingEnemy(CAssetManager* asset, CCharacter stat, enemyInfo info);
+
 	void updateMovement(float delta);
 	void enemyShoot() {}
 
-	void setDirectionY(float directionYParam);
-	void setDirectionX(float directionXParam);
-	void setDirection(sf::Vector2f dir);
 	CEnemy* clone() override {
 		initPosition();
+		initDirection();
 		setSprite();
 		return new RoamingEnemy(*this);
 	}
+	/// <summary>
+	/// Surcharge de la direction adapté au roaming enemy
+	/// </summary>
+	void initDirection();
 };
 

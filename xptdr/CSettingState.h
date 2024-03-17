@@ -15,7 +15,7 @@ class CSettingState : public CState, public InterfaceState
 {
 private:
 	std::vector<std::string> keyWord;
-	std::vector<	std::vector<std::string>> settingsInfo;
+	std::vector<std::vector<std::string>> settingsInfo;
 	std::vector<int> value;
 	GameDataRef data;
 	//Attributs

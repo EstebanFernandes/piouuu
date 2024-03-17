@@ -28,6 +28,7 @@
 class Weapon
 {
 protected:
+	bool* seekForTarget = NULL;
 	int typeArme = -1;
 	/// <summary>
 	/// définit le décalage entre la position du joueur et l'endroit où l'on doit tirer
@@ -94,5 +95,9 @@ public:
 	virtual void updateWeapon(float dt) = 0;
 	virtual void renderWeapon(sf::RenderTarget& target) = 0;
 	virtual void setBulletAsset(std::string assetName) = 0;
+	void setAimBoolean(bool* pointToBool)
+	{
+		seekForTarget = pointToBool;
+	}
 };
 

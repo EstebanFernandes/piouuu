@@ -24,6 +24,8 @@ private:
 
 public:
 	bool isHorizontal = true;
+	//Pixelbetween two frames (default = 0)
+	int pxbetFrames = 0;
 	//Constructeur par défaut
 	CAnimation() 
 	{
@@ -43,7 +45,11 @@ public:
 		currentXFrameNumber = 0;
 		switchFrames();
 	}
-
+	void setTimeBetweenFrames(float time)
+	{
+		if (time < 0.f)
+			timeBetweenFrames = time;
+	}
 	void setSprite(sf::Sprite* sprit)
 	{
 		currentSprite = sprit;
@@ -67,23 +73,27 @@ public:
 		else {
 			tempPointer = &currentYFrameNumber;
 		}
-			if (*tempPointer == NumberofFrame)
-				*tempPointer = 0;
-			if (animationTimer.getElapsedTime().asSeconds() > timeBetweenFrames)
-			{
-				switchFrames();
-				*tempPointer= *tempPointer+1;
-				animationTimer.restart();
-			}
+		if (*tempPointer == NumberofFrame)
+			*tempPointer = 0;
+		if (animationTimer.getElapsedTime().asSeconds() > timeBetweenFrames)			{
+			switchFrames();
+			*tempPointer= *tempPointer+1;
+			animationTimer.restart();
+		}
 	}
-
+	void debug()
+	{
+		std::cout << currentFrame.left << " " << currentFrame.top
+			<< " " << currentFrame.width << " " << currentFrame.height << std::endl;
+	}
 	void switchFrames() {
-			currentFrame.left = currentXFrameNumber * currentFrame.width;
-			currentFrame.top = currentYFrameNumber * currentFrame.height;
+			currentFrame.left = currentXFrameNumber * currentFrame.width+pxbetFrames*currentXFrameNumber;
+			currentFrame.top = currentYFrameNumber * currentFrame.height + pxbetFrames * currentYFrameNumber;
 			currentSprite->setTextureRect(currentFrame);
 	}
 	void setDifferentAnimation(int t) {
 		currentYFrameNumber=t;
+		switchFrames();
 	}
 	void resetAnimation() {
 		currentYFrameNumber=0;
@@ -91,19 +101,21 @@ public:
 	int getCurrentYFrameNumber() {
 		return currentYFrameNumber;
 	}
-	CAnimation& operator=(const CAnimation& AnimParam) {
-		currentSprite = AnimParam.currentSprite;
-		currentFrame = AnimParam.currentFrame;
-		animationTimer = AnimParam.animationTimer;
-		timeBetweenFrames = AnimParam.timeBetweenFrames;
-		NumberofFrame = AnimParam.NumberofFrame;
-		currentXFrameNumber= AnimParam.currentXFrameNumber;
-		return *this;
-	}
+	
 
 	sf::Sprite* getSprite() {
 		return currentSprite;
 	}
-
+	sf::IntRect* getCurrentFrame() { return &currentFrame; }
+	int getCurrentFrameNumber()
+	{
+		if (isHorizontal)
+			return currentXFrameNumber;
+		return currentYFrameNumber;
+	}
+	int getMaxFrame()
+	{
+		return NumberofFrame;
+	}
 };
 

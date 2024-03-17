@@ -2,29 +2,23 @@
 
 void bulletStorage::updatewPlayer(float delta, CPlayer& player)
 {
-	std::vector<CBulletAuto>* bullets = saveBullet.getVector();
+	std::list<CBulletAuto>* bullets = saveBullet.getList();
 	size_t temp = bullets->size();
-	for (int i = 0; i < temp; i++) {
-		if (player.checkCollisions((*bullets)[i])) {
-			player.reduceHP((float)(*bullets)[i].getDamage());
-			bullets->erase(bullets->begin() + i);
-			if (i != 0)
-				i--;
-			temp--;
+	for (std::list<CBulletAuto>::iterator it = bullets->begin(); it != bullets->end(); /*++it*/) {
+		if (player.checkCollisions(*it)) {
+			player.reduceHP((float)it->getDamage());
+			it = bullets->erase(it);
 		}
+		else
+			it++;
 	}
 }
 
 void bulletStorage::saveBullets(CGunslinger& otherGunslinger)
 {
-	std::vector<CBulletAuto>& temp = otherGunslinger.getReferenceVector();
+	std::list<CBulletAuto>& temp = otherGunslinger.getReferenceList();
 	if (!temp.empty())
 	{
-		for (int i = 0; i < temp.size();)
-		{
-			saveBullet.getReferenceVector().push_back(temp[i]);
-			temp.erase(temp.begin() + i);
-		}
-
+		std::copy(temp.begin(), temp.end(), std::back_inserter(saveBullet.getReferenceList()));
 	}
 }

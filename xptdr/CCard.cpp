@@ -6,42 +6,9 @@ CCard::CCard()
 }
 //pas utilisé
 CCard::CCard(float x, float y, std::string title, std::string description, std::string imageName, CAssetManager* assetParam, bool animated)
+	:CCard(title, description, imageName,assetParam,animated)
 {
-	asset = assetParam;
-	xSize = (float)asset->sCREEN_WIDTH / 3.f;
-	ySize = (float)asset->sCREEN_HEIGHT * 0.85f;
-	pos.x = x;
-	pos.y = y;
-
-	animatedImage = animated;
-
-	cardBack.setPosition(pos);
-	cardBack.setFillColor(sf::Color::Black);
-	cardBack.setSize(sf::Vector2f(xSize, ySize));
-
-
-	cardTitle.setString(title);
-	cardTitle.setFillColor(sf::Color::White);
-	cardTitle.setFont(asset->GetFont("Lato"));
-	cardTitle.setCharacterSize(75);
-	cardTitle.setPosition(pos.x + (xSize - cardTitle.getGlobalBounds().width)/2, pos.y);
-
-	
-	cardImage.setTexture(asset->GetTexture(imageName));
-	//bizarre, à revoir
-	cardImage.setPosition(pos.x + ((xSize - cardImage.getGlobalBounds().height)/2.0f), pos.y + ySize/2);
-
-	if (animatedImage) {
-		sf::IntRect temp = sf::IntRect(0, 0, 153, 66);
-		anim.setParameters(&cardImage, temp, 4, 0.16f);
-		cardImage.setTextureRect(temp);
-	}
-
-	cardDescription.setString(description);
-	cardDescription.setFillColor(sf::Color::White);
-	cardDescription.setFont(asset->GetFont("Lato"));
-	cardDescription.setCharacterSize(35);
-	cardDescription.setPosition(pos.x + (xSize - cardDescription.getGlobalBounds().width) / 2, pos.y + ySize*0.6f);
+	setPosition(sf::Vector2f(x, y));
 }
 
 CCard::CCard(std::string title, std::string description, std::string imageName, CAssetManager* assetParam, bool animated)
@@ -63,9 +30,9 @@ CCard::CCard(std::string title, std::string description, std::string imageName, 
 
 	cardTitle.setString(title);
 	cardTitle.setFillColor(sf::Color::White);
-	cardTitle.setFont(asset->GetFont("Lato"));
+	cardTitle.setFont(asset->GetFont("Nouvelle"));
 	cardTitle.setCharacterSize(75);
-	cardTitle.setPosition(pos.x + (xSize - cardTitle.getGlobalBounds().width) / 2, pos.y);
+	cardTitle.setPosition(pos.x + (xSize - cardTitle.getGlobalBounds().width) / 2.f, pos.y);
 
 
 	cardImage.setTexture(asset->GetTexture(imageName));
@@ -80,7 +47,7 @@ CCard::CCard(std::string title, std::string description, std::string imageName, 
 
 	cardDescription.setString(description);
 	cardDescription.setFillColor(sf::Color::White);
-	cardDescription.setFont(asset->GetFont("Lato"));
+	cardDescription.setFont(asset->GetFont("Nouvelle"));
 	cardDescription.setCharacterSize(35);
 	cardDescription.setPosition(pos.x + (xSize - cardDescription.getGlobalBounds().width) / 2, pos.y + ySize * 0.6f);
 }

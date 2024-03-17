@@ -3,7 +3,7 @@
 CButton::CButton(CAssetManager* a)
 {
 	asset = a;
-	text.setFont(asset->GetFont("Lato"));
+	text.setFont(asset->GetFont("Nouvelle"));
 	text.setString("Button");
 	setColor(sf::Color::Black);
 	setFontColor(sf::Color::White);
@@ -21,13 +21,8 @@ CButton::CButton(CAssetManager* a, std::string title, float xSize, float ySize)
 }
 
 CButton::CButton(CAssetManager* a, float xSizeParam, float ySizeParam)
+	:CButton(a)
 {
-	asset = a;
-	text.setFont(asset->GetFont("Lato"));
-	text.setString("Button");
-	setColor(sf::Color::Black);
-	setFontColor(sf::Color::White);
-
 	setPosition(0, 0);
 	setSize(xSizeParam, ySizeParam);
 }
@@ -112,7 +107,7 @@ void CButton::resizeText(sf::Text& textToResize)
 	{
 		while (textToResize.getGlobalBounds().width >=
 			back.getGlobalBounds().width - back.getGlobalBounds().width * 0.05f &&
-			textToResize.getCharacterSize() >= 20)
+			textToResize.getCharacterSize() >= 10)
 		{
 			textToResize.setCharacterSize(textToResize.getCharacterSize() - 1);
 		}
@@ -139,13 +134,13 @@ void CButton::resizeText(sf::Text& textToResize)
 	}
 	else
 	{
-		while (textToResize.getGlobalBounds().width <=
+		/*while (textToResize.getGlobalBounds().width <=
 			back.getGlobalBounds().width* 0.90f &&
 			textToResize.getGlobalBounds().height <=
 			back.getGlobalBounds().height * 0.90f)
 		{
 			textToResize.setCharacterSize(textToResize.getCharacterSize() + 1);
-		}
+		}*/
 	}
 	sf::FloatRect backBounds = back.getGlobalBounds();
 	sf::FloatRect textBounds = text.getGlobalBounds();

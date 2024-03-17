@@ -11,12 +11,30 @@ void CEnemy::initAnimation()
 }
 
 
-
-void CEnemy::initEnnemy(CAssetManager* a)
+void CEnemy::initEnnemy(CAssetManager* a, enemyInfo info, std::string nameParam)
 {
 	setType(Enemy);
 	assets = a;
-	imageName = "enemyImage";
+	initStat();
+	initAnimation();
+	if (nameParam == "")
+		imageName = "enemyImage";
+	else
+		imageName = nameParam;
+	setTexture(imageName);
+	getSprite().setScale(info.scale);
+	setInfo(info);
+	setSprite();
+}
+
+void CEnemy::initEnnemy(CAssetManager* a, std::string nameParam)
+{//DEPRECATED
+	setType(Enemy);
+	assets = a;
+	if (nameParam == "")
+		imageName = "enemyImage";
+	else
+		imageName = nameParam;
 	setTexture(imageName);
 	flipSprite();
 	getSprite().setScale(0.2f, 0.2f);
@@ -27,6 +45,7 @@ void CEnemy::initEnnemy(CAssetManager* a)
 
 void CEnemy::initEnnemy(CAssetManager* a, std::string nameParam, sf::Vector2f scale)
 {
+	//DEPRECATED
 	setType(Enemy);
 	assets = a;
 	enemyName = nameParam;
@@ -42,7 +61,7 @@ void CEnemy::initEnnemy(CAssetManager* a, std::string nameParam, sf::Vector2f sc
 void CEnemy::setSprite()
 {
 	setLifeBar();
-	setPositionEntity(initPositionX  - getSprite().getGlobalBounds().width, (float)initPositionY);
+	setPositionEntity(spawnPos.x  , (float)spawnPos.y);
 }
 
 
@@ -120,8 +139,8 @@ void CEnemy::updateAnimation()
 //renvoie true si l'animation d'explosion est finie
 bool CEnemy::updateExplosionSprite()
 {
-	explosionSprite.setPosition(sf::Vector2f(getSprite().getPosition().x+(getSprite().getGlobalBounds().width/2)-(explosionSprite.getGlobalBounds().width/2),
-		getSprite().getPosition().y + (getSprite().getGlobalBounds().height / 2) - (explosionSprite.getGlobalBounds().width / 2)));
+	explosionSprite.setPosition(sf::Vector2f(getSprite().getPosition().x-(explosionSprite.getGlobalBounds().width/2),
+		getSprite().getPosition().y - (explosionSprite.getGlobalBounds().width / 2)));
 	if (r < 7)
 	{
 		if (animationTimer.getElapsedTime().asSeconds() > 0.1f)
@@ -150,4 +169,27 @@ void CEnemy::renderEntity(sf::RenderTarget& target)
 void CEnemy::setPosition(float positionXParam, float PositionYParam)
 {
 	setPositionEntity(positionXParam ,PositionYParam);
+}
+
+bool CEnemy::onestPose()
+{
+	sf::Vector2f currentPos = getSprite().getPosition();
+	if (info.spawnSide == "droite" || info.spawnSide == "bas" )
+	{
+		if (currentPos.x <= info.pos.x && currentPos.y <= info.pos.y)
+			return true;
+		return false;
+	}
+	else 
+	{
+		if (currentPos.x >= info.pos.x && currentPos.y >= info.pos.y)
+			return true;
+		return false;
+	}
+}
+
+void CEnemy::setInfo(enemyInfo info_)
+{
+	info = info_;
+	initPosition();
 }

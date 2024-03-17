@@ -5,7 +5,7 @@
 #include "CPhysics.h"
 #include"CBullet.h"
 #include "CMob.h"
-#include "LaserGenerator.h"
+#include "laserWeapon.h"
 #include "CAnimation.h"
 #include"SFML/Audio.hpp"
 //CLASSE qui représente un joueur
@@ -42,6 +42,9 @@ private:
 	bool isDashInvicible = false;
 	float dashDamage = 0.f;
 	sf::Clock hitClock;
+	sf::Sprite R2Sprite;
+	CAnimation R2Anim;
+	sf::Vector2f R2Offset;
 	//Liste des effets sur les balles, on les ajoutes avant de tirer 
 	bool hittype = false;
 
@@ -61,6 +64,13 @@ private:
 	void setValue(float& init, std::string modif);
 	void setValue(int& init, std::string modif);
 public:
+	//Mouvement
+
+	sf::Keyboard::Key upKey = sf::Keyboard::Z;
+	sf::Keyboard::Key downKey = sf::Keyboard::S;
+	sf::Keyboard::Key leftKey = sf::Keyboard::Q;
+	sf::Keyboard::Key rightKey = sf::Keyboard::D;
+	sf::Keyboard::Key dashKey = sf::Keyboard::T;
 	bool hasLevelUp = false;
 	bool seekForTarget=false;
 	CPlayer();
@@ -84,6 +94,9 @@ public:
 	void updateMovement(float dt);
 	void renderLifeBar(sf::RenderTarget& target);
 	void renderEntity(sf::RenderTarget& target);
+	void renderUI(sf::RenderTarget& target) {
+		renderLifeBar(target);
+	}
 	void updateFx();
 	void setAssets(CAssetManager* a);
 	bool checkGlobalCollisions();
@@ -93,10 +106,10 @@ public:
 	Weapon* getSecondaryWeapon();
 	void setSecondaryWeapon(Weapon* weaponParam);
 	void traitermisc(std::string& misc);
-	void traitermisc(std::string& misc,Weapon *curWeapon);
+	void traitermisc(std::string& misc,int type);
 	void updateMisc();
 	void AAA() {
-		secondaryWeapon->typeTir = typeAim::Spin;
+		mainWeapon->typeTir = typeAim::Spin;
 	}
 	void iNeedMoreBullet();
 	void updateDash(float delta);
@@ -106,4 +119,27 @@ public:
 	void setDashDamage(float dd) { dashDamage = dd; }
 	float getDashDamage() { return dashDamage; }
 	void setIsDashInvicible(bool isD) { isDashInvicible = isD; }
+	void moveEntity(sf::Vector2f mov) {
+		if (mov.x != 0.f)
+		{
+			std::cout << "";
+		}
+		getSprite().move(mov);
+		R2Sprite.move(mov);
+	}
+	void setPositionEntity(sf::Vector2f f)
+	{
+		setPositionEntity(f.x, f.y);
+	}
+	void setPositionEntity(float x, float y)
+	{
+		getSprite().setPosition(x,y);
+		R2Sprite.setPosition(getGlobalBounds().left+ R2Sprite.getOrigin().x+R2Offset.x,
+			getGlobalBounds().top+ R2Sprite.getOrigin().y+R2Offset.y);
+		//std::cout << R2Sprite.getPosition().x << " y :" << R2Sprite.getPosition().y << std::endl;
+	}
+	void debugh() {
+		std::cout << "Origin R2, x : " << R2Sprite.getOrigin().x << " y : " << R2Sprite.getOrigin().y << std::endl;
+		std::cout << "Limite de R2, left : " << R2Sprite.getGlobalBounds().left << " top : " << R2Sprite.getGlobalBounds().top << std::endl;
+	}
 };

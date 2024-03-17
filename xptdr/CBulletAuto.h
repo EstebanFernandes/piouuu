@@ -13,6 +13,9 @@ public:
 	bool isExplosive = false;
 	bool isThisIt = false;
 	sf::RectangleShape hitbox;
+	CAnimation anim;
+	bool isAnimated = false;
+	int count = 0;
 	CBulletAuto();
 	CBulletAuto(CWeaponStat stat, CAssetManager* a);
 	CBulletAuto(int damage, float bulletSpeed, sf::Vector2f dir,int penetration, std::string nameImage, sf::Vector2f bulletScale_, CAssetManager* a);
@@ -50,6 +53,7 @@ public:
 	void setRotation() {
 	}
 
+	void setAnimation(CAnimation e);
 	void setSprite(std::string n) { CBullet::setSprite(n); }
 	void setSprite(){}
 	void setGunShotDistance(float distance) {

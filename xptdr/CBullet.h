@@ -2,6 +2,7 @@
 #include "SFML/Graphics.hpp"
 #include "DEFINITIONS.h"
 #include"CMob.h"
+#include "CAnimation.h"
 class CBullet : public CMob
 {
 protected:
@@ -13,11 +14,8 @@ protected:
 	bool isABombe = false;
 	//pas encore sur mais ça se réfléchit
 	std::vector<CMob*> entityHitting;
-	/// <summary>
-	/// On charge les buffs sur l'ennemi
-	/// </summary>
-	/// <param name="b"></param>
 public :
+
 	CBullet();
 	CBullet(int damaage, sf::Vector2f pos, sf::Vector2f dir, int penetration
 		,std::string nameImage, CAssetManager* assetss);
@@ -26,6 +24,9 @@ public :
 	void setSprite(std::string nameImage);
 	void updateEntity(float dt);
 	void renderEntity(sf::RenderTarget& target);
+	void renderUI(sf::RenderTarget& target) {
+
+	}
 	//Surchagrge pour les collisions entre objet
 	int getDamage() { return damage; }
 	//méthode appeler automatiquement à la fin du constructeur qui s'occupe de régler le sprite selon la direction.

@@ -3,46 +3,86 @@
 ShootingEnemy::ShootingEnemy(CAssetManager* assetParam) {
 	BAW.assets = assetParam;
 	BAW.assets->addSFX("bulletSound", &BAW.bulletSound);
-	initEnnemy(assetParam);
-	initPositionX = assetParam->sCREEN_WIDTH * 1.05f;
+	initEnnemy(assetParam, info, "shooter");
+	initDirection();
+	info.pos.x = assets->sCREEN_WIDTH *0.95f;
+	anim = CAnimation(getPointerSprite(), sf::IntRect(0, 0, 82, 86),4,0.16f);
+	anim.pxbetFrames = 2;
+	getSprite().setScale(2.f, 2.f);
 	setSprite();
-	moveSpeed = 1.f;
-	attackSpeed = 1.f;
-	bulletSpeed = 0.2f;
-	initPos.x = assets->sCREEN_WIDTH - getSprite().getGlobalBounds().width / 2.f;
-	initPos.y = (float)initPositionY;
+	moveSpeed = 2.f;
+	attackSpeed = 1.5f;
+	bulletSpeed = 1.f;
 	BAW.setWeaponStats(CWeaponStat((float)damagePerBullet, bulletSpeed, sf::Vector2f(-1.f, 0.f), 0, "", BAW.bulletScale, attackSpeed));
-	BAW.setWeaponPos(sf::Vector2f(getGlobalBounds().width / 2.f, 0.f));
+	BAW.setBulletAsset("bulletTear");
+	float as = BAW.getWeaponStats().attackSpeed;
+	float tbf = as / 4;
+	explosionSprite.setColor(sf::Color::Red);
 }
 
 ShootingEnemy::ShootingEnemy(CAssetManager* asset, CMob* target_)
 	:ShootingEnemy(asset)
 {
-	target = target_;
-	hasTarget = true;
+	setTarget(target_);
 }
 
-ShootingEnemy::ShootingEnemy(CAssetManager* asset, CMob* target_, CCharacter& stat, CWeaponStat WeaponStat, sf::Vector2f pos)
-	: ShootingEnemy(asset,target_)
+ShootingEnemy::ShootingEnemy(CAssetManager* asset, enemyInfo ee)
+	:ShootingEnemy(asset)
 {
-	initPos = pos;
-	setCharacterStats(stat);
-	BAW.getWeaponStats() = WeaponStat;
-	BAW.setWeaponPos(sf::Vector2f(getGlobalBounds().width / 2.f, 0.f));
-	damage = stat.getDamagePerBullet();
-	initPosition(initPos);
-	BAW.addShootType(typeBullet::classic);
+	setInfo(ee);
+	setPos();
+	initDirection();
+	setRotation(utilities::getAngleFromDirection(info.direction)+180.f);
+	BAW.getWeaponStats().changeDir(info.direction);
+	setSprite();
 }
 
+ShootingEnemy::ShootingEnemy(CAssetManager* asset, CMob* target_, CCharacter& stat, CWeaponStat WeaponStat ,enemyInfo info_)
+	: ShootingEnemy(asset,info_)
+{
+	setTarget(target_);
+	setCharacterStats(stat);
+	BAW.setWeaponStats(WeaponStat);
+	if (BAW.getWeaponStats().dir.x == 0.f&& BAW.getWeaponStats().dir.y == 0.f)
+	{
+		BAW.getWeaponStats().changeDir(info.direction);
+	}
+	BAW.setBulletAsset("bulletTear");
+	damage = stat.getDamagePerBullet();
+}
+
+void ShootingEnemy::setPos()
+{
+	if (info.spawnSide == "gauche")
+		info.pos.x = assets->sCREEN_WIDTH * 0.05f;
+	else if(info.spawnSide == "droite")
+		info.pos.x=assets->sCREEN_WIDTH * 0.95f;
+	else if (info.spawnSide == "haut")
+		info.pos.y=assets->sCREEN_HEIGHT * 0.05f;
+	else if (info.spawnSide == "bas")
+		info.pos.y=assets->sCREEN_HEIGHT * 0.95f;
+}
 void ShootingEnemy::updateMovement(float delta)
 {
+	if (isPositionated)
+	{
+		anim.updateAnimation();
+		if ( hasTarget)
+		{		
+			
+			setRotation(utilities::getAngleFromDirection(utilities::dirAtoB(getSprite().getPosition(), target->getSprite().getPosition()))+180.f);
+			
+		}
+	}
 	if (checkGlobalCollisions() && isPositionated)
 		needDelete = true;
 	updateLifeBar();
 	if (onAvance == true && !isPositionated)
-		moveEntity(sf::Vector2f(moveSpeed * -delta, 0)); 
-	if (!isPositionated && getSprite().getPosition().x <= initPositionX) {
+		moveEntity(info.direction*moveSpeed * delta); 
+	if (!isPositionated && 
+		onestPose()) {
 		isPositionated = true;
+		setRotation(180.f+utilities::getAngleFromDirection( BAW.getWeaponStats().dir));
 		bulletClock.restart();
 	}
 }
@@ -52,8 +92,19 @@ void ShootingEnemy::enemyShoot()
 	if (bulletClock.getElapsedTime().asSeconds() >= 1.f / BAW.getWeaponStats().attackSpeed && isPositionated) {
 		if (hasTarget)
 		{
+			float temp = 0.f;
+			if (isSpriteFlip())
+				temp = 180.f;
 			sf::Vector2f posPlayer = target->getSprite().getPosition();
-			BAW.shootTowardDirection(getSprite().getPosition(), posPlayer);
+			BAW.shootTowardDirection(
+				utilities::shootPos((getSprite().getPosition()),
+				getGlobalBounds().width/2.f,getSprite().getRotation()+180.f), posPlayer);
+		}
+		else
+		{
+			BAW.iNeedMoreBullets(
+			utilities::shootPos((getSprite().getPosition()),
+				getGlobalBounds().width / 2.f,utilities::getAngleFromDirection(BAW.getWeaponStats().dir)));
 		}
 		// vient juste le restart le timer à la fin 
 		bulletClock.restart();
@@ -71,7 +122,9 @@ void ShootingEnemy::updateEntity(float delta)
 	CEnemy::updateEntity(delta);
 	BAW.updateWeapon(delta);
 	if (!isDead)
+	{
 		enemyShoot();
+	}
 }
 
 void ShootingEnemy::updatewPlayer(float delta, CPlayer& player)
@@ -81,3 +134,4 @@ void ShootingEnemy::updatewPlayer(float delta, CPlayer& player)
 	if (needDelete)
 		transferBullet(BAW);
 }
+

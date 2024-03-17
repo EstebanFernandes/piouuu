@@ -136,9 +136,14 @@ void CUpgradeState::STEInit()
 		break;
 	}
 	CardList[iCardSelection].setOutlineThickNess(10.f);
+	applyCardUpgrademaxMinCharSize(CardList);
+	for (int i = 0; i < CardList.size(); i++)
+	{
+		CardList[i].resizeTexts();
+	}
 	std::string temp = "Passage au niveau " + std::to_string(this->levelofPlayer)+typestring;
 	title.setString(temp);
-	title.setFont(data->assets.GetFont("Lato"));
+	title.setFont(data->assets.GetFont("Nouvelle"));
 	title.setCharacterSize(40);
 	title.setPosition(sf::Vector2f((data->assets.sCREEN_WIDTH - title.getGlobalBounds().width) / 2, (data->assets.sCREEN_HEIGHT * 0.1f - title.getGlobalBounds().height) / 2));
 }
@@ -159,7 +164,7 @@ void CUpgradeState::STEHandleInput()
 				int iDNextVert = (*(currentGraph->currentVert)).SOMLireArcPartant()[iCardSelection].ARCObtenirDest();
 				CSommetUpgrade nextVert = currentGraph->GRAObtenirListeSommet()[currentGraph->GRATrouverSommet(iDNextVert)];
 				int INDEX = iCardSelection + tailleAvantAjout;
-				int max = Graphs->size();
+				int max = (int)Graphs->size();
 				for (int i = tailleAvantAjout; i < max; i++) 
 				{
 					if (i!=INDEX)
@@ -283,7 +288,7 @@ bool CUpgradeState::matchTypeWithValue(std::string type, std::string value)
 					return false;
 					break;
 				default:
-					pointerToPlayer1->traitermisc(value, pointerToWeapon);
+					pointerToPlayer1->traitermisc(value, this->type);
 					break;
 				}
 				break;

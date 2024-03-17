@@ -1,8 +1,6 @@
 #include "CBullet.h"
 
 
-
-
 CBullet::CBullet()
 {
 	damage=0;

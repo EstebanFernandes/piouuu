@@ -58,7 +58,7 @@ public:
 			ENTsprite.getLocalBounds().width / 2.f,
 			ENTsprite.getLocalBounds().height / 2.f));
 	}
-	
+	const sf::Sprite getConstSprite(){ return ENTsprite; }
 	sf::Sprite& getSprite() { return ENTsprite; }
 	sf::Sprite* getPointerSprite() { return &ENTsprite; }
 	sf::FloatRect getGlobalBounds() const {

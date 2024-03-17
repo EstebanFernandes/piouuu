@@ -2,19 +2,15 @@
 
 RoamingEnemy::RoamingEnemy()
 {
-	direction.y = 0.f;
 }
 
 RoamingEnemy::RoamingEnemy(CAssetManager* assetParam) {
-	initEnnemy(assetParam);
-	
-	setDirectionX(-1.0f);
-	int ySpawnMax = assets->sCREEN_HEIGHT - (int)getGlobalBounds().height;
-	float maxDirY = 0.16f * (1.f-(initPositionY / ySpawnMax));
-	float minDirY = -(0.16f* initPositionY / (float)ySpawnMax);
+	info.scale.x = 0.2f;
+	info.scale.y = 0.2f;
+	initEnnemy(assetParam,info);
 	moveSpeed = 0.5f;
-	direction.y = RandomFloat(minDirY, maxDirY);
-	float angle = (float)180.f+(180.f / M_PIl)* atan2(direction.y, direction.x);
+	initDirection();
+	float angle = (float)180.f+(180.f / M_PIl)* atan2(dir.y, dir.x);
 	getSprite().setRotation(angle);
 }
 
@@ -24,33 +20,54 @@ RoamingEnemy::RoamingEnemy(CAssetManager* asset, CCharacter stat)
 	setCharacterStats(stat);
 }
 
+RoamingEnemy::RoamingEnemy(CAssetManager* asset, CCharacter stat, enemyInfo info_)
+	:RoamingEnemy(asset,stat)
+{
+	setInfo(info_);
+	initDirection();
+}
+
 void RoamingEnemy::updateMovement(float delta)
 {
 	if (checkGlobalCollisions())
 		needDelete = true;
 	updateLifeBar();
 	if (onAvance == true)
-		moveEntity(direction * delta * moveSpeed * 60.f);
+	{
+		moveEntity(dir * delta * moveSpeed * 60.f);
+	}
 }
 
-void RoamingEnemy::setDirectionY(float directionYParam)
-{
-	direction.y = directionYParam;
-	float angle = (float)180.f + (180.f / M_PIl) * atan2(direction.y, direction.x);
-	setRotation(angle);
-}
 
-void RoamingEnemy::setDirectionX(float directionXParam)
+void RoamingEnemy::initDirection()
 {
-	direction.x = directionXParam;
-	float angle = (float)180.f + (180.f / M_PIl) * atan2(direction.y, direction.x);
-	setRotation(angle);
-}
-
-void RoamingEnemy::setDirection(sf::Vector2f dir)
-{
-	direction.x = dir.x;
-	direction.y = dir.y;
-	float angle = (float)180.f + (180.f / M_PIl) * atan2(direction.y, direction.x);
-	setRotation(angle);
+	if (info.direction.x == 0.f && info.direction.y == 0.f)
+	{//On veut du random
+		if (info.spawnSide == "droite" || info.spawnSide == "gauche")
+		{
+			int ySpawnMax = assets->sCREEN_HEIGHT - (int)getGlobalBounds().height;
+			float maxDirY = 0.16f * (1.f - (spawnPos.y / ySpawnMax));
+			float minDirY = -(0.16f * spawnPos.y / (float)ySpawnMax);
+			moveSpeed = 0.5f;
+			dir.y = RandomFloat(minDirY, maxDirY);
+			if (info.spawnSide == "droite")
+				dir.x = -1.f;
+			else
+				dir.x = 1.f;
+		}
+		else
+		{
+			int xSpawnMax = assets->sCREEN_WIDTH - (int)getGlobalBounds().width;
+			float maxDirX = 0.16f * (1.f - (spawnPos.x / xSpawnMax));
+			float minDirX = -(0.16f * spawnPos.x / (float)xSpawnMax);
+			moveSpeed = 0.5f;
+			dir.x = RandomFloat(minDirX, maxDirX);
+			if (info.spawnSide == "bas")
+				dir.y = -1.f;
+			else
+				dir.y = 1.f;
+		}
+	}
+	else
+		dir = info.direction;
 }

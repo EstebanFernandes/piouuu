@@ -1,6 +1,7 @@
 #pragma once
 #include"SFML/Graphics.hpp"
 #include"CButton.h"
+#include"CCardUpgrade.h"
 /// <summary>
 /// Interface that implement method useful for CState inherit
 /// </summary>
@@ -46,6 +47,74 @@ public:
 		for (int i = 0; i < uiList.size(); i++)
 		{
 			uiList[i]->setCharacterSize(charSize);
+		}
+	}
+	/// <summary>
+	/// renvoie le minimum de charactère pour : le titre 0, les stats 1, la description 2
+	/// </summary>
+	/// <param name="uiList"></param>
+	/// <param name="type"></param>
+	/// <returns></returns>
+	static int getCardMinCharSize(std::vector<CCardUpgrade>& uiList,int type = 0) {
+
+		unsigned int min = 100000;
+		for (int i = 0; i < uiList.size(); i++)
+		{
+			unsigned int curMax = min + 1;
+			switch (type)
+			{
+			case 0:
+				curMax = uiList[i].getTitleCharSize();
+				break;
+			case 1:
+				curMax = uiList[i].getStatsCharSize();
+				break;
+			case 2:
+				curMax = uiList[i].getDescriptionCharSize();
+				break;
+			}
+			if (min > curMax)
+				min = curMax;
+		}
+		return min;
+	}
+
+	/// <summary>
+	/// Apply the min character size thats possible on the vector of UI pass in parameter
+	/// </summary>
+	/// <param name="buttonlist"></param>
+	static void applyCardUpgrademaxMinCharSize(std::vector<CCardUpgrade>& uiList)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			unsigned int charSize = -1;
+			switch (i)
+			{
+			case 0:
+				charSize = getCardMinCharSize(uiList,i);
+				break;
+			case 1:
+				charSize = getCardMinCharSize(uiList, i);
+				break;
+			case 2:
+				charSize = getCardMinCharSize(uiList, i);
+				break;
+			}
+			for (int j = 0; j < uiList.size(); j++)
+			{
+				switch (i)
+				{
+				case 0:
+					uiList[j].setTitleCharSize(charSize);
+					break;
+				case 1:
+					uiList[j].setStatsCharSize(charSize);
+					break;
+				case 2:
+					uiList[j].setDescriptionCharSize(charSize);
+					break;
+				}
+			}
 		}
 	}
 };

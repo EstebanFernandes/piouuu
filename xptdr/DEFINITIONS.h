@@ -8,7 +8,7 @@
 
 
 #define MAIN_MENU_BACKGROUND_FILEPATH "res\\img\\Background.png"
-#define MAIN_MENU_TITLE_PATH "res\\img\\Title.png"
+#define MAIN_MENU_TITLE_PATH "res\\img\\Title2.png"
 #define FONT_FILE_PATH "res\\font\\lato.ttf"
 
 #define GAME_BACKGROUND_FILEPATH "res/img/backgroundupgrade2.jpeg"

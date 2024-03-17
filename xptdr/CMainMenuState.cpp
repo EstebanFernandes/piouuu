@@ -11,54 +11,57 @@ void CMainMenuState::STEInit()
 {
 	data->assets.jouerMusique("MenuPrincipal");
 	index = 0;
+	data->assets.LoadFont("Nouvelle", "res\\font\\SuperLegendBoy-4w8Y.ttf");
 	data->assets.LoadFont("Lato", FONT_FILE_PATH); //Load la police d'écriture
 	info.setCharacterSize(12);
 	info.setFillColor(sf::Color::White);
-	info.setFont(data->assets.GetFont("Lato"));
+	info.setFont(data->assets.GetFont("Nouvelle"));
 	data->assets.LoadTexture("Title",
 		MAIN_MENU_TITLE_PATH); // On charge les textures
 
+	CMMTitle.setTexture(data->assets.GetTexture("Title")); // On les appliques
+	sf::Vector2f scale;
+	scale.x = data->assets.sCREEN_HEIGHT / CMMTitle.getGlobalBounds().height;
+			scale.y = scale.x;
+			CMMTitle.setScale(scale);
+	CMMTitle.setPosition(data->assets.sCREEN_WIDTH  - CMMTitle.getGlobalBounds().width,0);
 	CButton temp(&(data->assets));
+	temp.changeBackVisibilty(false);
+	temp.setThicknessColor(sf::Color(51,51,51));
+	temp.setFontColor(sf::Color(51, 51, 51));
 	temp.setString("Test zone");
 	temp.setSize(data->assets.sCREEN_WIDTH * 0.15f, data->assets.sCREEN_HEIGHT * 0.1f);
-	temp.setPosition((data->assets.sCREEN_WIDTH / 2) - temp.getGlobalBounds().width / 2,
+	temp.setPosition((CMMTitle.getGlobalBounds().left / 2.f) - (temp.getGlobalBounds().width / 2.f),
 		(data->assets.sCREEN_HEIGHT * 0.2f));
 	where.push_back(0.2f);
 	buttons.push_back(temp);
 
-
-
 	temp.setString("Mode infini");
-	temp.setPosition((data->assets.sCREEN_WIDTH / 2) - temp.getGlobalBounds().width / 2,
+	temp.setPosition(temp.getGlobalBounds().left,
 		data->assets.sCREEN_HEIGHT * 0.35f);
 	where.push_back(0.35f);
 	buttons.push_back(temp);
 
 	temp.setString("Comment jouer");
 	//temp.setCharacterSize(50);
-	temp.setPosition((data->assets.sCREEN_WIDTH / 2) - temp.getGlobalBounds().width / 2,
+	temp.setPosition(temp.getGlobalBounds().left,
 		data->assets.sCREEN_HEIGHT * 0.5f);
 	where.push_back(0.5f);
 	buttons.push_back(temp);
 
 	temp.setString("Reglages");
 	//temp.setCharacterSize(50);
-	temp.setPosition((data->assets.sCREEN_WIDTH / 2) - (temp.getGlobalBounds().width / 2),
+	temp.setPosition(temp.getGlobalBounds().left,
 		data->assets.sCREEN_HEIGHT * 0.65f);
 	where.push_back(0.65f);
 	buttons.push_back(temp);
 
 	temp.setString("Quitter");
 	//temp.setCharacterSize(50);
-	temp.setPosition((data->assets.sCREEN_WIDTH / 2) - temp.getGlobalBounds().width / 2,
-		(data->assets.sCREEN_HEIGHT * 0.8f));
+	temp.setPosition(temp.getGlobalBounds().left,(data->assets.sCREEN_HEIGHT * 0.8f));
 	where.push_back(0.8f);
 	buttons.push_back(temp);
 
-	CMMTitle.setTexture(data->assets.GetTexture("Title")); // On les appliques
-
-	CMMTitle.setPosition((data->assets.sCREEN_WIDTH / 2) - CMMTitle.getGlobalBounds().width / 2,
-		CMMTitle.getGlobalBounds().height * 0.7f);
 	buttons[index].setOutlineThickness(3.f);
 	std::vector<CUI*> mdrr;
 	for (int i = 0; i < buttons.size(); i++)
@@ -93,11 +96,6 @@ void CMainMenuState::STEHandleInput()
 			}
 			else if (event.key.code == sf::Keyboard::Enter)
 				choosedButton();
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11))
-			{
-				data->assets.changeScreenType(data->window, data->isFullScreen);
-				resizeScreen();
-			}
 			buttons[previousSelec].setOutlineThickness(0.f);
 			buttons[index].setOutlineThickness(3.f);
 		}
@@ -111,23 +109,15 @@ void CMainMenuState::STEHandleInput()
 void CMainMenuState::resizeScreen()
 {
 	sf::Vector2f scale;
-	if (data->assets.sCREEN_WIDTH == 1920)
-	{
-		scale.x = data->assets.sCREEN_WIDTH / 1280.f;
-		scale.y = data->assets.sCREEN_HEIGHT / 720.f;
-	}
-	else {
-		scale.x = 1280.f / data->assets.sCREEN_WIDTH;
-		scale.y = 720.f / data->assets.sCREEN_HEIGHT;
-	}
+	scale.x = data->assets.sCREEN_HEIGHT / CMMTitle.getLocalBounds().height;
+	scale.y = scale.x;
 	CMMTitle.setScale(scale);
+	CMMTitle.setPosition(data->assets.sCREEN_WIDTH - CMMTitle.getGlobalBounds().width, 0);
 	sf::Vector2f size(data->assets.sCREEN_WIDTH * 0.15f, data->assets.sCREEN_HEIGHT * 0.1f);
-	CMMTitle.setPosition((data->assets.sCREEN_WIDTH / 2) - CMMTitle.getGlobalBounds().width / 2,
-		CMMTitle.getGlobalBounds().height * 0.7f);
 	for (int i = 0; i < buttons.size(); i++)
 	{
 		buttons[i].setSize(size);
-		buttons[i].setPosition((data->assets.sCREEN_WIDTH / 2) - buttons[i].getGlobalBounds().width / 2,
+		buttons[i].setPosition((CMMTitle.getGlobalBounds().left/2.f) - buttons[i].getGlobalBounds().width / 2.f,
 			(data->assets.sCREEN_HEIGHT * where[i]));
 	}
 	std::vector<CUI*> mdrr;
@@ -190,11 +180,11 @@ void CMainMenuState::outline(int previndex)
 
 void CMainMenuState::STEDraw(float delta)
 {
-	data->window.clear(sf::Color(174, 177, 184));
+	data->window.clear(sf::Color(53,128,200));
 	data->window.draw(CMMTitle);
 	for (int i = 0; i < buttons.size(); i++)
 		data->window.draw(buttons[i]);
-	data->window.draw(info);
+	//data->window.draw(info);
 	data->window.display();
 }
 

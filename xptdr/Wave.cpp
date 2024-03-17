@@ -16,7 +16,13 @@ Wave::Wave(float duration_)
 	else
 		notTimeDep = false;
 }
-
+/// <summary>
+/// 
+/// </summary>
+/// <param name="clock"></param>
+/// <param name="ennemyList"></param>
+/// <returns>True if the wave can be deleted, because it is finished
+/// false otherwise</returns>
 bool Wave::updateWave(float clock, std::vector<CHittingEntity*>* ennemyList)
 {
 	if (duration >= clock || notTimeDep == true)
@@ -34,7 +40,7 @@ bool Wave::updateWave(float clock, std::vector<CHittingEntity*>* ennemyList)
 		}
 		return false;
 	}
-	else if (duration <= clock)
+	else 
 	{
 		return true;
 	}

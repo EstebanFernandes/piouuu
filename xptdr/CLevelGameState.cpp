@@ -52,7 +52,6 @@ void CLevelGameState::STEInit()
 	level = xml.getLevel();
 	level.setEnnemyList(&entityList);
 	level.setClock(&clock);
-	level.isInfinite = true;
 	level.startLevel();
 }
 
@@ -163,9 +162,12 @@ void CLevelGameState::initAssets()
 	data->assets.LoadTexture("bulletSecond", "res\\img\\characters\\bullet_Second.png");
 	data->assets.LoadTexture("explosion", "res\\img\\explosion_sprite_sheet.png");
 	data->assets.LoadTexture("bulletImage", "res\\img\\characters\\bulletImage.png");
-	data->assets.LoadTexture("bulletImageRancoeur", "res\\img\\bullet_Rancoeur.png");
+	data->assets.LoadTexture("bulletImageRancoeur", "res\\img\\characters\\bulletRancoeur.png");
 	data->assets.LoadTexture("bulletImageGolden", "res\\img\\bullet_Golden.png");
 	data->assets.LoadTexture("bombe", "res\\img\\bombe.png");
+	data->assets.LoadTexture("shooter", "res\\img\\ennemies\\shooter.png");
+	data->assets.LoadTexture("bulletTear", "res\\img\\ennemies\\bulletTear.png");
+	data->assets.LoadTexture("R2D2", "res\\img\\characters\\Droide2.png");
 	data->assets.LoadTexture("boss", "res\\img\\spacecraft_player_1.png");
 	data->assets.LoadSFX("bulletSound", "res\\sfx\\Piou.wav");
 	data->assets.LoadSFX("enemyRush", "res\\sfx\\vaisseau_fonce.wav");

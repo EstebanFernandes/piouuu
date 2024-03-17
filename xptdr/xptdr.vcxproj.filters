@@ -80,6 +80,7 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Pattern.cpp" />
     <ClCompile Include="CLevelGameState.cpp" />
+    <ClCompile Include="laserWeapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BomberEnemy.h" />
@@ -162,6 +163,7 @@
     <ClInclude Include="Level.h" />
     <ClInclude Include="Pattern.h" />
     <ClInclude Include="CLevelGameState.h" />
+    <ClInclude Include="laserWeapon.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragbandw.frag" />

@@ -22,7 +22,7 @@ void CGameState::initPlayer()
 {
 	player1.setAssets(& (data->assets));
 	player1.updateMisc();
-	player1.setPositionEntity(400.f, 400.f);
+	//player1.setPositionEntity(400.f, 400.f);
 }
 
 void CGameState::initBackground()
@@ -103,13 +103,15 @@ void CGameState::STEHandleInput()
 
 void CGameState::addEnemy(std::string enemyName)
 {
+	enemyInfo e;
+	e.spawnSide = "gauche";
 	if (enemyName == "roaming") {
 		RoamingEnemy* enemy = new RoamingEnemy(&(data->assets));
 		entityList.push_back(enemy);
 		(*enemyNumber)++;
 	}
 	else if (enemyName == "shooter") {
-		ShootingEnemy* enemy = new ShootingEnemy(&(data->assets), &player1);
+		ShootingEnemy* enemy = new ShootingEnemy(&(data->assets), e);
 		enemy->setBulletStorage(&bulletstorage);
 		entityList.push_back(enemy);
 		(*enemyNumber)++;
@@ -121,7 +123,9 @@ void CGameState::addEnemy(std::string enemyName)
 		(*enemyNumber)++;
 	}
 	else if (enemyName == "bomberInverse") {
-		BomberEnemy* enemy = new BomberEnemy(&(data->assets), false);
+		enemyInfo info_;
+		info_.spawnSide = "gauche";
+		BomberEnemy* enemy = new BomberEnemy(&(data->assets), info_);
 		enemy->setBulletStorage(&bulletstorage);
 		entityList.push_back(enemy);
 		(*enemyNumber)++;
@@ -218,15 +222,7 @@ void CGameState::STEUpdate(float delta)
 	{
 		data->assets.checkSound();
 	}
-	//Information / Clock updates
-	sf::Vector2f tempw = player1.getSprite().getPosition();
-	std::stringstream ss;
-	ss << "Player level : " << player1.getLevel() << std::endl <<
-		"XP : " << player1.getXp() << std::endl <<
-		"Max xp : " << player1.getMaxXp() << "\n" <<
-		"Score : " << player1.getScore() << std::endl << "\n";
-	//"Bullet number : " << player1.BAW.getVector()->size() << "\n";
-	uitext.setString(ss.str());
+	//Clock updates
 	clock = (gameTime.asSeconds() + gameClock.getElapsedTime().asSeconds()) * 100.f;
 	clock = ceil(clock);
 	clock = clock / 100.f;
@@ -292,6 +288,11 @@ void CGameState::STEDraw(float delta)
 	}
 	//DrawPlayer();
 	//Permet de remettre la vue par défaut et donc pas de soucis sur la suite
+	player1.renderUI(r);
+	for (int i = 0; i < entityList.size(); i++)
+	{
+		entityList[i]->renderUI(r);
+	}
 	r.setView(data->window.getDefaultView());
 	r.draw(uitext);
 	r.draw(gameClockText);
@@ -307,6 +308,31 @@ void CGameState::STEResume()
 	player1.updateMisc();
 	if (player1.hasLevelUp == true && currentLevelOfplayer == player1.getLevel())
 		player1.hasLevelUp = false;
+}
+/// <summary>
+/// Fonction qui renvoie l'ennemi le plus près de l'entité passé en paramètre
+/// 
+/// </summary>
+/// <param name="player"></param>
+/// <returns>NULL si découvert(lol),sinon un pointer vers l'ennemi</returns>
+CMob* CGameState::nearEnemy(CMob* player)
+{
+	CMob* nearEnemy = NULL;
+	float bestDistanceNow = 5000.f;
+	for (int i = 0; i < entityList.size(); i++)
+	{
+		if (entityList[i]->getType() == CEntity::Enemy)
+		{
+			sf::Vector2f dirTemp = entityList[i]->getDistance(player1);
+			float curEntityDistance = (float)std::sqrt(pow(dirTemp.x, 2) + pow(dirTemp.y, 2));
+			if (bestDistanceNow > curEntityDistance)
+			{
+				bestDistanceNow = curEntityDistance;
+				nearEnemy = entityList[i];
+			}
+		}
+	}
+	return nearEnemy;
 }
 
 GameDataRef CGameState::getData()

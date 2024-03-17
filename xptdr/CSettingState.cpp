@@ -65,7 +65,7 @@ void CSettingState::STEInit()
 	float screenwidth = (float)data->assets.sCREEN_WIDTH;
 	keyWord = { "musicVolume","soundVolume","isFullScreen","Retour"};
 	value = { 100,100,0,0 };
-	sf::Vector2f size(data->assets.sCREEN_WIDTH * 0.25f, data->assets.sCREEN_HEIGHT * 0.1f);
+	sf::Vector2f size(data->assets.sCREEN_WIDTH * 0.5f, data->assets.sCREEN_HEIGHT * 0.2f);
 	musicVolume = CSlider(&(data->assets),size,"Volume de la musique");
 	SoundVolume = CSlider(&(data->assets), size, "Volume des sons");
 	fullScreenCon = CCheckbox(&(data->assets), "Plein écran");
@@ -237,7 +237,7 @@ void CSettingState::updateSettingsFile()
 
 void CSettingState::resizeScreen()
 {
-	sf::Vector2f size(data->assets.sCREEN_WIDTH * 0.25f, data->assets.sCREEN_HEIGHT * 0.1f);
+	sf::Vector2f size(data->assets.sCREEN_WIDTH * 0.35f, data->assets.sCREEN_HEIGHT * 0.15f);
 	float screenheight = (float)data->assets.sCREEN_HEIGHT;
 	float screenwidth = (float)data->assets.sCREEN_WIDTH;
 	musicVolume.setSize(size);

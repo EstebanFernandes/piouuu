@@ -5,7 +5,7 @@
 #include "DEFINITIONS.h"
 #include "CAnimation.h"
 #include "CCharacter.h"
-
+#include"utilities.h"
 class CCard : public sf::Drawable
 {
 protected :
@@ -28,6 +28,7 @@ protected :
 
 	float xSize;
 	float ySize;
+	sf::Vector2f padding;
 
 public:
 	CCard();
@@ -47,15 +48,17 @@ public:
 	{
 		pos = r;
 		cardBack.setPosition(pos);
-		cardTitle.setPosition(pos.x + (xSize - cardTitle.getGlobalBounds().width) / 2, pos.y);
+		float xoff = cardTitle.getGlobalBounds().width;
+		sf::Vector2f offset( (xSize - xoff)/2.f, ySize * 0.02f);
+		utilities::readaptText(cardTitle, pos+offset);
 		cardImage.setPosition(pos.x + xSize / 2.f - cardImage.getGlobalBounds().width / 2.f, pos.y + ySize/2.f - cardImage.getGlobalBounds().height/ 2.f);
 		cardDescription.setPosition(pos.x + (xSize - cardDescription.getGlobalBounds().width) / 2, pos.y + ySize * 0.6f);
 	}
 	void setScale(sf::Vector2f scale)
 	{
 		cardBack.setScale(scale);
-		xSize = cardBack.getGlobalBounds().width;
-		ySize = cardBack.getGlobalBounds().height;
+		xSize = cardBack.getGlobalBounds().width-2*cardBack.getOutlineThickness();
+		ySize = cardBack.getGlobalBounds().height -2* cardBack.getOutlineThickness();
 		cardTitle.setScale(scale);
 		cardImage.setScale(scale);
 		cardDescription.setScale(scale);
@@ -102,17 +105,26 @@ public:
 		resizeText(cardDescription);
 		cardDescription.setPosition(pos.x + (xSize - cardDescription.getGlobalBounds().width) / 2, pos.y + ySize * 0.6f);
 	}
-	void resizeText(sf::Text& textToResize)
+	/// <summary>
+	/// Cette fonction réduit la taille du texte afin de le faire fit (si on a qu'un argument, 
+	/// si on passe false au deuxième argument il va juste diviser le texte
+	/// </summary>
+	/// <param name="textToResize"></param>
+	/// <param name="minCharsSize"></param>
+	void resizeText(sf::Text& textToResize,bool minCharsSize=true)
 	{
-		while (textToResize.getGlobalBounds().width >=
-			cardBack.getGlobalBounds().width - cardBack.getGlobalBounds().width * 0.05f &&
-			textToResize.getCharacterSize() >= 20)
+		if (minCharsSize == true)
 		{
-			textToResize.setCharacterSize(textToResize.getCharacterSize() - 1);
+			while (
+				textToResize.getGlobalBounds().width >= xSize * 0.95f &&
+				textToResize.getCharacterSize() >= 15)
+			{
+				textToResize.setCharacterSize(textToResize.getCharacterSize() - 1);
+			}
 		}
 		int dividedIn = 1;
 		std::string basicString = textToResize.getString();
-		while (textToResize.getGlobalBounds().width >= cardBack.getGlobalBounds().width - cardBack.getGlobalBounds().width * 0.05f)
+		while (textToResize.getGlobalBounds().width >= xSize * 0.95f)
 		{
 			dividedIn++;
 			std::string temp = basicString;
@@ -131,8 +143,58 @@ public:
 			}
 		}
 	}
+	void resizeText(sf::Text& textToResize,unsigned int charSize, bool divided = true)
+	{	
+		while (
+			textToResize.getGlobalBounds().width >= xSize * 0.95f &&
+			textToResize.getCharacterSize() >= charSize)
+		{
+			textToResize.setCharacterSize(textToResize.getCharacterSize() - 1);
+		}
+		if (divided)
+		{
+			int dividedIn = 1;
+			std::string basicString = textToResize.getString();
+			while (textToResize.getGlobalBounds().width >= xSize * 0.95f)
+			{
+				dividedIn++;
+				std::string temp = basicString;
+				for (int i = 1; i < dividedIn; i++)
+				{
+					int R = (int)(temp.size() / (float)(dividedIn)) * i;
+					for (int j = R; j < temp.size(); j++)
+					{
+						if (temp[j] == ' ')
+						{
+							temp.insert(j, "\n");
+							textToResize.setString(temp);
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	
 	sf::Vector2f getScale() {
 		return cardBack.getScale();
+	}
+	void setTitleCharSize(unsigned int size)
+	{
+		cardTitle.setCharacterSize(size);
+	}
+	unsigned int getTitleCharSize()
+	{
+		return cardTitle.getCharacterSize();
+	}
+	void setDescriptionCharSize(unsigned int size)
+	{
+		cardDescription.setCharacterSize(size);
+	}
+	unsigned int getDescriptionCharSize()
+	{
+		return cardDescription.getCharacterSize();
 	}
 };
 

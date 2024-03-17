@@ -47,7 +47,7 @@ public:
 			//hasBeenHit = false;
 		}
 	}
-	void setPositionEntity(const float x, const float y) {
+	virtual void setPositionEntity(const float x, const float y) {
 		sf::Sprite& temp = getSprite();
 		getSprite().setPosition(x, y);
 		float _x = x - (lifeBarBackground.getGlobalBounds().width / 2);
@@ -58,7 +58,8 @@ public:
 	void setPositionEntity(sf::Vector2f i) {
 		setPositionEntity(i.x, i.y);
 	}
-	void moveEntity(sf::Vector2f mov) {
+	virtual void renderUI(sf::RenderTarget& target) = 0;
+	virtual void moveEntity(sf::Vector2f mov) {
 		if (mov.x != 0.f)
 		{
 			std::cout << "";
@@ -72,8 +73,6 @@ public:
 	}
 	void renderTheEntity(sf::RenderTarget& target) {
 		target.draw(getSprite());
-		target.draw(lifeBarBackground);
-		target.draw(lifeBar);
 	}
 	void reduceHP(float damage) {
 		if (!isInvulnerable) {

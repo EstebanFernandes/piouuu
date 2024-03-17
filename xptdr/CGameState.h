@@ -47,7 +47,7 @@ public:
 	CGameState(GameDataRef _data);
 	CGameState(GameDataRef _data, CCharacter characterParam);
 	~CGameState();
-	void STEInit();
+	virtual void STEInit();
 	void STEHandleInput();
 	
 	/// <summary>
@@ -71,5 +71,6 @@ public:
 	void STEResume();
 	void STEPause();
 	void setData(GameDataRef dataa) { data = dataa; }
+	CMob* nearEnemy(CMob* player);
 	GameDataRef getData();
 };

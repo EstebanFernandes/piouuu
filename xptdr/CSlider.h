@@ -8,7 +8,7 @@ class CSlider :public CUI
 private:
 	//represent the line of the slider
 	sf::RectangleShape line;
-	sf::CircleShape cursor;
+	sf::RectangleShape cursor;
 	sf::Text textPercentage;
 	//Coordinate of the minimum point ie 0%
 	sf::Vector2f minPoint;

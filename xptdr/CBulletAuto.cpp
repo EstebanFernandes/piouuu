@@ -1,4 +1,5 @@
 #include "CBulletAuto.h"
+
 CBulletAuto::CBulletAuto() : CBullet()
 {
 
@@ -78,12 +79,23 @@ void CBulletAuto::updateEntity(float dt)
 		//Normal behavior
 		sf::Vector2f temp = direction;
 		temp = temp * bulletSpeed * dt * 60.f;
-	
+		if (isAnimated)
+		{
+			anim.updateAnimation();
+			//anim.debug();
+		}
 
 		if (isGunShot)
 			gunshotDistance += temp.x;
 		getSprite().move(temp);
 	}
+}
+
+void CBulletAuto::setAnimation(CAnimation e)
+{
+	isAnimated = true;
+	anim = e;
+	//anim.setSprite(getPointerSprite());
 }
 
 bool CBulletAuto::checkCollisions(CMob& b)

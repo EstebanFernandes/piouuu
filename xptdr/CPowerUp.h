@@ -28,5 +28,6 @@ public:
 	{
 		target.draw(getSprite()); 
 	}
+	void renderUI(sf::RenderTarget& target){}
 };
 

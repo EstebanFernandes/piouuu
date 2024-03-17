@@ -63,18 +63,16 @@ void CCharacterSelection::STEInit()
 	int screenwidth = data->assets.sCREEN_WIDTH;
 	int screenheight = data->assets.sCREEN_HEIGHT;
 	loadCharacters();
-	data->assets.LoadFont("Lato", FONT_FILE_PATH); //Load la police d'écriture
-
 	ui.setCharacterSize(12);
 	ui.setFillColor(sf::Color::White);
-	ui.setFont(data->assets.GetFont("Lato"));
+	ui.setFont(data->assets.GetFont("Nouvelle"));
 	//temp
 
 	//on a load les personnages donc on va les mettre dans le carousel
 	int maxPoint = (int)carousel.ellipse.getPointCount();
 	int nbCharacter = (int)characterList.size();
 
-	Title.setFont(data->assets.GetFont("Lato"));
+	Title.setFont(data->assets.GetFont("Nouvelle"));
 	Title.setCharacterSize(50);
 	Title.setString("Sélection du personnage");
 	Title.setPosition(

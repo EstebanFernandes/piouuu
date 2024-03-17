@@ -5,8 +5,9 @@
 #include"CPlayer.h"
 #include"CHugoDecrypte.h"
 #include"CCardUpgrade.h"
+#include"InterfaceState.h"
 //état qui gère les améliorations du joueur 1
-class CUpgradeState : public CState
+class CUpgradeState : public CState, public InterfaceState
 {
 private:
 	GameDataRef data;
@@ -80,20 +81,21 @@ private:
 			sf::Vector2f pos;
 			int iDNextVert = (*currentGraph->currentVert).SOMLireArcPartant()[i].ARCObtenirDest();
 			CSommetUpgrade nextVert = currentGraph->GRAObtenirListeSommet()[iDNextVert];
-			CCardUpgrade temp(nextVert.returnValues(), r.returnGraphs()[i].ListeType, &(data->assets));
+			
+			CCardUpgrade card(nextVert.returnValues(), r.returnGraphs()[i].ListeType, &(data->assets));
 			float ratio = 1 / (float)nbofUpgrade;
 			//Distance qui n'est pas prise par les cartes
-			float t = screen_Width - (temp.getGlobalBounds().width * nbofUpgrade);
+			float t = screen_Width - (card.getGlobalBounds().width * nbofUpgrade);
 			while(t <= screen_Width * 0.2)
 			{
-				temp.reduceScale();
-				t = screen_Width - (temp.getGlobalBounds().width * nbofUpgrade);
+				card.reduceScale();
+				t = screen_Width - (card.getGlobalBounds().width * nbofUpgrade);
 			}
 			float spaceBetweenCard = t / (float)(nbofUpgrade + 1);
-			pos.x = spaceBetweenCard + (spaceBetweenCard + temp.getGlobalBounds().width) * i;
-			pos.y = (screen_Height / 2.f) - (temp.getGlobalBounds().height / 2.f);
-			temp.setPosition(pos);
-			CardList.push_back(temp);
+			pos.x = spaceBetweenCard + (spaceBetweenCard + card.getGlobalBounds().width) * i;
+			pos.y = (screen_Height / 2.f) - (card.getGlobalBounds().height / 2.f);
+			card.setPosition(pos);
+			CardList.push_back(card);
 		}
 		return true;
 	}

@@ -2,23 +2,8 @@
 
 
 CCheckbox::CCheckbox(CAssetManager* a, sf::Vector2f pos, std::string titleOftheCheckbox, unsigned int charSize)
+	:CCheckbox(a,titleOftheCheckbox,charSize)
 {
-	isSelected = true;
-	asset = a;
-	nameOfCheckbox.setFont(a->GetFont("Lato"));
-	std::string mdrr(titleOftheCheckbox + "   ");
-	nameOfCheckbox.setString(mdrr);
-	nameOfCheckbox.setCharacterSize(charSize);
-	check.setFont(a->GetFont("Lato"));
-	check.setString("X");
-	check.setCharacterSize(50);
-	check.setOrigin(check.getLocalBounds().width / 2.f,
-		check.getLocalBounds().height / 2.f);
-	box.setFillColor(sf::Color(255, 255, 255, 0));
-	box.setOutlineThickness(3.f);
-	check1.setRotation(45);
-	check2.setRotation(135);
-	initCheckbox();
 	setPosition(pos);
 }
 
@@ -26,11 +11,11 @@ CCheckbox::CCheckbox(CAssetManager* a, std::string titleOftheCheckbox, unsigned 
 {
 	isSelected = true;
 	asset = a;
-	nameOfCheckbox.setFont(a->GetFont("Lato"));
+	nameOfCheckbox.setFont(a->GetFont("Nouvelle"));
 	std::string mdrr(titleOftheCheckbox + "   ");
 	nameOfCheckbox.setString(mdrr);
 	nameOfCheckbox.setCharacterSize(charSize);
-	check.setFont(a->GetFont("Lato"));
+	check.setFont(a->GetFont("Nouvelle"));
 	check.setString("X");
 	check.setCharacterSize(50);
 	check.setOrigin(check.getLocalBounds().width / 2.f,

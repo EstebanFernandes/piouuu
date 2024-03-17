@@ -7,10 +7,12 @@ private:
 	bool isPositionated = false;
 	CMob* target;
 	bool hasTarget = false;
+	CAnimation anim;
 public:
 	ShootingEnemy(CAssetManager* asset);
 	ShootingEnemy(CAssetManager* asset, CMob* target);
-	ShootingEnemy(CAssetManager* asset, CMob* target_,CCharacter& stat,CWeaponStat WeaponStat,sf::Vector2f pos);
+	ShootingEnemy(CAssetManager* asset, enemyInfo ee);
+	ShootingEnemy(CAssetManager* asset, CMob* target_,CCharacter& stat,CWeaponStat WeaponStat,enemyInfo info);
 	void updateMovement(float delta);
 	void enemyShoot();
 	~ShootingEnemy() {
@@ -25,14 +27,24 @@ public:
 	*/
 	void updatewPlayer(float delta, CPlayer& player);
 	CEnemy* clone() override {
-		initPosition(initPos);
+		initPosition();
 		setSprite();
 		return new ShootingEnemy(*this);
 	}
 	void setSprite()
 	{
 		setLifeBar();
-		setPositionEntity((float)assets->sCREEN_WIDTH, (float)initPositionY);
+		setPositionEntity(spawnPos);
+	}
+	void setPos();
+	void setTarget(CMob* target_) {
+		if (target_ == NULL)
+			hasTarget = false;
+		else
+		{
+			target = target_;
+			hasTarget = true;
+		}
 	}
 };
 

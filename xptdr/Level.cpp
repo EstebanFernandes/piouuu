@@ -3,7 +3,7 @@
 bool Level::updateLevel()
 {
 	Pattern& pat = patternList[0];
-	if (patternList.size() == 1&& isInfinite==true)
+	if (patternList.size() == 1 && isInfinite==true)
 	{//Si la liste des pattern est quasiment vide
 		if (!isRandom)
 		{

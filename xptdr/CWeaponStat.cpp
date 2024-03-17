@@ -36,5 +36,7 @@ void CWeaponStat::addDir(sf::Vector2f& dir_)
 
 void CWeaponStat::changeDir(sf::Vector2f& dir, int index)
 {
-	dir2[index] = dir;
+	if (index == 0)
+		this->dir = dir;
+		dir2[index] = dir;
 }

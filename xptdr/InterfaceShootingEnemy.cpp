@@ -2,15 +2,15 @@
 
 void InterfaceShootingEnemy::updateShootWithPlayer(CPlayer& player)
 {
-	std::vector<CBulletAuto>* bullets = BAW.getVector();
+	std::list<CBulletAuto>* bullets = BAW.getList();
 	size_t temp = bullets->size();
-	for (int i = 0; i < temp; i++) {
-		if (player.checkCollisions((*bullets)[i])) {
-			player.reduceHP((float)(*bullets)[i].getDamage());
-			bullets->erase(bullets->begin() + i);
-			if (i != 0)
-				i--;
-			temp--;
+	for (std::list<CBulletAuto>::iterator bullet = bullets->begin(); bullet != bullets->end(); /*++bullet*/) {
+		if (bullet->checkCollisions(player))
+		{
+			player.reduceHP((float)bullet->getDamage());
+			bullet = bullets->erase(bullet);
 		}
+		else
+			++bullet;
 	}
 }

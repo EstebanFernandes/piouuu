@@ -2,20 +2,25 @@
 
 RusherEnemy::RusherEnemy(CAssetManager* assetParam)
 {
-	initEnnemy(assetParam);
+	info.scale.x = 0.2f;
+	info.scale.y = 0.2f;
+	initEnnemy(assetParam,info);
+	info.pos.x = assets->sCREEN_WIDTH * 0.95f;
 	assets->addSFX("enemyRush", &fxRush);
-	initPositionX = assetParam->sCREEN_WIDTH * 1.05f;
 	setMoveSpeed(5.f);
 	setSprite();
 	direction = sf::Vector2f(-1.f, 0.f);
 	target = NULL;
 }
 
-RusherEnemy::RusherEnemy(CAssetManager* assets, CCharacter stat, sf::Vector2f pos, CMob* target_)
+RusherEnemy::RusherEnemy(CAssetManager* assets, CCharacter stat, enemyInfo info_, CMob* target_)
 	:RusherEnemy(assets,target_)
 {
 	setCharacterStats(stat);
-	initPos = pos;
+	info_.scale = info.scale;
+	setInfo(info_);
+	initDirection();
+	direction = utilities::dirAtoB(spawnPos, info.pos);
 }
 
 RusherEnemy::RusherEnemy(CAssetManager* assets, CMob* target_)
@@ -35,7 +40,7 @@ void RusherEnemy::updateMovement(float delta)
 		sf::Vector2f avance = direction * moveSpeed * delta;
 		moveEntity(avance);
 	}
-	if (!isPositionated && getSprite().getPosition().x <= assets->sCREEN_WIDTH - getSprite().getGlobalBounds().width / 2.f) {
+	if (!isPositionated && onestPose() ) {
 		isPositionated = true;
 		colorSwitchClock.restart();
 	}
@@ -63,11 +68,13 @@ void RusherEnemy::updateEntity(float delta)
 			if (target != NULL)
 			{
 				direction = utilities::dirAtoB(getSprite().getPosition(), target->getSprite().getPosition());
+			}
+			else
+				direction = info.direction;
 				if (isSpriteFlip())
 					setRotation(utilities::getAngleFromDirection(direction) + 180.f);
 				else
-				setRotation(utilities::getAngleFromDirection(direction));
-			}
+					setRotation(utilities::getAngleFromDirection(direction));
 			fxRush.play();
 		}
 	}

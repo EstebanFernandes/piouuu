@@ -16,5 +16,9 @@ public:
 	virtual void updatewPlayer(float delta, CPlayer& player)=0;
 	//virtual void updatewGunslinger(float delta, CGunslinger& Gunz) = 0;
 	//virtual void die(std::vector<CHittingEntity*> r) = 0;
+	void setScoreGived(float score) {
+		if (score >= 0)
+			scoreGived = score;
+	}
 };
 
