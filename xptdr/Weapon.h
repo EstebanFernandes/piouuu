@@ -50,7 +50,7 @@ public:
 	/// Pour définir le comportement du tir on choisit l'un de ceux ci dessous
 	/// </summary>
 
-	sf::Sound bulletSound;
+	sf::Sound *bulletSound = NULL;
 	typedef enum {
 		gunslinger = 0,
 		laser = 1

@@ -8,30 +8,43 @@ CTestGame::CTestGame(GameDataRef _data)
 }
 
 CTestGame::CTestGame(GameDataRef _data, CCharacter characterParam)
+	:CTestGame(_data)
 {
-	setData(_data);
-	player1.updateStates(characterParam);
-	player2.updateStates(characterParam);
+	CPlayer temp;
+	temp.updateStates(characterParam);
+	players.push_back(temp);
+	players.push_back(temp);
+}
+
+CTestGame::CTestGame(GameDataRef _data, std::vector<CCharacter>& characters)
+	:CTestGame(_data)
+{
+	
+	CPlayer temp;
+	for (int i = 0; i < characters.size(); i++)
+	{
+		temp.updateStates(characters[i]);
+		players.push_back(temp);
+	}
 }
 
 void CTestGame::STEInit()
 {
 	initAssets();
-	CGameState::STEInit();
-	player2.setAssets(&(data->assets));
-	player2.updateMisc();
-	player2.upKey = sf::Keyboard::Up;
-	player2.downKey = sf::Keyboard::Down;
-	player2.leftKey = sf::Keyboard::Left;
-	player2.rightKey = sf::Keyboard::Right;
-	player2.getMainWeapon()->setTouche(sf::Keyboard::U);
-	player2.getSecondaryWeapon()->setTouche(sf::Keyboard::J);
-	player2.dashKey = sf::Keyboard::I;
+	*enemyNumber = 0;
+	initPlayer();
+	initBackground();
+	data->assets.jouerMusique("PartieJour");
+	bulletstorage = bulletStorage(&(data->assets));
+	entityList.push_back(&bulletstorage);
 }
 
 void CTestGame::initAssets()
 {
-	data->assets.deleteEverythingBut(player1.getName());
+	std::vector<std::string> ouioui;
+	for (auto i = players.begin(); i != players.end(); i++)
+		ouioui.push_back(i->getName());
+	data->assets.deleteEverythingBut(ouioui);
 	data->assets.clearSoundBuffer();
 	data->assets.LoadTexture("lifepoint", LIFEPOINTTEXTURE);
 	data->assets.LoadTexture("bomber", "res\\img\\lance-bombe.png");
@@ -48,6 +61,8 @@ void CTestGame::initAssets()
 	data->assets.GetTexture("fullLaser").setRepeated(true);
 	data->assets.LoadTexture("R2D2", "res\\img\\characters\\Droide2.png");
 	data->assets.LoadTexture("shooter", "res\\img\\ennemies\\shooter.png");
+	data->assets.LoadTexture("rusher", "res\\img\\ennemies\\rusher.png");
+	data->assets.LoadTexture("logonormal", "res\\img\\characters\\logonormal2.png");
 	data->assets.LoadTexture("bulletTear", "res\\img\\ennemies\\bulletTear.png");
 	data->assets.LoadSFX("bulletSound", "res\\sfx\\Piou.wav");
 	data->assets.LoadSFX("enemyRush", "res\\sfx\\vaisseau_fonce.wav");
@@ -59,25 +74,18 @@ void CTestGame::STEHandleInput()
 	sf::Event event;
 	while (data->window.pollEvent(event))
 	{
-		player1.PLYupdateMovement(event);
-		player2.PLYupdateMovement(event);
+		for (auto i = players.begin(); i != players.end(); i++)
+			i->PLYupdateMovement(event);
 		if (sf::Event::Closed == event.type)
 			data->window.close();
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11))
-		{
-			data->assets.changeScreenType(data->window, data->isFullScreen);
-		}if (event.type == sf::Event::KeyReleased) {
+		if (event.type == sf::Event::KeyReleased) {
 			if (event.key.code == sf::Keyboard::Escape)
 			{
-				sf::Texture texture;
-				texture.create(data->assets.sCREEN_WIDTH, data->assets.sCREEN_HEIGHT);
-				texture.update(data->window);
-				data->assets.LoadTexture("pauseScreen", texture);
 				data->machine.AddState(StateRef(new CGameMenu(data)), false);
 			}
 			if (event.key.code == sf::Keyboard::Space)
 			{
-				player1.gainXP(5);
+				players.begin()->gainXP(5);
 			}
 			if (event.key.code == sf::Keyboard::A)
 			{
@@ -109,15 +117,13 @@ void CTestGame::STEHandleInput()
 			}
 			if (event.key.code == sf::Keyboard::T)
 			{
-				player1.AAA();
+				players.begin()->AAA();
 			
 			}
-			if (event.key.code == sf::Keyboard::Tab)
-				player1.debugh();
 			//TEMP C POUR MOURIR
 			if (event.key.code == sf::Keyboard::M)
 			{
-				player1.reduceHP(player1.getMaxHealth());
+				players.begin()->reduceHP(players.begin()->getMaxHealth());
 				//GameOver();
 			}
 		}
@@ -138,7 +144,10 @@ void CTestGame::GameOver()
 	if (isThistheEnd == false)
 	{
 		isThistheEnd = true;
-	data->machine.AddState(StateRef(new CGameOver<CTestGame>(data, player1, player1.getScore())), true);
+		std::vector<CCharacter> temp;
+		for (auto i = players.begin(); i != players.end(); i++)
+			temp.push_back(*i);
+	data->machine.AddState(StateRef(new CGameOver<CTestGame>(data, temp, totalScore)), true);
 	}
 }
 
@@ -147,41 +156,35 @@ void CTestGame::STEUpdate(float delta)
 	updateBackground(delta);
 	//Auto aim
 	//On check d'abord les collisions entre le joueur et les entités. ensuite on update
-	player1.updateEntity(delta);
-	player2.updateEntity(delta);
-	if (player1.getMainWeapon()->typeTir == typeAim::autoAim && player1.seekForTarget)
+	for (auto i = players.begin(); i != players.end(); i++)
 	{
-		CMob* cible = nearEnemy(&player1);
-			player1.getMainWeapon()->changeTarget(cible);
-			player1.seekForTarget = false;
-	}
-	if (player2.getMainWeapon()->typeTir == typeAim::autoAim && player2.seekForTarget)
-	{
-		CMob* cible = nearEnemy(&player2);
-		player2.getMainWeapon()->changeTarget(cible);
-		player2.seekForTarget = false;
+		i->updateEntity(delta);
+		if (i->getMainWeapon()->typeTir == typeAim::autoAim && i->seekForTarget)
+		{
+			CMob* cible = nearEnemy(&(*i));
+			i->getMainWeapon()->changeTarget(cible);
+			i->seekForTarget = false;
+		}
 	}
 	size_t temp = entityList.size();
 	int previousMax = (int)temp;
 	for (int i = 0; i < temp; i++)
 	{
-		entityList[i]->updatewPlayer(delta, player1);
-		entityList[i]->updatewPlayer(delta, player2);
+		for (auto player = players.begin(); player != players.end(); player++)
+			entityList[i]->updatewPlayer(delta, (*player));
 		if (entityList[i]->needDelete == true)
 		{
 			deleteEntity(i);
+			i--;
 			temp--;
 		}
 		else
 			entityList[i]->updateEntity(delta);
 	}
-	if (player1.needDelete && player2.needDelete)
+	if (players.begin()->needDelete && players.back().needDelete)
 		GameOver();
 
-	if (previousMax != temp)
-	{
-		data->assets.checkSound();
-	}
+
 	//Clock updates
 	clock = (gameTime.asSeconds() + gameClock.getElapsedTime().asSeconds()) * 100.f;
 	clock = ceil(clock);
@@ -195,18 +198,37 @@ void CTestGame::STEUpdate(float delta)
 		gameClockText.setPosition(sf::Vector2f(data->assets.sCREEN_WIDTH / 2 - gameClockText.getGlobalBounds().width / 2, 20.f));
 
 	//Condition qui assure que le joueur prend bien un niveau par un niveau
-	if (player1.hasLevelUp == true && currentLevelOfplayer != player1.getLevel())
+	for (auto player = players.begin(); player != players.end(); player++)
 	{
-		currentLevelOfplayer++;
-		data->machine.AddState(StateRef(new CUpgradeState(data, &player1, &Upgradegraphs)), false);
+		if (player->hasLevelUp == true && currentLevelOfplayer != player->getLevel())
+		{
+			currentLevelOfplayer++;
+			data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), &Upgradegraphs)), false);
+		}
 	}
 	
 	//DEBUG INFO
-	std::stringstream ss;
-	ss << "Player level : " << player1.getLevel() << std::endl <<
+	/*std::stringstream ss;
+	ss << "Player level : " << playeer1.getLevel() << std::endl <<
 		"mouse x pos : " << sf::Mouse::getPosition(data->window).x << " y position : "<< sf::Mouse::getPosition(data->window).y << std::endl <<
-		"Max xp : " << player1.getMaxXp() << "\n" <<
-		"Score : " << player1.getScore() << std::endl << "\n";
-	//"Bullet number : " << player1.BAW.getVector()->size() << "\n";
-	uitext.setString(ss.str());
+		"Max xp : " << playeer1.getMaxXp() << "\n" <<
+		"Score : " << playeer1.getScore()<< std::endl << "\n";
+	//"Bullet number : " << playeer1.BAW.getVector()->size() << "\n";
+	uitext.setString(ss.str());*/
+}
+
+CMob* CTestGame::nearestPlayer(sf::Vector2f pos)
+{
+	float max = 2000.f;
+	CMob* target = NULL;
+	for (auto player = players.begin(); player != players.end(); player++)
+	{
+		float distance = utilities::getDistancefrom2Pos(pos, player->getSprite().getPosition());
+		if (distance < max)
+		{
+			max = distance;
+			target = &(*player);
+		}
+	}
+	return target;
 }

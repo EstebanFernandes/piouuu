@@ -8,16 +8,16 @@
 /// Structure utilisé pour passer les infos des personnages
 /// On peut passer d'autres informations dans la struct afin de facilité le passage de données</summary>
 struct enemyInfo {
-	sf::Vector2f pos;
-	std::string spawnSide;
-	sf::Vector2f direction;
+	sf::Vector2f pos; //Position que l'ennemi doit atteindre
+	std::string spawnSide;//Coté où on spawn, gauche droite haut ou bas
+	sf::Vector2f direction;//Direction d'avancée
 	sf::Vector2f scale;
 	//Constructeur par défaut
-	enemyInfo() : 
-		pos(-1.f ,-1.f),
+	enemyInfo() :
+		pos(-1.f, -1.f),
 		spawnSide("droite"),
 		direction(0.f, 0.f),
-		scale(1.f,1.f)
+		scale(1.f, 1.f)
 	{
 	}
 };
@@ -110,10 +110,8 @@ public:
 	}
 	/// <summary>
 	/// Cette fonction applique la position où va spawner l'ennemi,
-	/// selon le bord on a une position forcé (x côté gauche et droite et x côté gauche et droz)
+	/// selon le bord on a une position forcé (x côté gauche et droite et y en haut et en bas)
 	/// </summary>
-	/// <param name="sideSpawn"></param>
-	/// <param name="pos"></param>
 	virtual void initPosition()
 	{
 		if (info.spawnSide == "droite")

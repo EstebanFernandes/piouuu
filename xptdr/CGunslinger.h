@@ -19,8 +19,6 @@ private:
 	void initBuff(CBulletAuto& ref);
 	void setAnimation(CBulletAuto& ref);
 public:
-	~CGunslinger() {
-	}
 	sf::Vector2f bulletScale = sf::Vector2f(1.f, 1.f);
 
 

@@ -52,12 +52,37 @@ void CAssetManager::deleteEverythingBut(std::string name)
 	}
 }
 
+void CAssetManager::deleteEverythingBut(std::vector<std::string>& names)
+{
+
+		for (auto it = Textures.cbegin(); it != Textures.cend() /* not hoisted */; /* no increment */)
+		{
+			bool hasToDelete = true;
+			for (int i = 0; i<names.size(); i++)
+			{
+				if (names[i] == it->first)
+				{
+					hasToDelete = false;
+					break;
+				}
+			}
+			if (hasToDelete)
+			{
+				Textures.erase(it++);    // or "it = m.erase(it)" since C++11
+			}
+			else
+			{
+				++it;
+			}
+		}
+}
+
 void CAssetManager::LoadSFX(std::string name, std::string fileName)
 {
 	sonManager.stockSound(name, fileName);
 }
 
-void CAssetManager::addSFX(std::string name,sf::Sound* son)
+void CAssetManager::addSFX(std::string name,sf::Sound** son)
 {
 	return sonManager.addSound(name,son);
 }
@@ -82,6 +107,7 @@ void CAssetManager::changeScreenType(sf::RenderWindow& window, bool& isFullScree
 	}
 	else
 	{
+		//Surtout pour nous
 		isFullScreen = false;
 		sCREEN_WIDTH = 1280;
 		sCREEN_HEIGHT = 720;
@@ -92,7 +118,7 @@ void CAssetManager::changeScreenType(sf::RenderWindow& window, bool& isFullScree
 
 void CAssetManager::checkSound()
 {
-	sonManager.checkVect();
+	//sonManager.checkVect();
 }
 
 

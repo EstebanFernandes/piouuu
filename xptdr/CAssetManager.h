@@ -32,6 +32,7 @@ public:
 	}
 
 	void deleteEverythingBut(std::string name);
+	void deleteEverythingBut(std::vector<std::string>& names);
 	/// <summary>
 	/// Load va charger dans une map le buffer du son
 	/// </summary>
@@ -45,7 +46,7 @@ public:
 	/// </summary>
 	/// <param name="name"></param>
 	/// <param name="son"></param>
-	void addSFX(std::string name, sf::Sound* son);
+	void addSFX(std::string name, sf::Sound** son);
 	void DeleteSFX(std::string name) {
 		//SoundFX.erase(name);
 	}
@@ -77,7 +78,7 @@ public:
 	void setOverAllvolumeMusique(float volume) {
 		musiqueManager.overAllVolume(volume);
 	}
-	//Cette méthode permet de changer de fullscren à pas fullscreen, 
+	//Cette méthode permet de changer de fullscreen à pas fullscreen, 
 	//on passe en paramètre la fenêtre et le booléen isFullScreen
 	void changeScreenType(sf::RenderWindow & R, bool& isFullScreen);
 	void checkSound();

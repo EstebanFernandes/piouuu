@@ -18,7 +18,8 @@ bool Level::updateLevel()
 			patternList.push_back(patternListStock[min + std::rand() % (max - min + 1)]);
 		}
 	}
-
+	// Pour que ça fonctionne en release mdrr
+	//pat = patternList.at(0);
 		if(pat.updatePattern(*clock - offset, ennemyList) == true)
 		{
 			patternList.erase(patternList.begin());

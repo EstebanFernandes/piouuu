@@ -7,7 +7,7 @@ protected:
 	float scoreGived;
 public:
 	CHittingEntity() { scoreGived = 0; }
-	~CHittingEntity(){}
+	virtual ~CHittingEntity(){}
 	/// <summary>
 	/// Cette méthode est à appeler sur chaque entité qui rentre en contact avec le joueur
 	/// </summary>
@@ -19,6 +19,10 @@ public:
 	void setScoreGived(float score) {
 		if (score >= 0)
 			scoreGived = score;
+	}
+	float getScoreGived()
+	{
+		return scoreGived;
 	}
 };
 

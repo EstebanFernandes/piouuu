@@ -22,8 +22,8 @@ private:
 	int selectedButton;
 	//sf::Text textRestart;
 	//sf::Text textMainMenu;
-	sf::Texture texta;
-	CCharacter character;
+	sf::Texture texture;
+	std::vector<CCharacter> characters;
 
 	//private methods
 	void updateCharacter();
@@ -34,10 +34,10 @@ public:
 		data = _data;
 		selectedButton = 0;
 	}
-	CGameOver<MType>(GameDataRef _data, CCharacter characterParam, float scoreParam) {
+	CGameOver<MType>(GameDataRef _data, std::vector<CCharacter> characters_, float scoreParam) {
 		selectedButton = 0;
 		data = _data;
-		character = characterParam;
+		characters = characters_;
 		score = scoreParam;
 		askedScore = false;
 	}
@@ -53,14 +53,14 @@ void CGameOver<MType>::STEInit()
 {
 	setRank();
 	updateCharacter();
-	texta.create(data->window.getSize().x, data->window.getSize().y);
-	texta.update(data->window);
+	texture.create(data->window.getSize().x, data->window.getSize().y);
+	texture.update(data->window);
 	if (!Shader.loadFromFile("vertexbandw.vert", "fragbandw.frag"))
 	{
 		std::cout << "bof";
 
 	}
-	backGroundImage.setTexture(texta);
+	backGroundImage.setTexture(texture);
 	Shader.setUniform("texture", sf::Shader::CurrentTexture);
 
 
@@ -131,7 +131,7 @@ void CGameOver<MType>::STEHandleInput()
 			}
 			else if (event.key.code == sf::Keyboard::Enter) {
 				if (selectedButton == 0) {
-					data->machine.AddState(StateRef(new MType(data, character)), true);
+					data->machine.AddState(StateRef(new MType(data, characters)), true);
 				}
 				else if (selectedButton == 1) {
 					data->machine.AddState(StateRef(new CMainMenuState(data)), true);
@@ -181,28 +181,30 @@ inline void CGameOver<MType>::updateCharacter()
 {
 	CParserCSV parser = CParserCSV("res/data/characters.csv");
 	std::vector<std::vector<std::string>> charactersInfo = parser.getElements();
+	for (int j = 0; j < characters.size(); j++)
+	{
+		for (int i = 1; i < charactersInfo.size(); i++) {
+			if (charactersInfo[i][0] == characters[j].getName()) {
 
-	for (int i = 1; i < charactersInfo.size(); i++) {
-		if (charactersInfo[i][0] == character.getName()) {
+				float maxHealthPointTemp = 20;
+				if (charactersInfo[i][4] != "" && typeid(std::stof(charactersInfo[i][4])) == typeid(int)) maxHealthPointTemp = std::stof(charactersInfo[i][4]);
 
-			float maxHealthPointTemp = 20;
-			if (charactersInfo[i][4] != "" && typeid(std::stof(charactersInfo[i][4])) == typeid(int)) maxHealthPointTemp = std::stof(charactersInfo[i][4]);
+				float moveSpeedTemp = 0.5f;
+				if (charactersInfo[i][5] != "" && typeid(std::stof(charactersInfo[i][5])) == typeid(float)) moveSpeedTemp = std::stof(charactersInfo[i][5]);
 
-			float moveSpeedTemp = 0.5f;
-			if (charactersInfo[i][5] != "" && typeid(std::stof(charactersInfo[i][5])) == typeid(float)) moveSpeedTemp = std::stof(charactersInfo[i][5]);
+				int canonNumberTemp = 1;
+				if (charactersInfo[i][6] != "" && typeid(std::stoi(charactersInfo[i][6])) == typeid(int)) canonNumberTemp = std::stoi(charactersInfo[i][6]);
 
-			int canonNumberTemp = 1;
-			if (charactersInfo[i][6] != "" && typeid(std::stoi(charactersInfo[i][6])) == typeid(int)) canonNumberTemp = std::stoi(charactersInfo[i][6]);
+				int damagePerBulletTemp = 5;
+				if (charactersInfo[i][7] != "" && typeid(std::stoi(charactersInfo[i][7])) == typeid(int)) damagePerBulletTemp = std::stoi(charactersInfo[i][7]);
 
-			int damagePerBulletTemp = 5;
-			if (charactersInfo[i][7] != "" && typeid(std::stoi(charactersInfo[i][7])) == typeid(int)) damagePerBulletTemp = std::stoi(charactersInfo[i][7]);
+				float attackSpeedTemp = 8.f;
+				if (charactersInfo[i][8] != "" && typeid(std::stof(charactersInfo[i][8])) == typeid(float)) attackSpeedTemp = std::stof(charactersInfo[i][8]);
 
-			float attackSpeedTemp = 8.f;
-			if (charactersInfo[i][8] != "" && typeid(std::stof(charactersInfo[i][8])) == typeid(float)) attackSpeedTemp = std::stof(charactersInfo[i][8]);
-
-			float bulletSpeedTemp = 2.0f;
-			if (charactersInfo[i][9] != "" && typeid(std::stof(charactersInfo[i][9])) == typeid(float)) bulletSpeedTemp = std::stof(charactersInfo[i][9]);
-			character.setCharacterStats(maxHealthPointTemp, moveSpeedTemp, canonNumberTemp, damagePerBulletTemp, attackSpeedTemp, bulletSpeedTemp);
+				float bulletSpeedTemp = 2.0f;
+				if (charactersInfo[i][9] != "" && typeid(std::stof(charactersInfo[i][9])) == typeid(float)) bulletSpeedTemp = std::stof(charactersInfo[i][9]);
+				characters[j].setCharacterStats(maxHealthPointTemp, moveSpeedTemp, canonNumberTemp, damagePerBulletTemp, attackSpeedTemp, bulletSpeedTemp);
+			}
 		}
 	}
 }
@@ -244,7 +246,7 @@ inline void CGameOver<MType>::updateFileRanks()
 	size_t r = scoreString.find('.') + 3;
 	scoreString.erase(r, scoreString.size() - r);
 
-	std::string textToAdd = playerName + ";" + character.getName() + ";" + scoreString;
+	std::string textToAdd = playerName + ";" + characters[0].getName() + ";" + scoreString;
 	std::cout << "text to add : " << textToAdd << std::endl;
 
 	std::vector<std::string> lines;

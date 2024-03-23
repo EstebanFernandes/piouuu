@@ -54,8 +54,9 @@ void CSettingState::outlineGood(int index, int previousSelec)
 	}
 }
 
-CSettingState::CSettingState(GameDataRef _data) : data(_data)
+CSettingState::CSettingState(GameDataRef _data)
 {
+	data = _data;
 }
 
 void CSettingState::STEInit()

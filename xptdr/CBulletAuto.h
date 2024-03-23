@@ -25,7 +25,6 @@ public:
 		CBullet(daamg, pos, dir, bulletSpeeed, penetration,nameImage, as, bulletScale) {
 		if (bulletSpeeed != 0.f)
 			bulletSpeed = bulletSpeeed;
-		setRotation();
 	}
 
 	// méthode utilisée par les bombes ennemis
@@ -38,7 +37,6 @@ public:
 			bulletSpeed = bulletSpeeed;
 		gunShotTotalDistance = totaldistance;
 		isGunShot = true;
-		setRotation();
 	}
 	void setDirection(sf::Vector2f d)
 	{
@@ -48,10 +46,8 @@ public:
 	void setMob(CMob* m) {
 		mob = m;
 		isMobSet = true;
-		setRotation();
 	}
-	void setRotation() {
-	}
+
 
 	void setAnimation(CAnimation e);
 	void setSprite(std::string n) { CBullet::setSprite(n); }

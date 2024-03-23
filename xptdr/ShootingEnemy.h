@@ -16,6 +16,7 @@ public:
 	void updateMovement(float delta);
 	void enemyShoot();
 	~ShootingEnemy() {
+		assets->deleteSound(BAW.bulletSound);
 	}
 	//redéfinition de CEnemy
 	void renderEntity(sf::RenderTarget& target);
@@ -27,9 +28,12 @@ public:
 	*/
 	void updatewPlayer(float delta, CPlayer& player);
 	CEnemy* clone() override {
-		initPosition();
-		setSprite();
-		return new ShootingEnemy(*this);
+		ShootingEnemy* temp = new ShootingEnemy(*this);
+		temp->initPosition();
+		temp->initAnimation();
+		temp->initDirection();
+		temp->setSprite();
+		return temp;
 	}
 	void setSprite()
 	{
@@ -45,6 +49,12 @@ public:
 			target = target_;
 			hasTarget = true;
 		}
+	}
+	void initAnimation() {
+		float timeBetweenBullets = 1.f / BAW.getWeaponStats().attackSpeed;
+		float tbf = timeBetweenBullets / 5;
+		anim = CAnimation(getPointerSprite(), sf::IntRect(0, 0, 82, 86), 5,tbf );
+		anim.pxbetFrames = 2;
 	}
 };
 

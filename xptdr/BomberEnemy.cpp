@@ -11,10 +11,11 @@ BomberEnemy::BomberEnemy(CAssetManager* assets)
 	setBulletSpeed(1.2f);
 	setAttackSpeed(1.f);
 	rotate(180.f);
-	sf::Vector2f bulletScale = sf::Vector2f(1.f, 1.f);
+	sf::Vector2f bulletScale = sf::Vector2f(0.5f, 0.5f);
 	BAW.setWeaponStats(CWeaponStat((float)damagePerBullet, bulletSpeed, sf::Vector2f(0.f, 1.f), 0, "bombe", bulletScale, attackSpeed));
 	BAW.setWeaponPos(sf::Vector2f(0.f, getSprite().getGlobalBounds().height / 2.f));
 	BAW.addShootType(typeAim::bombe);
+	assets->addSFX("bulletSound", &BAW.bulletSound);
 }
 
 BomberEnemy::BomberEnemy(CAssetManager* assets, enemyInfo info_) :
@@ -26,19 +27,21 @@ BomberEnemy::BomberEnemy(CAssetManager* assets, enemyInfo info_) :
 }
 
 BomberEnemy::BomberEnemy(CAssetManager* assets, CCharacter stat, CWeaponStat WStat, enemyInfo info_)
-	: BomberEnemy(assets,info_)
+	: BomberEnemy(assets)
 {
+	info = info_;
 	setCharacterStats(stat);
 	BAW.setWeaponStats(WStat);
 	BAW.setWeaponPos(sf::Vector2f(0.f, getSprite().getGlobalBounds().height / 2.f));
 	sf::Vector2f tempDirection(0.f, 1.f);
 	BAW.getWeaponStats().changeDir(tempDirection);
+	BAW.addShootType(typeAim::bombe);
 }
 
 void BomberEnemy::enemyShoot()
 {
-	if (bulletClock.getElapsedTime().asSeconds() >= 1.f / attackSpeed) {
-		BAW.iNeedMoreBullets(getSprite().getPosition());
+	if (bulletClock.getElapsedTime().asSeconds() >= 1.f / BAW.getWeaponStats().attackSpeed) {
+		BAW.iNeedMoreBullets(getSprite().getPosition()+BAW.getWeaponPos());
 		// vient juste le restart le timer à la fin 
 		bulletClock.restart();
 	}

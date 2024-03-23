@@ -3,7 +3,7 @@
 
 Weapon::~Weapon()
 {
-	//assets->deleteSound(&bulletSound);
+	assets->deleteSound(bulletSound);
 }
 
 sf::Vector2f Weapon::getWeaponPos()

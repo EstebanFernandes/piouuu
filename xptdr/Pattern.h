@@ -18,7 +18,9 @@ public:
 	Pattern(float duration_, int order_, std::string name, bool isRandom_);
 	//2 méthodes utilisées pour stockés les waves dans le pattern
 	void addWave(Wave& waveToAdd) { waveListStock.push_back(waveToAdd); }
-	void addEnemy(enemy& enemyToAdd) { waveListStock.back().addEnemy(enemyToAdd); }
+	void addEnemy(enemy& enemyToAdd) { 
+		waveListStock.back().addEnemy(enemyToAdd); 
+	}
 	float getDuration() { return duration; }
 	int getWaveSize() { return (int)waveList.size(); }
 	int getOrder() { return order; }

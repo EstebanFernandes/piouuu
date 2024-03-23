@@ -7,6 +7,7 @@
 class CCharacterSelection : public CState
 {
 private :
+	int nb = -1;
 	bool isMovingRight = false;
 	bool isMovingLeft = false;
 	GameDataRef data;
@@ -26,7 +27,12 @@ public:
 		: CCharacterSelection(_data) {
 		returnChar = ch;
 	}
-	void loadCharacters();
+	CCharacterSelection(GameDataRef _data, CCharacter* ch, int numero)
+		:CCharacterSelection(_data, ch)
+	{
+		nb = numero;
+	}
+		void loadCharacters();
 
 	void STEInit();
 	void STEHandleInput();

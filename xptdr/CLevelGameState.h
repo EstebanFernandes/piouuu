@@ -9,8 +9,8 @@ private:
 	void deleteEntity(int& i);
 public:
 	CLevelGameState(GameDataRef _data);
-	CLevelGameState(GameDataRef _data, CCharacter characterParam,std::string filePath);
-	CLevelGameState(GameDataRef _data, CCharacter characterParam){}
+	CLevelGameState(GameDataRef _data, std::vector<CCharacter>& characters,std::string filePath);
+	CLevelGameState(GameDataRef _data, std::vector<CCharacter>& characters);
 	/// <summary>
 	/// Filepath throught an xml file defining a level
 	/// </summary>

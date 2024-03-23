@@ -98,4 +98,11 @@ namespace utilities {
 		text.setPosition(pos);
 		return true;
 	}
+	inline float getDistancefrom2Pos(const sf::Vector2f& posA, const sf::Vector2f& posB)
+	{
+		sf::Vector2f tempDistance = posA - posB;
+		tempDistance.x = std::abs(tempDistance.x);
+		tempDistance.y = std::abs(tempDistance.y);
+		return (float)std::sqrt(pow(tempDistance.x, 2) + pow(tempDistance.y, 2));
+	}
 }

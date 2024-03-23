@@ -9,6 +9,13 @@ private:
 public:
 	BomberEnemy(CAssetManager* assets);
 	BomberEnemy(CAssetManager* assets, enemyInfo info_);
+	/// <summary>
+	/// Constructeur utilisée par les levels
+	/// </summary>
+	/// <param name="assets"></param>
+	/// <param name="stat"></param>
+	/// <param name="WStat"></param>
+	/// <param name="info_"></param>
 	BomberEnemy(CAssetManager* assets, CCharacter stat, CWeaponStat WStat , enemyInfo info_);
 	void enemyShoot();
 	//redéfinition de CEnemy
@@ -21,5 +28,12 @@ public:
 	*/
 	void updatewPlayer(float delta, CPlayer& player);
 	void initDirection();
+	CEnemy* clone() override{
+		BomberEnemy* temp = new BomberEnemy(*this);
+		temp->initPosition();
+		temp->initDirection();
+		temp->setSprite();
+		return temp;
+	}
 };
 

@@ -5,12 +5,11 @@
 class CTestGame : public CGameState
 {
 private:
-	CPlayer player2;
 public:
 
 	CTestGame(GameDataRef _data); 
 	CTestGame(GameDataRef _data, CCharacter characterParam);
-
+	CTestGame(GameDataRef _data, std::vector<CCharacter>& characterParam);
 	void STEInit();
 	void initAssets();
 	void STEHandleInput();
@@ -18,21 +17,23 @@ public:
 		sf::RenderWindow& r = data->window;
 		r.clear(sf::Color::Red);
 		renderBackground();
-		player1.renderEntity(r);
-		player2.renderEntity(r);
+		for (auto i = players.begin(); i != players.end(); i++)
+			i->renderEntity(data->window);
 		for (int i = 0; i < entityList.size(); i++)
 		{
 			entityList[i]->renderEntity(r);
 		}
 		
+		r.setView(data->window.getDefaultView());
 		//Permet de remettre la vue par défaut et donc pas de soucis sur la suite
-		player1.renderUI(r);
-		player2.renderUI(r);
 		for (int i = 0; i < entityList.size(); i++)
 		{
 			entityList[i]->renderUI(r);
 		}
-		r.setView(data->window.getDefaultView());
+		for (auto i = players.begin(); i != players.end(); i++)
+		{
+			i->renderUI(data->window);
+		}
 		r.draw(uitext);
 		r.draw(gameClockText);
 		r.display();
@@ -41,5 +42,6 @@ public:
 	void addPowerUp();
 	void GameOver();
 	void STEUpdate(float delta);
+	CMob* nearestPlayer(sf::Vector2f pos);
 };
 

@@ -2,13 +2,13 @@
 #include <SFML/Audio.hpp>
 #include <unordered_map>
 struct sonetgame {
-	sf::Sound* son;
+	sf::Sound son;
 	float volumeparSon = 100.f;
 };
 class CeffetSonore
 {
 private:
-	std::vector<sonetgame> sons;
+	std::list<sonetgame> sons;
 	std::unordered_map<std::string, sf::SoundBuffer> sfxstorages;
 	float volumeOverAll = 100.f;
 public:
@@ -24,18 +24,20 @@ public:
 	/// </summary>
 	/// <param name="name"></param>
 	/// <returns></returns>
-	void addSound(const std::string& name,sf::Sound* son);
+	void addSound(const std::string& name,sf::Sound** son);
 	sf::SoundBuffer& getSound(const std::string& name);
 	void overAllVolume(float volume);
-	void checkVect();
+	/// <summary>
+	/// vérifie si des élements de la liste peuvent être supprimés
+	/// > fait rien
+	/// </summary>
+	void checkList();
 	void deleteSound(sf::Sound* a);
 	void clearSoundBuffer() {
 
-		//for (auto it = sfxstorages.cbegin(); it != sfxstorages.cend() /* not hoisted */; /* no increment */)
-		//{
-		//	
-		//		//sfxstorages.erase(it++);    // or "it = m.erase(it)" since C++11
-
-		//}
+		for (auto it = sfxstorages.cbegin(); it != sfxstorages.cend() /* not hoisted */; /* no increment */)
+		{
+				it = sfxstorages.erase(it);    // or "it = m.erase(it)" since C++11
+		}
 	}
 };

@@ -6,18 +6,15 @@ ShootingEnemy::ShootingEnemy(CAssetManager* assetParam) {
 	initEnnemy(assetParam, info, "shooter");
 	initDirection();
 	info.pos.x = assets->sCREEN_WIDTH *0.95f;
-	anim = CAnimation(getPointerSprite(), sf::IntRect(0, 0, 82, 86),4,0.16f);
-	anim.pxbetFrames = 2;
-	getSprite().setScale(2.f, 2.f);
-	setSprite();
 	moveSpeed = 2.f;
 	attackSpeed = 1.5f;
 	bulletSpeed = 1.f;
 	BAW.setWeaponStats(CWeaponStat((float)damagePerBullet, bulletSpeed, sf::Vector2f(-1.f, 0.f), 0, "", BAW.bulletScale, attackSpeed));
 	BAW.setBulletAsset("bulletTear");
-	float as = BAW.getWeaponStats().attackSpeed;
-	float tbf = as / 4;
 	explosionSprite.setColor(sf::Color::Red);
+	initAnimation();
+	getSprite().setScale(2.f, 2.f);
+	setSprite();
 }
 
 ShootingEnemy::ShootingEnemy(CAssetManager* asset, CMob* target_)
@@ -47,8 +44,8 @@ ShootingEnemy::ShootingEnemy(CAssetManager* asset, CMob* target_, CCharacter& st
 	{
 		BAW.getWeaponStats().changeDir(info.direction);
 	}
-	BAW.setBulletAsset("bulletTear");
 	damage = stat.getDamagePerBullet();
+	initAnimation();
 }
 
 void ShootingEnemy::setPos()
@@ -83,13 +80,12 @@ void ShootingEnemy::updateMovement(float delta)
 		onestPose()) {
 		isPositionated = true;
 		setRotation(180.f+utilities::getAngleFromDirection( BAW.getWeaponStats().dir));
-		bulletClock.restart();
 	}
 }
 
 void ShootingEnemy::enemyShoot()
 {
-	if (bulletClock.getElapsedTime().asSeconds() >= 1.f / BAW.getWeaponStats().attackSpeed && isPositionated) {
+	if (anim.getCurrentFrameNumber()== 5&& isPositionated) {
 		if (hasTarget)
 		{
 			float temp = 0.f;
@@ -105,9 +101,9 @@ void ShootingEnemy::enemyShoot()
 			BAW.iNeedMoreBullets(
 			utilities::shootPos((getSprite().getPosition()),
 				getGlobalBounds().width / 2.f,utilities::getAngleFromDirection(BAW.getWeaponStats().dir)));
+			std::cout << "je tire !" << std::endl;
 		}
 		// vient juste le restart le timer à la fin 
-		bulletClock.restart();
 	}
 }
 

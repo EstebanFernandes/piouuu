@@ -25,6 +25,7 @@ void CGunslinger::setAnimation(CBulletAuto &ref)
 }
 
 CGunslinger::CGunslinger()
+	:Weapon()
 {
 	setTypeArme(gunslinger);
 	typeTir = 0;
@@ -36,6 +37,8 @@ void CGunslinger::updateWeapon(float dt)
 {
 	for (std::list<CBulletAuto>::iterator it = magasine.begin(); it != magasine.end(); /*++it*/) {
 		it->updateEntity(dt);
+		if (typeTir == bombe)
+			it->rotate(0.2f);
 		if (it->isMobSet == false && typeTir == autoAim)
 			*seekForTarget = true;
 		if (it->checkGlobalCollisions())
@@ -90,11 +93,14 @@ void CGunslinger::iNeedMoreBullets(sf::Vector2f pos)
 		sf::Vector2f& tempDirection = referenceStat.dir2[i];
 		if (typeTir == Spin)
 			tempDirection = utilities::getDirectionFromAngle(utilities::getAngleFromDirection(tempDirection)+angleOffset);
+		if (typeTir != bombe)
+		{
 		reference.setDirection(tempDirection);
 		reference.setDirectionSprite();
+		}
 		magasine.push_back(reference);
 	setAnimation(magasine.back());
-		bulletSound.play();
+		bulletSound->play();
 	}
 }
 
@@ -167,6 +173,9 @@ void CGunslinger::addShootType(int type)
 	{
 		typeTir = type;
 		switch (typeTir) {
+		case bombe:
+			setBulletAsset("bombe");
+			break;
 		case classic:
 			referenceStat.addDir(referenceStat.dir);
 			break;

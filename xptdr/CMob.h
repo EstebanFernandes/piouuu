@@ -43,7 +43,7 @@ public:
 	void updateLifeBar() {
 		if (hasBeenHit)
 		{
-			lifeBar.setSize(sf::Vector2f(100.f * healthPoint / maxHealthPoint, 10.f));
+			lifeBar.setSize(sf::Vector2f(lifeBarBackground.getSize().x * healthPoint / maxHealthPoint, 10.f));
 			//hasBeenHit = false;
 		}
 	}

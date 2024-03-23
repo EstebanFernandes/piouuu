@@ -56,6 +56,8 @@ void CPlayer::setValue(int& init, std::string modif)
 
 void CPlayer::setAssets(CAssetManager* a)
 {
+	mainWeapon = new CGunslinger();
+	secondaryWeapon = new CGunslinger();
 	assets = a;
 	mainWeapon->assets = a;
 	secondaryWeapon->assets = a;
@@ -81,7 +83,6 @@ void CPlayer::setAssets(CAssetManager* a)
 		nameImage = "bulletImageGolden";
 	}
 
-	initLifeBar();
 	setSprite();
 	mainWeapon->setTouche(sf::Keyboard::Num1);
 	ws.dir = sf::Vector2f(0.f, 1.f);
@@ -253,37 +254,58 @@ CPlayer::CPlayer(CAssetManager* a)
 }
 
 CPlayer::~CPlayer()
-{
+{ 
 	delete mainWeapon;
 	delete secondaryWeapon;
 }
 
-
+//Initialise l'icone ainsi que la barre de vie
 void CPlayer::initLifeBar()
 {
-	float lp = 87.f;
-	previouslifePoint = maxHealthPoint;
-	previousMaxHealth = maxHealthPoint;
-	float scaleFactor = 1.f;
-	float lifebarwidth = lp * maxHealthPoint;
-	if (lifebarwidth >= assets->sCREEN_WIDTH * 0.5f)
-	{
-		float maxWidthPerPoint = assets->sCREEN_WIDTH * 0.5f / (float)maxHealthPoint;
-		scaleFactor = maxWidthPerPoint / lp;
-	}
-	for (int i = 0; i < maxHealthPoint; i++)
-	{
-		sf::Sprite temp;
-		temp.setTexture(assets->GetTexture("lifepoint"));
-		temp.setTextureRect(sf::IntRect(0, 0, (int)lp, 26));
-		temp.setScale(scaleFactor, scaleFactor * 2.f);
-		temp.setPosition(100.f + i * temp.getGlobalBounds().width , 30.f);
-		lifeBar.push_back(temp);
-	}
+	float baseThickness = 4.f;
+	icon.setTexture(assets->GetTexture("logonormal"));
+	int num = 0;
+	if (name == "Rancoeur")
+		num = 1;
+	int offset = num * (int)icon.getTexture()->getSize().y + num * 2;
+	icon.setTextureRect(sf::IntRect(offset, 0, 468, 468));
+	icon.setScale(0.2f, 0.2f);
+
+	iconCircle = sf::CircleShape(icon.getGlobalBounds().width/2.f,60);
+	iconCircle.setOrigin(iconCircle.getRadius(), iconCircle.getRadius());
+	iconCircle.setFillColor(sf::Color::Transparent);
+	iconCircle.setOutlineColor(playerColor);
+	iconCircle.setOutlineThickness(baseThickness);
+
+	iconCircle2 = iconCircle;
+	iconCircle2.setFillColor(sf::Color(0,0,0,60));
+	iconCircle2.setOutlineColor(sf::Color::Black);
+	iconCircle2.setRadius(iconCircle.getRadius() - (iconCircle.getOutlineThickness() / 2.f));
+	iconCircle2.setOrigin(iconCircle2.getRadius(),
+		iconCircle2.getRadius());
+	iconCircle2.setOutlineThickness(baseThickness * 2.f);
+	
+	lifeBar = sf::RectangleShape(sf::Vector2f(assets->sCREEN_WIDTH / 8.f, 15.f));
+	lifeBar.setOrigin(0.f, lifeBar.getLocalBounds().height / 2.f);
+	lifeBar.setFillColor(sf::Color::Red);
+
+	lifeBarBG2 = sf::RectangleShape(lifeBar);
+	lifeBarBG2.setFillColor(sf::Color(0,0,0,20));
+	lifeBarBG2.setOutlineColor(sf::Color::Black);
+	lifeBarBG2.setOutlineThickness(baseThickness *2.f);
+	lifeBarBackground = lifeBarBG2;
+	sf::Vector2f newSize(lifeBarBG2.getSize());
+	newSize.x += baseThickness;
+	newSize.y += baseThickness;
+	lifeBarBackground.setSize(newSize);
+	lifeBarBackground.setFillColor(sf::Color::Transparent);
+	lifeBarBackground.setOutlineColor(playerColor);
+	lifeBarBackground.setOutlineThickness(baseThickness);
+	lifeBarBackground.setOrigin(0.f, lifeBarBackground.getLocalBounds().height / 2.f);
 }
 
 
-void CPlayer::PLYupdateMovement(sf::Event event)
+void CPlayer::PLYupdateMovement(sf::Event& event)
 {
 	switch (event.type)
 	{
@@ -390,10 +412,12 @@ void CPlayer::updateMovement(float dt)
 
 void CPlayer::renderLifeBar(sf::RenderTarget& target)
 {
-	for (int i = 0; i < lifeBar.size(); i++)
-	{
-		target.draw(lifeBar[i]);
-	}
+	target.draw(lifeBarBG2);
+	target.draw(lifeBarBackground);
+	target.draw(lifeBar);
+	target.draw(icon);
+	target.draw(iconCircle2);
+	target.draw(iconCircle);
 }
 
 
@@ -403,23 +427,9 @@ void CPlayer::gainXP(int levelofEntity)
 }
 void CPlayer::updateLifeBar()
 {
-	if (previouslifePoint > healthPoint)
+	if (previouslifePoint != healthPoint)
 	{
-		for (int i = (int)healthPoint; i < previouslifePoint; i++)
-		{
-
-			lifeBar[i].setTextureRect(sf::IntRect(87, 0, 87, 26));
-		}
-		previouslifePoint = healthPoint;
-		hasBeenHit = false;
-	}
-	else 
-	{
-		for (int i = (int)previouslifePoint; i < healthPoint; i++)
-		{
-
-			lifeBar[i].setTextureRect(sf::IntRect(0, 0, 87, 26));
-		}
+		lifeBar.setSize(sf::Vector2f(lifeBarBG2.getSize().x * healthPoint / maxHealthPoint, 15.f));
 		previouslifePoint = healthPoint;
 		hasBeenHit = false;
 	}
@@ -491,4 +501,50 @@ void CPlayer::updateFx()
 bool CPlayer::matchTypewithValue(std::string type, std::string value)
 {
 	return false;
+}
+
+void CPlayer::setLifeBarPosition(sf::Vector2f& pos)
+{
+	icon.setPosition(pos.x,pos.y);
+	iconCircle.setPosition((icon.getGlobalBounds().width / 2.f) + icon.getGlobalBounds().left,
+		icon.getGlobalBounds().top + icon.getGlobalBounds().height / 2.f);
+	iconCircle2.setPosition(iconCircle.getPosition());
+	sf::Vector2f newpos(iconCircle2.getGlobalBounds().width + iconCircle2.getGlobalBounds().left - iconCircle2.getOutlineThickness() + lifeBarBG2.getOutlineThickness(),
+		iconCircle2.getPosition().y);
+	lifeBarBG2.setPosition(newpos);
+	lifeBar.setPosition(newpos);
+	newpos.x -= lifeBarBackground.getOutlineThickness() / 2.f;
+	newpos.y += lifeBarBackground.getOutlineThickness();
+	lifeBarBackground.setPosition(newpos);
+}
+
+void CPlayer::setNumero(int& i)
+{
+	switch (i)
+	{
+	case 2:
+	{
+		playerColor = sf::Color(52, 199, 62);
+		upKey = sf::Keyboard::Up;
+		downKey = sf::Keyboard::Down;
+		leftKey = sf::Keyboard::Left;
+		rightKey = sf::Keyboard::Right;
+		getMainWeapon()->setTouche(sf::Keyboard::U);
+		getSecondaryWeapon()->setTouche(sf::Keyboard::J);
+		dashKey = sf::Keyboard::I;
+		break;
+	}
+	}
+	initLifeBar();
+	sf::Vector2f pos(assets->sCREEN_WIDTH * 0.05f, assets->sCREEN_HEIGHT * 0.05f);
+	switch (i)
+	{
+	case 1:
+		setLifeBarPosition(pos);
+		break;
+	case 2:
+		pos = sf::Vector2f(assets->sCREEN_WIDTH * 0.95f - lifeBarBG2.getGlobalBounds().width-iconCircle2.getGlobalBounds().width, assets->sCREEN_HEIGHT * 0.05f);
+		setLifeBarPosition(pos);
+		break;
+	}
 }

@@ -23,7 +23,7 @@ protected:
 	GameDataRef data;
 	sf::Time gameTime;
 	sf::Clock gameClock;
-	CPlayer player1;
+	std::list<CPlayer> players;
 	float clock;
 	std::vector<CHittingEntity*> entityList;
 	int* enemyNumber = new int();
@@ -35,17 +35,18 @@ protected:
 	//engine related
 	//Background related:
 	CBackground BG1;
+	float totalScore;
 
 	sf::Text gameClockText;
 	sf::Text uitext;
 	bool CESTBON = false;
 	void initPlayer();
 	void initBackground();
-	void deleteEntity(int& i);
+	void deleteEntity(int i);
 public:
 	CGameState();
 	CGameState(GameDataRef _data);
-	CGameState(GameDataRef _data, CCharacter characterParam);
+	CGameState(GameDataRef _data, std::vector<CCharacter>& characterParam);
 	~CGameState();
 	virtual void STEInit();
 	void STEHandleInput();

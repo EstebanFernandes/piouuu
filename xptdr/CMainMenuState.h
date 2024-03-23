@@ -21,9 +21,14 @@ private:
 	std::vector<float> where;
 	sf::Sprite CMMTitle;
 	sf::Text info;
-	CCharacter chara;
+	/// <summary>
+	/// Information about the character about to get played
+	/// </summary>
+	std::vector<CCharacter> characters;
+	std::string nbJoueur;
+	bool charaSet = false;
 	void choosedButton();
-	void outline(int previndex);
+	void addLevelType();
 public:
 
 	CMainMenuState(GameDataRef _data);

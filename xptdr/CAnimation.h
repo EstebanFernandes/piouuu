@@ -65,20 +65,23 @@ public:
 	}
 
 	void updateAnimation() {
-		int* tempPointer = NULL;
-		if (isHorizontal)
+		if (timeBetweenFrames != -1)
 		{
-			tempPointer = &currentXFrameNumber;
-		}
-		else {
-			tempPointer = &currentYFrameNumber;
-		}
-		if (*tempPointer == NumberofFrame)
-			*tempPointer = 0;
-		if (animationTimer.getElapsedTime().asSeconds() > timeBetweenFrames)			{
-			switchFrames();
-			*tempPointer= *tempPointer+1;
-			animationTimer.restart();
+			int* tempPointer = NULL;
+			if (isHorizontal)
+			{
+				tempPointer = &currentXFrameNumber;
+			}
+			else {
+				tempPointer = &currentYFrameNumber;
+			}
+			if (*tempPointer == NumberofFrame)
+				*tempPointer = 0;
+			if (animationTimer.getElapsedTime().asSeconds() > timeBetweenFrames)			{
+				switchFrames();
+				*tempPointer= *tempPointer+1;
+				animationTimer.restart();
+			}
 		}
 	}
 	void debug()
@@ -112,6 +115,11 @@ public:
 		if (isHorizontal)
 			return currentXFrameNumber;
 		return currentYFrameNumber;
+	}
+	void setcurrentXFrameNumber(int i)
+	{
+		currentXFrameNumber = i;
+		switchFrames();
 	}
 	int getMaxFrame()
 	{

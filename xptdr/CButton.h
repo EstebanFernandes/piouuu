@@ -25,6 +25,9 @@ public:
 	void setSize(float xSizeParam, float ySizeParam);
 	//set the position of the Button
 	void setPosition(float xParam, float yParam);
+	void setPosition(sf::Vector2f po) {
+		setPosition(po.x, po.y);
+	}
 	void setFontColor(sf::Color colorParam);
 	void setOutlineThickness(float fParam);
 	void setThicknessColor(sf::Color colorParam);
@@ -57,6 +60,11 @@ public:
 		return text.getCharacterSize();
 	}
 	void Drawable::draw(sf::RenderTarget& target, sf::RenderStates states) const
+	{
+		target.draw(back);
+		target.draw(text);
+	}
+	void renderButton(sf::RenderTarget& target)
 	{
 		target.draw(back);
 		target.draw(text);

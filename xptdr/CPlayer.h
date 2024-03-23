@@ -13,12 +13,16 @@ class CPlayer :  public CMob
 {
 private:
 	//Attributs
-
+	sf::Color playerColor = sf::Color(3,140,252);
+	//sf::Color playerColor = sf::Color::Green;
 	// S'occupe des améliorations spéciales du personnage
 	//S'occupe des animations du personnage
 	CAnimation anim;
 	//La barre de vie est une liste de sprite représentant chacun un point de vie
-	std::vector<sf::Sprite> lifeBar;
+	sf::CircleShape iconCircle;
+	sf::CircleShape iconCircle2;
+	sf::RectangleShape lifeBarBG2;
+	sf::Sprite icon;
 	//les deux suivants servent à gérer la barre de vie
 	float previouslifePoint;
 	float previousMaxHealth;
@@ -51,12 +55,12 @@ private:
 	/// <summary>
 	/// pointeur vers l'arme principal
 	/// </summary>
-	Weapon* mainWeapon = new CGunslinger();
+	Weapon* mainWeapon = NULL;
 
 	/// <summary>
 	/// pointeur vers l'arme secondaire
 	/// </summary>
-	Weapon* secondaryWeapon = new CGunslinger();
+	Weapon* secondaryWeapon = NULL;
 
 	// Constrcuteurs et destruceurs 
 	void setSprite();
@@ -64,6 +68,7 @@ private:
 	void setValue(float& init, std::string modif);
 	void setValue(int& init, std::string modif);
 public:
+	int numero = -1;
 	//Mouvement
 
 	sf::Keyboard::Key upKey = sf::Keyboard::Z;
@@ -90,7 +95,7 @@ public:
 	void gainXP(int levelofEntity);
 	void updateLifeBar();
 	void updateEntity(float dt);
-	void PLYupdateMovement(sf::Event event);
+	void PLYupdateMovement(sf::Event& event);
 	void updateMovement(float dt);
 	void renderLifeBar(sf::RenderTarget& target);
 	void renderEntity(sf::RenderTarget& target);
@@ -138,8 +143,14 @@ public:
 			getGlobalBounds().top+ R2Sprite.getOrigin().y+R2Offset.y);
 		//std::cout << R2Sprite.getPosition().x << " y :" << R2Sprite.getPosition().y << std::endl;
 	}
-	void debugh() {
-		std::cout << "Origin R2, x : " << R2Sprite.getOrigin().x << " y : " << R2Sprite.getOrigin().y << std::endl;
-		std::cout << "Limite de R2, left : " << R2Sprite.getGlobalBounds().left << " top : " << R2Sprite.getGlobalBounds().top << std::endl;
-	}
+	/// <summary>
+	/// set la position de la  bar de vie, la position correspond au haut à droite de la petite image de l'avion
+	/// </summary>
+	/// <param name="pos"></param>
+	void setLifeBarPosition(sf::Vector2f& pos);
+	/// <summary>
+	/// Set le numéro du joueur, selon change les touches et la couleur
+	/// </summary>
+	/// <param name="i"></param>
+	void setNumero(int& i);
 };

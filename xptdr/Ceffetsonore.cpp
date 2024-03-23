@@ -17,14 +17,13 @@ void CeffetSonore::stockSound(const std::string& name, const std::string& filePa
 	}
 }
 
-void CeffetSonore::addSound(const std::string& name,sf::Sound* son)
+void CeffetSonore::addSound(const std::string& name,sf::Sound** son)
 {
-	*son = sf::Sound(sfxstorages.at(name));
 	sonetgame temp;
-	temp.son = son;
-	temp.son->setVolume(temp.volumeparSon * (volumeOverAll / 100.f));
+	temp.son = sf::Sound(sfxstorages.at(name));
+	temp.son.setVolume(temp.volumeparSon * (volumeOverAll / 100.f));
 	sons.push_back(temp);
-
+	*son = &(sons.back().son);
 }
 
 sf::SoundBuffer& CeffetSonore::getSound(const std::string& name)
@@ -38,39 +37,30 @@ void CeffetSonore::overAllVolume(float volume)
 	{
 		volumeOverAll = volume;
 		int max = (int)sons.size();
-		for (int i = 0; i < max; i++)
-		{
-			sons[i].son->setVolume(sons[i].volumeparSon * (volumeOverAll / 100.f));
-		}
+		for (auto i = sons.begin(); i != sons.end(); i++)
+			i->son.setVolume(i->volumeparSon * (volumeOverAll / 100.f));
 	}
 }
 
-void CeffetSonore::checkVect()
+void CeffetSonore::checkList()
 {
-	int max = (int)sons.size();
-	for (int i = 0; i < max; i++)
-	{
-		if (sons[i].son->getBuffer() == nullptr)
-		{
-			sons.erase(sons.begin() + i);
-			if (i != 0)
-				i--;
-			max--;
-		}
-	}
+	//eheh
 }
 
 void CeffetSonore::deleteSound(sf::Sound* a)
 {
-	int max = (int)sons.size();
-	for (int i = 0; i < max; i++)
+	if (a != NULL)
 	{
-		if (sons[i].son == a)
+		for (auto i = sons.begin(); i != sons.end();)
 		{
-			sons.erase(sons.begin() + i);
-			if (i != 0)
-				i--;
-			max--;
+			if (a == &i->son)
+			{
+				i = sons.erase(i);
+				break;
+			}
+			else
+				i++;
 		}
+		std::cout << "size of the sons manager : " << sons.size();
 	}
 }

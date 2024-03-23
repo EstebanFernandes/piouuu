@@ -8,7 +8,7 @@ class CWeaponStat
 public:
 	float bulletDamage;
 	float bulletSpeed;
-	sf::Vector2f dir;
+	sf::Vector2f dir= sf::Vector2f(0.f,0.f);
 	//Stock les directions de l'arme (pour les armes qui tire plusieurs fois)
 	std::vector<sf::Vector2f> dir2;
 	unsigned int penetration;

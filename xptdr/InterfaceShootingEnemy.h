@@ -7,10 +7,11 @@ protected:
 	CGunslinger BAW;
 	sf::Clock bulletClock;
 public:
+
 	void setBulletStorage(bulletStorage* e) {
 		bulletstorage = e;
 	}
-	~InterfaceShootingEnemy() { 
+	 virtual ~InterfaceShootingEnemy() { 
 		std::cout << "interface destructor called !\n";
 		transferBullet(BAW); 
 	}

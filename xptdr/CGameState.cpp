@@ -4,14 +4,21 @@ CGameState::CGameState()
 {
 }
 
-CGameState::CGameState(GameDataRef _data) : data(_data)
+CGameState::CGameState(GameDataRef _data) 
+	: data(_data)
 {
 	
 }
 
-CGameState::CGameState(GameDataRef _data, CCharacter characterParam) : data(_data)
+CGameState::CGameState(GameDataRef _data, std::vector<CCharacter>& characters)
+	: data(_data)
 {
-	player1.updateStates(characterParam);
+	CPlayer temp;
+	for (int i = 0; i < characters.size(); i++)
+	{
+		temp.updateStates(characters[i]);
+		players.push_back(temp);
+	}
 }
 
 
@@ -20,9 +27,14 @@ CGameState::~CGameState()
 }
 void CGameState::initPlayer()
 {
-	player1.setAssets(& (data->assets));
-	player1.updateMisc();
-	//player1.setPositionEntity(400.f, 400.f);
+	int numero = 1;
+	for (auto i = players.begin(); i != players.end(); i++)
+	{
+		i->setAssets(&(data->assets));
+		i->updateMisc();
+		i->setNumero(numero);
+		numero++;
+	}
 }
 
 void CGameState::initBackground()
@@ -88,7 +100,8 @@ void CGameState::STEHandleInput()
 	sf::Event event;
 	while (data->window.pollEvent(event))
 	{
-		player1.PLYupdateMovement(event);
+		for (auto i = players.begin(); i != players.end(); i++)
+			i->PLYupdateMovement(event);
 		if (sf::Event::Closed == event.type)
 			data->window.close();
 		if (event.type == sf::Event::KeyReleased) {
@@ -137,14 +150,14 @@ void CGameState::addEnemy(std::string enemyName)
 		(*enemyNumber)++;
 	}
 	else if (enemyName == "rusher") {
-		RusherEnemy* enemy = new RusherEnemy(&(data->assets), &player1);
-		entityList.push_back(enemy);
+		//RusherEnemy* enemy = new RusherEnemy(&(data->assets), &player1);
+		//entityList.push_back(enemy);
 		(*enemyNumber)++;
 	}
 	else if (enemyName == "boss") {
-		Boss* enemy = new Boss(&(data->assets), &player1, &entityList, enemyNumber);
-		enemy->setBulletStorage(&bulletstorage);
-		entityList.push_back(enemy);
+		//Boss* enemy = new Boss(&(data->assets), &player1, &entityList, enemyNumber);
+		//enemy->setBulletStorage(&bulletstorage);
+		//entityList.push_back(enemy);
 		(*enemyNumber)++;
 	}
 	else {
@@ -163,65 +176,34 @@ void CGameState::STEUpdate(float delta)
 {
 	updateBackground(delta);
 	//Auto aim
-	CMob* nearEnemy = NULL;
-	sf::Vector2f lessDir(1920.f, 1080.f);
-	//On check d'abord les collisions entre le joueur et les entités. ensuite on update
-	player1.updateEntity(delta);
+	for (auto i = players.begin(); i != players.end(); i++)
+	{
+		i->updateEntity(delta);
+		if (i->getMainWeapon()->typeTir == typeAim::autoAim && i->seekForTarget)
+		{
+			CMob* cible = nearEnemy(&(*i));
+			i->getMainWeapon()->changeTarget(cible);
+			i->seekForTarget = false;
+		}
+	}
 	size_t temp = entityList.size();
 	int previousMax = (int)temp;
-	//Si c'est un AutoAim
-	if (player1.getMainWeapon()->typeTir == typeAim::autoAim)
+	for (int i = 0; i < temp; i++)
 	{
-		for (int i = 0; i < temp; i++)
+		for (auto player = players.begin(); player != players.end(); player++)
+			entityList[i]->updatewPlayer(delta, (*player));
+		if (entityList[i]->needDelete == true)
 		{
-			entityList[i]->updatewPlayer(delta, player1);
-			if (entityList[i]->needDelete == true)
-			{
-				deleteEntity(i);
-				temp--;
-			}
-			else
-			{
-				entityList[i]->updateEntity(delta);
-				if (entityList[i]->getType() == 1 && entityList[i]->isDead == false)
-				{
-					sf::Vector2f dirTemp = entityList[i]->getDistance(player1);
-					float un = (float)std::sqrt(pow(lessDir.x, 2) + pow(lessDir.y, 2));
-					float deux = (float)std::sqrt(pow(dirTemp.x, 2) + pow(dirTemp.y, 2));
-					if (un > deux)
-					{
-						lessDir = dirTemp;
-						nearEnemy = entityList[i];
-					}
-				}
-			}
+			deleteEntity(i);
+			i--;
+			temp--;
 		}
-		if (player1.seekForTarget == true && nearEnemy != NULL)
-		{
-			player1.getMainWeapon()->changeTarget(nearEnemy);
-			player1.seekForTarget = false;
-		}
+		else
+			entityList[i]->updateEntity(delta);
 	}
-	else {
-		for (int i = 0; i < temp; i++)
-		{
-			entityList[i]->updatewPlayer(delta, player1);
-			if (entityList[i]->needDelete == true)
-			{
-				deleteEntity(i);
-				temp--;
-			}
-			else
-				entityList[i]->updateEntity(delta);
-		}
-	}
-	if (player1.needDelete)
+	if (players.begin()->needDelete && players.back().needDelete)
 		GameOver();
 
-	if (previousMax != temp)
-	{
-		data->assets.checkSound();
-	}
 	//Clock updates
 	clock = (gameTime.asSeconds() + gameClock.getElapsedTime().asSeconds()) * 100.f;
 	clock = ceil(clock);
@@ -235,10 +217,13 @@ void CGameState::STEUpdate(float delta)
 		gameClockText.setPosition(sf::Vector2f(data->assets.sCREEN_WIDTH / 2 - gameClockText.getGlobalBounds().width / 2, 20.f));
 
 	//Condition qui assure que le joueur prend bien un niveau par un niveau
-	if (player1.hasLevelUp == true && currentLevelOfplayer != player1.getLevel())
+	for (auto player = players.begin(); player != players.end(); player++)
 	{
-		currentLevelOfplayer++;
-		data->machine.AddState(StateRef(new CUpgradeState(data, &player1, &Upgradegraphs)), false);
+		if (player->hasLevelUp == true && currentLevelOfplayer != player->getLevel())
+		{
+			currentLevelOfplayer++;
+			data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), &Upgradegraphs)), false);
+		}
 	}
 }
 
@@ -248,9 +233,9 @@ void CGameState::updateBackground(float delta)
 	BG1.updateCBackground(delta);
 }
 
-void CGameState::deleteEntity(int& i)
+void CGameState::deleteEntity(int i)
 {
-	if (entityList[i]->getType() == 1) {
+	/*if (entityList[i]->getType() == 1) {
 		{
 			(*enemyNumber)--;
 			int random = 1 + (rand() % 99);
@@ -260,11 +245,9 @@ void CGameState::deleteEntity(int& i)
 					entityList[i]->getGlobalBounds().getPosition().y + entityList[i]->getGlobalBounds().height / 2);
 				addPowerUp(r);
 			}
-
 		}
-	}
-	//entityList[i]->die(entityList);
-	delete entityList[i];
+	}*/
+	delete entityList.at(i);
 	entityList.erase(entityList.begin() + i);
 	if (i != 0)
 		i--;
@@ -281,19 +264,23 @@ void CGameState::STEDraw(float delta)
 	sf::RenderWindow& r = data->window;
 	r.clear(sf::Color::Red);
 	renderBackground();
-	player1.renderEntity(r);
+	for (auto i = players.begin(); i != players.end(); i++)
+		i->renderEntity(data->window);
 	for (int i = 0; i < entityList.size(); i++)
 	{
 		entityList[i]->renderEntity(r);
 	}
-	//DrawPlayer();
+
+	r.setView(data->window.getDefaultView());
 	//Permet de remettre la vue par défaut et donc pas de soucis sur la suite
-	player1.renderUI(r);
 	for (int i = 0; i < entityList.size(); i++)
 	{
 		entityList[i]->renderUI(r);
 	}
-	r.setView(data->window.getDefaultView());
+	for (auto i = players.begin(); i != players.end(); i++)
+	{
+		i->renderUI(data->window);
+	}
 	r.draw(uitext);
 	r.draw(gameClockText);
 	r.display();
@@ -304,10 +291,12 @@ void CGameState::STEResume()
 	data->assets.DeleteTexture("pauseScreen");
 	gameClock.restart();
 	CESTBON = false;
-	player1.resetMovement();
-	player1.updateMisc();
-	if (player1.hasLevelUp == true && currentLevelOfplayer == player1.getLevel())
-		player1.hasLevelUp = false;
+	for (auto i = players.begin(); i != players.end(); i++)
+	{
+		i->resetMovement();
+	if (i->hasLevelUp == true && currentLevelOfplayer == i->getLevel())
+		i->hasLevelUp = false;
+	}
 }
 /// <summary>
 /// Fonction qui renvoie l'ennemi le plus près de l'entité passé en paramètre
@@ -323,8 +312,8 @@ CMob* CGameState::nearEnemy(CMob* player)
 	{
 		if (entityList[i]->getType() == CEntity::Enemy)
 		{
-			sf::Vector2f dirTemp = entityList[i]->getDistance(player1);
-			float curEntityDistance = (float)std::sqrt(pow(dirTemp.x, 2) + pow(dirTemp.y, 2));
+
+			float curEntityDistance  = utilities::getDistancefrom2Pos(player->getPosition(), entityList[i]->getPosition());
 			if (bestDistanceNow > curEntityDistance)
 			{
 				bestDistanceNow = curEntityDistance;

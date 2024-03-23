@@ -74,7 +74,10 @@ void CCharacterSelection::STEInit()
 
 	Title.setFont(data->assets.GetFont("Nouvelle"));
 	Title.setCharacterSize(50);
-	Title.setString("Sélection du personnage");
+	if (nb != -1)
+	{
+	Title.setString("Sélection de personnage J"+std::to_string(nb));
+	}
 	Title.setPosition(
 		screenwidth / 2.f - Title.getGlobalBounds().width / 2.f,
 		screenheight*0.1f - Title.getGlobalBounds().height / 2.f);

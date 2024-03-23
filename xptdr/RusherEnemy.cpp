@@ -2,11 +2,11 @@
 
 RusherEnemy::RusherEnemy(CAssetManager* assetParam)
 {
-	info.scale.x = 0.2f;
-	info.scale.y = 0.2f;
-	initEnnemy(assetParam,info);
+	initEnnemy(assetParam,info,"rusher");
 	info.pos.x = assets->sCREEN_WIDTH * 0.95f;
 	assets->addSFX("enemyRush", &fxRush);
+	anim = CAnimation(getPointerSprite(), sf::IntRect(0, 0, 73, 86), 1, -1.f);
+	anim.pxbetFrames = 2;
 	setMoveSpeed(5.f);
 	setSprite();
 	direction = sf::Vector2f(-1.f, 0.f);
@@ -18,15 +18,18 @@ RusherEnemy::RusherEnemy(CAssetManager* assets, CCharacter stat, enemyInfo info_
 {
 	setCharacterStats(stat);
 	info_.scale = info.scale;
-	setInfo(info_);
-	initDirection();
-	direction = utilities::dirAtoB(spawnPos, info.pos);
+	info = info_;
 }
 
 RusherEnemy::RusherEnemy(CAssetManager* assets, CMob* target_)
 	: RusherEnemy(assets)
 {
-	target = target_;
+	initDirection(target_);
+}
+
+RusherEnemy::~RusherEnemy()
+{
+	assets->deleteSound(fxRush);
 }
 
 void RusherEnemy::updateMovement(float delta)
@@ -46,24 +49,40 @@ void RusherEnemy::updateMovement(float delta)
 	}
 }
 
+void RusherEnemy::initDirection(CMob* target_)
+{
+	target = target_;
+	if (target == NULL)
+	{
+		CEnemy::initDirection();
+	}
+	else {
+		baseColor = sf::Color(232,118,118,122);
+		getSprite().setColor(baseColor);
+	}
+	direction = utilities::dirAtoB(spawnPos, info.pos);
+}
+
 void RusherEnemy::updateEntity(float delta)
 {
 	CEnemy::updateEntity(delta);
-	if (isPositionated && counter < 3 && isRed == false && colorSwitchClock.getElapsedTime().asSeconds() >= 1.f) {
+	updateAnim();
+	if (isPositionated && counter < 3 && isRed == false && colorSwitchClock.getElapsedTime().asSeconds() >= dureeTotale/3.f) {
 		isRed = true;
 		counter++;
+		dureePasseTotale += colorSwitchClock.getElapsedTime();
 		colorSwitchClock.restart();
 		getSprite().setColor(sf::Color::Red);
 		redColorSwitchClock.restart();
 	}
 	else if (isRed == true && redColorSwitchClock.getElapsedTime().asSeconds() >= 0.5f) {
-		getSprite().setColor(sf::Color::White);
+		getSprite().setColor(baseColor);
 		isRed = false;
 	}
-	else if (counter == 3 && colorSwitchClock.getElapsedTime().asSeconds() >= 1.f) {
-		setMoveSpeed(120.f);
+	else if (isRushing==false&& counter == 3 && colorSwitchClock.getElapsedTime().asSeconds() >= dureeTotale/3.f) {
+		setMoveSpeed(60.f);
 		isRushing = true;
-		if(fxRush.getStatus()== fxRush.Stopped)//  ca permet de s'assurer que le son n'est joué qu'une fois
+		if(fxRush->getStatus()== fxRush->Stopped)//  ca permet de s'assurer que le son n'est joué qu'une fois
 		{
 			if (target != NULL)
 			{
@@ -75,7 +94,44 @@ void RusherEnemy::updateEntity(float delta)
 					setRotation(utilities::getAngleFromDirection(direction) + 180.f);
 				else
 					setRotation(utilities::getAngleFromDirection(direction));
-			fxRush.play();
+			fxRush->play();
+		}
+	}
+}
+
+void RusherEnemy::updateAnim()
+{
+	if (isRushing == false)
+	{
+		if ((colorSwitchClock.getElapsedTime() + dureePasseTotale).asSeconds() >= (dureeTotale / 5.f) * (counterAnim + 1))
+		{
+			if(counterAnim>5&&counterAnim%2==0)//Si on est pair
+			{
+				counterAnim++;
+				anim.setcurrentXFrameNumber(5);
+			}
+			else if (counterAnim > 5)
+			{
+				counterAnim++;
+				anim.setcurrentXFrameNumber(4);
+			}
+			else
+				anim.setcurrentXFrameNumber(counterAnim++);
+		}
+	}
+	else {
+		if ((colorSwitchClock.getElapsedTime() + dureePasseTotale).asSeconds() >= (0.5f) * (counterAnim + 1))
+		{
+			if (counterAnim % 2 == 0)//Si on est pair
+			{
+				counterAnim++;
+				anim.setcurrentXFrameNumber(5);
+			}
+			else 
+			{
+				counterAnim++;
+				anim.setcurrentXFrameNumber(4);
+			}
 		}
 	}
 }

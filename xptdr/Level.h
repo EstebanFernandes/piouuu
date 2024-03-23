@@ -42,5 +42,6 @@ public:
 	}
 	void setRandom(int i) { isRandom = i; }
 	void addWave(Wave& wavetoAdd) { patternListStock.back().addWave(wavetoAdd); }
-	void addEnemy(enemy& enemyToAdd) { patternListStock.back().addEnemy(enemyToAdd); }
+	void addEnemy(enemy& enemyToAdd) { 
+		patternListStock.back().addEnemy(enemyToAdd); }
 };

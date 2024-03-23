@@ -35,7 +35,6 @@
     <ClCompile Include="CGunslinger.cpp" />
     <ClCompile Include="CHitbox.cpp" />
     <ClCompile Include="CHittingEntity.cpp" />
-    <ClCompile Include="CInfiniteGameState.cpp" />
     <ClCompile Include="CInputManager.cpp" />
     <ClCompile Include="CJeu.cpp" />
     <ClCompile Include="CLevelUp.cpp" />
@@ -81,6 +80,7 @@
     <ClCompile Include="Pattern.cpp" />
     <ClCompile Include="CLevelGameState.cpp" />
     <ClCompile Include="laserWeapon.cpp" />
+    <ClCompile Include="CButtonState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BomberEnemy.h" />
@@ -117,7 +117,6 @@
     <ClInclude Include="CGunslinger.h" />
     <ClInclude Include="CHitbox.h" />
     <ClInclude Include="CHittingEntity.h" />
-    <ClInclude Include="CInfiniteGameState.h" />
     <ClInclude Include="CInputManager.h" />
     <ClInclude Include="CJeu.h" />
     <ClInclude Include="CLevelUp.h" />
@@ -164,6 +163,7 @@
     <ClInclude Include="Pattern.h" />
     <ClInclude Include="CLevelGameState.h" />
     <ClInclude Include="laserWeapon.h" />
+    <ClInclude Include="CButtonState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragbandw.frag" />

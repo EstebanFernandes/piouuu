@@ -1,8 +1,8 @@
 #include "CMainMenuState.h"
 #include "CGameState.h"
-#include "CInfiniteGameState.h"
 #include "CTestGame.h"
 #include"CLevelGameState.h"
+#include"CButtonState.h"
 CMainMenuState::CMainMenuState(GameDataRef _data) : data(_data)
 {
 }
@@ -138,12 +138,13 @@ void CMainMenuState::STEUpdate(float delta)
 
 void CMainMenuState::choosedButton()
 {
+	const std::vector<std::string> blabla{ "1 Joueur","2 Joueurs" };
 	switch (index) {
 	case 0:
-		data->machine.AddState(StateRef(new CCharacterSelection(data)), true);
+		data->machine.AddState(StateRef(new CButtonState(data,blabla,&nbJoueur)), false);
 		break;
 	case 1:
-		data->machine.AddState(StateRef(new CCharacterSelection(data,&chara)), false);
+		data->machine.AddState(StateRef(new CButtonState(data, blabla, &nbJoueur)), false);
 	case 2:
 		//data->machine.AddState(StateRef(new CClavierVirtuel(data, 2, 1)), true);
 		break;
@@ -157,16 +158,17 @@ void CMainMenuState::choosedButton()
 	}
 }
 
-void CMainMenuState::outline(int previndex)
+void CMainMenuState::addLevelType()
 {
 	switch (index) {
 	case 0:
-
+		data->machine.AddState(StateRef(new CTestGame(data,characters)), true);
 		break;
 	case 1:
-		//data->machine.AddState(StateRef(new CClavierVirtuel(data, 2, 1)), true);
+		data->machine.AddState(StateRef(new CLevelGameState(data, characters, "res/level/essai.xml")), true);
+		break;
 	case 2:
-		data->machine.AddState(StateRef(new CInfiniteGameState(data)), true);
+		//data->machine.AddState(StateRef(new CInfiniteGameState(data)), true);
 		break;
 	case 3:
 		data->machine.AddState(StateRef(new CSettingState(data)), false);
@@ -191,8 +193,26 @@ void CMainMenuState::STEDraw(float delta)
 void CMainMenuState::STEResume()
 {
 	resizeScreen();
-	if (chara.getCanonNumber() < 40)
+	std::cout << nbJoueur;
+	int indexChara = -1;
+	if (nbJoueur == "1 Joueur")
 	{
-		data->machine.AddState(StateRef(new CLevelGameState(data, chara, "res/level/essai.xml")), true);
+		if (characters.size() == 0)
+		{
+			characters.push_back(CCharacter());
+			data->machine.AddState(StateRef(new CCharacterSelection(data, &characters.back(),(int)characters.size())), false);
+		}
+		else
+			addLevelType();
+	}
+	else if (nbJoueur == "2 Joueurs")
+	{
+		if (characters.size() <= 1)
+		{
+			characters.push_back(CCharacter());
+			data->machine.AddState(StateRef(new CCharacterSelection(data, &characters.back(), (int)characters.size())), false);
+		}
+		else
+			addLevelType();
 	}
 }

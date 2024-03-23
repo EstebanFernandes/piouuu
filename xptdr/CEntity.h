@@ -131,5 +131,9 @@ public:
 			return true;
 		return false;
 	}
+	sf::Vector2f getPosition()
+	{
+		return ENTsprite.getPosition();
+	}
 };
 

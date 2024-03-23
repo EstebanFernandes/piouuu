@@ -37,17 +37,17 @@ CBulletAuto::CBulletAuto(int damage, float bulletSpeed, sf::Vector2f dir, int pe
 
 }
 
-CBulletAuto::CBulletAuto(int daamg, sf::Vector2f pos, float bulletSpeeed, sf::Vector2f dir, int penetration, std::string nameImage, CAssetManager* as, sf::Vector2f bulletScale, bool isABombe) : CBullet(daamg, pos, dir, bulletSpeeed, penetration, nameImage, as, bulletScale)
+CBulletAuto::CBulletAuto(int daamg, sf::Vector2f pos, float bulletSpeeed, sf::Vector2f dir, int penetration, std::string nameImage, CAssetManager* as, sf::Vector2f bulletScale, bool isABombe) 
+	: CBullet(daamg, pos, dir, bulletSpeeed, penetration, nameImage, as, bulletScale)
 {
-	isABombe = true;
-	CEntity::setRotation(0);
+	direction = sf::Vector2f(0.f, 1.f);
+	setRotation(0);
 }
 
 
 //Pour update une balle chargée (qui peut avoir des comportements différents)
 void CBulletAuto::updateEntity(float dt)
 {
-	//std::cout <<"x : " << getSprite().getPosition().x << " y : " << getSprite().getPosition().y << std::endl;
 	if (isThisIt)
 	{
 		penetration--;

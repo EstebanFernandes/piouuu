@@ -6,16 +6,16 @@ void CLevelGameState::GameOver()
 	if (isThistheEnd == false)
 	{
 		isThistheEnd = true;
-		data->machine.AddState(StateRef(new CGameOver<CLevelGameState>(data, player1, player1.getScore())), true);
+		std::vector<CCharacter> temp;
+		for (auto i = players.begin(); i != players.end(); i++)
+			temp.push_back(*i);
+		data->machine.AddState(StateRef(new CGameOver<CLevelGameState>(data, temp, totalScore)), true);
 	}
 }
 
 void CLevelGameState::STEResume()
 {
-	data->assets.DeleteTexture("pauseScreen");
-	gameClock.restart();
-	CESTBON = false;
-	player1.resetMovement();
+	CGameState::STEResume();
 }
 
 
@@ -34,11 +34,20 @@ CLevelGameState::CLevelGameState(GameDataRef _data)
 	setData(_data);
 }
 
-CLevelGameState::CLevelGameState(GameDataRef _data, CCharacter characterParam, std::string filePath)
-: CLevelGameState(_data){
+CLevelGameState::CLevelGameState(GameDataRef _data, std::vector<CCharacter>& characters)
+	:CLevelGameState(_data)
+{
+	CPlayer temp;
+	for (int i = 0; i < characters.size(); i++)
+	{
+		temp.updateStates(characters[i]);
+		players.push_back(temp);
+	}
+}
+
+CLevelGameState::CLevelGameState(GameDataRef _data, std::vector<CCharacter>& characters, std::string filePath)
+: CLevelGameState(_data,characters){
 	levelFilePath = filePath;
-	player1.updateStates(characterParam);
-	player1.updateMisc();
 }
 
 void CLevelGameState::STEInit()
@@ -47,7 +56,7 @@ void CLevelGameState::STEInit()
 	CGameState::STEInit();
 
 
-	CParserXML xml(levelFilePath, &(data->assets), &player1, &bulletstorage);
+	CParserXML xml(levelFilePath, &(data->assets), &(*players.begin()), &bulletstorage);
 	xml.coreFunction();
 	level = xml.getLevel();
 	level.setEnnemyList(&entityList);
@@ -61,74 +70,34 @@ void CLevelGameState::STEUpdate(float delta)
 	{
 		updateBackground(delta);
 		//Auto aim
-		CMob* nearEnemy = NULL;
-		sf::Vector2f lessDir(1920.f, 1080.f);
-		//On check d'abord les collisions entre le joueur et les entités. ensuite on update
-		player1.updateEntity(delta);
+		for (auto i = players.begin(); i != players.end(); i++)
+		{
+			i->updateEntity(delta);
+			if (i->getMainWeapon()->typeTir == typeAim::autoAim && i->seekForTarget)
+			{
+				CMob* cible = nearEnemy(&(*i));
+				i->getMainWeapon()->changeTarget(cible);
+				i->seekForTarget = false;
+			}
+		}
+
 		size_t temp = entityList.size();
 		int previousMax = (int)temp;
-		//Si c'est un AutoAim
-		if (player1.getMainWeapon()->typeTir == typeAim::autoAim)
+		for (int i = 0; i < temp; i++)
 		{
-			for (int i = 0; i < temp; i++)
+			for (auto player = players.begin(); player != players.end(); player++)
+				entityList[i]->updatewPlayer(delta, (*player));
+			if (entityList[i]->needDelete == true)
 			{
-				entityList[i]->updatewPlayer(delta, player1);
-				if (entityList[i]->needDelete == true)
-				{
-					deleteEntity(i);
-					temp--;
-				}
-				else
-				{
-					entityList[i]->updateEntity(delta);
-					if (entityList[i]->getType() == 1 && entityList[i]->isDead == false)
-					{
-						sf::Vector2f dirTemp = entityList[i]->getDistance(player1);
-						float un = (float)std::sqrt(pow(lessDir.x, 2) + pow(lessDir.y, 2));
-						float deux = (float)std::sqrt(pow(dirTemp.x, 2) + pow(dirTemp.y, 2));
-						if (un > deux)
-						{
-							lessDir = dirTemp;
-							nearEnemy = entityList[i];
-						}
-					}
-				}
+				deleteEntity(i);
+				i--;
+				temp--;
 			}
-			if (player1.seekForTarget == true && nearEnemy != NULL)
-			{
-				player1.getMainWeapon()->changeTarget(nearEnemy);
-				player1.seekForTarget = false;
-			}
+			else
+				entityList[i]->updateEntity(delta);
 		}
-		else {
-			for (int i = 0; i < temp; i++)
-			{
-				entityList[i]->updatewPlayer(delta, player1);
-				if (entityList[i]->needDelete == true)
-				{
-					deleteEntity(i);
-					temp--;
-				}
-				else
-					entityList[i]->updateEntity(delta);
-			}
-		}
-		if (player1.needDelete)
+		if (players.begin()->needDelete && players.back().needDelete)
 			GameOver();
-
-		if (previousMax != temp)
-		{
-			data->assets.checkSound();
-		}
-		//Information / Clock updates
-		sf::Vector2f tempw = player1.getSprite().getPosition();
-		std::stringstream ss;
-		ss << "Player level : " << player1.getLevel() << std::endl <<
-			"XP : " << player1.getXp() << std::endl <<
-			"Max xp : " << player1.getMaxXp() << "\n" <<
-			"Score : " << player1.getScore() << std::endl << "\n";
-		//"Bullet number : " << player1.BAW.getVector()->size() << "\n";
-		uitext.setString(ss.str());
 		clock = (gameTime.asSeconds() + gameClock.getElapsedTime().asSeconds()) * 100.f;
 		clock = ceil(clock);
 		clock = clock / 100.f;
@@ -141,10 +110,13 @@ void CLevelGameState::STEUpdate(float delta)
 			gameClockText.setPosition(sf::Vector2f(data->assets.sCREEN_WIDTH / 2 - gameClockText.getGlobalBounds().width / 2, 20.f));
 
 		//Condition qui assure que le joueur prend bien un niveau par un niveau
-		if (player1.hasLevelUp == true && currentLevelOfplayer != player1.getLevel())
+		for (auto player = players.begin(); player != players.end(); player++)
 		{
-			currentLevelOfplayer++;
-			data->machine.AddState(StateRef(new CUpgradeState(data, &player1, &Upgradegraphs)), false);
+			if (player->hasLevelUp == true && currentLevelOfplayer != player->getLevel())
+			{
+				currentLevelOfplayer++;
+				data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), &Upgradegraphs)), false);
+			}
 		}
 		if (level.updateLevel())
 			GameOver();
@@ -153,7 +125,10 @@ void CLevelGameState::STEUpdate(float delta)
 
 void CLevelGameState::initAssets()
 {
-	data->assets.deleteEverythingBut(player1.getName());
+	std::vector<std::string> ouioui;
+	for (auto i = players.begin(); i != players.end(); i++)
+		ouioui.push_back(i->getName());
+	data->assets.deleteEverythingBut(ouioui);
 	data->assets.clearSoundBuffer();
 	data->assets.LoadTexture("lifepoint", LIFEPOINTTEXTURE);
 	data->assets.LoadTexture("bomber", "res\\img\\lance-bombe.png");
@@ -169,6 +144,7 @@ void CLevelGameState::initAssets()
 	data->assets.LoadTexture("bulletTear", "res\\img\\ennemies\\bulletTear.png");
 	data->assets.LoadTexture("R2D2", "res\\img\\characters\\Droide2.png");
 	data->assets.LoadTexture("boss", "res\\img\\spacecraft_player_1.png");
+	data->assets.LoadTexture("logonormal", "res\\img\\characters\\logonormal2.png");
 	data->assets.LoadSFX("bulletSound", "res\\sfx\\Piou.wav");
 	data->assets.LoadSFX("enemyRush", "res\\sfx\\vaisseau_fonce.wav");
 }
