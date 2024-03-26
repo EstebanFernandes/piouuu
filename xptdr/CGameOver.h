@@ -63,7 +63,6 @@ void CGameOver<MType>::STEInit()
 	backGroundImage.setTexture(texture);
 	Shader.setUniform("texture", sf::Shader::CurrentTexture);
 
-
 	if (rank > 10) {
 		//écrire le nom du looser
 		updateFileRanks();
@@ -73,29 +72,26 @@ void CGameOver<MType>::STEInit()
 
 
 	textGameOver.setFont(data->assets.GetFont("Lato"));
-	textGameOver.setString("mdrr gros naze");
+	//textGameOver.setString("mdrr gros gros naze");
 	textGameOver.setCharacterSize(30);
 	textGameOver.setPosition((data->assets.sCREEN_WIDTH / 2) - (textGameOver.getGlobalBounds().width / 2),
 		(data->assets.sCREEN_HEIGHT * 0.15f));
 
-	CButton restartButton(&(data->assets));
-	restartButton.setString("Rejouer");
-	restartButton.setOutlineThickness(4);
-	restartButton.setThicknessColor(sf::Color::White);
-	restartButton.setSize(data->assets.sCREEN_WIDTH * 0.15f, data->assets.sCREEN_HEIGHT * 0.1f);
-	restartButton.setColor(sf::Color(174, 137, 100));
-	restartButton.setPosition(data->assets.sCREEN_WIDTH *0.2f, data->assets.sCREEN_HEIGHT * 0.8f);
-	restartButton.displayButtonInfo();
-	CButton menuButton(&(data->assets));
-	menuButton.setString("Menu Principal");
-	menuButton.setPosition(data->assets.sCREEN_WIDTH * 0.8f, data->assets.sCREEN_HEIGHT * 0.8f);
-	menuButton.setThicknessColor(sf::Color::White);
-	menuButton.setSize(data->assets.sCREEN_WIDTH * 0.15f, data->assets.sCREEN_HEIGHT * 0.1f);
-	menuButton.setColor(sf::Color(174, 137, 100));
-	
-
-	buttonList.push_back(restartButton);
-	buttonList.push_back(menuButton);
+	CButton button(&(data->assets));
+	button.setString("Rejouer");
+	button.setOutlineThickness(4);
+	button.setThicknessColor(sf::Color::White);
+	button.setSize(data->assets.sCREEN_WIDTH * 0.15f, data->assets.sCREEN_HEIGHT * 0.1f);
+	button.setColor(sf::Color(174, 137, 100));
+	button.setPosition((data->assets.sCREEN_WIDTH * 0.2f-button.getGlobalBounds().width/2.f), 
+		data->assets.sCREEN_HEIGHT * 0.8f-button.getGlobalBounds().height/2.f);
+	button.displayButtonInfo();
+	buttonList.push_back(button);
+	button.setString("Menu Principal");
+	button.setOutlineThickness(0);
+	button.setPosition(data->assets.sCREEN_WIDTH * 0.8f - button.getGlobalBounds().width / 2.f,
+		data->assets.sCREEN_HEIGHT * 0.8f - button.getGlobalBounds().height / 2.f);
+	buttonList.push_back(button);
 	std::vector<CUI*> mdrr;
 	for (int i = 0; i < buttonList.size(); i++)
 	{

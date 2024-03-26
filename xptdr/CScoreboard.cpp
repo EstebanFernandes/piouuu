@@ -25,18 +25,14 @@ CScoreboard::CScoreboard(CAssetManager* assetParam, int boldRankParam)
 	setPos(0, 0);
 	for (int i = 0; i < 4; i++)
 		xSize += widthPerCol[i]+padding.x;
-	ySize = (height + padding.y) * textToDisplay[0].size() + padding.y;
+	ySize = (height + padding.y) * textToDisplay[0].size() + padding.y/2.f;
 	scoreboardBack = sf::RectangleShape(sf::Vector2f(xSize, ySize));
 	scoreboardBack.setPosition(0, 0);
 	scoreboardBack.setFillColor(sf::Color(174,137,100,190));
 	scoreboardBack.setOutlineThickness(7);
-	scoreboardBack.setOutlineColor(sf::Color::Black);
-
-	setPos((asset->sCREEN_WIDTH - xSize) / 2.f,
-		(asset->sCREEN_HEIGHT - ySize) / 2.f);
-	
+	scoreboardBack.setOutlineColor(sf::Color::Black);	
 }
-
+//Deprecated
 CScoreboard::CScoreboard(CAssetManager* assetParam, float x, float y, int boldRankParam)
 {
 	boldRank = boldRankParam;
@@ -64,6 +60,7 @@ void CScoreboard::setPos(sf::Vector2f pos_)
 {
 	pos = pos_;
 	scoreboardBack.setPosition(pos);
+	
 	sf::Vector2f posText;
 	for (int i = 0; i < textToDisplay.size(); i++)
 	{
@@ -72,22 +69,17 @@ void CScoreboard::setPos(sf::Vector2f pos_)
 			plusWidth += widthPerCol[a]+padding.x;
 		for (int j = 0; j < textToDisplay[i].size(); j++)
 		{
-			posText.x = pos.x + plusWidth;
-			posText.y = pos.y + (height+padding.y) * j;
+			posText.x = pos.x + plusWidth+padding.x/2.f;
+			posText.y = pos.y + (height+padding.y) * j+ padding.y / 2.f;
 			utilities::readaptText(textToDisplay[i][j], posText);
 		}
 	}
 }
 
 void CScoreboard::setPosAuto()
-{// A REFAIRE
-	//pos = sf::Vector2f((asset->sCREEN_WIDTH - xSize) / 2, asset->sCREEN_HEIGHT * 0.1f);
-	//scoreboardBack.setPosition(pos);
-
-	//for (int i = 0; i < textToDisplay.size(); i++) {
-	//	//taille
-	//	textToDisplay[i].setPosition(scoreboardBack.getPosition().x, scoreboardBack.getPosition().y * 0.9f + i * scoreboardBack.getGlobalBounds().height / textToDisplay.size());
-	//}
+{
+	setPos((asset->sCREEN_WIDTH - xSize) / 2.f,
+		(asset->sCREEN_HEIGHT*0.8f - ySize) / 2.f);
 }
 
 void CScoreboard::initText()
