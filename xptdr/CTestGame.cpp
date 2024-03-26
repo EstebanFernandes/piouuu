@@ -117,7 +117,10 @@ void CTestGame::STEHandleInput()
 			}
 			if (event.key.code == sf::Keyboard::T)
 			{
-				players.begin()->AAA();
+				for (auto i = players.begin(); i != players.end(); i++)
+				{
+					i->gainXP(2);
+				}
 			
 			}
 			//TEMP C POUR MOURIR
@@ -179,7 +182,13 @@ void CTestGame::STEUpdate(float delta)
 			temp--;
 		}
 		else
+		{
 			entityList[i]->updateEntity(delta);
+			if (entityList[i]->seekForTarget)
+			{
+				entityList[i]->setTarget(nearestPlayer(entityList[i]->getPosition()));
+			}
+		}
 	}
 	if (players.begin()->needDelete && players.back().needDelete)
 		GameOver();
@@ -200,10 +209,11 @@ void CTestGame::STEUpdate(float delta)
 	//Condition qui assure que le joueur prend bien un niveau par un niveau
 	for (auto player = players.begin(); player != players.end(); player++)
 	{
-		if (player->hasLevelUp == true && currentLevelOfplayer != player->getLevel())
+		if (player->hasLevelUp == true )
 		{
 			currentLevelOfplayer++;
-			data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), &Upgradegraphs)), false);
+			// Les graphes doivent dépendre des joueurs
+			data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), player->getGraphs())), false);
 		}
 	}
 	
@@ -215,20 +225,4 @@ void CTestGame::STEUpdate(float delta)
 		"Score : " << playeer1.getScore()<< std::endl << "\n";
 	//"Bullet number : " << playeer1.BAW.getVector()->size() << "\n";
 	uitext.setString(ss.str());*/
-}
-
-CMob* CTestGame::nearestPlayer(sf::Vector2f pos)
-{
-	float max = 2000.f;
-	CMob* target = NULL;
-	for (auto player = players.begin(); player != players.end(); player++)
-	{
-		float distance = utilities::getDistancefrom2Pos(pos, player->getSprite().getPosition());
-		if (distance < max)
-		{
-			max = distance;
-			target = &(*player);
-		}
-	}
-	return target;
 }

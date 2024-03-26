@@ -22,8 +22,7 @@ private:
 public:
 	RusherEnemy(CAssetManager* assets);
 	//Méthode qui fonctionne uniquement pour les levels, elle n'initialise pas vraiment les paramètres de rusher
-	RusherEnemy(CAssetManager* assets,CCharacter stat ,enemyInfo info, CMob* target_);
-	RusherEnemy(CAssetManager* assets,CMob* target_);
+	RusherEnemy(CAssetManager* assets,CCharacter stat ,enemyInfo info);
 	~RusherEnemy();
 	void updateMovement(float delta);
 	/// <summary>
@@ -43,5 +42,8 @@ public:
 	}
 	//Update rusher animation
 	void  updateAnim();
+	void setTarget(CMob* target_) {
+		target = target_;
+	}
 };
 

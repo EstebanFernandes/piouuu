@@ -27,7 +27,6 @@ protected:
 	float clock;
 	std::vector<CHittingEntity*> entityList;
 	int* enemyNumber = new int();
-	std::vector<CGrapheUpdate> Upgradegraphs;
 	int currentLevelOfplayer = 0;
 	bool isThistheEnd = false;
 	bool hasLevelUp = false;
@@ -73,5 +72,6 @@ public:
 	void STEPause();
 	void setData(GameDataRef dataa) { data = dataa; }
 	CMob* nearEnemy(CMob* player);
+	CMob* nearestPlayer(sf::Vector2f pos);
 	GameDataRef getData();
 };

@@ -13,8 +13,11 @@ void CMainMenuState::STEInit()
 	index = 0;
 	data->assets.LoadFont("Nouvelle", "res\\font\\SuperLegendBoy-4w8Y.ttf");
 	data->assets.LoadFont("Lato", FONT_FILE_PATH); //Load la police d'écriture
-	info.setCharacterSize(12);
-	info.setFillColor(sf::Color::White);
+	info.setCharacterSize(40);
+	info.setFillColor(sf::Color::Transparent);
+	info.setOutlineThickness(1.f);
+	info.setPosition(20, 20);
+	info.setOutlineColor(sf::Color::White);
 	info.setFont(data->assets.GetFont("Nouvelle"));
 	data->assets.LoadTexture("Title",
 		MAIN_MENU_TITLE_PATH); // On charge les textures
@@ -133,7 +136,7 @@ void CMainMenuState::STEUpdate(float delta)
 	std::stringstream ss;
 	sf::Vector2i mousePositionScreen = sf::Mouse::getPosition(data->window);
 	ss << "mouse position : \n" << "Window : " << mousePositionScreen.x << " " << mousePositionScreen.y << "\n";
-	info.setString(ss.str());
+	info.setString("Bonjour");
 }
 
 void CMainMenuState::choosedButton()
@@ -165,7 +168,7 @@ void CMainMenuState::addLevelType()
 		data->machine.AddState(StateRef(new CTestGame(data,characters)), true);
 		break;
 	case 1:
-		data->machine.AddState(StateRef(new CLevelGameState(data, characters, "res/level/essai.xml")), true);
+		data->machine.AddState(StateRef(new CLevelGameState(data, characters, "res/level/deuxiemeniveau.piou")), true);
 		break;
 	case 2:
 		//data->machine.AddState(StateRef(new CInfiniteGameState(data)), true);
@@ -186,7 +189,7 @@ void CMainMenuState::STEDraw(float delta)
 	data->window.draw(CMMTitle);
 	for (int i = 0; i < buttons.size(); i++)
 		data->window.draw(buttons[i]);
-	//data->window.draw(info);
+	data->window.draw(info);
 	data->window.display();
 }
 

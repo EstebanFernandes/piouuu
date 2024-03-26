@@ -94,7 +94,13 @@ void CLevelGameState::STEUpdate(float delta)
 				temp--;
 			}
 			else
+			{
 				entityList[i]->updateEntity(delta);
+				if (entityList[i]->seekForTarget)
+				{
+					entityList[i]->setTarget(nearestPlayer(entityList[i]->getPosition()));
+				}
+			}
 		}
 		if (players.begin()->needDelete && players.back().needDelete)
 			GameOver();
@@ -112,11 +118,13 @@ void CLevelGameState::STEUpdate(float delta)
 		//Condition qui assure que le joueur prend bien un niveau par un niveau
 		for (auto player = players.begin(); player != players.end(); player++)
 		{
-			if (player->hasLevelUp == true && currentLevelOfplayer != player->getLevel())
+			if (player->hasLevelUp == true )
 			{
 				currentLevelOfplayer++;
-				data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), &Upgradegraphs)), false);
+				data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), player->getGraphs() )), false);
 			}
+			
+
 		}
 		if (level.updateLevel())
 			GameOver();
@@ -147,4 +155,5 @@ void CLevelGameState::initAssets()
 	data->assets.LoadTexture("logonormal", "res\\img\\characters\\logonormal2.png");
 	data->assets.LoadSFX("bulletSound", "res\\sfx\\Piou.wav");
 	data->assets.LoadSFX("enemyRush", "res\\sfx\\vaisseau_fonce.wav");
+	data->assets.LoadTexture("rusher", "res\\img\\ennemies\\rusher.png");
 }

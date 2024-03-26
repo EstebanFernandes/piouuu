@@ -6,13 +6,11 @@ class ShootingEnemy : public CEnemy, public InterfaceShootingEnemy
 private:
 	bool isPositionated = false;
 	CMob* target;
-	bool hasTarget = false;
 	CAnimation anim;
 public:
 	ShootingEnemy(CAssetManager* asset);
-	ShootingEnemy(CAssetManager* asset, CMob* target);
 	ShootingEnemy(CAssetManager* asset, enemyInfo ee);
-	ShootingEnemy(CAssetManager* asset, CMob* target_,CCharacter& stat,CWeaponStat WeaponStat,enemyInfo info);
+	ShootingEnemy(CAssetManager* asset,CCharacter& stat,CWeaponStat WeaponStat,enemyInfo info);
 	void updateMovement(float delta);
 	void enemyShoot();
 	~ShootingEnemy() {
@@ -42,13 +40,7 @@ public:
 	}
 	void setPos();
 	void setTarget(CMob* target_) {
-		if (target_ == NULL)
-			hasTarget = false;
-		else
-		{
-			target = target_;
-			hasTarget = true;
-		}
+		target = target_;
 	}
 	void initAnimation() {
 		float timeBetweenBullets = 1.f / BAW.getWeaponStats().attackSpeed;

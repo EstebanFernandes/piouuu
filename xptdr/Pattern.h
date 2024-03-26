@@ -25,5 +25,6 @@ public:
 	int getWaveSize() { return (int)waveList.size(); }
 	int getOrder() { return order; }
 	Wave* getCurrentWave() { return &waveList[0]; }
+	std::string getName() { return nameOfPattern; }
 };
 

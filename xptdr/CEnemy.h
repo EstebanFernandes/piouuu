@@ -12,12 +12,14 @@ struct enemyInfo {
 	std::string spawnSide;//Coté où on spawn, gauche droite haut ou bas
 	sf::Vector2f direction;//Direction d'avancée
 	sf::Vector2f scale;
+	bool isAim; //Savoir si l'unité doit viser un joueur
 	//Constructeur par défaut
 	enemyInfo() :
 		pos(-1.f, -1.f),
 		spawnSide("droite"),
 		direction(0.f, 0.f),
-		scale(1.f, 1.f)
+		scale(1.f, 1.f),
+		isAim(false)
 	{
 	}
 };
@@ -135,7 +137,7 @@ public:
 
 		if (info.spawnSide == "bas")
 		{
-			spawnPos.y = (float)assets->sCREEN_HEIGHT - getGlobalBounds().width / 2.f;
+			spawnPos.y = (float)assets->sCREEN_HEIGHT;
 		}
 		else if (info.spawnSide == "haut")
 		{

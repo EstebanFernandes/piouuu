@@ -267,6 +267,8 @@ void CPlayer::initLifeBar()
 	int num = 0;
 	if (name == "Rancoeur")
 		num = 1;
+	else if (name == "La Golden Shower")
+		num = 2;
 	int offset = num * (int)icon.getTexture()->getSize().y + num * 2;
 	icon.setTextureRect(sf::IntRect(offset, 0, 468, 468));
 	icon.setScale(0.2f, 0.2f);
@@ -415,15 +417,15 @@ void CPlayer::renderLifeBar(sf::RenderTarget& target)
 	target.draw(lifeBarBG2);
 	target.draw(lifeBarBackground);
 	target.draw(lifeBar);
-	target.draw(icon);
 	target.draw(iconCircle2);
+	target.draw(icon);
 	target.draw(iconCircle);
 }
 
 
-void CPlayer::gainXP(int levelofEntity)
+void CPlayer::gainXP(int xp_)
 {
-	xp += 4 * levelofEntity;
+	xp += xp_;
 }
 void CPlayer::updateLifeBar()
 {

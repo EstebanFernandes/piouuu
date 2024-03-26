@@ -25,6 +25,7 @@ bool Level::updateLevel()
 			patternList.erase(patternList.begin());
 			offset = *clock;
 			std::cout << "Off set de la clock du niveau : " << offset << std::endl;
+			std::cout << "Nom du niveau = " << patternList.begin()->getName() << std::endl;
 			if (patternList.size() == 0)
 				return true;
 			patternList[0].startPattern();

@@ -42,6 +42,5 @@ public:
 	void addPowerUp();
 	void GameOver();
 	void STEUpdate(float delta);
-	CMob* nearestPlayer(sf::Vector2f pos);
 };
 

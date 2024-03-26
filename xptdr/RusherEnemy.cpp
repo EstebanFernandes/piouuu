@@ -8,24 +8,30 @@ RusherEnemy::RusherEnemy(CAssetManager* assetParam)
 	anim = CAnimation(getPointerSprite(), sf::IntRect(0, 0, 73, 86), 1, -1.f);
 	anim.pxbetFrames = 2;
 	setMoveSpeed(5.f);
+	getSprite().setScale(1.5f, 1.5f);
 	setSprite();
 	direction = sf::Vector2f(-1.f, 0.f);
 	target = NULL;
+	info.isAim = true;
+	if (info.isAim)
+	{
+		baseColor= sf::Color::Black;
+		getSprite().setColor(baseColor);
+	}
 }
 
-RusherEnemy::RusherEnemy(CAssetManager* assets, CCharacter stat, enemyInfo info_, CMob* target_)
-	:RusherEnemy(assets,target_)
+RusherEnemy::RusherEnemy(CAssetManager* assets, CCharacter stat, enemyInfo info_)
+	:RusherEnemy(assets)
 {
 	setCharacterStats(stat);
 	info_.scale = info.scale;
 	info = info_;
+	if (info.isAim)
+	{
+		getSprite().setColor(sf::Color::Black);
+	}
 }
 
-RusherEnemy::RusherEnemy(CAssetManager* assets, CMob* target_)
-	: RusherEnemy(assets)
-{
-	initDirection(target_);
-}
 
 RusherEnemy::~RusherEnemy()
 {
@@ -38,7 +44,7 @@ void RusherEnemy::updateMovement(float delta)
 		needDelete = true;
 	updateLifeBar();
 	// On avance pour se placer ou si il est l'heure de rush
-	if ((onAvance == true && !isPositionated) || isRushing)
+	if((onAvance == true && !isPositionated) || isRushing)
 	{
 		sf::Vector2f avance = direction * moveSpeed * delta;
 		moveEntity(avance);
@@ -74,6 +80,13 @@ void RusherEnemy::updateEntity(float delta)
 		colorSwitchClock.restart();
 		getSprite().setColor(sf::Color::Red);
 		redColorSwitchClock.restart();
+		if(counter==3)
+		{
+			if (info.isAim)
+			{
+				seekForTarget = true;
+			}
+		}
 	}
 	else if (isRed == true && redColorSwitchClock.getElapsedTime().asSeconds() >= 0.5f) {
 		getSprite().setColor(baseColor);

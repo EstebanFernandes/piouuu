@@ -85,7 +85,7 @@ namespace utilities {
 			return ret;
 	}
 	/// <summary>
-	/// the SFML f unction setPosition is sometimes incorrect so this function correct it
+	/// the SFML function setPosition is sometimes incorrect so this function correct it
 	/// </summary>
 	/// <param name="text"></param>
 	/// <param name="pos"></param>
@@ -104,5 +104,36 @@ namespace utilities {
 		tempDistance.x = std::abs(tempDistance.x);
 		tempDistance.y = std::abs(tempDistance.y);
 		return (float)std::sqrt(pow(tempDistance.x, 2) + pow(tempDistance.y, 2));
+	}
+	/// <summary>
+	/// Return the maximum width in float from a vector of text
+	/// </summary>
+	/// <param name="textes"></param>
+	/// <returns></returns>
+	inline float getMaxWidth(std::vector<sf::Text>& textes)
+	{
+		float maxWidth = 0;
+		for (int i = 0; i < textes.size(); i++)
+		{
+			if (maxWidth < textes[i].getGlobalBounds().width)
+				maxWidth = textes[i].getGlobalBounds().width;
+		}
+		return maxWidth;
+	}
+
+	/// <summary>
+	/// Return the maximum height in a float from a vector of text
+	/// </summary>
+	/// <param name="textes"></param>
+	/// <returns></returns>
+	inline float getMaxHeight(std::vector<sf::Text>& textes)
+	{
+		float maxHeight = 0;
+		for (int i = 0; i < textes.size(); i++)
+		{
+			if (maxHeight < textes[i].getGlobalBounds().height)
+				maxHeight = textes[i].getGlobalBounds().height;
+		}
+		return maxHeight;
 	}
 }

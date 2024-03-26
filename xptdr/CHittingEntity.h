@@ -6,6 +6,7 @@ class CHittingEntity : public CMob
 protected:
 	float scoreGived;
 public:
+	bool seekForTarget = false;
 	CHittingEntity() { scoreGived = 0; }
 	virtual ~CHittingEntity(){}
 	/// <summary>
@@ -24,5 +25,6 @@ public:
 	{
 		return scoreGived;
 	}
+	virtual void setTarget(CMob * target){}//Ne fait rien
 };
 

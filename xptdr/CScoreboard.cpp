@@ -1,14 +1,17 @@
 #include "CScoreboard.h"
-
+#include <numeric>
 void CScoreboard::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	target.draw(scoreboardBack);
 	for (int i = 0; i < textToDisplay.size(); i++) {
-		target.draw(textToDisplay[i]);
+		for(int j =0;j<textToDisplay[i].size();j++){
+			target.draw(textToDisplay[i][j]);
+		}
 	}
 }
 
 CScoreboard::CScoreboard()
 {
+	boldRank = -1;
 	asset = NULL;
 	xSize = 0;
 	ySize = 0;
@@ -16,39 +19,29 @@ CScoreboard::CScoreboard()
 
 CScoreboard::CScoreboard(CAssetManager* assetParam, int boldRankParam)
 {
+	asset = assetParam;
 	boldRank = boldRankParam;
 	initText();
-
-	asset = assetParam;
-
-
-	xSize = asset->sCREEN_WIDTH *0.7f;
-	ySize = asset->sCREEN_HEIGHT / 2.0f;
-
+	setPos(0, 0);
+	for (int i = 0; i < 4; i++)
+		xSize += widthPerCol[i]+padding.x;
+	ySize = (height + padding.y) * textToDisplay[0].size() + padding.y;
 	scoreboardBack = sf::RectangleShape(sf::Vector2f(xSize, ySize));
 	scoreboardBack.setPosition(0, 0);
-	scoreboardBack.setFillColor(sf::Color(174,137,100));
+	scoreboardBack.setFillColor(sf::Color(174,137,100,190));
 	scoreboardBack.setOutlineThickness(7);
 	scoreboardBack.setOutlineColor(sf::Color::Black);
 
-	for (int i = 0; i < textToDisplay.size(); i++) {
-		//Si i=11, alors il y a un score en plus des 10 premiers : on le mets en gras
-		if (i == 11 || i == boldRank - 1) {
-			textToDisplay[i].setStyle(sf::Text::Bold);
-		}
-
-		textToDisplay[i].setFillColor(sf::Color::White);
-		textToDisplay[i].setFont(asset->GetFont("Lato"));
-		//taille
-		textToDisplay[i].setPosition(scoreboardBack.getPosition().x, scoreboardBack.getPosition().y * 0.9f + i * scoreboardBack.getGlobalBounds().height / (textToDisplay.size()+1));
-	}
+	setPos((asset->sCREEN_WIDTH - xSize) / 2.f,
+		(asset->sCREEN_HEIGHT - ySize) / 2.f);
+	
 }
 
 CScoreboard::CScoreboard(CAssetManager* assetParam, float x, float y, int boldRankParam)
 {
 	boldRank = boldRankParam;
-	initText();
 	asset = assetParam;
+	initText();
 
 
 	xSize = asset->sCREEN_WIDTH * 0.7f;
@@ -59,19 +52,6 @@ CScoreboard::CScoreboard(CAssetManager* assetParam, float x, float y, int boldRa
 	scoreboardBack.setFillColor(sf::Color(174, 137, 100));
 	scoreboardBack.setOutlineThickness(7);
 	scoreboardBack.setOutlineColor(sf::Color::Black);
-
-	for (int i = 0; i < textToDisplay.size(); i++) {
-		//Si i=11, alors il y a un score en plus des 10 premiers : on le mets en gras
-		if (i == 11 || i == boldRank-1) {
-			textToDisplay[i].setStyle(sf::Text::Bold);
-		}
-
-		textToDisplay[i].setFillColor(sf::Color::White);
-		textToDisplay[i].setFont(asset->GetFont("Lato"));
-		//taille
-		textToDisplay[i].setPosition(scoreboardBack.getPosition().x, scoreboardBack.getPosition().y*0.9f + i * scoreboardBack.getGlobalBounds().height / (textToDisplay.size() + 1));
-	}
-	
 }
 
 void CScoreboard::setSize(float xSizeParam, float ySizeParam)
@@ -80,35 +60,106 @@ void CScoreboard::setSize(float xSizeParam, float ySizeParam)
 	ySize = ySizeParam;
 }
 
-void CScoreboard::setPosAuto()
+void CScoreboard::setPos(sf::Vector2f pos_)
 {
-	pos = sf::Vector2f((asset->sCREEN_WIDTH - xSize) / 2, asset->sCREEN_HEIGHT * 0.1f);
+	pos = pos_;
 	scoreboardBack.setPosition(pos);
-
-	for (int i = 0; i < textToDisplay.size(); i++) {
-		//taille
-		textToDisplay[i].setPosition(scoreboardBack.getPosition().x, scoreboardBack.getPosition().y * 0.9f + i * scoreboardBack.getGlobalBounds().height / textToDisplay.size());
+	sf::Vector2f posText;
+	for (int i = 0; i < textToDisplay.size(); i++)
+	{
+		float plusWidth = 0;
+		for (int a = 0; a < i; a++)
+			plusWidth += widthPerCol[a]+padding.x;
+		for (int j = 0; j < textToDisplay[i].size(); j++)
+		{
+			posText.x = pos.x + plusWidth;
+			posText.y = pos.y + (height+padding.y) * j;
+			utilities::readaptText(textToDisplay[i][j], posText);
+		}
 	}
+}
+
+void CScoreboard::setPosAuto()
+{// A REFAIRE
+	//pos = sf::Vector2f((asset->sCREEN_WIDTH - xSize) / 2, asset->sCREEN_HEIGHT * 0.1f);
+	//scoreboardBack.setPosition(pos);
+
+	//for (int i = 0; i < textToDisplay.size(); i++) {
+	//	//taille
+	//	textToDisplay[i].setPosition(scoreboardBack.getPosition().x, scoreboardBack.getPosition().y * 0.9f + i * scoreboardBack.getGlobalBounds().height / textToDisplay.size());
+	//}
 }
 
 void CScoreboard::initText()
 {
 	CParserCSV parser = CParserCSV("res/data/Scoreboard.csv");
 	std::vector<std::vector<std::string>> elements = parser.getElements();
+	sf::Text texte;
+	texte.setFillColor(sf::Color::White);
+	texte.setFont(asset->GetFont("Nouvelle"));
+	for (int i = 0; i < 4; i++)
+		textToDisplay.push_back(std::vector<sf::Text>());
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < (int)elements.size() && j<10; j++) {
+			switch (i)
+			{
+			case col::rank:
+				texte.setString(std::to_string(j + 1));
+				break;
+			case col::aircraft :
+				texte.setString(elements[j][1]);
+				break;
+			case col::name :
+				texte.setString(elements[j][0]);
+				break;
+			case col::score :
+				texte.setString(elements[j][2]);
+					break;
 
-	sf::Text scorer = sf::Text();
-	for (int i = 0; i < (int)elements.size() && i<10; i++) {
-		scorer.setString(std::to_string(i + 1) + ". " + elements[i][0] +
-			" : " + elements[i][2] + " points avec le " + elements[i][1] + "\n");
-		textToDisplay.push_back(scorer);
+			}
+			textToDisplay[i].push_back(texte);
+		}
 	}
 	if (boldRank > 10 && boldRank <= 100) {
-		scorer.setString("...");
-		textToDisplay.push_back(scorer);
+		sf::Text texte;
+			texte.setString(" ");
+		for (int j = 0; j < 4; j++)
+		{
+			textToDisplay[j].push_back(texte);
+		}
+		for (int j = 0; j < 4; j++)
+		{
+			switch (j)
+			{
+			case col::rank:
+				texte.setString(std::to_string(boldRank));
+				break;
+			case col::aircraft:
+				texte.setString(elements[boldRank - 1][1]);
+				break;
+			case col::name:
+				texte.setString(elements[boldRank - 1][0]);
+				break;
+			case col::score:
+				texte.setString(elements[boldRank - 1][2]);
+				break;
 
-		scorer.setString(std::to_string(boldRank) + ". " + "toi" +
-			" : " + elements[boldRank-1][2] + " points avec le " + elements[boldRank-1][1] + "\n");
-		textToDisplay.push_back(scorer);
+			}
+			textToDisplay[j].push_back(texte);
+		}
+	}
+	for (int i = 0; i < textToDisplay.size(); i++) {
+		//Si i=11, alors il y a un score en plus des 10 premiers : on le mets en gras
+			for(int j=0;j<textToDisplay[i].size();j++)
+			{
+					if (j == 11 || j == boldRank - 1) 
+				textToDisplay[i][j].setStyle(sf::Text::Bold);
+			}
+			widthPerCol[i] = utilities::getMaxWidth(textToDisplay[i]);
+			float tempHeight = utilities::getMaxHeight(textToDisplay[i]);
+			if (tempHeight > height)
+				height = tempHeight;
 	}
 }
 

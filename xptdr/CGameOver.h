@@ -24,7 +24,7 @@ private:
 	//sf::Text textMainMenu;
 	sf::Texture texture;
 	std::vector<CCharacter> characters;
-
+	sf::Text info;
 	//private methods
 	void updateCharacter();
 	void setRank();
@@ -151,6 +151,10 @@ void CGameOver<MType>::STEUpdate(float delta)
 		data->machine.AddState(StateRef(new CClavierVirtuel(data, score, rank, playerName)), false);
 		askedScore = true;
 	}
+	std::stringstream ss;
+	sf::Vector2i mousePositionScreen = sf::Mouse::getPosition(data->window);
+	ss << "mouse position : \n" << "Window : " << mousePositionScreen.x << " " << mousePositionScreen.y << "\n";
+	info.setString(ss.str());
 }
 template <class MType>
 void CGameOver<MType>::STEDraw(float delta)
@@ -164,7 +168,7 @@ void CGameOver<MType>::STEDraw(float delta)
 	for (int i = 0; i < buttonList.size(); i++) {
 		temp.draw(buttonList[i]);
 	}
-
+	//temp.draw(info);
 	temp.display();
 }
 

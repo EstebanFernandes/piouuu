@@ -1,5 +1,5 @@
 Name;ImageLink;Description;isAnimated;maxHealthPoint;moveSpeed;canonNumber;damagePerBullet;attackSpeed;bulletSpeed;Misc
 lavion;res/img/characters/BaseCharacterSpriteSheet.png;Toujours un classique;animated;;;;;3.0;;
 Rancoeur;res/img/characters/RancoeurSpriteSheet.png;Reviens aux origines;animated;;0.5;;5;;;
-La Golden Show….;res/img/characters/golden.png;Plus lent que le l'itération de base, avec des lourds dégats et un style frémissant;animated;;;;;;;
+La Golden Shower;res/img/characters/golden.png;Plus lent que le l'itération de base, avec des lourds dégats et un style frémissant;animated;;;;;;;
 LaserMan;res/img/characters/RancoeurSpriteSheet.png;Teste ce bon vieux laser;animated;;;;;3.0;;laser

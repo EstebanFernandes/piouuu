@@ -90,6 +90,10 @@ public:
 		hasBeenHit = false;
 	}
 
+	int giveXP() {
+		return getXp();
+	}
+
 	sf::Vector2f getDistance(CMob& player) {
 
 		sf::Vector2f posMob = getSprite().getPosition();

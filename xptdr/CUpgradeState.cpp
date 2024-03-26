@@ -196,6 +196,7 @@ void CUpgradeState::STEHandleInput()
 			if (currentGraph->currentVert->SOMTailleListeArc(Partant)==0)
 				currentGraph->endOfGraph = true;
 				}
+				pointerToPlayer1->setBoolLevelUp(false);
 				data->machine.RemoveState();
 			}
 		}
@@ -258,7 +259,7 @@ bool CUpgradeState::matchTypeWithValue(std::string type, std::string value)
 			case 1:  //Health Point
 				pointerToPlayer1->setLifePoint(setValue(pointerToPlayer1->getLifePoint(), value));
 			case 2: // Max HealthPoint
-				pointerToPlayer1->setMaxXp(setValue(pointerToPlayer1->getMaxHealth(), value));
+				pointerToPlayer1->setMaxXp((int)setValue(pointerToPlayer1->getMaxHealth(), value));
 				break;
 			case 3: //move Speed
 				pointerToPlayer1->setMoveSpeed(setValue(pointerToPlayer1->getMoveSpeed(), value));

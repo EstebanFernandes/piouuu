@@ -118,6 +118,7 @@ void CGameState::addEnemy(std::string enemyName)
 {
 	enemyInfo e;
 	e.spawnSide = "gauche";
+	e.isAim = true;
 	if (enemyName == "roaming") {
 		RoamingEnemy* enemy = new RoamingEnemy(&(data->assets));
 		entityList.push_back(enemy);
@@ -150,8 +151,8 @@ void CGameState::addEnemy(std::string enemyName)
 		(*enemyNumber)++;
 	}
 	else if (enemyName == "rusher") {
-		//RusherEnemy* enemy = new RusherEnemy(&(data->assets), &player1);
-		//entityList.push_back(enemy);
+		RusherEnemy* enemy = new RusherEnemy(&(data->assets));
+		entityList.push_back(enemy);
 		(*enemyNumber)++;
 	}
 	else if (enemyName == "boss") {
@@ -222,7 +223,7 @@ void CGameState::STEUpdate(float delta)
 		if (player->hasLevelUp == true && currentLevelOfplayer != player->getLevel())
 		{
 			currentLevelOfplayer++;
-			data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), &Upgradegraphs)), false);
+			data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), player->getGraphs())), false);
 		}
 	}
 }
@@ -294,8 +295,6 @@ void CGameState::STEResume()
 	for (auto i = players.begin(); i != players.end(); i++)
 	{
 		i->resetMovement();
-	if (i->hasLevelUp == true && currentLevelOfplayer == i->getLevel())
-		i->hasLevelUp = false;
 	}
 }
 /// <summary>
@@ -322,6 +321,22 @@ CMob* CGameState::nearEnemy(CMob* player)
 		}
 	}
 	return nearEnemy;
+}
+
+CMob* CGameState::nearestPlayer(sf::Vector2f pos)
+{
+	float max = 2000.f;
+	CMob* target = NULL;
+	for (auto player = players.begin(); player != players.end(); player++)
+	{
+		float distance = utilities::getDistancefrom2Pos(pos, player->getSprite().getPosition());
+		if (distance < max)
+		{
+			max = distance;
+			target = &(*player);
+		}
+	}
+	return target;
 }
 
 GameDataRef CGameState::getData()

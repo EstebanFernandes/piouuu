@@ -59,7 +59,6 @@ void CParserXML::addEnemy(std::string enemyName,std::vector<std::string> values)
 {
     int screenheight = asset->sCREEN_HEIGHT;
     int screenwidth = asset->sCREEN_WIDTH;
-    bool hasTarget = std::stoi(values[11]);
     //Ennemi
     enemy enemyToAdd;
     enemyToAdd.enemy = NULL;
@@ -68,6 +67,7 @@ void CParserXML::addEnemy(std::string enemyName,std::vector<std::string> values)
     enemyInfo infoE;
     //Spawn side
     infoE.spawnSide = values[13];
+    infoE.isAim= std::stoi(values[11]);
     //Direction
     size_t fade = values[4].find(';');
     infoE.direction = sf::Vector2f(std::stof(values[4].substr(0, fade)), std::stof(values[4].substr(fade + 1)));
@@ -86,6 +86,7 @@ void CParserXML::addEnemy(std::string enemyName,std::vector<std::string> values)
     CS.setMoveSpeed(std::stof(values[6]));
     //Damage quand on touche
     CS.setDamagePerBullet(std::stoi(values[7]));
+    CS.setXp(std::stoi(values[14]));
     //VS Quand on touuche avec une balle
     CWeaponStat W;
     W.bulletDamage = std::stof(values[8]);
@@ -103,19 +104,10 @@ void CParserXML::addEnemy(std::string enemyName,std::vector<std::string> values)
              enemyToAdd.enemy = temp;
     }
     else if (enemyName == "shootingEnemy") {
-        ShootingEnemy* temp=NULL;
-        if(hasTarget==NULL)
-        {
-            ShootingEnemy* temp = new ShootingEnemy(asset, NULL, CS, W,infoE );
-            temp->setBulletStorage(bStorage);
-            enemyToAdd.enemy = temp;
-        }
-        else
-        {
-            ShootingEnemy* temp = new ShootingEnemy(asset, target, CS, W, infoE);
-            temp->setBulletStorage(bStorage);
-            enemyToAdd.enemy = temp;
-        }
+        ShootingEnemy* temp = new ShootingEnemy(asset, CS, W, infoE);
+        temp->setBulletStorage(bStorage);
+        enemyToAdd.enemy = temp;
+        
         
     }
     else if (enemyName == "bomber") {
@@ -128,8 +120,8 @@ void CParserXML::addEnemy(std::string enemyName,std::vector<std::string> values)
         //enemyToAdd.enemy = temp;
     }
     else if (enemyName == "rusher") {
-        //RusherEnemy* temp = new RusherEnemy(asset,CS,pos,target);
-        //enemyToAdd.enemy = temp;
+        RusherEnemy* temp = new RusherEnemy(asset,CS,infoE);
+        enemyToAdd.enemy = temp;
     }
     else {
         std::cout << "tentative d'invocation d'un ennemi qui n'existe pas";
@@ -172,9 +164,9 @@ bool CParserXML::flag(std::string name, pt::ptree::const_iterator& value)
             break;
         case 5://Enemy
             flag = { "type","spawnTime","health", "pos","direction","moveTo","moveSpeed",
-                "damage","damageonPerBullet","bulletSpeed","attackSpeed","autoAim","scoreGived","apparitionDirection"};
+                "damage","damageonPerBullet","bulletSpeed","attackSpeed","autoAim","scoreGived","apparitionDirection","xpGived"};
             defaultValue = { "undefined","0","20", "-1;-1","-2;-2", "-1;-1" , "2",
-                "3","3","1","0.5","0","0","droite"};
+                "3","3","1","0.5","0","0","droite","3"};
             break;
         }
         test = explore_children(value, flag, defaultValue);

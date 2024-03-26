@@ -8,6 +8,7 @@
 #include "laserWeapon.h"
 #include "CAnimation.h"
 #include"SFML/Audio.hpp"
+#include"CGrapheUpdate.h"
 //CLASSE qui représente un joueur
 class CPlayer :  public CMob
 {
@@ -26,7 +27,8 @@ private:
 	//les deux suivants servent à gérer la barre de vie
 	float previouslifePoint;
 	float previousMaxHealth;
-
+	//Liste de graphes d'amélioration pour le joueur
+	std::vector<CGrapheUpdate> Upgradegraphs;
 	bool isMovingUp;
 	bool isMovingDown;
 	bool isMovingLeft;
@@ -92,7 +94,7 @@ public:
 		score += scoreToAdd;
 	}
 	void initLifeBar();
-	void gainXP(int levelofEntity);
+	void gainXP(int xp_);
 	void updateLifeBar();
 	void updateEntity(float dt);
 	void PLYupdateMovement(sf::Event& event);
@@ -153,4 +155,12 @@ public:
 	/// </summary>
 	/// <param name="i"></param>
 	void setNumero(int& i);
+	void setBoolLevelUp(bool a)
+	{
+		hasLevelUp = a;
+	}
+	std::vector<CGrapheUpdate>* getGraphs()
+	{
+		return &Upgradegraphs;
+	}
 };

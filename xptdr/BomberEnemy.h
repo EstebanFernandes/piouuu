@@ -18,6 +18,7 @@ public:
 	/// <param name="info_"></param>
 	BomberEnemy(CAssetManager* assets, CCharacter stat, CWeaponStat WStat , enemyInfo info_);
 	void enemyShoot();
+	~BomberEnemy(){}
 	//redéfinition de CEnemy
 	void renderEntity(sf::RenderTarget& target);
 	//redéfinition de CEnemy

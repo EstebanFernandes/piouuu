@@ -13,15 +13,10 @@ ShootingEnemy::ShootingEnemy(CAssetManager* assetParam) {
 	BAW.setBulletAsset("bulletTear");
 	explosionSprite.setColor(sf::Color::Red);
 	initAnimation();
-	getSprite().setScale(2.f, 2.f);
+	getSprite().setScale(1.5f, 1.5f);
 	setSprite();
 }
 
-ShootingEnemy::ShootingEnemy(CAssetManager* asset, CMob* target_)
-	:ShootingEnemy(asset)
-{
-	setTarget(target_);
-}
 
 ShootingEnemy::ShootingEnemy(CAssetManager* asset, enemyInfo ee)
 	:ShootingEnemy(asset)
@@ -34,10 +29,9 @@ ShootingEnemy::ShootingEnemy(CAssetManager* asset, enemyInfo ee)
 	setSprite();
 }
 
-ShootingEnemy::ShootingEnemy(CAssetManager* asset, CMob* target_, CCharacter& stat, CWeaponStat WeaponStat ,enemyInfo info_)
+ShootingEnemy::ShootingEnemy(CAssetManager* asset, CCharacter& stat, CWeaponStat WeaponStat ,enemyInfo info_)
 	: ShootingEnemy(asset,info_)
 {
-	setTarget(target_);
 	setCharacterStats(stat);
 	BAW.setWeaponStats(WeaponStat);
 	if (BAW.getWeaponStats().dir.x == 0.f&& BAW.getWeaponStats().dir.y == 0.f)
@@ -64,7 +58,7 @@ void ShootingEnemy::updateMovement(float delta)
 	if (isPositionated)
 	{
 		anim.updateAnimation();
-		if ( hasTarget)
+		if ( info.isAim)
 		{		
 			
 			setRotation(utilities::getAngleFromDirection(utilities::dirAtoB(getSprite().getPosition(), target->getSprite().getPosition()))+180.f);
@@ -80,13 +74,17 @@ void ShootingEnemy::updateMovement(float delta)
 		onestPose()) {
 		isPositionated = true;
 		setRotation(180.f+utilities::getAngleFromDirection( BAW.getWeaponStats().dir));
+		if (info.isAim)
+		{
+			seekForTarget = true;
+		}
 	}
 }
 
 void ShootingEnemy::enemyShoot()
 {
 	if (anim.getCurrentFrameNumber()== 5&& isPositionated) {
-		if (hasTarget)
+		if (info.isAim)
 		{
 			float temp = 0.f;
 			if (isSpriteFlip())
