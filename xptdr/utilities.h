@@ -26,17 +26,6 @@ namespace utilities {
 		float normVect = (float)std::sqrt(std::pow(otherPos.x, 2)+ std::pow(otherPos.y, 2));
 		dir = otherPos / normVect;
 		return dir;
-		//
-		float a = otherPos.y / otherPos.x;
-		float sqrt = (float)std::sqrt(1 + std::pow(a, 2));
-		dir.x = -1.f / (float)std::sqrt(1 + std::pow(a, 2));
-		dir.y = a * dir.x;
-
-		/*if (otherPos.x < 0) {
-			dir.x = dir.x * -1;
-			dir.y = dir.y * -1;
-		}*/
-		return dir;
 	}
 	/// <summary>
 	/// return the angle in degree from a direction 

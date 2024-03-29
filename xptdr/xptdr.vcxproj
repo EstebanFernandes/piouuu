@@ -161,6 +161,7 @@
     <ClCompile Include="CGrapheUpdate.cpp" />
     <ClCompile Include="CHugoDecrypte.cpp" />
     <ClCompile Include="CLevelGameState.cpp" />
+    <ClCompile Include="CLoadingState.cpp" />
     <ClCompile Include="CMiscellaneous.cpp" />
     <ClCompile Include="CMob.cpp" />
     <ClCompile Include="CEntity.cpp" />
@@ -173,7 +174,6 @@
     <ClCompile Include="CHittingEntity.cpp" />
     <ClCompile Include="CInputManager.cpp" />
     <ClCompile Include="CJeu.cpp" />
-    <ClCompile Include="CLevelUp.cpp" />
     <ClCompile Include="CMainMenuState.cpp" />
     <ClCompile Include="Cmusique.cpp" />
     <ClCompile Include="CParserCSV.cpp" />
@@ -243,6 +243,7 @@
     <ClInclude Include="CGrapheUpdate.h" />
     <ClInclude Include="CHugoDecrypte.h" />
     <ClInclude Include="CLevelGameState.h" />
+    <ClInclude Include="CLoadingState.h" />
     <ClInclude Include="CMiscellaneous.h" />
     <ClInclude Include="CMob.h" />
     <ClInclude Include="CEntity.h" />
@@ -255,7 +256,6 @@
     <ClInclude Include="CHittingEntity.h" />
     <ClInclude Include="CInputManager.h" />
     <ClInclude Include="CJeu.h" />
-    <ClInclude Include="CLevelUp.h" />
     <ClInclude Include="CMainMenuState.h" />
     <ClInclude Include="Cmusique.h" />
     <ClInclude Include="CParserCSV.h" />

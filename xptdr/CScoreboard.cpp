@@ -18,6 +18,7 @@ CScoreboard::CScoreboard()
 }
 
 CScoreboard::CScoreboard(CAssetManager* assetParam, int boldRankParam)
+	: CScoreboard()
 {
 	asset = assetParam;
 	boldRank = boldRankParam;
@@ -28,7 +29,7 @@ CScoreboard::CScoreboard(CAssetManager* assetParam, int boldRankParam)
 	ySize = (height + padding.y) * textToDisplay[0].size() + padding.y/2.f;
 	scoreboardBack = sf::RectangleShape(sf::Vector2f(xSize, ySize));
 	scoreboardBack.setPosition(0, 0);
-	scoreboardBack.setFillColor(sf::Color(174,137,100,190));
+	scoreboardBack.setFillColor(sf::Color(0, 0, 0, 100));
 	scoreboardBack.setOutlineThickness(7);
 	scoreboardBack.setOutlineColor(sf::Color::Black);	
 }
@@ -47,7 +48,7 @@ CScoreboard::CScoreboard(CAssetManager* assetParam, float x, float y, int boldRa
 	scoreboardBack.setPosition(x, y);
 	scoreboardBack.setFillColor(sf::Color(174, 137, 100));
 	scoreboardBack.setOutlineThickness(7);
-	scoreboardBack.setOutlineColor(sf::Color::Black);
+	scoreboardBack.setOutlineColor(sf::Color(0,0,0,100));
 }
 
 void CScoreboard::setSize(float xSizeParam, float ySizeParam)
@@ -114,10 +115,24 @@ void CScoreboard::initText()
 		}
 	}
 	if (boldRank > 10 && boldRank <= 100) {
-		sf::Text texte;
-			texte.setString(" ");
 		for (int j = 0; j < 4; j++)
 		{
+			switch (j)
+			{
+			case col::rank:
+				texte.setString("..");
+				break;
+			case col::aircraft:
+				texte.setString(".....");
+				break;
+			case col::name:
+				texte.setString(".....");
+				break;
+			case col::score:
+				texte.setString("....");
+				break;
+
+			}
 			textToDisplay[j].push_back(texte);
 		}
 		for (int j = 0; j < 4; j++)
@@ -131,7 +146,7 @@ void CScoreboard::initText()
 				texte.setString(elements[boldRank - 1][1]);
 				break;
 			case col::name:
-				texte.setString(elements[boldRank - 1][0]);
+				texte.setString("Toi");
 				break;
 			case col::score:
 				texte.setString(elements[boldRank - 1][2]);
@@ -146,7 +161,10 @@ void CScoreboard::initText()
 			for(int j=0;j<textToDisplay[i].size();j++)
 			{
 					if (j == 11 || j == boldRank - 1) 
-				textToDisplay[i][j].setStyle(sf::Text::Bold);
+					{
+						textToDisplay[i][j].setStyle(sf::Text::Italic);
+						textToDisplay[i][j].setFillColor(sf::Color::Red);
+					}
 			}
 			widthPerCol[i] = utilities::getMaxWidth(textToDisplay[i]);
 			float tempHeight = utilities::getMaxHeight(textToDisplay[i]);

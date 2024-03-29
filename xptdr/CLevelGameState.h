@@ -1,11 +1,13 @@
 #pragma once
 #include"CGameState.h"
 #include"CParserXML.h"
+#include"CLoadingState.h"
 class CLevelGameState : public CGameState
 {
 private:
 	std::string levelFilePath;
 	Level level;
+	bool isLevelSet = false;
 	void deleteEntity(int& i);
 public:
 	CLevelGameState(GameDataRef _data);

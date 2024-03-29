@@ -10,6 +10,9 @@ CJeu::CJeu(int width, int height, std::string title)
 		data->assets.changeScreenType(data->window, data->isFullScreen);
 	else
 		data->window.create(sf::VideoMode(width, height), title, sf::Style::Close | sf::Style::Titlebar);
+	sf::Texture icon;
+	icon.loadFromFile("res/img/logo icon WIP.png");
+	data->window.setIcon(16, 16, icon.copyToImage().getPixelsPtr());
 	data->machine.AddState(StateRef(new CSplashState(data)));
 	data->assets.InitialiserMusiques(volumeMusic,volumeSound); // Initialiser les musiques
 	JEURun();

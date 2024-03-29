@@ -148,8 +148,9 @@ void CMainMenuState::choosedButton()
 		break;
 	case 1:
 		data->machine.AddState(StateRef(new CButtonState(data, blabla, &nbJoueur)), false);
+		break;
 	case 2:
-		//data->machine.AddState(StateRef(new CClavierVirtuel(data, 2, 1)), true);
+		data->machine.AddState(StateRef(new CClavierVirtuel(data,10,2,&blab,2)), false);
 		break;
 	case 3:
 		data->machine.AddState(StateRef(new CSettingState(data)), false);

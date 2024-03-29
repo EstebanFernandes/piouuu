@@ -24,7 +24,6 @@ private:
 	sf::RectangleShape scoreboardBack;
 	std::vector<sf::RectangleShape> ligne;
 	sf::Vector2f pos;
-	//float nbOf 
 	std::vector<std::vector<sf::Text>> textToDisplay;
 
 	float xSize;

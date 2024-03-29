@@ -31,5 +31,16 @@ public:
 	std::vector<std::vector<std::string>> getElements() {
 		return fileElements;
 	}
+	bool isEmpty() {
+		for (int i = 0; i < fileElements.size(); i++)
+		{
+			for (int j = 0; j < fileElements[i].size(); j++)
+			{
+				if (!fileElements[i][j].empty())
+					return false;
+			}
+		}
+		return true;
+	}
 };
 

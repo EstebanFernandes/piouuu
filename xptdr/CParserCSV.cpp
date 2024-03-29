@@ -7,9 +7,12 @@ void CParserCSV::parseFile()
 		std::cout << "Can't open file\n";
 	}
 	while (std::getline(file, sCurrentLine)) {
-		fileElements.push_back(std::vector<std::string>());
-		lineAnalysis();
-		imaxRow++;
+		if(!sCurrentLine.empty())
+		{
+			fileElements.push_back(std::vector<std::string>());
+			lineAnalysis();
+			imaxRow++;
+		}
 	}
 }
 

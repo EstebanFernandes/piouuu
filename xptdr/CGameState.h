@@ -27,7 +27,6 @@ protected:
 	float clock;
 	std::vector<CHittingEntity*> entityList;
 	int* enemyNumber = new int();
-	int currentLevelOfplayer = 0;
 	bool isThistheEnd = false;
 	bool hasLevelUp = false;
 	bulletStorage bulletstorage;

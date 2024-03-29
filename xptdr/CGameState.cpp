@@ -220,9 +220,8 @@ void CGameState::STEUpdate(float delta)
 	//Condition qui assure que le joueur prend bien un niveau par un niveau
 	for (auto player = players.begin(); player != players.end(); player++)
 	{
-		if (player->hasLevelUp == true && currentLevelOfplayer != player->getLevel())
+		if (player->hasLevelUp == true )
 		{
-			currentLevelOfplayer++;
 			data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), player->getGraphs())), false);
 		}
 	}

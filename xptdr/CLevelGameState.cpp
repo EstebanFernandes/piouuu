@@ -15,6 +15,13 @@ void CLevelGameState::GameOver()
 
 void CLevelGameState::STEResume()
 {
+	if (level.isLevelSet)
+	{
+		level.setEnnemyList(&entityList);
+		level.setClock(&clock);
+		level.startLevel();
+		gameTime = sf::Time::Zero;
+	}
 	CGameState::STEResume();
 }
 
@@ -54,19 +61,27 @@ void CLevelGameState::STEInit()
 {
 	initAssets();
 	CGameState::STEInit();
-
-
-	CParserXML xml(levelFilePath, &(data->assets), &(*players.begin()), &bulletstorage);
-	xml.coreFunction();
-	level = xml.getLevel();
-	level.setEnnemyList(&entityList);
-	level.setClock(&clock);
-	level.startLevel();
+	//CParserXML xml(levelFilePath, &(data->assets), nullptr, &bulletstorage);
+	//xml.coreFunction();
+	//level = xml.getLevel();
+	//level.setEnnemyList(&entityList);
+	//level.setClock(&clock);
+	//level.startLevel();
 }
 
 void CLevelGameState::STEUpdate(float delta)
 {
-	if(isThistheEnd == false)
+	if(level.isLevelSet==false && isLevelSet==false)
+	{
+		infoForloading temp;
+		temp.bulletStorage = &bulletstorage;
+		temp.fileName = levelFilePath;
+		temp.level = &level;
+		data->machine.AddState(StateRef(new CLoadingState(data, temp)), false);
+		isLevelSet = true;
+	}
+
+	if(isThistheEnd == false&&level.isLevelSet)
 	{
 		updateBackground(delta);
 		//Auto aim
@@ -120,11 +135,8 @@ void CLevelGameState::STEUpdate(float delta)
 		{
 			if (player->hasLevelUp == true )
 			{
-				currentLevelOfplayer++;
 				data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), player->getGraphs() )), false);
 			}
-			
-
 		}
 		if (level.updateLevel())
 			GameOver();

@@ -144,7 +144,7 @@ template <class MType>
 void CGameOver<MType>::STEUpdate(float delta)
 {
 	if (rank <= 10 && !askedScore) {
-		data->machine.AddState(StateRef(new CClavierVirtuel(data, score, rank, playerName)), false);
+		data->machine.AddState(StateRef(new CClavierVirtuel(data, score, rank, &playerName,(int)characters.size())), false);
 		askedScore = true;
 	}
 	std::stringstream ss;
@@ -173,7 +173,8 @@ inline void CGameOver<MType>::STEResume()
 {
 	updateFileRanks();
 	// TO DO : Bien placer le scoreboard
-	scoreboard = CScoreboard(&(data->assets), 20, 20, rank);
+	scoreboard = CScoreboard(&(data->assets), rank);
+	scoreboard.setPosAuto();
 }
 
 template<class MType>
@@ -216,9 +217,12 @@ inline void CGameOver<MType>::setRank()
 	std::vector<std::vector<std::string>> elements = parser.getElements();
 
 	int index = (int)elements.size() - 1;
-
-	while (index >= 0 && score > std::stoi(elements[index][2])) {
-		index -= 1;
+	if (parser.isEmpty())
+		index = -1;
+	else {
+		while (index >= 0 && score > std::stoi(elements[index][2])) {
+			index -= 1;
+		}
 	}
 	if (index == -1) {
 		//TOP 1 !!!!!!!!!!!!!!!!!

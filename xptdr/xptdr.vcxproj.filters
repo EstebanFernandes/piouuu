@@ -37,7 +37,6 @@
     <ClCompile Include="CHittingEntity.cpp" />
     <ClCompile Include="CInputManager.cpp" />
     <ClCompile Include="CJeu.cpp" />
-    <ClCompile Include="CLevelUp.cpp" />
     <ClCompile Include="CMainMenuState.cpp" />
     <ClCompile Include="Cmusique.cpp" />
     <ClCompile Include="CParserCSV.cpp" />
@@ -81,6 +80,7 @@
     <ClCompile Include="CLevelGameState.cpp" />
     <ClCompile Include="laserWeapon.cpp" />
     <ClCompile Include="CButtonState.cpp" />
+    <ClCompile Include="CLoadingState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BomberEnemy.h" />
@@ -119,7 +119,6 @@
     <ClInclude Include="CHittingEntity.h" />
     <ClInclude Include="CInputManager.h" />
     <ClInclude Include="CJeu.h" />
-    <ClInclude Include="CLevelUp.h" />
     <ClInclude Include="CMainMenuState.h" />
     <ClInclude Include="Cmusique.h" />
     <ClInclude Include="CParserCSV.h" />
@@ -164,6 +163,7 @@
     <ClInclude Include="CLevelGameState.h" />
     <ClInclude Include="laserWeapon.h" />
     <ClInclude Include="CButtonState.h" />
+    <ClInclude Include="CLoadingState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragbandw.frag" />

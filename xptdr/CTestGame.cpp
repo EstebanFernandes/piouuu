@@ -211,18 +211,13 @@ void CTestGame::STEUpdate(float delta)
 	{
 		if (player->hasLevelUp == true )
 		{
-			currentLevelOfplayer++;
 			// Les graphes doivent dépendre des joueurs
 			data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), player->getGraphs())), false);
 		}
 	}
-	
-	//DEBUG INFO
-	/*std::stringstream ss;
-	ss << "Player level : " << playeer1.getLevel() << std::endl <<
-		"mouse x pos : " << sf::Mouse::getPosition(data->window).x << " y position : "<< sf::Mouse::getPosition(data->window).y << std::endl <<
-		"Max xp : " << playeer1.getMaxXp() << "\n" <<
-		"Score : " << playeer1.getScore()<< std::endl << "\n";
-	//"Bullet number : " << playeer1.BAW.getVector()->size() << "\n";
-	uitext.setString(ss.str());*/
+	totalScore = 0;
+	for (auto player = players.begin(); player != players.end(); player++)
+	{
+		totalScore += player->getScore();
+	}
 }

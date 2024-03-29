@@ -1,14 +1,37 @@
 #include "CClavierVirtuel.h"
 
-CClavierVirtuel::CClavierVirtuel(GameDataRef _data, float scoreParam, int rankParam, std::string &playerNameParam) : data(_data)
+CClavierVirtuel::CClavierVirtuel(GameDataRef _data, float scoreParam, int rankParam, std::string *playerNameParam, int nbJoueur) : data(_data)
 {
 	score = scoreParam;
 	rank = rankParam;
-	playerName = &playerNameParam;
+	playerName = playerNameParam;
+	this->nbJoueur = nbJoueur;
+	for(int i=0;i<nbJoueur;i++)
+	{
+		tilePositionsKeyboard.push_back(sf::Vector2f());
+		playerSelection.push_back(sf::Vector2i(0, 0));
+		if (i == 0)
+			keysPlayer.push_back(keys());
+		else
+		{
+			keys keysecondPlayer;
+			keysecondPlayer.up = sf::Keyboard::Up;
+			keysecondPlayer.down= sf::Keyboard::Down;
+			keysecondPlayer.right = sf::Keyboard::Right;
+			keysecondPlayer.left  = sf::Keyboard::Left;
+			keysecondPlayer.press = sf::Keyboard::U;
+			keysPlayer.push_back(keysecondPlayer);
+		}
+		stringPositions.push_back(0);
+		OUAIS.push_back(false);
+		names.push_back(std::string());
+		yDirection.push_back(1.f);
+	}
 }
 
 void CClavierVirtuel::keyboardInit()
 {
+
 }
 
 void CClavierVirtuel::STEInit()
@@ -26,16 +49,31 @@ void CClavierVirtuel::STEInit()
 	keyboard.push_back("  ^<>    è");
 	data->assets.LoadTexture("keyboardBlack", "res\\img\\keyboard_black.png");
 	data->assets.LoadTexture("keyboardWhite", "res\\img\\keyboard_white.png");
-
+	data->assets.LoadTexture("keyboardLetter", "res\\img\\keyboard_black2.png");
 	//mouseSelectionRectangle = sf::FloatRect(0.f, 0.f, 40.f, 40.f);//avec la scale actuelle (3) c'est 40 une case
 	keyboardBlackSprite.setTexture(data->assets.GetTexture("keyboardBlack"));
 	keyboardBlackSprite.setScale(4.f, 4.f);
 	keyboardBlackSprite.setPosition(((float)data->assets.sCREEN_WIDTH / 2.f) - keyboardBlackSprite.getGlobalBounds().width / 2.f, (float)data->assets.sCREEN_HEIGHT * 0.4f);
-
-	keyboardWhiteSprite.setTexture(data->assets.GetTexture("keyboardWhite"));
-	keyboardWhiteSprite.setScale(keyboardBlackSprite.getScale());
-	keyboardWhiteSprite.setPosition(keyboardBlackSprite.getPosition());
-
+	for (int i = 0; i < nbJoueur; i++)
+	{
+		sf::Sprite temp;
+		sf::Sprite keyboardLetterSprite;
+		temp.setTexture(data->assets.GetTexture("keyboardWhite"));
+		temp.setScale(keyboardBlackSprite.getScale());
+		temp.setPosition(keyboardBlackSprite.getPosition());
+		if (nbJoueur == 2)
+		{
+			if (i == 0)
+				temp.setColor(sf::Color(3, 140, 252));
+			else
+				temp.setColor(sf::Color(52, 199, 62));
+		}
+		keyboardPlayer.push_back(temp);
+		keyboardLetterSprite.setTexture(data->assets.GetTexture("keyboardLetter"));
+		keyboardLetterSprite.setScale(keyboardBlackSprite.getScale());
+		keyboardLetterSprite.setPosition(keyboardBlackSprite.getPosition());
+		keyboardLetterSprites.push_back(keyboardLetterSprite);
+	}
 	capslocksprite.setTexture(data->assets.GetTexture("keyboardWhite"));
 	capslocksprite.setScale(keyboardBlackSprite.getScale());
 	capslocksprite.setPosition(keyboardBlackSprite.getPosition());
@@ -51,30 +89,67 @@ void CClavierVirtuel::STEInit()
 	CapsLock.setPosition(keyboardBlackSprite.getPosition().x + 172, keyboardBlackSprite.getPosition().y + 264);
 	CapsLock.setSize(sf::Vector2f(4.f, 4.f));
 
-	//ahouais.setSize(sf::Vector2f(200.f, 50.f));
-	ahouais.setSize(sf::Vector2f(keyboardBlackSprite.getGlobalBounds().width * 0.5f, 50.f));
-	//ahouais.setPosition((float)data->assets.sCREEN_WIDTH / 2.f, (float)data->assets.sCREEN_HEIGHT * 0.3f);
-	ahouais.setPosition(keyboardBlackSprite.getPosition().x + ((keyboardBlackSprite.getGlobalBounds().width - ahouais.getLocalBounds().width) * 0.5f), (float)data->assets.sCREEN_HEIGHT * 0.3f);
 
-	nameText.setPosition(ahouais.getPosition().x * 1.01f, ahouais.getPosition().y * 1.03f);
-	nameText.setCharacterSize(30);
-	nameText.setFillColor(sf::Color::Black);
-	nameText.setFont(data->assets.GetFont("Lato"));
-	nameText.setString(name);
-
-	bar.setSize(sf::Vector2f(ahouais.getLocalBounds().width * 0.005f, ahouais.getLocalBounds().height * 0.80f));
-	bar.setPosition(nameText.getPosition());
-	bar.setFillColor(sf::Color::Black);
-
+		sf::RectangleShape ah;
+	if (nbJoueur == 2)
+	{
+		ah.setSize(sf::Vector2f(keyboardBlackSprite.getGlobalBounds().width/3.f , 50.f));
+		ah.setPosition(
+			keyboardBlackSprite.getPosition().x ,
+			(float)data->assets.sCREEN_HEIGHT * 0.3f);
+		ahouais.push_back(ah);
+		ah.setPosition(keyboardBlackSprite.getPosition().x+keyboardBlackSprite.getGlobalBounds().width*2.f/3.f,
+			(float)data->assets.sCREEN_HEIGHT * 0.3f);
+		ahouais.push_back(ah);
+		midText.setPosition(keyboardBlackSprite.getPosition().x + keyboardBlackSprite.getGlobalBounds().width/2.f, ah.getPosition().y * 1.03f);
+		midText.setCharacterSize(25);
+		midText.setFillColor(sf::Color::Black);
+		midText.setFont(data->assets.GetFont("Nouvelle"));
+		midText.setString("&");
+	}
+	else{
+		ah.setSize(sf::Vector2f(keyboardBlackSprite.getGlobalBounds().width * 0.5f, 50.f));
+		ah.setPosition(keyboardBlackSprite.getPosition().x + ((keyboardBlackSprite.getGlobalBounds().width - ah.getLocalBounds().width) * 0.5f), (float)data->assets.sCREEN_HEIGHT * 0.3f);
+		ahouais.push_back(ah);
+	}
+	for (int i = 0; i < nbJoueur; i++)
+	{
+		sf::Text nameText;
+		if(i==0)
+			utilities::readaptText(nameText, sf::Vector2f(ahouais[i].getPosition().x * 1.01f, ah.getPosition().y * 1.03f));
+		else
+			utilities::readaptText(nameText, sf::Vector2f(ahouais[i].getPosition().x * 1.01f, ah.getPosition().y * 1.03f));
+		nameText.setCharacterSize(25);
+		nameText.setFillColor(sf::Color::Black);
+		nameText.setFont(data->assets.GetFont("Nouvelle"));
+		nameText.setString(names[i]);
+		nameTexts.push_back(nameText);
+		nameText.setPosition(nameText.getPosition().x,
+			ah.getPosition().y + ah.getGlobalBounds().height*0.95f);
+		nameText.setString("-");
+		bars.push_back(nameText);
+	}
 	std::stringstream textToPrompt;
-	if (rank == 1) {
-		textToPrompt << "Tu deviens la nouvelle légende de PIOU avec ce \nmagnifique score de " << score << ",tu finis premier,\nécris ton nom qui deviendra légendaire\n(jusqu'à ce que ton score soit battu)";
+	
+	if(nbJoueur==1){
+		if (rank == 1) {
+			textToPrompt << "Tu deviens la nouvelle légende de PIOU avec ce \nmagnifique score de " << score << ",tu finis premier,\nécris ton nom qui deviendra légendaire\n(jusqu'à ce que ton score soit battu)";
+		}
+		else {
+			textToPrompt << "Bien joué, ton score est de " << score << ", tu finis " << rank << "ème, écris ton nom\n pour qu'il reste gravé à jamais dans l'histoire de PIOU";
+		}
 	}
 	else {
-		textToPrompt << "Bien joué, ton score est de " << score << ", tu finis " << rank << "ème, écris ton nom\n pour qu'il reste gravé à jamais dans l'histoire de PIOU";
+		if (rank == 1) {
+			textToPrompt << "Vous devenez les légendes de ce foutu game avec ce \nmagnifique score de " << score << ",\n";
+		}
+		else {
+			textToPrompt << "Bien joué, votre score est de " << score << ", vous finissez donc " << rank << "ème\n";
+		}
+		textToPrompt << "écrivez vos noms pour qu'il reste dans la légende";
 	}
 
-	scorePrompt.setFont(data->assets.GetFont("Lato"));
+	scorePrompt.setFont(data->assets.GetFont("Nouvelle"));
 	scorePrompt.setCharacterSize(35);
 	scorePrompt.setFillColor(sf::Color::White);
 	scorePrompt.setString(textToPrompt.str());
@@ -86,52 +161,48 @@ void CClavierVirtuel::STEInit()
 void CClavierVirtuel::STEHandleInput()
 {
 	sf::Event event;
-	int& x = mouseSelectionRectangle.x;
-	int& y = mouseSelectionRectangle.y;
 	while (data->window.pollEvent(event))
 	{
 		if (sf::Event::Closed == event.type)
 			data->window.close();
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11))
-		{
-			data->assets.changeScreenType(data->window, data->isFullScreen);
-		}
 		if (event.type == sf::Event::KeyPressed)
 		{
-			if (event.key.code == sf::Keyboard::Z)
+			for (int i = 0; i < nbJoueur; i++)
 			{
-				if (y != 0)
-					y -= 1;
-			}
-			if (event.key.code == sf::Keyboard::Q)
-			{
-				if (y == 4 && x == 2)
-					break;
-				if (y == 4 && (x >= 5 && x <= 8))
-					x = 4;
-				else if (x != 0)
-					x -= 1;
-			}
-			if (event.key.code == sf::Keyboard::S)
-			{
-				if (y == 3 && (x < 2 || x > 9))
-					break;
-				if (y != 4)
-					y += 1;
-			}
-			if (event.key.code == sf::Keyboard::D)
-			{
-				if (y == 4 && x == 9)
-					break;
-				if (x != 11)
-					x += 1;
-			}
-		}
-		if (sf::Event::MouseButtonPressed == event.type)
-		{
-			if (event.mouseButton.button == sf::Mouse::Left)
-			{
-				OUAIS = true;
+				int& x = playerSelection[i].x;
+				int& y = playerSelection[i].y;
+				if (event.key.code == keysPlayer[i].up)
+				{
+					if (y != 0)
+						y -= 1;
+				}
+				if (event.key.code == keysPlayer[i].left)
+				{
+					if (y == 4 && x == 2)
+						break;
+					if (y == 4 && (x >= 5 && x <= 8))
+						x = 4;
+					else if (x != 0)
+						x -= 1;
+				}
+				if (event.key.code == keysPlayer[i].down)
+				{
+					if (y == 3 && (x < 2 || x > 9))
+						break;
+					if (y != 4)
+						y += 1;
+				}
+				if (event.key.code == keysPlayer[i].right)
+				{
+					if (y == 4 && x == 9)
+						break;
+					if (x != 11)
+						x += 1;
+				}
+				if (event.key.code == keysPlayer[i].press)
+				{
+					OUAIS[i] = true;
+				}
 			}
 		}
 	}
@@ -140,56 +211,55 @@ void CClavierVirtuel::STEHandleInput()
 void CClavierVirtuel::STEUpdate(float delta)
 {
 	sf::IntRect temp;
-	mousePositionScreen = sf::Mouse::getPosition(data->window);
-	mousePositionKeyboard = (sf::Vector2f)mousePositionScreen - keyboardBlackSprite.getPosition();
-	std::stringstream ss;
-	ss << "mouse position : \n" << "Window : " << mousePositionScreen.x << " " << mousePositionScreen.y << "\n"
-		<< "keyboard relative: " << mousePositionKeyboard.x << " " << mousePositionKeyboard.y << std::endl
-		<< "rectangleseleciton : " << mouseSelectionRectangle.x << " " << mouseSelectionRectangle.y;
-	ui.setString(ss.str());
 	//On check les positions du clavier et on remet s'il faut
-	if (mouseSelectionRectangle.x != -1 && mouseSelectionRectangle.y != -1)
+	for (int i = 0; i < nbJoueur; i++)
 	{
-		int& x = mouseSelectionRectangle.x;
-		int& y = mouseSelectionRectangle.y;
-		if (x == 11 && (y == 2 || y == 3))
+		if (playerSelection[i].x != -1 && playerSelection[i].y != -1)
 		{
-			y = 2;
-			temp = sf::IntRect(14 * x + 2 * x, 13 * y + 3 * y, 14, 26 + 12);
-			tilePositionKeyboard.x = keyboardBlackSprite.getPosition().x + 56 * x + 8 * x;
-			tilePositionKeyboard.y = keyboardBlackSprite.getPosition().y + 52 * y + 12 * y;
+			int& x = playerSelection[i].x;
+			int& y = playerSelection[i].y;
+			if (x == 11 && (y == 2 || y == 3))
+			{
+				y = 2;
+				temp = sf::IntRect(14 * x + 2 * x, 13 * y + 3 * y, 14, 26 + 12);
+				tilePositionsKeyboard[i].x = keyboardBlackSprite.getPosition().x + 56 * x + 8 * x;
+				tilePositionsKeyboard[i].y = keyboardBlackSprite.getPosition().y + 52 * y + 12 * y;
+			}
+			else if (y == 4 && (x >= 5 && x <= 8))
+			{
+				x = 5;
+				temp = sf::IntRect(14 * x + 2 * x, 13 * y + 3 * y, (14 * 4) + 2 * 3, 13);
+				tilePositionsKeyboard[i].x = keyboardBlackSprite.getPosition().x + 56 * x + 8 * x;
+				tilePositionsKeyboard[i].y = keyboardBlackSprite.getPosition().y + 52 * y + 12 * y;
+				x = 8;
+			}
+			else {
+				tilePositionsKeyboard[i].x = keyboardBlackSprite.getPosition().x + 56 * x + 8 * x;
+				tilePositionsKeyboard[i].y = keyboardBlackSprite.getPosition().y + 52 * y + 12 * y;
+				temp = sf::IntRect(14 * x + 2 * x, 13 * y + 3 * y, 14, 13);
+			}
+			keyboardPlayer[i].setPosition(tilePositionsKeyboard[i]);
+			keyboardPlayer[i].setTextureRect(temp);
+			keyboardLetterSprites[i].setPosition(tilePositionsKeyboard[i]);
+			keyboardLetterSprites[i].setTextureRect(temp);
 		}
-		else if (y == 4 && (x >= 5 && x <= 8))
+		if (OUAIS[i])
 		{
-			x = 5;
-			temp = sf::IntRect(14 * x + 2 * x, 13 * y + 3 * y, (14 * 4) + 2 * 3, 13);
-			tilePositionKeyboard.x = keyboardBlackSprite.getPosition().x + 56 * x + 8 * x;
-			tilePositionKeyboard.y = keyboardBlackSprite.getPosition().y + 52 * y + 12 * y;
-			x = 8;
+			UpdateText(i);
+			bars[i].setPosition(sf::Vector2f(nameTexts[i].getPosition().x + nameTexts[i].getGlobalBounds().width + 3.f, midText.getGlobalBounds().top + midText.getGlobalBounds().height * 1.05f));
+			OUAIS[i] = false;
 		}
-		else {
-			tilePositionKeyboard.x = keyboardBlackSprite.getPosition().x + 56 * x + 8 * x;
-			tilePositionKeyboard.y = keyboardBlackSprite.getPosition().y + 52 * y + 12 * y;
-			temp = sf::IntRect(14 * x + 2 * x, 13 * y + 3 * y, 14, 13);
-		}
-		keyboardWhiteSprite.setPosition(tilePositionKeyboard);
-		keyboardWhiteSprite.setTextureRect(temp);
-	}
-	if (OUAIS)
-	{
-		UpdateText();
-		int a = (int)name.size();
-		float tempX = nameText.getGlobalBounds().width - (((name.size() - stringPosition) * nameText.getLetterSpacing() * nameText.getCharacterSize()) / 2);
-		bar.setPosition(sf::Vector2f(nameText.getPosition().x + tempX, nameText.getPosition().y));
-		OUAIS = false;
+		updateBars();
 	}
 }
 //Fonction appelée que si l'utilisateur appuie sur une touche
-void CClavierVirtuel::UpdateText()
+void CClavierVirtuel::UpdateText(int joueur)
 {
-	int x = mouseSelectionRectangle.x;
-	int y = mouseSelectionRectangle.y;
+	int x = playerSelection[joueur].x;
+	int y = playerSelection[joueur].y;
 	char letter = keyboard[y][x];
+	std::string& name = names[joueur];
+	unsigned int& stringPosition = stringPositions[joueur];
 	switch (letter)
 	{
 	case '&'://Touche effacer
@@ -285,33 +355,59 @@ void CClavierVirtuel::UpdateText()
 			//Ici, signaler que le nom est trop long
 		}
 	}
-	nameText.setString(name);
-	*playerName = name;
+	nameTexts[joueur].setString(name);
+	std::string totalName="";
+	for (int i = 0; i < nbJoueur; i++)
+	{
+		if (i == 1)
+		{
+			totalName += "&";
+		}
+		totalName += names[i];
+	}
+	*playerName = totalName;
 }
 
-void CClavierVirtuel::drawBar()
-{
-	if (barClock.getElapsedTime().asSeconds() <= 0.5f)
-	{
-		data->window.draw(bar);
-	}
-	else if (barClock.getElapsedTime().asSeconds() >= 1.f) {
-		barClock.restart();
-	}
-}
+
 
 void CClavierVirtuel::STEDraw(float delta)
 {
 	sf::RenderWindow& r = data->window;
 	r.clear(sf::Color(191, 165, 117, 1));
-	r.draw(ahouais);
-	r.draw(nameText);
-	drawBar();
-	r.draw(keyboardBlackSprite); r.draw(keyboardWhiteSprite);
+	for (int i = 0; i < nbJoueur; i++)
+	{
+	r.draw(ahouais[i]);
+		r.draw(nameTexts[i]);
+	}
+	for (int i = 0; i < bars.size(); i++)
+	{
+		if(names[i].size()<numberCharMax+1)
+			r.draw(bars[i]);
+	}
+	r.draw(midText);
+	r.draw(keyboardBlackSprite); 
+	for (int i = 0; i < nbJoueur; i++)
+		r.draw(keyboardPlayer[i]);
+	for (int i = 0; i < nbJoueur; i++)
+		r.draw(keyboardLetterSprites[i]);
 	if (capsInt == 2)r.draw(capslocksprite);
 	r.draw(CapsLock);
 	r.draw(ui);
 	r.draw(scorePrompt);
 	r.display();
+}
+
+void CClavierVirtuel::updateBars()
+{
+	for (int i = 0; i < bars.size(); i++)
+	{
+		if (bars[i].getGlobalBounds().top <=
+			midText.getGlobalBounds().top + midText.getGlobalBounds().height * 1.05f)
+			yDirection[i] = 1.f;
+		else if (bars[i].getGlobalBounds().top >=
+			ahouais[i].getGlobalBounds().top + ahouais[i].getGlobalBounds().height * 0.90f)
+			yDirection[i] = -1.f;
+		bars[i].move(0.f, yDirection[i]*0.007f);
+	}
 }
 

@@ -14,6 +14,7 @@
 class CMainMenuState : public CState, public InterfaceState
 {
 private:
+	std::string blab = "";
 	int index;
 	GameDataRef data;
 	sf::Clock CMMClock;

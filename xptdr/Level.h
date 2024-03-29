@@ -21,6 +21,7 @@ private:
 	/// </summary>
 	std::vector<std::string> assets;
 public:
+	bool isLevelSet = false;
 	bool isInfinite = false;
 	Level() {}
 	//Cette méthode suppose que l'on a passé la clock, sinon ça plante
