@@ -213,6 +213,7 @@
     <ClCompile Include="ShootingEnemy.cpp" />
     <ClCompile Include="SpecialEffect.cpp" />
     <ClCompile Include="testEnemy.cpp" />
+    <ClCompile Include="upgradeStock.cpp" />
     <ClCompile Include="Wave.cpp" />
     <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
@@ -295,6 +296,7 @@
     <ClInclude Include="ShootingEnemy.h" />
     <ClInclude Include="SpecialEffect.h" />
     <ClInclude Include="testEnemy.h" />
+    <ClInclude Include="upgradeStock.h" />
     <ClInclude Include="utilities.h" />
     <ClInclude Include="Wave.h" />
     <ClInclude Include="Weapon.h" />

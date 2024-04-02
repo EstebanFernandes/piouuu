@@ -222,7 +222,7 @@ void CGameState::STEUpdate(float delta)
 	{
 		if (player->hasLevelUp == true )
 		{
-			data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), player->getGraphs())), false);
+			//data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), &US)), false);
 		}
 	}
 }

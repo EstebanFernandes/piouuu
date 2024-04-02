@@ -5,6 +5,8 @@
 CTestGame::CTestGame(GameDataRef _data)
 {
 	setData(_data);
+	US.addGraphs("res/data/principalweapon.csv");
+	US.addGraphs("res/data/secondaryweapon.csv");
 }
 
 CTestGame::CTestGame(GameDataRef _data, CCharacter characterParam)
@@ -37,6 +39,11 @@ void CTestGame::STEInit()
 	data->assets.jouerMusique("PartieJour");
 	bulletstorage = bulletStorage(&(data->assets));
 	entityList.push_back(&bulletstorage);
+	for (auto it =players.begin();it != players.end();it++)
+	{
+		it->curUpgrade.push_back(US.initVert(ARME_PRINCIPALE));
+		it->curUpgrade.push_back(US.initVert(ARME_SECONDAIRE));
+	}
 }
 
 void CTestGame::initAssets()
@@ -119,7 +126,7 @@ void CTestGame::STEHandleInput()
 			{
 				for (auto i = players.begin(); i != players.end(); i++)
 				{
-					i->gainXP(2);
+					i->gainXP(4);
 				}
 			
 			}
@@ -212,7 +219,7 @@ void CTestGame::STEUpdate(float delta)
 		if (player->hasLevelUp == true )
 		{
 			// Les graphes doivent dépendre des joueurs
-			data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), player->getGraphs())), false);
+			data->machine.AddState(StateRef(new CUpgradeState(data, &(*player),&US )), false);
 		}
 	}
 	totalScore = 0;

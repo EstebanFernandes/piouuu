@@ -2,9 +2,11 @@
 #include"CGameState.h"
 #include"bulletStorage.h"
 #include"CGrapheUpdate.h"
+#include"upgradeStock.h"
 class CTestGame : public CGameState
 {
 private:
+	upgradeStock US;
 public:
 
 	CTestGame(GameDataRef _data); 

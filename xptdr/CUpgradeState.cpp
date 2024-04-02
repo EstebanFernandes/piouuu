@@ -1,20 +1,7 @@
 #include "CUpgradeState.h"
 
-void CUpgradeState::PremiereFois()
-{
-	levelofPlayer = pointerToPlayer1->getLevel();
-	currentGraph->currentVert = &currentGraph->GRAObtenirListeSommet()[0];
-}
 
-void CUpgradeState::PasPremiereFois()
-{
- 	levelofPlayer = pointerToPlayer1->getLevel();
-	nbOfGraph = whichKindofUpgrade();
-	currentGraph = (&(*Graphs)[nbOfGraph]);
-	if (currentGraph->endOfGraph)
-		plusStats();
-	CreateCard(currentGraph->ListeType);
-}
+
 
 void CUpgradeState::fillUpgrade(int nbofUpgrade)
 {
@@ -107,19 +94,27 @@ int CUpgradeState::setValue(int init, std::string modif)
 }
 
 
-CUpgradeState::CUpgradeState(GameDataRef d, CPlayer* player, std::vector<CGrapheUpdate>* pointerToPlayerGraphs) : data(d)
+CUpgradeState::CUpgradeState(GameDataRef d, CPlayer* player, upgradeStock* pointerToUpgradeStocks) : data(d)
 {
 	if (player != NULL)
-		pointerToPlayer1 = player;
-	if (pointerToPlayerGraphs != NULL)
-		Graphs = pointerToPlayerGraphs;
+	{
+		pointerToPlayer1 = player; 
+	}
+	if (pointerToUpgradeStocks != NULL)
+		US = pointerToUpgradeStocks;
 }
 
 void CUpgradeState::STEInit() 
 {
-	isFirstTime = pointsurlesgraphs();
-	if (!isFirstTime)
-		PasPremiereFois();
+	levelofPlayer = pointerToPlayer1->getLevel();
+	if (levelofPlayer <= 2)
+		isFirstTime = true;
+	else
+		isFirstTime = false;
+	type = whichKindofUpgrade();
+	playerComp = &pointerToPlayer1->curUpgrade[type];
+	currentGraph = &US->currentGraph((*playerComp));
+	CreateCard();
 	std::string typestring;
 	switch (type)
 	{
@@ -141,11 +136,12 @@ void CUpgradeState::STEInit()
 	{
 		CardList[i].resizeTexts();
 	}
-	std::string temp = "Passage au niveau " + std::to_string(this->levelofPlayer)+typestring;
+	std::string temp = "Passage au niveau " + std::to_string(this->levelofPlayer) + typestring;
 	title.setString(temp);
 	title.setFont(data->assets.GetFont("Nouvelle"));
 	title.setCharacterSize(40);
 	title.setPosition(sf::Vector2f((data->assets.sCREEN_WIDTH - title.getGlobalBounds().width) / 2, (data->assets.sCREEN_HEIGHT * 0.1f - title.getGlobalBounds().height) / 2));
+	
 }
 void CUpgradeState::STEHandleInput()
 {
@@ -159,43 +155,7 @@ void CUpgradeState::STEHandleInput()
 			if (hasPressedKey++ == 1)
 			{
 				applyStats();
-				if (isFirstTime)
-				{
-				int iDNextVert = (*(currentGraph->currentVert)).SOMLireArcPartant()[iCardSelection].ARCObtenirDest();
-				CSommetUpgrade nextVert = currentGraph->GRAObtenirListeSommet()[currentGraph->GRATrouverSommet(iDNextVert)];
-				int INDEX = iCardSelection + tailleAvantAjout;
-				int max = (int)Graphs->size();
-				for (int i = tailleAvantAjout; i < max; i++) 
-				{
-					if (i!=INDEX)
-					{
-							Graphs->erase(Graphs->begin() + i);
-						if (i < INDEX) {
-							INDEX--;
-						}
-							i--;
-							max--;
-						
-					}
-				}
-					currentGraph = (&(*Graphs)[INDEX]);
-					currentGraph->currentVert = &currentGraph->GRAObtenirListeSommet()[0];
-				}
-				else if(currentGraph->endOfGraph != true){
-					int iDNextVert = (*(currentGraph->currentVert)).SOMLireArcPartant()[iCardSelection].ARCObtenirDest();
-					CSommetUpgrade nextVert = currentGraph->GRAObtenirListeSommet()[currentGraph->GRATrouverSommet(iDNextVert)];
-					currentGraph = (&(*Graphs)[nbOfGraph]);
-					for (int i = 0; i < currentGraph->currentVert->SOMLireArcPartant().size(); i++)
-					{
-						if (currentGraph->currentVert->SOMLireArcPartant()[i].ARCObtenirDest() != iDNextVert)
-							currentGraph->supprimerSommetetDescendences(currentGraph->currentVert->SOMLireArcPartant()[i].ARCObtenirDest());
-					}
-
-					currentGraph->GRASupprimerSommet(currentGraph->currentVert->SOMLireNumero());
-					currentGraph->currentVert = &(currentGraph->GRAObtenirListeSommet()[currentGraph->GRATrouverSommet(iDNextVert)]);
-			if (currentGraph->currentVert->SOMTailleListeArc(Partant)==0)
-				currentGraph->endOfGraph = true;
-				}
+				US->avancer(*playerComp,iCardSelection);
 				pointerToPlayer1->setBoolLevelUp(false);
 				data->machine.RemoveState();
 			}

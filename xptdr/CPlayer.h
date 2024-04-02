@@ -9,6 +9,7 @@
 #include "CAnimation.h"
 #include"SFML/Audio.hpp"
 #include"CGrapheUpdate.h"
+#include "upgradeStock.h"
 //CLASSE qui représente un joueur
 class CPlayer :  public CMob
 {
@@ -70,6 +71,7 @@ private:
 	void setValue(float& init, std::string modif);
 	void setValue(int& init, std::string modif);
 public:
+	std::vector<graphComponent> curUpgrade;
 	int numero = -1;
 	//Mouvement
 

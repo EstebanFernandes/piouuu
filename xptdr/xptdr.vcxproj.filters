@@ -81,6 +81,7 @@
     <ClCompile Include="laserWeapon.cpp" />
     <ClCompile Include="CButtonState.cpp" />
     <ClCompile Include="CLoadingState.cpp" />
+    <ClCompile Include="upgradeStock.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BomberEnemy.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="laserWeapon.h" />
     <ClInclude Include="CButtonState.h" />
     <ClInclude Include="CLoadingState.h" />
+    <ClInclude Include="upgradeStock.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragbandw.frag" />
