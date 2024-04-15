@@ -1,4 +1,4 @@
- #pragma once
+#pragma once
 #include"CAssetManager.h"
 #include"CInputManager.h"
 #include "CStateMachine.h"

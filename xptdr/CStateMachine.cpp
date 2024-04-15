@@ -40,8 +40,8 @@ void CStateMachine::ProcessStateChanges()
 		}
 		std::cout << "On ajoute un etat" << std::endl;
 		states.push(std::move(newState));
-		states.top()->STEInit();
 		_isAdding = false;
+		states.top()->STEInit();
 	}
 	
 }

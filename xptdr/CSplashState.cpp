@@ -38,5 +38,4 @@ void CSplashState::STEDraw(float delta)
 {
 	data->window.clear(sf::Color::Red);
 	data->window.draw(CSSBackground);
-	data->window.display();
 }

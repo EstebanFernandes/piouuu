@@ -21,6 +21,7 @@ class CGameState : public CState
 {
 protected:
 	GameDataRef data;
+	upgradeStock US;
 	sf::Time gameTime;
 	sf::Clock gameClock;
 	std::list<CPlayer> players;
@@ -70,6 +71,8 @@ public:
 	void STEResume();
 	void STEPause();
 	void setData(GameDataRef dataa) { data = dataa; }
+	void updateClock();
+	void afterTransi();
 	CMob* nearEnemy(CMob* player);
 	CMob* nearestPlayer(sf::Vector2f pos);
 	GameDataRef getData();

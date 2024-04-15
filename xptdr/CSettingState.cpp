@@ -156,7 +156,6 @@ void CSettingState::STEDraw(float delta)
 	data->window.draw(SoundVolume);
 	data->window.draw(musicVolume);
 	data->window.draw(fullScreenCon);
-	data->window.display();
 
 }
 

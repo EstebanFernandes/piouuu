@@ -1,9 +1,7 @@
 #pragma once
 #include <vector>
-#include "CState.h"
-#include "CSettingState.h"
 #include"CCarousel.h"
-
+#include"CJeu.h"
 class CCharacterSelection : public CState
 {
 private :
@@ -19,7 +17,7 @@ private :
 	CCharacter* returnChar = NULL;
 	sf::Text ui;
 	sf::Vector2i mousePositionScreen;
-
+	bool LaunchTransi = false;
 public:
 	// Constructeur
 	CCharacterSelection(GameDataRef _data);
@@ -33,7 +31,7 @@ public:
 		nb = numero;
 	}
 		void loadCharacters();
-
+		
 	void STEInit();
 	void STEHandleInput();
 	void STEUpdate(float delta);

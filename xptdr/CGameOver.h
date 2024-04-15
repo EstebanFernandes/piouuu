@@ -164,8 +164,7 @@ void CGameOver<MType>::STEDraw(float delta)
 	for (int i = 0; i < buttonList.size(); i++) {
 		temp.draw(buttonList[i]);
 	}
-	//temp.draw(info);
-	temp.display();
+
 }
 
 template<class MType>
@@ -247,10 +246,16 @@ inline void CGameOver<MType>::updateFileRanks()
 
 	//ICI, on ajoute le nom dans le classement
 	std::string scoreString = std::to_string(score);
+	std::string nameCharacter = "";
+	for (int i = 0; i < characters.size(); i++)
+	{
+		nameCharacter = nameCharacter + characters[i].getName();
+		if (i == 0&& characters.size()!=1)
+			nameCharacter = std::string(nameCharacter + "&");
+	}
 	size_t r = scoreString.find('.') + 3;
 	scoreString.erase(r, scoreString.size() - r);
-
-	std::string textToAdd = playerName + ";" + characters[0].getName() + ";" + scoreString;
+	std::string textToAdd = playerName + ";" + nameCharacter + ";" + scoreString;
 	std::cout << "text to add : " << textToAdd << std::endl;
 
 	std::vector<std::string> lines;

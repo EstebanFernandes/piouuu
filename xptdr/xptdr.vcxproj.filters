@@ -82,6 +82,7 @@
     <ClCompile Include="CButtonState.cpp" />
     <ClCompile Include="CLoadingState.cpp" />
     <ClCompile Include="upgradeStock.cpp" />
+    <ClCompile Include="CTransition.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BomberEnemy.h" />
@@ -166,6 +167,7 @@
     <ClInclude Include="CButtonState.h" />
     <ClInclude Include="CLoadingState.h" />
     <ClInclude Include="upgradeStock.h" />
+    <ClInclude Include="CTransition.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragbandw.frag" />

@@ -39,11 +39,12 @@ CParserCSV::CParserCSV()
 	sFileName = "";
 }
 
-CParserCSV::CParserCSV(std::string fileName)
+CParserCSV::CParserCSV(std::string fileName,bool display)
 {
 	imaxCol = 0;
 	imaxRow = 0;
 	sFileName = fileName;
 	parseFile();
-	displayInfo();
+	if(display==true)
+		displayInfo();
 }

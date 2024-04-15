@@ -193,6 +193,7 @@
     <ClCompile Include="CTestGame.cpp" />
     <ClCompile Include="CTile.cpp" />
     <ClCompile Include="CTileMap.cpp" />
+    <ClCompile Include="CTransition.cpp" />
     <ClCompile Include="CUI.cpp" />
     <ClCompile Include="CUpgradeState.cpp" />
     <ClCompile Include="CWeaponStat.cpp" />
@@ -276,6 +277,7 @@
     <ClInclude Include="CTestGame.h" />
     <ClInclude Include="CTile.h" />
     <ClInclude Include="CTileMap.h" />
+    <ClInclude Include="CTransition.h" />
     <ClInclude Include="CUI.h" />
     <ClInclude Include="CUpgradeState.h" />
     <ClInclude Include="CWeaponStat.h" />

@@ -3,8 +3,9 @@
 #include "CParserCSV.h"
 #include <typeinfo>
 
-CCharacterSelection::CCharacterSelection(GameDataRef _data) : data(_data)
+CCharacterSelection::CCharacterSelection(GameDataRef _data) 
 {
+	data = _data;
 	currentCharacterIndex = 0;
 }
 
@@ -124,13 +125,7 @@ void CCharacterSelection::STEHandleInput()
 			{
 				if (!carousel.isMoving)
 				{
-					if(returnChar==NULL)
-						data->machine.AddState(StateRef(new CTestGame(data, chosenCharacter)), true);
-					else {
-						*returnChar = chosenCharacter;
-						data->machine.RemoveState();
-					}
-					data->assets.stopMusique("MenuPrincipal");
+					LaunchTransi = true;
 				}
 				break;
 		case sf::Event::Closed:
@@ -146,6 +141,19 @@ void CCharacterSelection::STEHandleInput()
 
 void CCharacterSelection::STEUpdate(float delta)
 {
+	if(LaunchTransi==true)
+	{
+		currentTransi = CTransition(&(data->assets), HAUT, 2.f);
+		if (returnChar == NULL)
+			data->machine.AddState(StateRef(new CTestGame(data, chosenCharacter)), true);
+		else {
+			*returnChar = chosenCharacter;
+			data->machine.RemoveState();
+			hasChanges = true;
+		}
+		currentTransi.initTransition();
+		data->assets.stopMusique("MenuPrincipal");
+	}
 	if (isMovingRight)
 	{
 			currentCharacterIndex = (currentCharacterIndex + 1) % characterList.size();
@@ -179,6 +187,5 @@ void CCharacterSelection::STEDraw(float delta)
 	data->window.draw(carousel);
 	data->window.draw(Title);
 	data->window.draw(ui);
-	data->window.display();
 }
 

@@ -9,7 +9,7 @@
 class Level
 {
 private:
-	std::string name;
+	std::string name ="";
 	std::vector<Pattern> patternListStock;
 	std::vector<Pattern> patternList;
 	float* clock;
@@ -36,6 +36,7 @@ public:
 	void setEnnemyList(std::vector<CHittingEntity*>* ennemyList_) { ennemyList = ennemyList_; }
 	void setClock(float* pointerToclock) { clock = pointerToclock; }
 	void setName(std::string n) { name = n; }
+	std::string getName() { return name; }
 	void addAsset(std::string& assetToAdd) { assets.push_back(assetToAdd); }
 	void addPattern(Pattern& patternToAdd) 
 	{ 

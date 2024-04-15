@@ -6,7 +6,6 @@
 #include<vector>
 
 typedef std::unique_ptr<CState> StateRef;
-
 class CStateMachine
 {
 private:

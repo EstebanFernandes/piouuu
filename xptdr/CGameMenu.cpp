@@ -129,7 +129,6 @@ void CGameMenu::STEDraw(float delta)
 		for (int i = 0; i < buttons.size(); i++)
 			data->window.draw(buttons[i]);
 	}
-	data->window.display();
 }
 
 

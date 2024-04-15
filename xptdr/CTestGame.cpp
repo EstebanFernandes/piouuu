@@ -5,8 +5,8 @@
 CTestGame::CTestGame(GameDataRef _data)
 {
 	setData(_data);
-	US.addGraphs("res/data/principalweapon.csv");
-	US.addGraphs("res/data/secondaryweapon.csv");
+	//US.addGraphs("res/data/principalweapon.csv");
+	//US.addGraphs("res/data/secondaryweapon.csv");
 }
 
 CTestGame::CTestGame(GameDataRef _data, CCharacter characterParam)
@@ -39,11 +39,7 @@ void CTestGame::STEInit()
 	data->assets.jouerMusique("PartieJour");
 	bulletstorage = bulletStorage(&(data->assets));
 	entityList.push_back(&bulletstorage);
-	for (auto it =players.begin();it != players.end();it++)
-	{
-		it->curUpgrade.push_back(US.initVert(ARME_PRINCIPALE));
-		it->curUpgrade.push_back(US.initVert(ARME_SECONDAIRE));
-	}
+	currentTransi.initTransition();
 }
 
 void CTestGame::initAssets()

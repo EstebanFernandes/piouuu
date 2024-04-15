@@ -5,10 +5,7 @@
 #include"upgradeStock.h"
 class CTestGame : public CGameState
 {
-private:
-	upgradeStock US;
 public:
-
 	CTestGame(GameDataRef _data); 
 	CTestGame(GameDataRef _data, CCharacter characterParam);
 	CTestGame(GameDataRef _data, std::vector<CCharacter>& characterParam);
@@ -38,7 +35,6 @@ public:
 		}
 		r.draw(uitext);
 		r.draw(gameClockText);
-		r.display();
 	}
 
 	void addPowerUp();

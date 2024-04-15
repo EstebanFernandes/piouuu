@@ -9,6 +9,7 @@ private:
 	Level level;
 	bool isLevelSet = false;
 	void deleteEntity(int& i);
+	void startLevel();
 public:
 	CLevelGameState(GameDataRef _data);
 	CLevelGameState(GameDataRef _data, std::vector<CCharacter>& characters,std::string filePath);
@@ -22,6 +23,8 @@ public:
 	void initAssets();
 	void GameOver();
 	void STEResume();
+	void STEDraw(float delta);
+	void afterTransi();
 };
 
 

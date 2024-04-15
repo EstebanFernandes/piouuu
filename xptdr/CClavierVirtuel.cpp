@@ -394,7 +394,6 @@ void CClavierVirtuel::STEDraw(float delta)
 	r.draw(CapsLock);
 	r.draw(ui);
 	r.draw(scorePrompt);
-	r.display();
 }
 
 void CClavierVirtuel::updateBars()

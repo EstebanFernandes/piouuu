@@ -436,7 +436,10 @@ void CPlayer::updateLifeBar()
 		hasBeenHit = false;
 	}
 	if (healthPoint <= 0)
+	{
+		isDead = true;
 		needDelete = true;
+	}
 }
 void CPlayer::updateEntity(float dt)
 {
@@ -461,6 +464,8 @@ void CPlayer::updateEntity(float dt)
 	mainWeapon->weaponControls(sf::Event());
 	mainWeapon->updateWeapon(dt);
 }
+
+
 
 void CPlayer::renderEntity(sf::RenderTarget& target)
 {

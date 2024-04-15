@@ -7,7 +7,7 @@
 #include"testEnemy.h"
 
 
-std::vector<std::string> CParserXML::explore_children(pt::ptree::const_iterator& value, std::vector<std::string> flags, std::vector<std::string> defaultValues)
+std::vector<std::string> CParserXML::explore_attribute(pt::ptree::const_iterator& value, std::vector<std::string> flags, std::vector<std::string> defaultValues)
 {
     std::vector<std::string> res;
     if (flags.size() == defaultValues.size() && flags.size() != 0) {
@@ -92,12 +92,6 @@ void CParserXML::addEnemy(std::string enemyName,std::vector<std::string> values)
     W.bulletDamage = std::stof(values[8]);
     W.bulletSpeed = std::stof(values[9]);
     W.attackSpeed = std::stof(values[10]);
-    /*
-        flag = { "type","spawnTime","health", "pos","direction","moveTo","moveSpeed",
-                "damage","damageonPerBullet","bulletSpeed","attackSpeed","hasTarget","scoreGived","apparitionDirection"};
-            defaultValue = { "undefined","0","20", "-1;-1","-2;-2", "-1;-1" , "2",
-                "3","3","1","0.5","0","0","droite"};
-    */
     if (enemyName == "roamingEnemy") {
         RoamingEnemy* temp;
              temp = new RoamingEnemy(asset,CS,infoE);
@@ -169,7 +163,7 @@ bool CParserXML::flag(std::string name, pt::ptree::const_iterator& value)
                 "3","3","1","0.5","0","0","droite","3"};
             break;
         }
-        test = explore_children(value, flag, defaultValue);
+        test = explore_attribute(value, flag, defaultValue);
         for (int i = 0; i < test.size(); i++)
         {
             std::cout << flag[i] << "  " << test[i] << std::endl;

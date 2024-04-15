@@ -3,8 +3,9 @@
 #include "CTestGame.h"
 #include"CLevelGameState.h"
 #include"CButtonState.h"
-CMainMenuState::CMainMenuState(GameDataRef _data) : data(_data)
+CMainMenuState::CMainMenuState(GameDataRef _data) 
 {
+	data = _data;
 }
 
 void CMainMenuState::STEInit()
@@ -191,7 +192,6 @@ void CMainMenuState::STEDraw(float delta)
 	for (int i = 0; i < buttons.size(); i++)
 		data->window.draw(buttons[i]);
 	data->window.draw(info);
-	data->window.display();
 }
 
 void CMainMenuState::STEResume()

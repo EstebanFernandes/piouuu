@@ -17,12 +17,57 @@ void CLevelGameState::STEResume()
 {
 	if (level.isLevelSet)
 	{
+		CGameState::STEInit();
+		for (auto it = players.begin(); it != players.end(); it++)
+		{
+			it->curUpgrade.push_back(US.initVert(ARME_PRINCIPALE));
+			it->curUpgrade.push_back(US.initVert(ARME_SECONDAIRE));
+		}
 		level.setEnnemyList(&entityList);
 		level.setClock(&clock);
-		level.startLevel();
-		gameTime = sf::Time::Zero;
 	}
+	hasChanges = false;
+	currentTransi.initTransition();
 	CGameState::STEResume();
+}
+
+void CLevelGameState::STEDraw(float delta)
+{
+	sf::RenderWindow& r = data->window;
+	if (currentTransi.transiouuuuu==false)
+	{
+		CGameState::STEDraw(delta);
+	}
+	else
+	{
+		r.clear(sf::Color::Red);
+		renderBackground();
+		for (int i = 0; i < entityList.size(); i++)
+		{
+			entityList[i]->renderEntity(r);
+		}
+
+		r.setView(data->window.getDefaultView());
+		//Permet de remettre la vue par défaut et donc pas de soucis sur la suite
+		for (int i = 0; i < entityList.size(); i++)
+		{
+			entityList[i]->renderUI(r);
+		}
+		for (auto i = players.begin(); i != players.end(); i++)
+		{
+			i->renderUI(data->window);
+		}
+		r.draw(uitext);
+		r.draw(gameClockText);
+		currentTransi.renderTransition(r);
+		for (auto i = players.begin(); i != players.end(); i++)
+			i->renderEntity(data->window);
+	}
+}
+
+void CLevelGameState::afterTransi()
+{
+	startLevel();
 }
 
 
@@ -34,6 +79,13 @@ void CLevelGameState::deleteEntity(int& i)
 		level.deleteEnemy(entityList[i]);
 	}
 	CGameState::deleteEntity(i);
+}
+
+void CLevelGameState::startLevel()
+{
+	level.startLevel();
+	gameTime = sf::Time::Zero;
+	gameClock.restart();
 }
 
 CLevelGameState::CLevelGameState(GameDataRef _data)
@@ -59,14 +111,18 @@ CLevelGameState::CLevelGameState(GameDataRef _data, std::vector<CCharacter>& cha
 
 void CLevelGameState::STEInit()
 {
+
 	initAssets();
-	CGameState::STEInit();
-	//CParserXML xml(levelFilePath, &(data->assets), nullptr, &bulletstorage);
-	//xml.coreFunction();
-	//level = xml.getLevel();
-	//level.setEnnemyList(&entityList);
-	//level.setClock(&clock);
-	//level.startLevel();
+	initPlayer();
+	infoForloading temp;
+	temp.bulletStorage = &bulletstorage;
+	temp.fileName = levelFilePath;
+	temp.level = &level;
+	temp.US = &US;
+	temp.assetToLoadForGame = &assetToload;
+	data->machine.AddState(StateRef(new CLoadingState(data, temp, &players)), false);
+	hasChanges = true;
+	isLevelSet = true;
 }
 
 void CLevelGameState::STEUpdate(float delta)
@@ -77,7 +133,9 @@ void CLevelGameState::STEUpdate(float delta)
 		temp.bulletStorage = &bulletstorage;
 		temp.fileName = levelFilePath;
 		temp.level = &level;
-		data->machine.AddState(StateRef(new CLoadingState(data, temp)), false);
+		temp.US= &US;
+		data->machine.AddState(StateRef(new CLoadingState(data, temp,&players)), false);
+		hasChanges = true;
 		isLevelSet = true;
 	}
 
@@ -150,22 +208,17 @@ void CLevelGameState::initAssets()
 		ouioui.push_back(i->getName());
 	data->assets.deleteEverythingBut(ouioui);
 	data->assets.clearSoundBuffer();
-	data->assets.LoadTexture("lifepoint", LIFEPOINTTEXTURE);
-	data->assets.LoadTexture("bomber", "res\\img\\lance-bombe.png");
-	data->assets.LoadTexture("lifePowerUp", "res\\img\\lifePowerUp.png");
-	data->assets.LoadTexture("enemyImage", ENEMYPNG_FILEPATH);
-	data->assets.LoadTexture("bulletSecond", "res\\img\\characters\\bullet_Second.png");
-	data->assets.LoadTexture("explosion", "res\\img\\explosion_sprite_sheet.png");
-	data->assets.LoadTexture("bulletImage", "res\\img\\characters\\bulletImage.png");
-	data->assets.LoadTexture("bulletImageRancoeur", "res\\img\\characters\\bulletRancoeur.png");
-	data->assets.LoadTexture("bulletImageGolden", "res\\img\\bullet_Golden.png");
-	data->assets.LoadTexture("bombe", "res\\img\\bombe.png");
-	data->assets.LoadTexture("shooter", "res\\img\\ennemies\\shooter.png");
-	data->assets.LoadTexture("bulletTear", "res\\img\\ennemies\\bulletTear.png");
-	data->assets.LoadTexture("R2D2", "res\\img\\characters\\Droide2.png");
-	data->assets.LoadTexture("boss", "res\\img\\spacecraft_player_1.png");
-	data->assets.LoadTexture("logonormal", "res\\img\\characters\\logonormal2.png");
-	data->assets.LoadSFX("bulletSound", "res\\sfx\\Piou.wav");
-	data->assets.LoadSFX("enemyRush", "res\\sfx\\vaisseau_fonce.wav");
-	data->assets.LoadTexture("rusher", "res\\img\\ennemies\\rusher.png");
+
+	addAsset("lifepoint", LIFEPOINTTEXTURE);
+	addAsset("bomber", "res\\img\\lance-bombe.png");
+	addAsset("lifePowerUp", "res\\img\\lifePowerUp.png");
+	addAsset("enemyImage", ENEMYPNG_FILEPATH);
+	addAsset("bulletSecond", "res\\img\\characters\\bullet_Second.png");
+	addAsset("explosion", "res\\img\\explosion_sprite_sheet.png");
+	addAsset("bombe", "res\\img\\bombe.png");
+	addAsset("shooter", "res\\img\\ennemies\\shooter.png");
+	addAsset("bulletTear", "res\\img\\ennemies\\bulletTear.png");
+	addAsset("boss", "res\\img\\spacecraft_player_1.png");
+	addAsset("rusher", "res\\img\\ennemies\\rusher.png");
+	addAsset("enemyRush", "res\\sfx\\vaisseau_fonce.wav");
 }

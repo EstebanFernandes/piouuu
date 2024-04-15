@@ -25,10 +25,16 @@ void CJeu::JEURun()
 	float newTime, frameTime, interpolation;
 	float currentTime = JEUClock.getElapsedTime().asSeconds();
 	float accumulator = 0.0f;
+	bool& transiInIt = CState::currentTransi.transiouuuuu;//permet de savoir l'état actuel de la transition
 	while (data->window.isOpen())
 	{
-		data->machine.ProcessStateChanges();
-
+		if (transiInIt == false)
+			data->machine.ProcessStateChanges();
+		else if (CState::currentTransi.updateTransition(0.f))
+		{
+			data->machine.GetActiveState()->afterTransi();
+		}
+		StateRef& currentState = data->machine.GetActiveState();
 		newTime = JEUClock.getElapsedTime().asSeconds();
 		frameTime = newTime - currentTime;
 		if (frameTime < 0.25f) frameTime = 0.25f;
@@ -36,15 +42,22 @@ void CJeu::JEURun()
 		accumulator += frameTime;
 		while (accumulator >= dt)
 		{
-			data->machine.GetActiveState()->STEHandleInput();
- 			data->machine.GetActiveState()->STEUpdate(dt);
+			if (currentState->hasChanges == true)
+				break;
+			if(transiInIt==false)
+			{
+				currentState->STEHandleInput();
+				currentState->STEUpdate(dt);
+			}
 			accumulator -= dt;
 		}
-
-		interpolation = accumulator / dt;
-		data->machine.GetActiveState()->STEDraw(interpolation);
-		/*std::cout << "dt : " << dt << std::endl
-			<< "interpolation : " <<interpolation << std::endl
-			<< "frametime : " << frameTime << std::endl;*/
+		if(!currentState->hasChanges||transiInIt==true)
+		{
+			interpolation = accumulator / dt;
+			data->machine.GetActiveState()->STEDraw(interpolation);
+			if (transiInIt == true)
+				CState::currentTransi.renderTransition(data->window);
+			data->window.display();
+		}
 	}
 }

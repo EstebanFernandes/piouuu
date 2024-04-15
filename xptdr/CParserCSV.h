@@ -17,7 +17,7 @@ private:
 	void lineAnalysis();
 public:
 	CParserCSV();
-	CParserCSV(std::string fileName);
+	CParserCSV(std::string fileName, bool display = false);
 	void displayInfo() {
 		for (unsigned int i = 0; i < imaxRow; i++)
 		{

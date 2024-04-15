@@ -146,7 +146,10 @@ void CScoreboard::initText()
 				texte.setString(elements[boldRank - 1][1]);
 				break;
 			case col::name:
-				texte.setString("Toi");
+				if(elements[boldRank - 1][1].find('&')==-1)//Si il y a un & c'est qu'on a deux joueurs
+					texte.setString("Toi");
+				else
+					texte.setString("Vous");
 				break;
 			case col::score:
 				texte.setString(elements[boldRank - 1][2]);

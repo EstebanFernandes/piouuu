@@ -38,7 +38,7 @@ void CButtonState::STEInit()
 		temp.setPosition(pos);
 		buttonList.push_back(temp);
 	}
-	backFonce = sf::RectangleShape(sf::Vector2f(screen_Width, screen_Height));
+	backFonce = sf::RectangleShape(sf::Vector2f((float)screen_Width, (float)screen_Height));
 	backFonce.setFillColor(sf::Color(0, 0, 0, 122));
 	back.create(data->window.getSize().x, data->window.getSize().y);
 	back.update(data->window);
@@ -102,5 +102,4 @@ void CButtonState::STEDraw(float delta)
 	{
 		buttonList.at(i).renderButton(data->window);
 	}
-	data->window.display();
 }

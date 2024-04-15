@@ -27,6 +27,13 @@ CGameState::~CGameState()
 }
 void CGameState::initPlayer()
 {
+	data->assets.LoadSFX("bulletSound", "res\\sfx\\Piou.wav");
+	data->assets.LoadTexture("bulletImage", "res\\img\\characters\\bulletImage.png");
+	data->assets.LoadTexture("explosionPlayer", "res\\img\\characters\\explosionPlayer.png");
+	data->assets.LoadTexture("bulletImageRancoeur", "res\\img\\characters\\bulletRancoeur.png");
+	data->assets.LoadTexture("bulletImageGolden", "res\\img\\bullet_Golden.png");
+	data->assets.LoadTexture("R2D2", "res\\img\\characters\\Droide2.png");
+	data->assets.LoadTexture("logonormal", "res\\img\\characters\\logonormal2.png");
 	int numero = 1;
 	for (auto i = players.begin(); i != players.end(); i++)
 	{
@@ -34,6 +41,20 @@ void CGameState::initPlayer()
 		i->updateMisc();
 		i->setNumero(numero);
 		numero++;
+	}
+	if (numero == 2)//Qu'un joueur
+	{
+		players.begin()->setPositionEntity(data->assets.sCREEN_WIDTH * 0.2f, data->assets.sCREEN_HEIGHT * 0.5f);
+	}
+	else {
+		float height = 0.4f;
+		float width = 0.2f;
+		for (auto i = players.begin(); i != players.end(); i++)
+		{
+			i->setPositionEntity(data->assets.sCREEN_WIDTH * width, data->assets.sCREEN_HEIGHT * height);
+			width += 0.05f;
+			height += 0.2f;
+		}
 	}
 }
 
@@ -82,13 +103,12 @@ void CGameState::initBackground()
 
 	gameClockText.setCharacterSize(20);
 	gameClockText.setFillColor(sf::Color::White);
-	gameClockText.setFont(data->assets.GetFont("Lato"));
+	gameClockText.setFont(data->assets.GetFont("Nouvelle"));
 	gameTime.Zero;
 }
 void CGameState::STEInit()
 {
 	*enemyNumber = 0;
-	initPlayer();
 	initBackground();
 	data->assets.jouerMusique("PartieJour");
 	bulletstorage = bulletStorage(&(data->assets));
@@ -206,23 +226,13 @@ void CGameState::STEUpdate(float delta)
 		GameOver();
 
 	//Clock updates
-	clock = (gameTime.asSeconds() + gameClock.getElapsedTime().asSeconds()) * 100.f;
-	clock = ceil(clock);
-	clock = clock / 100.f;
-	std::string i = std::to_string(clock);
-	size_t r = i.find('.') + 3;
-	i.erase(r, i.size() - r);
-	size_t ti = gameClockText.getString().getSize();
-	gameClockText.setString(i);
-	if (ti != i.size())
-		gameClockText.setPosition(sf::Vector2f(data->assets.sCREEN_WIDTH / 2 - gameClockText.getGlobalBounds().width / 2, 20.f));
-
+	updateClock();
 	//Condition qui assure que le joueur prend bien un niveau par un niveau
 	for (auto player = players.begin(); player != players.end(); player++)
 	{
 		if (player->hasLevelUp == true )
 		{
-			//data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), &US)), false);
+			data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), &US)), false);
 		}
 	}
 }
@@ -283,7 +293,6 @@ void CGameState::STEDraw(float delta)
 	}
 	r.draw(uitext);
 	r.draw(gameClockText);
-	r.display();
 }
 
 void CGameState::STEResume()
@@ -295,6 +304,26 @@ void CGameState::STEResume()
 	{
 		i->resetMovement();
 	}
+}
+void CGameState::updateClock()
+{
+	clock = (gameTime.asSeconds() + gameClock.getElapsedTime().asSeconds()) * 100.f;
+	clock = ceil(clock);
+	clock = clock / 100.f;
+	std::string i = std::to_string(clock);
+	size_t r = i.find('.') + 3;
+	i.erase(r, i.size() - r);
+	size_t ti = gameClockText.getString().getSize();
+	gameClockText.setString(i);
+	if (ti != i.size())
+		gameClockText.setPosition(sf::Vector2f(data->assets.sCREEN_WIDTH / 2 - gameClockText.getGlobalBounds().width / 2, 20.f));
+
+}
+void CGameState::afterTransi()
+{
+	gameClock.restart();
+	gameTime = sf::Time::Zero;
+	updateClock();
 }
 /// <summary>
 /// Fonction qui renvoie l'ennemi le plus près de l'entité passé en paramètre
@@ -329,7 +358,7 @@ CMob* CGameState::nearestPlayer(sf::Vector2f pos)
 	for (auto player = players.begin(); player != players.end(); player++)
 	{
 		float distance = utilities::getDistancefrom2Pos(pos, player->getSprite().getPosition());
-		if (distance < max)
+		if (distance < max&&player->isDead==false)
 		{
 			max = distance;
 			target = &(*player);

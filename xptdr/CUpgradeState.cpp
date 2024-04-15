@@ -196,7 +196,6 @@ void CUpgradeState::STEDraw(float delta)
 		data->window.draw(CardList[i]);
 	}
 	data->window.draw(title);
-	data->window.display();
 }
 
 bool CUpgradeState::matchTypeWithValue(std::string type, std::string value)
