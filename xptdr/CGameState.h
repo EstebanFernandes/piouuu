@@ -23,9 +23,7 @@ protected:
 	GameDataRef data;
 	upgradeStock US;
 	sf::Time gameTime;
-	sf::Clock gameClock;
 	std::list<CPlayer> players;
-	float clock;
 	std::vector<CHittingEntity*> entityList;
 	int* enemyNumber = new int();
 	bool isThistheEnd = false;
@@ -42,6 +40,7 @@ protected:
 	void initPlayer();
 	void initBackground();
 	void deleteEntity(int i);
+	void updateTime();
 public:
 	CGameState();
 	CGameState(GameDataRef _data);

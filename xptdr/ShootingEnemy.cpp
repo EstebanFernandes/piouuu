@@ -38,6 +38,7 @@ ShootingEnemy::ShootingEnemy(CAssetManager* asset, CCharacter& stat, CWeaponStat
 	{
 		BAW.getWeaponStats().changeDir(info.direction);
 	}
+	BAW.setBulletAsset("bulletTear");
 	damage = stat.getDamagePerBullet();
 	initAnimation();
 }
@@ -58,9 +59,8 @@ void ShootingEnemy::updateMovement(float delta)
 	if (isPositionated)
 	{
 		anim.updateAnimation();
-		if ( info.isAim)
+		if ( info.isAim&&target!=NULL)
 		{		
-			
 			setRotation(utilities::getAngleFromDirection(utilities::dirAtoB(getSprite().getPosition(), target->getSprite().getPosition()))+180.f);
 			
 		}
@@ -84,7 +84,7 @@ void ShootingEnemy::updateMovement(float delta)
 void ShootingEnemy::enemyShoot()
 {
 	if (anim.getCurrentFrameNumber()== 5&& isPositionated) {
-		if (info.isAim)
+		if (info.isAim&&target!=NULL)
 		{
 			float temp = 0.f;
 			if (isSpriteFlip())

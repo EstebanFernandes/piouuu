@@ -14,10 +14,17 @@ std::vector<std::string> CParserXML::explore_attribute(pt::ptree::const_iterator
         for (int i = 0; i < flags.size(); i++)
         {
                 res.push_back(value->second.get<std::string>(flags[i], defaultValues[i]));
-            
         }
     }
     return res;
+}
+
+CParserXML::CParserXML(std::string filePath_, CAssetManager* a, bulletStorage* bs)
+{
+    filePath = filePath_;
+    asset = a;
+    bStorage = bs;
+
 }
 
 void CParserXML::coreFunction()

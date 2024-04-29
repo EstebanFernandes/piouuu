@@ -83,6 +83,7 @@
     <ClCompile Include="CLoadingState.cpp" />
     <ClCompile Include="upgradeStock.cpp" />
     <ClCompile Include="CTransition.cpp" />
+    <ClCompile Include="CCharacterSelectionMultiState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BomberEnemy.h" />
@@ -168,9 +169,12 @@
     <ClInclude Include="CLoadingState.h" />
     <ClInclude Include="upgradeStock.h" />
     <ClInclude Include="CTransition.h" />
+    <ClInclude Include="CCharacterSelectionMultiState.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="fragbandw.frag" />
-    <None Include="vertexbandw.vert" />
+    <None Include="shaders\fragbandw.frag" />
+    <None Include="shaders\vertexbandw.vert" />
+    <None Include="shaders\test.frag" />
+    <None Include="shaders\blurFrag.frag" />
   </ItemGroup>
 </Project>

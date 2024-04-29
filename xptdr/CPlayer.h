@@ -17,9 +17,11 @@ private:
 	//Attributs
 	sf::Color playerColor = sf::Color(3,140,252);
 	//sf::Color playerColor = sf::Color::Green;
-	// S'occupe des améliorations spéciales du personnage
 	//S'occupe des animations du personnage
 	CAnimation anim;
+	sf::Clock animationTimer;
+	sf::Sprite explosionSprite;
+	CAnimation animExplosionSprite;
 	//La barre de vie est une liste de sprite représentant chacun un point de vie
 	sf::CircleShape iconCircle;
 	sf::CircleShape iconCircle2;

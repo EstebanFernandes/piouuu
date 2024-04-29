@@ -263,6 +263,13 @@ void CGameState::deleteEntity(int i)
 		i--;
 }
 
+void CGameState::updateTime()
+{
+	time = (gameTime.asSeconds() + clock.getElapsedTime().asSeconds()) * 100.f;
+	time = ceil(time);
+	time = time / 100.f;
+}
+
 
 void CGameState::renderBackground()
 {
@@ -298,7 +305,7 @@ void CGameState::STEDraw(float delta)
 void CGameState::STEResume()
 {
 	data->assets.DeleteTexture("pauseScreen");
-	gameClock.restart();
+	clock.restart();
 	CESTBON = false;
 	for (auto i = players.begin(); i != players.end(); i++)
 	{
@@ -307,10 +314,8 @@ void CGameState::STEResume()
 }
 void CGameState::updateClock()
 {
-	clock = (gameTime.asSeconds() + gameClock.getElapsedTime().asSeconds()) * 100.f;
-	clock = ceil(clock);
-	clock = clock / 100.f;
-	std::string i = std::to_string(clock);
+	updateTime();
+	std::string i = std::to_string(time);
 	size_t r = i.find('.') + 3;
 	i.erase(r, i.size() - r);
 	size_t ti = gameClockText.getString().getSize();
@@ -321,7 +326,7 @@ void CGameState::updateClock()
 }
 void CGameState::afterTransi()
 {
-	gameClock.restart();
+	clock.restart();
 	gameTime = sf::Time::Zero;
 	updateClock();
 }
@@ -374,7 +379,7 @@ GameDataRef CGameState::getData()
 
 void CGameState::STEPause()
 {
-	gameTime += gameClock.getElapsedTime();
+	gameTime += clock.getElapsedTime();
 }
 
 

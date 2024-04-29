@@ -16,21 +16,39 @@ private:
 	sf::Vector2u windowSize;
 	std::vector<BGContainer> allLayer;
 	std::vector<BGContainer> layerCopies;
+	std::vector<sf::Shader*> shaders;
+	bool typeBG;//Si true c'est un background ingame, sinon c'est un bg de menu
+	float* time;//Represente le temp
+	sf::RectangleShape fond;
 public:
 	enum type{
 		background,
 		bot,
-		top
+		top,
+		basicBG //Spécial pour les menus de pause sélection de perso etc, contient deux shaders
 	};
-	CBackground(CAssetManager* a,sf::RenderWindow* w);
+	CBackground(CAssetManager* a);
 	CBackground();
+	~CBackground();
+
 	void addAndScaleLayer(std::string fileName, std::string name, float speed);
 	void addLayer(std::string fileName,std::string name, float speed, int type);
 	void addLayer(sf::Sprite sprite, std::string name, float speed, int type);
 	bool deleteLayer(std::string name);
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="TYPE">true = background ingame,
+	/// false = background de menu</param>
+	void initBackground(bool TYPE);
+	void initBackground(CAssetManager* a,bool TYPE);
 	void updateCBackground(float delta);
 	void renderBackground(sf::RenderTarget& target);
-	void setAssets(CAssetManager* a) { assets = a; }
+	void setAssets(CAssetManager* a) {
+		assets = a;
+		windowSize = sf::Vector2u(assets->sCREEN_WIDTH, assets->sCREEN_HEIGHT);
+	}
 	void setWindowSize(sf::Vector2u a) { windowSize = a; }
+	void setTimePointer(float* time_) { time = time_; }
 };
 

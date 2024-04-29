@@ -98,6 +98,14 @@ void CCharacterSelection::STEInit()
 	carousel.setCarouselPosition(sf::Vector2f(xPosition,
 		yPosition));
 	carousel.updatePos();
+	if (!Shader.loadFromFile("vertexbandw.vert", "test.frag"))
+	{
+		std::cout << "bof";
+
+	}
+	Shader.setUniform("u_resolution", sf::Glsl::Vec2((float)data->assets.sCREEN_WIDTH, (float)data->assets.sCREEN_HEIGHT));
+	Shader.setUniform("angle", utilities::RandomFloat(0.f, 360.f));
+	fond.setSize(sf::Vector2f((float)screenwidth, (float)screenheight));
 }
 
 void CCharacterSelection::STEHandleInput()
@@ -141,6 +149,8 @@ void CCharacterSelection::STEHandleInput()
 
 void CCharacterSelection::STEUpdate(float delta)
 {
+	time = clock.getElapsedTime().asSeconds();
+	Shader.setUniform("u_time", time);
 	if(LaunchTransi==true)
 	{
 		currentTransi = CTransition(&(data->assets), HAUT, 2.f);
@@ -184,6 +194,7 @@ void CCharacterSelection::STEUpdate(float delta)
 void CCharacterSelection::STEDraw(float delta)
 {
 	data->window.clear(sf::Color(174, 177, 184));
+	data->window.draw(fond, &Shader);
 	data->window.draw(carousel);
 	data->window.draw(Title);
 	data->window.draw(ui);

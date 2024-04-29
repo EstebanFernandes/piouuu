@@ -9,6 +9,17 @@
 class CState
 {
 protected:
+	/// <summary>
+	/// Structure pour les clés pour un joueur
+	/// </summary>
+	struct keys {
+		sf::Keyboard::Key up = sf::Keyboard::Z;
+		sf::Keyboard::Key down = sf::Keyboard::S;
+		sf::Keyboard::Key left = sf::Keyboard::Q;
+		sf::Keyboard::Key right = sf::Keyboard::D;
+		sf::Keyboard::Key press = sf::Keyboard::R;
+		sf::Keyboard::Key press2 = sf::Keyboard::T;
+	};
 	//Liste qui contient les texture que l'on doit charger 
 	std::vector<std::pair<std::string, std::string>> assetToload;
 	/// <summary>
@@ -30,10 +41,14 @@ protected:
 	inline void addAsset(std::string name, std::string filepath) {
 		assetToload.push_back(std::pair<std::string, std::string>(name, filepath));
 	}
+	sf::Clock clock;//Clock on the currentstate
+	float time = 0.f; 
+	virtual void updateTime();
 public:
 	//La transition est un objet static commun à tous les états, comme ça on le passe d'état en état (génie de ma part imo)
 	static CTransition currentTransi;
 	bool hasChanges = false;
+	bool needDisplay = true;
 	//Méthodes :
 	virtual void STEInit() = 0;
 	virtual void STEHandleInput() = 0;

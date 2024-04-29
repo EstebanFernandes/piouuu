@@ -55,7 +55,7 @@ void CGameOver<MType>::STEInit()
 	updateCharacter();
 	texture.create(data->window.getSize().x, data->window.getSize().y);
 	texture.update(data->window);
-	if (!Shader.loadFromFile("vertexbandw.vert", "fragbandw.frag"))
+	if (!Shader.loadFromFile("shaders/vertexbandw.vert", "shaders/fragbandw.frag"))
 	{
 		std::cout << "bof";
 

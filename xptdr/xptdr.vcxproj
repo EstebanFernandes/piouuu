@@ -151,6 +151,7 @@
     <ClCompile Include="CCarousel.cpp" />
     <ClCompile Include="CCharacter.cpp" />
     <ClCompile Include="CCharacterSelection.cpp" />
+    <ClCompile Include="CCharacterSelectionMultiState.cpp" />
     <ClCompile Include="CCharacterStat.cpp" />
     <ClCompile Include="CCheckbox.cpp" />
     <ClCompile Include="CCollision.cpp" />
@@ -235,6 +236,7 @@
     <ClInclude Include="CCarousel.h" />
     <ClInclude Include="CCharacter.h" />
     <ClInclude Include="CCharacterSelection.h" />
+    <ClInclude Include="CCharacterSelectionMultiState.h" />
     <ClInclude Include="CCharacterStat.h" />
     <ClInclude Include="CCheckbox.h" />
     <ClInclude Include="CCollision.h" />
@@ -304,8 +306,10 @@
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="fragbandw.frag" />
-    <None Include="vertexbandw.vert" />
+    <None Include="shaders\fragbandw.frag" />
+    <None Include="shaders\test.frag" />
+    <None Include="shaders\blurFrag.frag" />
+    <None Include="shaders\vertexbandw.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

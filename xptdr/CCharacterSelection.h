@@ -18,6 +18,10 @@ private :
 	sf::Text ui;
 	sf::Vector2i mousePositionScreen;
 	bool LaunchTransi = false;
+	sf::Shader Shader;
+	sf::RectangleShape fond;
+	sf::Clock clock;
+	float time = 0.f;
 public:
 	// Constructeur
 	CCharacterSelection(GameDataRef _data);

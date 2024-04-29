@@ -1,15 +1,59 @@
 #include "CBackground.h"
-
-CBackground::CBackground(CAssetManager* a, sf::RenderWindow* w)
+#include<iostream>
+#include"utilities.h"
+CBackground::CBackground(CAssetManager* a)
+	:CBackground()
 {
 	assets = a;
+	windowSize = sf::Vector2u(assets->sCREEN_WIDTH, assets->sCREEN_HEIGHT);
 }
 
 CBackground::CBackground()
 {
 	assets = NULL;
+	time = NULL;
+	typeBG = true;
 }
 
+CBackground::~CBackground()
+{
+	for (int i = 0; i < shaders.size(); i++)
+	{
+		delete shaders[i];
+	}
+	shaders.clear();
+}
+
+
+
+void CBackground::initBackground(bool TYPE)
+{
+	typeBG = TYPE;
+	if (typeBG == false)
+	{
+		sf::Shader* first = new sf::Shader(); //Draw the zigzag
+		sf::Shader* second = new sf::Shader();//Apply the blur
+		if (!first->loadFromFile("shaders/vertexbandw.vert", "shaders/test.frag"))
+			std::cout << "non non";
+		first->setUniform("u_resolution", sf::Glsl::Vec2(windowSize));
+		first->setUniform("angle", utilities::RandomFloat(0.f,360.f));
+		if (!second->loadFromFile("shaders/vertexbandw.vert", "shaders/blurFrag.frag"))
+			std::cout << "bof";
+		second->setUniform("texture", sf::Shader::CurrentTexture);
+		second->setUniform("u_resolution", sf::Glsl::Vec2(windowSize));
+		shaders.push_back(first);
+		shaders.push_back(second);
+		fond.setSize(sf::Vector2f(windowSize));
+		BGContainer render;
+		allLayer.push_back(render);
+	}
+
+}
+void CBackground::initBackground(CAssetManager* a, bool TYPE)
+{
+	setAssets(a);
+	initBackground(TYPE);
+}
 void CBackground::addAndScaleLayer(std::string fileName, std::string name, float speed)
 {
 	sf::Vector2u TextureSize;  //Added to store texture size.
@@ -66,26 +110,47 @@ bool CBackground::deleteLayer(std::string name)
 	return false;
 }
 
+
 void CBackground::updateCBackground(float delta)
 {
-	for (int i = 0; i < allLayer.size(); i++)
+	if (typeBG == false)
 	{
-		sf::FloatRect sprite1Pos = allLayer[i].sprite.getGlobalBounds();
-		sf::FloatRect sprite2Pos = layerCopies[i].sprite.getGlobalBounds();
-		if (sprite1Pos.left + sprite1Pos.width <= 0)
-			allLayer[i].sprite.setPosition(sprite2Pos.left + sprite2Pos.width, sprite1Pos.top);
-		if (sprite2Pos.left + sprite2Pos.width <= 0)
-			layerCopies[i].sprite.setPosition(sprite1Pos.left + sprite1Pos.width, sprite2Pos.top);
-		allLayer[i].sprite.move(sf::Vector2f(-allLayer[i].speed, 0));
-		layerCopies[i].sprite.move(sf::Vector2f(-layerCopies[i].speed, 0));
+		float currentTime = *time;
+		shaders[0]->setUniform("u_time", currentTime);
+	}
+	else {
+		for (int i = 0; i < allLayer.size(); i++)
+		{
+			sf::FloatRect sprite1Pos = allLayer[i].sprite.getGlobalBounds();
+			sf::FloatRect sprite2Pos = layerCopies[i].sprite.getGlobalBounds();
+			if (sprite1Pos.left + sprite1Pos.width <= 0)
+				allLayer[i].sprite.setPosition(sprite2Pos.left + sprite2Pos.width, sprite1Pos.top);
+			if (sprite2Pos.left + sprite2Pos.width <= 0)
+				layerCopies[i].sprite.setPosition(sprite1Pos.left + sprite1Pos.width, sprite2Pos.top);
+			allLayer[i].sprite.move(sf::Vector2f(-allLayer[i].speed, 0));
+			layerCopies[i].sprite.move(sf::Vector2f(-layerCopies[i].speed, 0));
+		}
 	}
 }
 
 void CBackground::renderBackground(sf::RenderTarget& target)
 {
-	for (int i = 0; i < allLayer.size(); i++)
+	if (typeBG == false)
 	{
-		target.draw(allLayer[i].sprite);
-		target.draw(layerCopies[i].sprite);
+		sf::RenderTexture back;
+		back.create(windowSize.x, windowSize.y);
+		back.clear();
+		back.draw(fond, shaders[0]);
+		back.display();
+		allLayer[0].sprite = sf::Sprite(back.getTexture());
+		target.draw(allLayer[0].sprite, shaders[1]);
+	}
+	else
+	{
+		for (int i = 0; i < allLayer.size(); i++)
+		{
+			target.draw(allLayer[i].sprite);
+			target.draw(layerCopies[i].sprite);
+		}
 	}
 }

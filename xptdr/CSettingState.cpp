@@ -72,7 +72,9 @@ void CSettingState::STEInit()
 	fullScreenCon = CCheckbox(&(data->assets), "Plein écran");
 	backbutton = CButton(&(data->assets) , "Retour", 300.f, 100.f);
 	resizeScreen();
-
+	background.setAssets(&(data->assets));
+	background.initBackground(false);
+	background.setTimePointer(&time);
 
 	//On va charger les infos du sons etc depuis ce fichier
 	CParserCSV parser = CParserCSV("res/data/settings.csv");
@@ -146,12 +148,14 @@ void CSettingState::STEHandleInput()
 
 void CSettingState::STEUpdate(float delta)
 {
-
+	time = clock.getElapsedTime().asSeconds();
+	background.updateCBackground(delta);
 }
 
 void CSettingState::STEDraw(float delta)
 {
 	data->window.clear(sf::Color(174, 177, 184));
+	background.renderBackground(data->window);
 	data->window.draw(backbutton);
 	data->window.draw(SoundVolume);
 	data->window.draw(musicVolume);

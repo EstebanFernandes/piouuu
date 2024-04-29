@@ -58,11 +58,7 @@ public:
     /// <param name="a"></param>
     /// <param name="target_"></param>
     /// <param name="bs"></param>
-    CParserXML(std::string filePath_, CAssetManager* a, bulletStorage* bs) {
-        filePath = filePath_;
-        asset = a;
-        bStorage = bs;
-    }
+    CParserXML(std::string filePath_, CAssetManager* a, bulletStorage* bs);
     /// <summary>
     /// Méthode que l'on appelle pour exécuter le parsing, on l'appelle après qu'on ait utilisé 
     /// </summary>

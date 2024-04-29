@@ -5,8 +5,8 @@
 CTestGame::CTestGame(GameDataRef _data)
 {
 	setData(_data);
-	//US.addGraphs("res/data/principalweapon.csv");
-	//US.addGraphs("res/data/secondaryweapon.csv");
+	US.addGraphs("res/data/principalweapon.csv");
+	US.addGraphs("res/data/secondaryweapon.csv");
 }
 
 CTestGame::CTestGame(GameDataRef _data, CCharacter characterParam)
@@ -40,6 +40,11 @@ void CTestGame::STEInit()
 	bulletstorage = bulletStorage(&(data->assets));
 	entityList.push_back(&bulletstorage);
 	currentTransi.initTransition();
+	for (auto it = players.begin(); it != players.end(); it++)
+	{
+		it->curUpgrade.push_back(US.initVert(ARME_PRINCIPALE));
+		it->curUpgrade.push_back(US.initVert(ARME_SECONDAIRE));
+	}
 }
 
 void CTestGame::initAssets()
@@ -198,16 +203,7 @@ void CTestGame::STEUpdate(float delta)
 
 
 	//Clock updates
-	clock = (gameTime.asSeconds() + gameClock.getElapsedTime().asSeconds()) * 100.f;
-	clock = ceil(clock);
-	clock = clock / 100.f;
-	std::string i = std::to_string(clock);
-	size_t r = i.find('.') + 3;
-	i.erase(r, i.size() - r);
-	size_t ti = gameClockText.getString().getSize();
-	gameClockText.setString(i);
-	if (ti != i.size())
-		gameClockText.setPosition(sf::Vector2f(data->assets.sCREEN_WIDTH / 2 - gameClockText.getGlobalBounds().width / 2, 20.f));
+	updateClock();
 
 	//Condition qui assure que le joueur prend bien un niveau par un niveau
 	for (auto player = players.begin(); player != players.end(); player++)

@@ -3,6 +3,7 @@
 #include "CTestGame.h"
 #include"CLevelGameState.h"
 #include"CButtonState.h"
+#include"CCharacterSelectionMultiState.h"
 CMainMenuState::CMainMenuState(GameDataRef _data) 
 {
 	data = _data;
@@ -211,10 +212,11 @@ void CMainMenuState::STEResume()
 	}
 	else if (nbJoueur == "2 Joueurs")
 	{
-		if (characters.size() <= 1)
+		if (characters.size() != 2)
 		{
 			characters.push_back(CCharacter());
-			data->machine.AddState(StateRef(new CCharacterSelection(data, &characters.back(), (int)characters.size())), false);
+			characters.push_back(CCharacter());
+			data->machine.AddState(StateRef(new CCharacterSelectionMultiState(data, &characters)), false);
 		}
 		else
 			addLevelType();

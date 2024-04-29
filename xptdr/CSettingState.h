@@ -9,6 +9,7 @@
 #include"CCheckbox.h"
 #include "CButton.h"
 #include "InterfaceState.h"
+#include "CBackground.h"
 //Setting state, handle music/sound volume and full screen option
 //a file text will save settings to be independant from any 
 class CSettingState : public CState, public InterfaceState
@@ -29,13 +30,12 @@ private:
 	CSlider SoundVolume;
 	CCheckbox fullScreenCon;
 	float outlineThickness = 10.f;
-
+	CBackground background;
 	bool isMovingUp = false;
 	bool isMovingDown = false;
 	bool isMovingLeft = false;
 	bool isMovingRight = false;
 	bool isEnterPressed = false;
-
 	int matchKW(std::string word);
 
 	void outlineGood(int index, int previousSelec);

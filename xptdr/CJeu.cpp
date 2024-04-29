@@ -57,7 +57,8 @@ void CJeu::JEURun()
 			data->machine.GetActiveState()->STEDraw(interpolation);
 			if (transiInIt == true)
 				CState::currentTransi.renderTransition(data->window);
-			data->window.display();
+			if(currentState->needDisplay)
+				data->window.display();
 		}
 	}
 }

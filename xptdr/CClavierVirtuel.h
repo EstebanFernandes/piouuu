@@ -6,41 +6,23 @@
 #include <sstream>
 #include "CJeu.h"
 #include"utilities.h"
+#include"CBackground.h"
 class CClavierVirtuel : public CState
 {
 private:
-	struct keys {
-		sf::Keyboard::Key up = sf::Keyboard::Z;
-		sf::Keyboard::Key down = sf::Keyboard::S;
-		sf::Keyboard::Key left = sf::Keyboard::Q;
-		sf::Keyboard::Key right = sf::Keyboard::D;
-		sf::Keyboard::Key press = sf::Keyboard::Num1;
-	};
+	CBackground background;
 	GameDataRef data;
 	enum maj { RELACHE, ENFONCE, LOCK };
 	int capsInt = 0;
 	sf::RectangleShape CapsLock;
 	unsigned int position = 0;
 	std::vector<std::string> keyboard;
-	std::vector<bool> OUAIS;
 	sf::Text ui;
-	std::vector<sf::Vector2i> playerSelection;
-	std::vector<sf::RectangleShape> ahouais;
 	sf::Sprite capslocksprite;
-	std::vector<sf::Sprite> keyboardPlayer;
-	std::vector<sf::Sprite> keyboardLetterSprites;
 	sf::Sprite keyboardBlackSprite;
-	std::vector<sf::Vector2f> tilePositionsKeyboard;
-	std::vector<sf::Text> nameTexts;
 	/// ça correspond au barre sous le texte on en a 2 par joueur 
-	std::vector < sf::Text > bars;
-	std::vector<keys> keysPlayer;
-	sf::Text scorePrompt;
-	std::vector<std::string> names;
-	std::vector<sf::Clock> barClocks;
-	std::vector<float> yDirection;
+	std::vector<sf::Text> scorePrompts;
 	sf::Text midText;
-	std::vector<unsigned int> stringPositions;
 	bool cancel = false;
 	float score;
 	int rank;
@@ -50,7 +32,23 @@ private:
 	int numberCharMax = 9;
 
 	int nbJoueur = 0;
-
+	struct joueur {
+		keys keys;
+		sf::RectangleShape fondBlanc; //Fond où on affiche le nom
+		unsigned int stringPosition = 0; //Position de la bar, on peut faire fleche de droite pour écrire au milieu du text
+		std::string name="";
+		sf::Text nameText;
+		sf::Text bar;
+		float yDirection = 1.f;
+		sf::Vector2f tilePositionsKeyboard;
+		sf::Vector2i playerSelection = sf::Vector2i(0,0);//Savoir sur quelle case on est
+		bool isValid = false; //On a validé ou pas
+		sf::Sprite keyboardLetterSprite; //Sprite de la lettre sur laquelle on est
+		sf::Sprite keyboardPlayer;//Sprite du contour de la lettre, la couleur change selon le joueur
+		bool isPressed = false;
+		bool dontshowBar = false;
+	};
+	std::vector<joueur> players;
 public:
 	CClavierVirtuel(GameDataRef _data, float scoreParam, int rankParam, std::string *playerNameParam,int nbJoueur);
 	void keyboardInit();
@@ -61,6 +59,7 @@ public:
 	void STEDraw(float delta);
 	void STEPause() {};
 	void STEResume() {};
-	void updateBars();
+	void updateBars(int index);
+	void setBar(int index);
 };
 

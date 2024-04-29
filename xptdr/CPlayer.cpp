@@ -82,7 +82,9 @@ void CPlayer::setAssets(CAssetManager* a)
 		mainWeapon->setBulletAsset("bulletImageGolden");
 		nameImage = "bulletImageGolden";
 	}
-
+	explosionSprite.setTexture(assets->GetTexture("explosionPlayer"));
+	explosionSprite.setScale(2.5f, 2.5f);
+	animExplosionSprite = CAnimation(&explosionSprite, sf::IntRect(0, 0, 96, 96), 12, 2.f/12.f);
 	setSprite();
 	mainWeapon->setTouche(sf::Keyboard::Num1);
 	ws.dir = sf::Vector2f(0.f, 1.f);
@@ -438,41 +440,62 @@ void CPlayer::updateLifeBar()
 	if (healthPoint <= 0)
 	{
 		isDead = true;
-		needDelete = true;
 	}
 }
 void CPlayer::updateEntity(float dt)
 {
-	updateMovement(dt);
-	checkGlobalCollisions();
-	updateFx();
-	updateBuff(dt);
-	updateLifeBar();
- 	if (xp >= maxXp&& hasLevelUp==false)
+	if (isDead)
 	{
-		level++;
-		xp -= maxXp;
-		maxXp += 10;
-		hasLevelUp = true;
+		if (animExplosionSprite.getCurrentFrameNumber() == 0)
+		{
+			explosionSprite.setPosition(sf::Vector2f(getPosition().x,
+				getPosition().y ));
+			animExplosionSprite.resetAnimation();
+		}
+		animExplosionSprite.updateAnimation();
+		if (animExplosionSprite.getCurrentFrameNumber() == 12)
+		{
+			needDelete = true;
+		}
 	}
-	sf::Vector2f nezdeLavion(getSprite().getPosition().x + getGlobalBounds().width / 2.f,
-		getSprite().getPosition().y);
-	secondaryWeapon->setWeaponPos(R2Sprite.getPosition());
-	secondaryWeapon->weaponControls(sf::Event());
-	secondaryWeapon->updateWeapon(dt);
-	mainWeapon->setWeaponPos(nezdeLavion);
-	mainWeapon->weaponControls(sf::Event());
-	mainWeapon->updateWeapon(dt);
+	else
+	{
+		updateMovement(dt);
+		checkGlobalCollisions();
+		updateFx();
+		updateBuff(dt);
+		updateLifeBar();
+ 		if (xp >= maxXp&& hasLevelUp==false)
+		{
+			level++;
+			xp -= maxXp;
+			maxXp += 10;
+			hasLevelUp = true;
+		}
+		sf::Vector2f nezdeLavion(getSprite().getPosition().x + getGlobalBounds().width / 2.f,
+			getSprite().getPosition().y);
+		secondaryWeapon->setWeaponPos(R2Sprite.getPosition());
+		secondaryWeapon->weaponControls(sf::Event());
+		secondaryWeapon->updateWeapon(dt);
+		mainWeapon->setWeaponPos(nezdeLavion);
+		mainWeapon->weaponControls(sf::Event());
+		mainWeapon->updateWeapon(dt);
+	}
 }
 
 
 
 void CPlayer::renderEntity(sf::RenderTarget& target)
 {
-	target.draw(getSprite());
 	mainWeapon->renderWeapon(target);
 	secondaryWeapon->renderWeapon(target);
-	target.draw(R2Sprite);
+	if(animExplosionSprite.getCurrentFrameNumber()<4&&needDelete==false)
+	{
+		target.draw(getSprite());
+		target.draw(R2Sprite);
+	}
+	if (isDead&&needDelete==false)
+		target.draw(explosionSprite);
 }
 
 
