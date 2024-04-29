@@ -40,9 +40,9 @@ CCard::CCard(std::string title, std::string description, std::string imageName, 
 	cardImage.setPosition(pos.x + xSize/2.f - cardImage.getGlobalBounds().width / 2.f, pos.y + (ySize +cardImage.getGlobalBounds().height) / 2.f);
 	
 	if (animatedImage) {
-		sf::IntRect temp = sf::IntRect(0, 0, 153, 66);
-		anim.setParameters(&cardImage, temp, 4, 0.16f);
-		cardImage.setTextureRect(temp);
+		sf::Vector2i temp = sf::Vector2i(153, 66);
+		anim = CAnimation(&cardImage, temp, 4, 0.16f);
+		cardImage.setTextureRect(sf::IntRect(0,0,temp.x,temp.y));
 	}
 
 	cardDescription.setString(description);

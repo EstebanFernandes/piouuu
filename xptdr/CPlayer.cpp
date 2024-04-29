@@ -66,25 +66,28 @@ void CPlayer::setAssets(CAssetManager* a)
 	setTexture(name);
 	R2Sprite.setTexture(assets->GetTexture("R2D2"));
 	R2Sprite.setOrigin(0.f, 0.f);
-	R2Anim = CAnimation(&R2Sprite, sf::IntRect(0, 0, 30, 30), 1, 0.16f);
-	R2Anim.pxbetFrames = 2;
+	R2Anim = CAnimation(&R2Sprite, sf::Vector2i( 30, 30), sf::Vector2i(1,3), 0.16f,2);
 	R2Offset = sf::Vector2f(22.f, -6.f);
-	if (isAnimated) anim = CAnimation(getPointerSprite(), sf::IntRect(0, 0, 153, 66), 4, 0.16f);
+	if (isAnimated) anim = CAnimation(getPointerSprite(), sf::Vector2i( 153, 66), sf::Vector2i(4,3), 0.16f);
 	std::string nameImage;
 	CWeaponStat ws((float)damagePerBullet, bulletSpeed, sf::Vector2f(1.f, 0.f), 0, nameImage, sf::Vector2f(1.f, 1.f), attackSpeed);
 	mainWeapon->setWeaponStats(ws);
 	if (name.find("Rancoeur") != std::string::npos) {
 		mainWeapon->setBulletAsset("bulletImageRancoeur");
 		nameImage = "bulletImageRancoeur";
+		anim.changeIntRect(1, sf::Vector2i(153, 67));
+		anim.changeIntRect(2, sf::Vector2i(153, 67));
 		//mainWeapon->getWeaponStats().bulletScale = sf::Vector2f(1.5f, 1.5f);
 	}
-	if (name.find("Golden") != std::string::npos) {
+	else if (name.find("Golden") != std::string::npos) {
 		mainWeapon->setBulletAsset("bulletImageGolden");
+		anim.changeIntRect(1, sf::Vector2i(153, 63));
+		anim.changeIntRect(2, sf::Vector2i(153, 72));
 		nameImage = "bulletImageGolden";
 	}
 	explosionSprite.setTexture(assets->GetTexture("explosionPlayer"));
 	explosionSprite.setScale(2.5f, 2.5f);
-	animExplosionSprite = CAnimation(&explosionSprite, sf::IntRect(0, 0, 96, 96), 12, 2.f/12.f);
+	animExplosionSprite = CAnimation(&explosionSprite, sf::Vector2i( 96, 96), sf::Vector2i(12,1), 2.f/12.f);
 	setSprite();
 	mainWeapon->setTouche(sf::Keyboard::Num1);
 	ws.dir = sf::Vector2f(0.f, 1.f);
@@ -446,14 +449,14 @@ void CPlayer::updateEntity(float dt)
 {
 	if (isDead)
 	{
-		if (animExplosionSprite.getCurrentFrameNumber() == 0)
+		if (animExplosionSprite.getCurrentFrameNumber().x == 0)
 		{
 			explosionSprite.setPosition(sf::Vector2f(getPosition().x,
 				getPosition().y ));
 			animExplosionSprite.resetAnimation();
 		}
 		animExplosionSprite.updateAnimation();
-		if (animExplosionSprite.getCurrentFrameNumber() == 12)
+		if (animExplosionSprite.getCurrentFrameNumber().x == 12)
 		{
 			needDelete = true;
 		}
@@ -489,7 +492,7 @@ void CPlayer::renderEntity(sf::RenderTarget& target)
 {
 	mainWeapon->renderWeapon(target);
 	secondaryWeapon->renderWeapon(target);
-	if(animExplosionSprite.getCurrentFrameNumber()<4&&needDelete==false)
+	if(animExplosionSprite.getCurrentFrameNumber().x<4&&needDelete==false)
 	{
 		target.draw(getSprite());
 		target.draw(R2Sprite);

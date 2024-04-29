@@ -83,7 +83,7 @@ void ShootingEnemy::updateMovement(float delta)
 
 void ShootingEnemy::enemyShoot()
 {
-	if (anim.getCurrentFrameNumber()== 5&& isPositionated) {
+	if (anim.getCurrentFrameNumber().x== 5&& isPositionated) {
 		if (info.isAim&&target!=NULL)
 		{
 			float temp = 0.f;

@@ -45,8 +45,7 @@ public:
 	void initAnimation() {
 		float timeBetweenBullets = 1.f / BAW.getWeaponStats().attackSpeed;
 		float tbf = timeBetweenBullets / 5;
-		anim = CAnimation(getPointerSprite(), sf::IntRect(0, 0, 82, 86), 5,tbf );
-		anim.pxbetFrames = 2;
+		anim = CAnimation(getPointerSprite(), sf::Vector2i( 82, 86), sf::Vector2i(5, 1),tbf,2 );
 	}
 };
 

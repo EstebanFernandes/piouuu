@@ -2,25 +2,23 @@
 #include"SFML/Graphics.hpp"
 #include<iostream>
 //Classe qui permet de gérer les animations sur un sprite
+	typedef std::vector<std::vector<sf::IntRect>> matrixSpriteSheet;
 class CAnimation
 {
 private:
 	//Pointeur sur le sprite
 	sf::Sprite* currentSprite;
-	//Taille de chaque frame de la texture
-	sf::IntRect currentFrame;
+
+	matrixSpriteSheet matrix;
+	//Où on est sur la spritesheet
+	sf::Vector2i currentFrame;
 	//Horloge pour gérer le temps entre chaque frame
 	sf::Clock animationTimer;
 	//Temps entre deux frames
 	float timeBetweenFrames;
-	//Nombre de frame total sur la spritesheet
-	int NumberofFrame;
-	//Current frame nombre
-	int currentXFrameNumber;
-	//Intervalle sur lequel on doit se déplacer verticalement sur la spritesheet (de base  à 0 s'il n'y a qu'une couche sur la spritesheet)
-	int highFrameNumber = -1;
-	int lowFrameNumber = -1;
-	int currentYFrameNumber=0;
+	//Nombre de frames total sur la spritesheet x = sur le temps et en y c'est selon des trucs spéciaux
+	sf::Vector2i NumberofFrame;
+
 
 public:
 	bool isHorizontal = true;
@@ -30,20 +28,38 @@ public:
 	CAnimation() 
 	{
 		currentSprite = NULL;
-		NumberofFrame = -1;
-		currentXFrameNumber = -1;
 		timeBetweenFrames = 0.f;
 	}
-	//Constructeur de confort
-	CAnimation(sf::Sprite* sprit,sf::IntRect textframe, int nbframe,float time) : 
-		currentFrame(textframe),
+	/// <summary>
+	/// Constructeur de confort
+	/// </summary>
+	/// <param name="sprit">un pointeur vers le sprite</param>
+	/// <param name="textframe">frame (on considère pour l'initialisation que c'est la même partout)</param>
+	/// <param name="nbframe">on précise  le nombre, en x et en y de la spritesheet</param>
+	/// <param name="time">temps entre chaque frale</param>
+	/// <param name="pxbFrame"> pixel entre 2 frame, 0 par défaut</param>
+	CAnimation(sf::Sprite* sprit,sf::Vector2i textframe, sf::Vector2i nbframe,float time,int pxbFrame = 0) : 
 		NumberofFrame(nbframe),
-		timeBetweenFrames(time)
+		timeBetweenFrames(time),
+		pxbetFrames(pxbFrame)
 	{
+		currentFrame.x = 0;
+		currentFrame.y = 0;
+		sf::IntRect temp(sf::Vector2i(0, 0), textframe);
+		for (int i = 0; i < nbframe.x; i++)
+		{
+			matrix.push_back(std::vector<sf::IntRect>(nbframe.y, temp));
+		}
+		//matrix = matrixSpriteSheet(nbframe.x, std::vector<sf::IntRect>(nbframe.y,temp));
 		currentSprite = sprit;
-		currentSprite->setOrigin(currentFrame.width / 2.f, currentFrame.height / 2.f);
-		currentXFrameNumber = 0;
+		currentSprite->setOrigin(matrix[currentFrame.x][currentFrame.y].width / 2.f, matrix[currentFrame.x][currentFrame.y].height / 2.f);
+		computeMatrix();
 		switchFrames();
+	}
+
+	CAnimation(sf::Sprite* sprit, sf::Vector2i frame, int nbframe, float time, int pxbFrame = 0)
+		:CAnimation(sprit,frame,sf::Vector2i(nbframe,1),time,pxbFrame)
+	{
 	}
 	void setTimeBetweenFrames(float time)
 	{
@@ -54,13 +70,21 @@ public:
 	{
 		currentSprite = sprit;
 	}
-	void setParameters(sf::Sprite* sprit, sf::IntRect textframe, int nbframe, float time) 
+	void setParameters(sf::Sprite* sprit, sf::Vector2i frame, int nbframe, float time,int pxBframe = 0)
 	{
-		currentSprite = sprit;
-		currentFrame = textframe;
+		setParameters(sprit, frame, sf::Vector2i(nbframe, 1), time);
+	}
+	void setParameters(sf::Sprite* sprit, sf::Vector2i frame, sf::Vector2i nbframe, float time, int pxBframe = 0)
+	{
 		NumberofFrame = nbframe;
-		timeBetweenFrames = time;
-		currentXFrameNumber = 0;
+		pxbetFrames = pxbetFrames;
+		currentFrame.x = 0;
+		currentFrame.y = 0;
+		sf::IntRect temp(sf::Vector2i(0, 0), frame);
+		matrix = matrixSpriteSheet(nbframe.x, std::vector<sf::IntRect>(nbframe.y, temp));
+		currentSprite = sprit;
+		currentSprite->setOrigin(matrix[currentFrame.x][currentFrame.y].width / 2.f, matrix[currentFrame.x][currentFrame.y].height / 2.f);
+		computeMatrix();
 		switchFrames();
 	}
 
@@ -68,62 +92,117 @@ public:
 		if (timeBetweenFrames != -1)
 		{
 			int* tempPointer = NULL;
+			int maxFrame;
 			if (isHorizontal)
 			{
-				tempPointer = &currentXFrameNumber;
+				tempPointer = &currentFrame.x;
+				maxFrame = NumberofFrame.x;
 			}
 			else {
-				tempPointer = &currentYFrameNumber;
+				tempPointer = &currentFrame.y;
+				maxFrame = NumberofFrame.y;
 			}
-			if (*tempPointer == NumberofFrame)
-				*tempPointer = 0;
 			if (animationTimer.getElapsedTime().asSeconds() > timeBetweenFrames)			{
 				switchFrames();
-				*tempPointer= *tempPointer+1;
+					*tempPointer= *tempPointer+1;
+				if (*tempPointer == maxFrame)
+					*tempPointer = 0;
 				animationTimer.restart();
 			}
 		}
 	}
 	void debug()
 	{
-		std::cout << currentFrame.left << " " << currentFrame.top
-			<< " " << currentFrame.width << " " << currentFrame.height << std::endl;
 	}
 	void switchFrames() {
-			currentFrame.left = currentXFrameNumber * currentFrame.width+pxbetFrames*currentXFrameNumber;
-			currentFrame.top = currentYFrameNumber * currentFrame.height + pxbetFrames * currentYFrameNumber;
-			currentSprite->setTextureRect(currentFrame);
+			currentSprite->setTextureRect(matrix[currentFrame.x][currentFrame.y]);
 	}
 	void setDifferentAnimation(int t) {
-		currentYFrameNumber=t;
-		switchFrames();
+		if(currentFrame.y!=t)
+		{
+			currentFrame.y = t;
+			switchFrames();
+		}
 	}
 	void resetAnimation() {
-		currentYFrameNumber=0;
+		currentFrame.y=0;
 	}
-	int getCurrentYFrameNumber() {
-		return currentYFrameNumber;
+	sf::Vector2i getCurrentFrameNumber() {
+		return currentFrame;
 	}
 	
 
 	sf::Sprite* getSprite() {
 		return currentSprite;
 	}
-	sf::IntRect* getCurrentFrame() { return &currentFrame; }
-	int getCurrentFrameNumber()
-	{
-		if (isHorizontal)
-			return currentXFrameNumber;
-		return currentYFrameNumber;
-	}
+	sf::IntRect* getCurrentFrame() { return &matrix[currentFrame.x][currentFrame.y]; }
 	void setcurrentXFrameNumber(int i)
 	{
-		currentXFrameNumber = i;
+		currentFrame.x = i;
 		switchFrames();
 	}
-	int getMaxFrame()
+	void setcurrentYFrameNumber(int i)
+	{
+		currentFrame.y = i;
+		switchFrames();
+	}
+	sf::Vector2i getMaxFrame()
 	{
 		return NumberofFrame;
+	}
+	void computeMatrix()
+	{
+		int curX=0;
+		for (int i = 0; i < matrix.size(); i++)
+		{
+			int curY = 0;
+			for (int j = 0; j < matrix[i].size(); j++)
+			{
+				sf::IntRect& currentRect = matrix[i][j];
+				currentRect.left = curX;
+				currentRect.top = curY;
+				curY += currentRect.height + pxbetFrames;
+			}
+			curX += matrix[i][0].width + pxbetFrames;
+		}
+	}
+	/// <summary>
+	/// Change le rectangle pour la position indiquée
+	/// </summary>
+	/// <param name="pos">attention la position est entre 0 et numberofframe-1</param>
+	/// <param name="size"></param>
+
+	void changeIntRect(sf::Vector2i pos, sf::Vector2i size)
+	{
+		matrix[pos.x][pos.y].width = size.x;
+		matrix[pos.x][pos.y].height = size.y;
+		computeMatrix();
+	}
+	/// <summary>
+	/// Change le rectangle pour toute la ligne ou la colonne (si le booleen vaut true)
+	/// </summary>
+	/// <param name="pos">attention la position est entre 0 et numberofframe-1</param>
+	/// <param name="size"></param>
+	/// <param name="isLine"></param>
+	void changeIntRect(int pos, sf::Vector2i size,bool isLine=true)
+	{
+		if (isLine == true)
+		{
+			for (int i = 0; i <NumberofFrame.x;i++)
+			{
+				matrix[i][pos].width = size.x;
+				matrix[i][pos].height = size.y;
+			}
+		}
+		else
+		{
+			for (int j = 0; j < NumberofFrame.y; j++)
+			{
+				matrix[pos][j].width = size.x;
+				matrix[pos][j].height = size.y;
+			}
+		}
+		computeMatrix();
 	}
 };
 

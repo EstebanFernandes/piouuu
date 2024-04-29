@@ -18,7 +18,7 @@ void CGunslinger::setAnimation(CBulletAuto &ref)
 {
 	if (getWeaponStats().nameImage == "bulletImageRancoeur")
 	{
-		CAnimation temp(ref.getPointerSprite(), sf::IntRect(0, 0, 30, 22), 4, 0.2f);
+		CAnimation temp(ref.getPointerSprite(), sf::Vector2i( 30, 22), 4, 0.2f);
 		temp.pxbetFrames = 2;
 		ref.setAnimation(temp);
 	}

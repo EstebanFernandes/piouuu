@@ -13,10 +13,10 @@ LaserGenerator::LaserGenerator(CAssetManager* assetsParam)
 	assets = assetsParam;
 	beginLaser.setTexture(assets->GetTexture("beginLaser"));
 
-	bLaserAnim = CAnimation(&beginLaser, sf::IntRect(0, 0, (int)baseHeight, 400), 4, timeFrames);
+	bLaserAnim = CAnimation(&beginLaser, sf::Vector2i( (int)baseHeight, 400), 4, timeFrames);
 	bLaserAnim.isHorizontal = false;
 	fullLaser.setTexture(assets->GetTexture("fullLaser"));
-	fLaserAnim = CAnimation(&fullLaser, sf::IntRect(0, 0, 1824, 400), 4, timeFrames);
+	fLaserAnim = CAnimation(&fullLaser, sf::Vector2i(1824, 400), 4, timeFrames);
 	fLaserAnim.isHorizontal = false;
 	//endLaser.setTexture(assets->GetTexture("endLaser"));
 	//eLaserAnim = CAnimation(&endLaser, sf::IntRect(0, 0, 153, 400), 4, 0.16f);

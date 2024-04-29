@@ -185,9 +185,9 @@ void CCharacterSelectionMultiState::loadCharacters()
 		else
 			tempAvion.niveau = 0;
 		avions.push_back(tempAvion);
-		sf::IntRect intrect = sf::IntRect(0, 0, 153, 66);
-		avions.back().animationAvion = CAnimation(&tempAvion.spriteAvion, intrect, 4, 0.16f);
-		avions.back().spriteAvion.setTextureRect(intrect);
+		sf::Vector2i frame( 153, 66);
+		avions.back().animationAvion = CAnimation(&tempAvion.spriteAvion, frame, 4, 0.16f);
+		avions.back().spriteAvion.setTextureRect(sf::IntRect(sf::Vector2i(0,0),frame));
 	}
 }
 

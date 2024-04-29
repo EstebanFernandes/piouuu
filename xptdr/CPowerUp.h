@@ -14,7 +14,7 @@ public:
 	void setSprite()
 	{
 		currentFrame = sf::IntRect(0, 0, 68, 68);
-		anim = CAnimation(getPointerSprite(), currentFrame, 4, 0.1f);
+		anim = CAnimation(getPointerSprite(), sf::Vector2i(68,68), sf::Vector2i(4, 1), 0.1f);
 		getSprite().setTexture((*assets).GetTexture("lifePowerUp"));
 		getSprite().setTextureRect(currentFrame);
 	}
