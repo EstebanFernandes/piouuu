@@ -111,8 +111,9 @@ public:
 			}
 		}
 	}
-	void debug()
+	void setAxes(bool isHorizontal_)
 	{
+
 	}
 	void switchFrames() {
 			currentSprite->setTextureRect(matrix[currentFrame.x][currentFrame.y]);

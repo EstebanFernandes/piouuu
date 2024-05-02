@@ -32,7 +32,7 @@ private:
 	/// Dit si l'objet de la transition est en dehors des limites de l'écran ou non 
 	/// </summary>
 	/// <returns></returns>
-	bool globalCollision();
+	bool isFinito();
 public :
 	bool transiouuuuu = false;
 	CTransition();

@@ -127,7 +127,7 @@ void CTestGame::STEHandleInput()
 			{
 				for (auto i = players.begin(); i != players.end(); i++)
 				{
-					i->gainXP(4);
+					i->AAA();
 				}
 			
 			}

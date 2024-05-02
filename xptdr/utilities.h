@@ -140,4 +140,8 @@ namespace utilities {
 		float range = max - min;
 		return (random * range) + min;
 	}
+	inline int whereisAngle(sf::Vector2f pos, float angle)
+	{
+
+	}
 }

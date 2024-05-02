@@ -35,7 +35,8 @@ private:
 	sf::Vector2f laserScale;
 	float laserHeight = 40;
 	float laserWidth = 500;
-
+	//0 = bas droite, 1= bas gauche, 2 = haut gauche et 3= haute droite
+	float anglesToCorner[4];
 public:
 	LaserGenerator();
 	LaserGenerator(CAssetManager* assetsParam);
@@ -53,5 +54,14 @@ public:
 	bool checkCollisions(CMob& b);
 	void changeTarget(CMob* r) {};
 
+	float lengthToBound(sf::Vector2f& pos, float& angle);
+	void updateAngles(sf::Vector2f& pos);
+	/// <summary>
+	/// Retourne un int correspondant au bord de l'écran concerné, 0 pour droite, 1 pour en bas etc
+	/// </summary>
+	/// <param name="pos"></param>
+	/// <param name="angle"></param>
+	/// <returns></returns>
+	int whichBound(sf::Vector2f& pos, float& angle);
 };
 

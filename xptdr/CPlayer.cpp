@@ -456,7 +456,7 @@ void CPlayer::updateEntity(float dt)
 			animExplosionSprite.resetAnimation();
 		}
 		animExplosionSprite.updateAnimation();
-		if (animExplosionSprite.getCurrentFrameNumber().x == 12)
+		if (animExplosionSprite.getCurrentFrameNumber().x == 11)
 		{
 			needDelete = true;
 		}
