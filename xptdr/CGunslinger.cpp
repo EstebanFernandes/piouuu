@@ -90,9 +90,11 @@ void CGunslinger::iNeedMoreBullets(sf::Vector2f pos)
 		*seekForTarget = true;
 	for (int i = 0; i < referenceStat.dir2.size(); i++)
 	{
-		sf::Vector2f& tempDirection = referenceStat.dir2[i];
+		sf::Vector2f tempDirection = referenceStat.dir2[i];
 		if (typeTir == Spin)
-			tempDirection = utilities::getDirectionFromAngle(utilities::getAngleFromDirection(tempDirection)+angleOffset);
+		{
+			tempDirection = utilities::getDirectionFromAngle(utilities::getAngleFromDirection(tempDirection) + angleOffset);
+		}
 		if (typeTir != bombe)
 		{
 		reference.setDirection(tempDirection);
