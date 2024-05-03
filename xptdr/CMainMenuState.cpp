@@ -4,7 +4,10 @@
 #include"CLevelGameState.h"
 #include"CButtonState.h"
 #include"CCharacterSelectionMultiState.h"
-CMainMenuState::CMainMenuState(GameDataRef _data) 
+CMainMenuState::~CMainMenuState()
+{
+}
+CMainMenuState::CMainMenuState(GameDataRef _data)
 {
 	data = _data;
 }
@@ -14,7 +17,9 @@ void CMainMenuState::STEInit()
 	data->assets.jouerMusique("MenuPrincipal");
 	index = 0;
 	data->assets.LoadFont("Nouvelle", "res\\font\\SuperLegendBoy-4w8Y.ttf");
-	data->assets.LoadFont("Lato", FONT_FILE_PATH); //Load la police d'écriture
+	data->assets.LoadFont("Lato", FONT_FILE_PATH); //Deprecated
+	data->assets.LoadSFX("button", "res\\sfx\\testbutton.wav");
+	data->assets.addSFX("button", &buttonSound);
 	info.setCharacterSize(40);
 	info.setFillColor(sf::Color::Transparent);
 	info.setOutlineThickness(1.f);
@@ -23,7 +28,6 @@ void CMainMenuState::STEInit()
 	info.setFont(data->assets.GetFont("Nouvelle"));
 	data->assets.LoadTexture("Title",
 		MAIN_MENU_TITLE_PATH); // On charge les textures
-
 	CMMTitle.setTexture(data->assets.GetTexture("Title")); // On les appliques
 	sf::Vector2f scale;
 	scale.x = data->assets.sCREEN_HEIGHT / CMMTitle.getGlobalBounds().height;
@@ -32,8 +36,8 @@ void CMainMenuState::STEInit()
 	CMMTitle.setPosition(data->assets.sCREEN_WIDTH  - CMMTitle.getGlobalBounds().width,0);
 	CButton temp(&(data->assets));
 	temp.changeBackVisibilty(false);
-	temp.setThicknessColor(sf::Color(51,51,51));
-	temp.setFontColor(sf::Color(51, 51, 51));
+	temp.setThicknessColor(sf::Color::White);
+	temp.setFontColor(sf::Color::White);
 	temp.setString("Test zone");
 	temp.setSize(data->assets.sCREEN_WIDTH * 0.15f, data->assets.sCREEN_HEIGHT * 0.1f);
 	temp.setPosition((CMMTitle.getGlobalBounds().left / 2.f) - (temp.getGlobalBounds().width / 2.f),
@@ -88,6 +92,7 @@ void CMainMenuState::STEHandleInput()
 		{
 			if (event.key.code == sf::Keyboard::Z)
 			{
+				buttonSound->play();
 				if (index == 0) {
 					index = (int)buttons.size() - 1;
 				}
@@ -97,6 +102,7 @@ void CMainMenuState::STEHandleInput()
 			}
 			else if (event.key.code == sf::Keyboard::S)
 			{
+				buttonSound->play();
 				index = (index + 1) % buttons.size();
 			}
 			else if (event.key.code == sf::Keyboard::Enter)
@@ -135,10 +141,12 @@ void CMainMenuState::resizeScreen()
 
 void CMainMenuState::STEUpdate(float delta)
 {
+	updateTime();
+	background.updateCBackground(delta);
 	std::stringstream ss;
 	sf::Vector2i mousePositionScreen = sf::Mouse::getPosition(data->window);
 	ss << "mouse position : \n" << "Window : " << mousePositionScreen.x << " " << mousePositionScreen.y << "\n";
-	info.setString("Bonjour");
+	//info.setString("Bonjour");
 }
 
 void CMainMenuState::choosedButton()
@@ -146,13 +154,13 @@ void CMainMenuState::choosedButton()
 	const std::vector<std::string> blabla{ "1 Joueur","2 Joueurs" };
 	switch (index) {
 	case 0:
-		data->machine.AddState(StateRef(new CButtonState(data,blabla,&nbJoueur)), false);
+		data->machine.AddState(StateRef(new CButtonState(data,blabla,&nbJoueur, this)), false);
 		break;
 	case 1:
-		data->machine.AddState(StateRef(new CButtonState(data, blabla, &nbJoueur)), false);
+		data->machine.AddState(StateRef(new CButtonState(data, blabla, &nbJoueur,this)), false);
 		break;
 	case 2:
-		data->machine.AddState(StateRef(new CClavierVirtuel(data,10,2,&blab,2)), false);
+		data->machine.AddState(StateRef(new CClavierVirtuel(data,10,2,&blab,1)), false);
 		break;
 	case 3:
 		data->machine.AddState(StateRef(new CSettingState(data)), false);
@@ -177,6 +185,8 @@ void CMainMenuState::addLevelType()
 		//data->machine.AddState(StateRef(new CInfiniteGameState(data)), true);
 		break;
 	case 3:
+		currentTransi = CTransition(&(data->assets), DROITE, 2.f);
+		currentTransi.initTransition();
 		data->machine.AddState(StateRef(new CSettingState(data)), false);
 		break;
 	case 4:
@@ -188,7 +198,7 @@ void CMainMenuState::addLevelType()
 
 void CMainMenuState::STEDraw(float delta)
 {
-	data->window.clear(sf::Color(53,128,200));
+	background.renderBackground(data->window);
 	data->window.draw(CMMTitle);
 	for (int i = 0; i < buttons.size(); i++)
 		data->window.draw(buttons[i]);

@@ -7,6 +7,7 @@ class CLevelGameState : public CGameState
 private:
 	std::string levelFilePath;
 	Level level;
+	bool isLevelInit = false;
 	bool isLevelSet = false;
 	void deleteEntity(int& i);
 	void startLevel();

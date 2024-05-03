@@ -5,6 +5,9 @@ CSplashState::CSplashState(GameDataRef _data) : data(_data)
 
 void CSplashState::STEInit()
 {
+	globalClock.restart();
+	background.initBackground(&(data->assets), false);
+	background.setTimePointer(&time);
 	data->assets.LoadTexture("Splash State Background", SPLASH_SCENE_BACKGROUND_FILEPATH);
 	CSSBackground.setTexture(data->assets.GetTexture("Splash State Background"));
 	sf::Vector2f targetSize((float)data->assets.sCREEN_WIDTH, (float)data->assets.sCREEN_HEIGHT);
@@ -12,7 +15,6 @@ void CSplashState::STEInit()
 	CSSBackground.setScale(
 		targetSize.x / CSSBackground.getLocalBounds().width,
 		targetSize.y / CSSBackground.getLocalBounds().height);
-
 }
 
 void CSplashState::STEHandleInput()
@@ -36,6 +38,5 @@ void CSplashState::STEUpdate(float delta)
 
 void CSplashState::STEDraw(float delta)
 {
-	data->window.clear(sf::Color::Red);
 	data->window.draw(CSSBackground);
 }

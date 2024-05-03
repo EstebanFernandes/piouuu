@@ -72,7 +72,6 @@ void CLoadingState::STEUpdate(float delta)
 
 void CLoadingState::STEDraw(float delta)
 {
-	data->window.clear(sf::Color::Black);
 	for (auto player = players->begin(); player != players->end(); player++)
 	{
 		player->renderEntity(data->window);

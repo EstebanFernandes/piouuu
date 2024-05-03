@@ -1,7 +1,7 @@
 #include "CCharacterSelection.h"
 #include "CTestGame.h"
 #include "CParserCSV.h"
-#include <typeinfo>
+
 
 CCharacterSelection::CCharacterSelection(GameDataRef _data) 
 {
@@ -61,6 +61,10 @@ void CCharacterSelection::loadCharacters()
 
 void CCharacterSelection::STEInit()
 {
+	data->assets.LoadSFX("slideSelect", "res\\sfx\\selectCharacter.wav");
+	data->assets.LoadSFX("validation", "res\\sfx\\selectedCharacter.wav");
+	data->assets.addSFX("slideSelect", &selectionSound);
+	data->assets.addSFX("validation", &validationSound);
 	int screenwidth = data->assets.sCREEN_WIDTH;
 	int screenheight = data->assets.sCREEN_HEIGHT;
 	loadCharacters();
@@ -98,8 +102,6 @@ void CCharacterSelection::STEInit()
 	carousel.setCarouselPosition(sf::Vector2f(xPosition,
 		yPosition));
 	carousel.updatePos();
-	background.initBackground(&(data->assets), false);
-	background.setTimePointer(&time);
 }
 
 void CCharacterSelection::STEHandleInput()
@@ -112,22 +114,25 @@ void CCharacterSelection::STEHandleInput()
 			if (event.key.code == sf::Keyboard::D)
 			{
 				if (!carousel.isMoving)
+				{
 					isMovingLeft = true;
-			}
-			else if (event.key.code == sf::Keyboard::U)
-			{
-				carousel.displayScale();
+					selectionSound->play();
+				}
 			}
 			else if (event.key.code == sf::Keyboard::Q)
 			{
 				if (!carousel.isMoving)
+				{
 					isMovingRight = true;
+					selectionSound->play();
+				}
 			}
 			else if (event.key.code == sf::Keyboard::Enter)
 			{
 				if (!carousel.isMoving)
 				{
 					LaunchTransi = true;
+					validationSound->play();
 				}
 				break;
 		case sf::Event::Closed:
@@ -143,7 +148,7 @@ void CCharacterSelection::STEHandleInput()
 
 void CCharacterSelection::STEUpdate(float delta)
 {
-	time = clock.getElapsedTime().asSeconds();
+	updateTime();
 	background.updateCBackground(delta);
 	if(LaunchTransi==true)
 	{
@@ -187,7 +192,6 @@ void CCharacterSelection::STEUpdate(float delta)
 
 void CCharacterSelection::STEDraw(float delta)
 {
-	data->window.clear(sf::Color(174, 177, 184));
 	background.renderBackground(data->window);
 	data->window.draw(carousel);
 	data->window.draw(Title);

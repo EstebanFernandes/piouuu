@@ -26,41 +26,14 @@ LaserGenerator::LaserGenerator(CAssetManager* assetsParam)
 	laserZone.setOrigin(0, laserZone.getLocalBounds().height / 2.f);
 }
 
-LaserGenerator::LaserGenerator(CAssetManager* assetsParam, sf::Vector2f direction)
-	:LaserGenerator(assetsParam)
-{
 
-}
 
-void LaserGenerator::setWeaponStats(CWeaponStat statsParam)
-{
-	/*std::string nameI = referenceStat.nameImage;
-	sf::Vector2f temp = referenceStat.bulletScale;
-	Weapon::setWeaponStats(statsParam);
-	referenceStat.bulletScale = temp;
-	referenceStat.nameImage = nameI;*/
-}
+
 
 void LaserGenerator::renderWeapon(sf::RenderTarget& target)
 {
 	target.draw(beginLaser);
 	target.draw(fullLaser);
-}
-
-void LaserGenerator::weaponControls(sf::Event event)
-{
-	/*if (sf::Keyboard::isKeyPressed(touche) && !isLaserActive()) {
-		weaponShoot();
-	}
-	else if (!sf::Keyboard::isKeyPressed(touche) && isLaserActive()) {
-		
-		weaponShoot();
-	}*/
-}
-
-void LaserGenerator::weaponShoot()
-{
-	//changeActivity();
 }
 
 void LaserGenerator::updateWeapon(float dt,sf::Vector2f weaponPos,float &angle)
@@ -93,7 +66,6 @@ void LaserGenerator::updateLasers(float delta, sf::Vector2f laserStartingPos, in
 
 	if (laserUnlimitedRange) {// adapté à l'angle
 		laserWidth = lengthToBound(posFLaser, angle)+laserHeight;
-		std::cout << laserWidth << " distance au bord" << std::endl;
 	}
 	sf::Vector2f laserSize;
 	laserSize.y = laserHeight;

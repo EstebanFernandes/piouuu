@@ -119,7 +119,7 @@ void laserWeapon::addShootType(int type)
 			temp.y = yDirection;
 			yDirection += 0.25f;
 			referenceStat.dir2.push_back(temp);
-			lasers.push_back(LaserGenerator(assets, referenceStat.dir2.back()));
+			lasers.push_back(LaserGenerator(assets));
 		}
 	}
 	break;

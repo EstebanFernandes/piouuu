@@ -5,9 +5,6 @@
 
 void CPlayer::setSprite()
 {
-	//getSprite().setScale(0.7f, 0.7f);
-	//R2Sprite.setScale(0.7f, 0.7f);
-	//R2Offset = R2Offset * 0.7f;
 	setPositionEntity((assets->sCREEN_WIDTH / 4.f) - (getSprite().getGlobalBounds().width / 2), (assets->sCREEN_HEIGHT / 2.f) - (getSprite().getGlobalBounds().height / 2.f));
 }
 
@@ -98,6 +95,11 @@ void CPlayer::setAssets(CAssetManager* a)
 	secondaryWeapon->getWeaponStats().addDir(temp);
 	mainWeapon->setAimBoolean(&seekForTarget);
 	secondaryWeapon->setAimBoolean(&seekForTarget);
+	assets->addSFX("planeSound", &planeSound);
+	assets->volumeSon(planeSound, 30.f);
+	planeSound->setPitch(0.5f);
+	planeSound->setLoop(true);
+	planeSound->play();
 }
 
 bool CPlayer::checkGlobalCollisions()
@@ -262,6 +264,7 @@ CPlayer::~CPlayer()
 { 
 	delete mainWeapon;
 	delete secondaryWeapon;
+	assets->deleteSound(planeSound);
 }
 
 //Initialise l'icone ainsi que la barre de vie

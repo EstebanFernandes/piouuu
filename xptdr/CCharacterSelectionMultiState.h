@@ -3,7 +3,6 @@
 #include<SFML/Graphics.hpp>
 #include"CAnimation.h"
 #include"CCharacter.h"
-#include"CBackground.h"
 class CCharacterSelectionMultiState : public CState
 {
 private:
@@ -31,11 +30,12 @@ private:
 		std::vector<avion> avions;
 		sf::RectangleShape fondMiTransparent;
 		std::vector<CCharacter>* pointerToCharacters;
-		CBackground background;
 		std::vector<joueur> players;
 		sf::RectangleShape deuxiemefond;
 		sf::Shader bwShader;
 		sf::Text Titre;
+		sf::Sound* selectionSound;
+		sf::Sound* validationSound;
 		float maxArrow;
 		float minArrow;
 		bool containChanges = false;

@@ -61,6 +61,10 @@ CSettingState::CSettingState(GameDataRef _data)
 
 void CSettingState::STEInit()
 {
+	data->assets.LoadSFX("button", "res\\sfx\\testbutton.wav");
+	data->assets.addSFX("button", &selectionButton);
+	data->assets.LoadSFX("slideSelect", "res\\sfx\\selectCharacter.wav");
+	data->assets.addSFX("slideSelect", &slideSound);
 	outlineThickness = 5.f;
 	float screenheight = (float)data->assets.sCREEN_HEIGHT;
 	float screenwidth = (float)data->assets.sCREEN_WIDTH;
@@ -68,13 +72,14 @@ void CSettingState::STEInit()
 	value = { 100,100,0,0 };
 	sf::Vector2f size(data->assets.sCREEN_WIDTH * 0.5f, data->assets.sCREEN_HEIGHT * 0.2f);
 	musicVolume = CSlider(&(data->assets),size,"Volume de la musique");
+	musicVolume.setColor(sf::Color::Transparent);
 	SoundVolume = CSlider(&(data->assets), size, "Volume des sons");
+	SoundVolume.setColor(sf::Color::Transparent);
 	fullScreenCon = CCheckbox(&(data->assets), "Plein écran");
+	fullScreenCon.setColor(sf::Color::Transparent);
 	backbutton = CButton(&(data->assets) , "Retour", 300.f, 100.f);
+	backbutton.setColor(sf::Color::Transparent);
 	resizeScreen();
-	background.setAssets(&(data->assets));
-	background.initBackground(false);
-	background.setTimePointer(&time);
 
 	//On va charger les infos du sons etc depuis ce fichier
 	CParserCSV parser = CParserCSV("res/data/settings.csv");
@@ -129,10 +134,12 @@ void CSettingState::STEHandleInput()
 				else {
 					index = (index - 1) % keyWord.size();
 				}
+				selectionButton->play();
 			}
 			else if (event.key.code == sf::Keyboard::S)
 			{
 				index = (index + 1) % keyWord.size();
+				selectionButton->play();
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
 			{
@@ -148,13 +155,12 @@ void CSettingState::STEHandleInput()
 
 void CSettingState::STEUpdate(float delta)
 {
-	time = clock.getElapsedTime().asSeconds();
+	updateTime();
 	background.updateCBackground(delta);
 }
 
 void CSettingState::STEDraw(float delta)
 {
-	data->window.clear(sf::Color(174, 177, 184));
 	background.renderBackground(data->window);
 	data->window.draw(backbutton);
 	data->window.draw(SoundVolume);
@@ -171,10 +177,12 @@ void CSettingState::onAction(int index, int type)
 		if (type == 0)
 		{
 			musicVolume.slideLeft();
+			slideSound->play();
 		}
 		else if (type ==1)
 			musicVolume.slideRight();
 		data->assets.setOverAllvolumeMusique((float)musicVolume.getValue());
+		slideSound->play();
 		break;
 	case 1:
 		if (type == 0)
@@ -182,13 +190,16 @@ void CSettingState::onAction(int index, int type)
 		else if (type == 1)
 			SoundVolume.slideRight();
 		data->assets.setOverAllvolumeSon((float)SoundVolume.getValue());
+		slideSound->play();
 		break;
 	case 2:
 		if (type == 2)
 		{
 			fullScreenCon.changeValue();
 			data->assets.changeScreenType(data->window, data->isFullScreen);
+			slideSound->play();
 			resizeScreen();
+
 		}
 		break;
 	case 3:
@@ -196,9 +207,9 @@ void CSettingState::onAction(int index, int type)
 		{
 			updateSettingsFile();
 			data->machine.RemoveState();
+		slideSound->play();
 		}
 		break;
-
 	}
 }
 
@@ -241,6 +252,7 @@ void CSettingState::updateSettingsFile()
 
 void CSettingState::resizeScreen()
 {
+
 	sf::Vector2f size(data->assets.sCREEN_WIDTH * 0.35f, data->assets.sCREEN_HEIGHT * 0.15f);
 	float screenheight = (float)data->assets.sCREEN_HEIGHT;
 	float screenwidth = (float)data->assets.sCREEN_WIDTH;
@@ -265,4 +277,5 @@ void CSettingState::resizeScreen()
 	mdrr.push_back(&fullScreenCon);
 	mdrr.push_back(&backbutton);
 	applymaxMinCharSize(mdrr);
+	background.setWindowSize(sf::Vector2u((unsigned int)data->assets.sCREEN_WIDTH, (unsigned int)data->assets.sCREEN_HEIGHT));
 }

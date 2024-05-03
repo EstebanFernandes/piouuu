@@ -19,7 +19,8 @@ private :
 	sf::Text ui;
 	sf::Vector2i mousePositionScreen;
 	bool LaunchTransi = false;
-	CBackground background;
+	sf::Sound* selectionSound;
+	sf::Sound* validationSound;
 public:
 	// Constructeur
 	CCharacterSelection(GameDataRef _data);

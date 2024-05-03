@@ -18,7 +18,7 @@ private:
 	std::vector<BGContainer> layerCopies;
 	std::vector<sf::Shader*> shaders;
 	bool typeBG;//Si true c'est un background ingame, sinon c'est un bg de menu
-	float* time;//Represente le temp
+	float* time;//Represente le temps
 	sf::RectangleShape fond;
 public:
 	enum type{
@@ -48,7 +48,17 @@ public:
 		assets = a;
 		windowSize = sf::Vector2u(assets->sCREEN_WIDTH, assets->sCREEN_HEIGHT);
 	}
-	void setWindowSize(sf::Vector2u a) { windowSize = a; }
+	void setWindowSize(sf::Vector2u a) 
+	{ 
+		windowSize = a;
+		if (typeBG == false)//on est avec les shaders quoi
+		{
+			shaders[0]->setUniform("u_resolution", sf::Glsl::Vec2(windowSize));
+			shaders[1]->setUniform("texture", sf::Shader::CurrentTexture);
+			shaders[1]->setUniform("u_resolution", sf::Glsl::Vec2(windowSize));
+			fond.setSize(sf::Vector2f(windowSize));
+		}
+	}
 	void setTimePointer(float* time_) { time = time_; }
 };
 

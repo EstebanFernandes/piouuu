@@ -65,6 +65,8 @@ void CClavierVirtuel::STEInit()
 				temp.setColor(sf::Color(52, 199, 62));
 		}
 		players[i].keyboardPlayer = temp;
+		if (nbJoueur == 1)
+			keyboardLetterSprite.setColor(sf::Color::Black);
 		keyboardLetterSprite.setTexture(data->assets.GetTexture("keyboardLetter"));
 		keyboardLetterSprite.setScale(keyboardBlackSprite.getScale());
 		keyboardLetterSprite.setPosition(keyboardBlackSprite.getPosition());
@@ -108,6 +110,11 @@ void CClavierVirtuel::STEInit()
 		ah.setSize(sf::Vector2f(keyboardBlackSprite.getGlobalBounds().width * 0.5f, 50.f));
 		ah.setPosition(keyboardBlackSprite.getPosition().x + ((keyboardBlackSprite.getGlobalBounds().width - ah.getLocalBounds().width) * 0.5f), (float)data->assets.sCREEN_HEIGHT * 0.3f);
 		players[0].fondBlanc = ah;
+		midText.setPosition(keyboardBlackSprite.getPosition().x + keyboardBlackSprite.getGlobalBounds().width / 2.f, ah.getPosition().y * 1.03f);
+		midText.setCharacterSize(25);
+		midText.setFillColor(sf::Color::Transparent);
+		midText.setFont(data->assets.GetFont("Nouvelle"));
+		midText.setString("neuil");
 	}
 	for (int i = 0; i < nbJoueur; i++)
 	{
@@ -187,8 +194,6 @@ void CClavierVirtuel::STEInit()
 				height * 0.05f );
 		scorePrompts[i] = scorePrompt;
 	}
-	background.initBackground(&(data->assets), false);
-	background.setTimePointer(&time);
 
 }
 
@@ -245,7 +250,7 @@ void CClavierVirtuel::STEHandleInput()
 
 void CClavierVirtuel::STEUpdate(float delta)
 {
-	time = clock.getElapsedTime().asSeconds();
+	updateTime();
 	background.updateCBackground(delta);
 	sf::IntRect temp;
 	//On check les positions du clavier et on remet s'il faut
@@ -428,9 +433,8 @@ void CClavierVirtuel::UpdateText(int joueur)
 void CClavierVirtuel::STEDraw(float delta)
 {
 	sf::RenderWindow& r = data->window;
-	r.clear(sf::Color(191, 165, 117, 1));
 	background.renderBackground(r);
-	r.draw(midText);
+		r.draw(midText);
 	r.draw(keyboardBlackSprite); 
 	for (int i = 0; i < nbJoueur; i++)
 	{

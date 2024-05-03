@@ -24,6 +24,7 @@ CGameState::CGameState(GameDataRef _data, std::vector<CCharacter>& characters)
 
 CGameState::~CGameState()
 {
+	players.clear();
 }
 void CGameState::initPlayer()
 {
@@ -34,6 +35,7 @@ void CGameState::initPlayer()
 	data->assets.LoadTexture("bulletImageGolden", "res\\img\\bullet_Golden.png");
 	data->assets.LoadTexture("R2D2", "res\\img\\characters\\Droide2.png");
 	data->assets.LoadTexture("logonormal", "res\\img\\characters\\logonormal2.png");
+	data->assets.LoadSFX("planeSound", "res\\sfx\\plane.mp3");
 	int numero = 1;
 	for (auto i = players.begin(); i != players.end(); i++)
 	{
@@ -279,7 +281,6 @@ void CGameState::renderBackground()
 void CGameState::STEDraw(float delta)
 {
 	sf::RenderWindow& r = data->window;
-	r.clear(sf::Color::Red);
 	renderBackground();
 	for (auto i = players.begin(); i != players.end(); i++)
 		i->renderEntity(data->window);
@@ -310,7 +311,9 @@ void CGameState::STEResume()
 	for (auto i = players.begin(); i != players.end(); i++)
 	{
 		i->resetMovement();
+		i->playSound();
 	}
+
 }
 void CGameState::updateClock()
 {
@@ -380,6 +383,10 @@ GameDataRef CGameState::getData()
 void CGameState::STEPause()
 {
 	gameTime += clock.getElapsedTime();
+	for (auto player = players.begin(); player != players.end(); player++)
+	{
+		player->playSound(false);
+	}
 }
 
 

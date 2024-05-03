@@ -74,6 +74,7 @@ void CTestGame::initAssets()
 	data->assets.LoadTexture("bulletTear", "res\\img\\ennemies\\bulletTear.png");
 	data->assets.LoadSFX("bulletSound", "res\\sfx\\Piou.wav");
 	data->assets.LoadSFX("enemyRush", "res\\sfx\\vaisseau_fonce.wav");
+	data->assets.LoadSFX("planeSound", "res\\sfx\\plane.mp3");
 	
 }
 

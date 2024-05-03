@@ -8,6 +8,8 @@ CBackground::CBackground(CAssetManager* a)
 	windowSize = sf::Vector2u(assets->sCREEN_WIDTH, assets->sCREEN_HEIGHT);
 }
 
+
+
 CBackground::CBackground()
 {
 	assets = NULL;
@@ -36,7 +38,7 @@ void CBackground::initBackground(bool TYPE)
 		if (!first->loadFromFile("shaders/vertexbandw.vert", "shaders/test.frag"))
 			std::cout << "non non";
 		first->setUniform("u_resolution", sf::Glsl::Vec2(windowSize));
-		first->setUniform("angle", utilities::RandomFloat(0.f,360.f));
+		first->setUniform("angle",utilities::RandomFloat(0.f,360.f));
 		if (!second->loadFromFile("shaders/vertexbandw.vert", "shaders/blurFrag.frag"))
 			std::cout << "bof";
 		second->setUniform("texture", sf::Shader::CurrentTexture);

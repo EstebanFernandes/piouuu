@@ -121,7 +121,6 @@ void CGameMenu::STEUpdate(float delta)
 
 void CGameMenu::STEDraw(float delta)
 {
-	data->window.clear(sf::Color::Red);
 	data->window.draw(backGroundImage);
 	if(resumeClicked)
 		data->window.draw(decompte);

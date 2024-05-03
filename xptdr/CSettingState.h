@@ -19,6 +19,8 @@ private:
 	std::vector<std::vector<std::string>> settingsInfo;
 	std::vector<int> value;
 	GameDataRef data;
+	sf::Sound* selectionButton;
+	sf::Sound* slideSound;
 	//Attributs
 	
 	/// <summary>
@@ -30,7 +32,6 @@ private:
 	CSlider SoundVolume;
 	CCheckbox fullScreenCon;
 	float outlineThickness = 10.f;
-	CBackground background;
 	bool isMovingUp = false;
 	bool isMovingDown = false;
 	bool isMovingLeft = false;
