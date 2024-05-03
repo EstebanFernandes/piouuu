@@ -4,6 +4,7 @@
 class ShootingEnemy : public CEnemy, public InterfaceShootingEnemy
 {
 private:
+	bool isReadyToShoot = false;
 	bool isPositionated = false;
 	CMob* target;
 	CAnimation anim;
@@ -45,7 +46,7 @@ public:
 	void initAnimation() {
 		float timeBetweenBullets = 1.f / BAW.getWeaponStats().attackSpeed;
 		float tbf = timeBetweenBullets / 5;
-		anim = CAnimation(getPointerSprite(), sf::Vector2i( 82, 86), sf::Vector2i(5, 1),tbf,2 );
+		anim = CAnimation(getPointerSprite(), sf::Vector2i( 82, 86),5,tbf,2 );
 	}
 };
 

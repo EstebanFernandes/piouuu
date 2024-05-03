@@ -35,23 +35,35 @@ private:
 	sf::Vector2f laserScale;
 	float laserHeight = 40;
 	float laserWidth = 500;
-
+	//0 = bas droite, 1= bas gauche, 2 = haut gauche et 3= haute droite
+	float anglesToCorner[4];
+	/// <summary>
+	/// Renvoie la distance entre la position et le bord lié à l'angle
+	/// </summary>
+	/// <param name="pos"></param>
+	/// <param name="angle"></param>
+	/// <returns></returns>
+	float lengthToBound(sf::Vector2f& pos, float& angle);
+	/// <summary>
+	/// Update les angles liés au corner, ces mesures nous servent dans le calcul de la distance 
+	/// </summary>
+	/// <param name="pos"></param>
+	void updateAngles(sf::Vector2f& pos);
+	/// <summary>
+	/// Retourne un int correspondant au bord de l'écran concerné, 0 pour droite, 1 pour en bas etc
+	/// </summary>
+	/// <param name="pos"></param>
+	/// <param name="angle"></param>
+	/// <returns></returns>
+	int whichBound(sf::Vector2f& pos, float& angle);
 public:
 	LaserGenerator();
 	LaserGenerator(CAssetManager* assetsParam);
-	LaserGenerator(CAssetManager* assetsParam,sf::Vector2f direction);
 
-	
-	void setWeaponStats(CWeaponStat statsParam);
-	//redéfinitions de Weapon
-	void setBulletAsset(std::string assetName) {};
-	void traiterMisc(int misc) {}; void renderWeapon(sf::RenderTarget& target);
-	void weaponControls(sf::Event event);
-	void weaponShoot();
+	 void renderWeapon(sf::RenderTarget& target);
+
 	void updateWeapon(float dt,sf::Vector2f weaponPos, float &angle);
 	void updateLasers(float delta, sf::Vector2f playerPos, int screenWidth,float &angle);
 	bool checkCollisions(CMob& b);
-	void changeTarget(CMob* r) {};
-
 };
 

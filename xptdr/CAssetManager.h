@@ -69,6 +69,10 @@ public:
 		musiqueManager.stopMusique(id);
 	}
 
+	void volumeSon(sf::Sound* son, float volume) {
+		sonManager.setSonVolume(son, volume);
+	}
+
 	void volumeMusique(const std::string& id, float volume) {
 		musiqueManager.volumeMusique(id, volume);
 	}

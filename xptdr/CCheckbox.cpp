@@ -22,8 +22,6 @@ CCheckbox::CCheckbox(CAssetManager* a, std::string titleOftheCheckbox, unsigned 
 		check.getLocalBounds().height / 2.f);
 	box.setFillColor(sf::Color(255, 255, 255, 0));
 	box.setOutlineThickness(3.f);
-	check1.setRotation(45);
-	check2.setRotation(135);
 	initCheckbox();
 }
 
@@ -33,10 +31,11 @@ void CCheckbox::initCheckbox()
 	check1.setSize(sf::Vector2f(interiorBack.height*1.75f, 4.f));
 	check1.setOrigin(check1.getLocalBounds().width / 2.f,
 		check1.getLocalBounds().height / 2.f);
-	check2.setSize(sf::Vector2f(interiorBack.height * 1.75f, 4.f));
-	check2.setOrigin(check2.getLocalBounds().width / 2.f,
-		check2.getLocalBounds().height / 2.f);
+	check2 = check1;
+	//check1.setRotation(45);
+	check2.setRotation(90);
 	box.setSize(sf::Vector2f(interiorBack.height-3.f, interiorBack.height - 3.f));
+	box.setOrigin(box.getLocalBounds().width / 2.f, box.getLocalBounds().height / 2.f);
 	float width = nameOfCheckbox.getGlobalBounds().width+interiorBack.height;
 	interiorBack.width = width;
 	sf::Vector2f backSize(width,interiorBack.height);
@@ -61,15 +60,14 @@ void CCheckbox::setPosition(float x, float y)
 		sf::Vector2f namePos = sf::Vector2f(interiorPos.x + inter,
 			interiorPos.y + (interiorBack.height - nameOfCheckbox.getGlobalBounds().height) / 2.f);
 		nameOfCheckbox.setPosition(namePos);
-		namePos.x -= nameOfCheckbox.getGlobalBounds().left - namePos.x;
-		namePos.y -= nameOfCheckbox.getGlobalBounds().top - namePos.y;
+		namePos.y += nameOfCheckbox.getGlobalBounds().height ;
 		box.setPosition(
 			interiorPos.x + inter + nameOfCheckbox.getGlobalBounds().width,
-			interiorPos.y + (interiorBack.height - (box.getGlobalBounds().height+box.getOutlineThickness())) / 2.f);
-		check1.setPosition(box.getPosition().x + box.getSize().x / 2.f,
-			box.getPosition().y + box.getSize().y / 2.f);
-		check2.setPosition(box.getPosition().x + box.getSize().x / 2.f,
-			box.getPosition().y + box.getSize().y / 2.f);
+			namePos.y);
+		check1.setPosition(box.getPosition().x-box.getOutlineThickness(),
+			box.getPosition().y - check1.getGlobalBounds().height / 2.f);
+		check2.setPosition(box.getPosition().x - check2.getGlobalBounds().width / 2.f,
+			box.getPosition().y - box.getOutlineThickness());
 	}
 
 }

@@ -14,7 +14,6 @@ public:
 	void STEHandleInput();
 	void STEDraw(float delta) {
 		sf::RenderWindow& r = data->window;
-		r.clear(sf::Color::Red);
 		renderBackground();
 		for (auto i = players.begin(); i != players.end(); i++)
 			i->renderEntity(data->window);

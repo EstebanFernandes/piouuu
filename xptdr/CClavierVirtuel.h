@@ -10,7 +10,6 @@
 class CClavierVirtuel : public CState
 {
 private:
-	CBackground background;
 	GameDataRef data;
 	enum maj { RELACHE, ENFONCE, LOCK };
 	int capsInt = 0;

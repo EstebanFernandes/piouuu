@@ -22,6 +22,7 @@ private:
 	std::vector<float> where;
 	sf::Sprite CMMTitle;
 	sf::Text info;
+	sf::Sound* buttonSound;
 	/// <summary>
 	/// Information about the character about to get played
 	/// </summary>
@@ -31,7 +32,7 @@ private:
 	void choosedButton();
 	void addLevelType();
 public:
-
+	~CMainMenuState();
 	CMainMenuState(GameDataRef _data);
 	void STEInit();
 	void STEHandleInput();

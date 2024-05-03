@@ -64,3 +64,16 @@ void CeffetSonore::deleteSound(sf::Sound* a)
 		std::cout << "size of the sons manager : " << sons.size();
 	}
 }
+
+void CeffetSonore::setSonVolume(sf::Sound* son_, float vol)
+{
+	for (auto son = sons.begin(); son != sons.end() ; son++)
+	{
+		if ((&son->son) == son_)
+		{
+			son->volumeparSon = vol;
+			son->son.setVolume(son->volumeparSon * (volumeOverAll / 100.f));
+		}
+
+	}
+}

@@ -7,14 +7,28 @@ CTransition::CTransition()
 	sens = NULLTRANSITION;
 }
 
-bool CTransition::globalCollision()
+bool CTransition::isFinito()
 {
-	sf::FloatRect currentBounds = backTransi.getGlobalBounds();
-	if (currentBounds.left + currentBounds.width<0 ||
-		currentBounds.left>asset->sCREEN_WIDTH ||
-		currentBounds.top + currentBounds.height < 0
-		|| currentBounds.top>asset->sCREEN_HEIGHT)
-		return true;
+	bool isAvant = true; //Définit si on doit regarder si c'est avant ou après
+	switch (sens)
+	{
+	case GAUCHE:
+
+	case DROITE:
+	case HAUT:
+	case BAS:
+		dir = dir * -1.f;
+		break;
+	case MILIEU:
+		dir = sf::Vector2f(0, 0);
+		//On verra
+		break;
+	case NULLTRANSITION:
+		dir = sf::Vector2f(0, 0);
+		speed = 0.f;
+		break;
+	}
+	transiouuuuu = true;
 	return false;
 }
 

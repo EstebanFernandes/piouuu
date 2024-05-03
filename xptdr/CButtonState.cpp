@@ -8,13 +8,14 @@ CButtonState::CButtonState(GameDataRef _data)
 	selected = NULL;
 }
 
-CButtonState::CButtonState(GameDataRef _data, std::vector<std::string> listOfChoices, std::string* choice)
+CButtonState::CButtonState(GameDataRef _data, std::vector<std::string> listOfChoices, std::string* choice, CState* prevState)
 {
 	data = _data;
 	index = 0;
 	selected = NULL;
 	choices = listOfChoices;
 	selected = choice;
+	this->prevState = prevState;
 }
 
 void CButtonState::STEInit()
@@ -40,9 +41,6 @@ void CButtonState::STEInit()
 	}
 	backFonce = sf::RectangleShape(sf::Vector2f((float)screen_Width, (float)screen_Height));
 	backFonce.setFillColor(sf::Color(0, 0, 0, 122));
-	back.create(data->window.getSize().x, data->window.getSize().y);
-	back.update(data->window);
-	spritz.setTexture(back);
 }
 
 void CButtonState::STEHandleInput()
@@ -85,6 +83,7 @@ void CButtonState::choosedButton()
 }
 void CButtonState::STEUpdate(float delta)
 {
+	prevState->STEUpdate(delta);
 	buttonList[index].setOutlineThickness(10.f);
 	for (int i = 0; i < buttonList.size(); i++)
 	{
@@ -95,8 +94,7 @@ void CButtonState::STEUpdate(float delta)
 
 void CButtonState::STEDraw(float delta)
 {
-	data->window.clear(sf::Color::Red);
-	data->window.draw(spritz);
+	prevState->STEDraw(delta);
 	data->window.draw(backFonce);
 	for (int i = 0; i < buttonList.size(); i++)
 	{

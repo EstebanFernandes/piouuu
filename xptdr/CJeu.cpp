@@ -54,6 +54,7 @@ void CJeu::JEURun()
 		if(!currentState->hasChanges||transiInIt==true)
 		{
 			interpolation = accumulator / dt;
+			data->window.clear();
 			data->machine.GetActiveState()->STEDraw(interpolation);
 			if (transiInIt == true)
 				CState::currentTransi.renderTransition(data->window);

@@ -15,7 +15,7 @@ void CLevelGameState::GameOver()
 
 void CLevelGameState::STEResume()
 {
-	if (level.isLevelSet)
+	if (level.isLevelSet&&isLevelInit==false)
 	{
 		CGameState::STEInit();
 		for (auto it = players.begin(); it != players.end(); it++)
@@ -25,9 +25,10 @@ void CLevelGameState::STEResume()
 		}
 		level.setEnnemyList(&entityList);
 		level.setClock(&time);
-	}
+		isLevelInit = true;
 	hasChanges = false;
 	currentTransi.initTransition();
+	}
 	CGameState::STEResume();
 }
 
@@ -40,7 +41,6 @@ void CLevelGameState::STEDraw(float delta)
 	}
 	else
 	{
-		r.clear(sf::Color::Red);
 		renderBackground();
 		for (int i = 0; i < entityList.size(); i++)
 		{

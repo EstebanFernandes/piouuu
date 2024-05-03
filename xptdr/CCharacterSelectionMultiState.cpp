@@ -72,6 +72,12 @@ void CCharacterSelectionMultiState::updateArrow(int index)
 
 void CCharacterSelectionMultiState::STEInit()
 {
+	data->assets.LoadSFX("slideSelect", "res\\sfx\\selectCharacter.wav");
+	data->assets.LoadSFX("validation", "res\\sfx\\selectedCharacter.wav");
+	data->assets.addSFX("slideSelect", &selectionSound);
+	data->assets.addSFX("validation", &validationSound);
+	selectionSound;
+	validationSound;
 	float width = (float)data->assets.sCREEN_WIDTH;
 	float height = (float)data->assets.sCREEN_HEIGHT;
 	Titre.setFont(data->assets.GetFont("Nouvelle"));
@@ -122,8 +128,6 @@ void CCharacterSelectionMultiState::STEInit()
 
 	if (!bwShader.loadFromFile("shaders/vertexbandw.vert", "shaders/fragbandw.frag"))
 		std::cout << "bof";
-	background.initBackground(&(data->assets),false);
-	background.setTimePointer(&time);
 	containChanges = true;
 	STEUpdate(0.0003f);
 	deuxiemefond.setPosition(0.f, +players[0].trueAvionPlayerNumber.getGlobalBounds().top-5.f);
@@ -304,6 +308,7 @@ void CCharacterSelectionMultiState::STEHandleInput()
 				{
 					if (event.key.code == players[i].keys.left)
 					{
+						selectionSound->play();
 						if (players[i].index == 0)
 							players[i].index = (int)avions.size() - 1;
 						else
@@ -312,6 +317,7 @@ void CCharacterSelectionMultiState::STEHandleInput()
 					}
 					if (event.key.code == players[i].keys.right)
 					{
+						selectionSound->play();
 						if (players[i].index == avions.size() - 1)
 							players[i].index = 0;
 						else
@@ -321,6 +327,7 @@ void CCharacterSelectionMultiState::STEHandleInput()
 					if (event.key.code == players[i].keys.press)
 					{
 						players[i].isValid = true;
+						validationSound->play();
 					}
 				}
 				else if(event.key.code == players[i].keys.press2)
@@ -340,7 +347,7 @@ void CCharacterSelectionMultiState::STEHandleInput()
 
 void CCharacterSelectionMultiState::STEUpdate(float dt)
 {
-	time = clock.getElapsedTime().asSeconds();
+	updateTime();
 	background.updateCBackground(dt);
 	if (containChanges)
 	{
@@ -368,15 +375,13 @@ void CCharacterSelectionMultiState::STEUpdate(float dt)
 		pointerToCharacters->at(1) = avions[players[1].index].characterAvion;
 		data->machine.RemoveState();
 		hasChanges = true;
-		currentTransi = CTransition(&(data->assets), HAUT, 2.f);
+		currentTransi = CTransition(&(data->assets), DROITE, 2.f);
 		currentTransi.initTransition();
 	}
 }
 
 void CCharacterSelectionMultiState::STEDraw(float interpolation)
 {
-	
-	data->window.clear(sf::Color::Blue);
 	background.renderBackground(data->window);
 	drawElements();
 }

@@ -40,4 +40,5 @@ public:
 				it = sfxstorages.erase(it);    // or "it = m.erase(it)" since C++11
 		}
 	}
+	void setSonVolume(sf::Sound* son, float vol);
 };

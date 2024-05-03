@@ -9,17 +9,16 @@ class CButtonState : public CState
 {
 private:
 	sf::RectangleShape backFonce;
-	sf::Texture back;
-	sf::Sprite spritz;
 	GameDataRef data;
 	std::vector<CButton> buttonList;
 	std::vector<std::string> choices;
 	std::string* selected;
 	int index;
+	CState* prevState;
 	void choosedButton();
 public:
 	CButtonState(GameDataRef _data);
-	CButtonState(GameDataRef _data,std::vector<std::string> listOfChoices, std::string* choice);
+	CButtonState(GameDataRef _data,std::vector<std::string> listOfChoices, std::string* choice,CState* prevState);
 	void STEInit();
 	void STEHandleInput();
 	void STEUpdate(float delta);

@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include "CTransition.h"
+#include"CBackground.h"
 //Classe virtuelle qu'on doit hériter pour construire une scène, on redéfinit les méthodes init (appelés en premier),
 //update( appelé pour update la scène (faire bouger les personnages par exemple))
 //HandleInput où on peut gérer les inputs et ce que l'on fait avec
@@ -42,9 +43,13 @@ protected:
 		assetToload.push_back(std::pair<std::string, std::string>(name, filepath));
 	}
 	sf::Clock clock;//Clock on the currentstate
-	float time = 0.f; 
+	static float time; 
 	virtual void updateTime();
+	static sf::Clock globalClock;
+	static CBackground background;
 public:
+	static float angleOffset;
+	virtual ~CState();
 	//La transition est un objet static commun à tous les états, comme ça on le passe d'état en état (génie de ma part imo)
 	static CTransition currentTransi;
 	bool hasChanges = false;

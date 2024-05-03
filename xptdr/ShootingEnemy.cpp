@@ -58,7 +58,10 @@ void ShootingEnemy::updateMovement(float delta)
 {
 	if (isPositionated)
 	{
+		int prevCF = anim.getCurrentFrameNumber().x;
 		anim.updateAnimation();
+		if (prevCF == 4 && anim.getCurrentFrameNumber().x == 0)
+			isReadyToShoot = true;
 		if ( info.isAim&&target!=NULL)
 		{		
 			setRotation(utilities::getAngleFromDirection(utilities::dirAtoB(getSprite().getPosition(), target->getSprite().getPosition()))+180.f);
@@ -83,8 +86,8 @@ void ShootingEnemy::updateMovement(float delta)
 
 void ShootingEnemy::enemyShoot()
 {
-	if (anim.getCurrentFrameNumber().x== 5&& isPositionated) {
-		if (info.isAim&&target!=NULL)
+	if (isReadyToShoot) {
+		if (info.isAim && target != NULL)
 		{
 			float temp = 0.f;
 			if (isSpriteFlip())
@@ -92,17 +95,19 @@ void ShootingEnemy::enemyShoot()
 			sf::Vector2f posPlayer = target->getSprite().getPosition();
 			BAW.shootTowardDirection(
 				utilities::shootPos((getSprite().getPosition()),
-				getGlobalBounds().width/2.f,getSprite().getRotation()+180.f), posPlayer);
+					getGlobalBounds().width / 2.f, getSprite().getRotation() + 180.f), posPlayer);
 		}
 		else
 		{
 			BAW.iNeedMoreBullets(
-			utilities::shootPos((getSprite().getPosition()),
-				getGlobalBounds().width / 2.f,utilities::getAngleFromDirection(BAW.getWeaponStats().dir)));
+				utilities::shootPos((getSprite().getPosition()),
+					getGlobalBounds().width / 2.f, utilities::getAngleFromDirection(BAW.getWeaponStats().dir)));
 			std::cout << "je tire !" << std::endl;
 		}
+		isReadyToShoot = false;
 		// vient juste le restart le timer à la fin 
 	}
+
 }
 
 void ShootingEnemy::renderEntity(sf::RenderTarget& target)

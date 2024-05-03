@@ -51,7 +51,7 @@ public:
 		float xoff = cardTitle.getGlobalBounds().width;
 		sf::Vector2f offset( (xSize - xoff)/2.f, ySize * 0.02f);
 		utilities::readaptText(cardTitle, pos+offset);
-		cardImage.setPosition(pos.x + xSize / 2.f - cardImage.getGlobalBounds().width / 2.f, pos.y + ySize/2.f - cardImage.getGlobalBounds().height/ 2.f);
+		cardImage.setPosition(pos.x + xSize / 2.f , pos.y + ySize/2.f - cardImage.getGlobalBounds().height/ 2.f);
 		cardDescription.setPosition(pos.x + (xSize - cardDescription.getGlobalBounds().width) / 2, pos.y + ySize * 0.6f);
 	}
 	void setScale(sf::Vector2f scale)

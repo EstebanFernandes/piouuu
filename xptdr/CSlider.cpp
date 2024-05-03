@@ -28,7 +28,6 @@ CSlider::CSlider(CAssetManager* a, sf::Vector2f size, std::string nameOfSlider)
 	NameOfSlider.setCharacterSize(20);
 	back.setFillColor(sf::Color::Black);
 	setSize(size);
-	cursor.setOrigin(cursor.getLocalBounds().width / 2.f, cursor.getLocalBounds().height / 2.f);
 	setCursor();
 }
 
@@ -48,7 +47,7 @@ void CSlider::setPosition(float x, float y)
 		namePos.x -= NameOfSlider.getGlobalBounds().left - namePos.x;
 		namePos.y -= NameOfSlider.getGlobalBounds().top - namePos.y;
 		NameOfSlider.setPosition(namePos);
-		line.setPosition(interiorBack.left,
+		line.setPosition(x + back.getGlobalBounds().width/2.f,
 			interiorPos.y + (interiorBack.height - line.getGlobalBounds().height) / 2.f);
 		sf::Vector2f textPerPos(
 			interiorBack.left + (interiorBack.width - textPercentage.getGlobalBounds().width) / 2.f,
@@ -61,7 +60,7 @@ void CSlider::setPosition(float x, float y)
 
 	minPoint = sf::Vector2f(
 		line.getGlobalBounds().left,
-		line.getGlobalBounds().top + line.getGlobalBounds().height / 2.f
+		line.getPosition().y
 	);
 	setCursor();
 }
@@ -76,7 +75,10 @@ void CSlider::setSize(float x, float y, int charSize)
 	interiorBack.width = back.getGlobalBounds().width - back.getGlobalBounds().width * (2 * padding.x);
 	interiorBack.height = back.getGlobalBounds().height - back.getGlobalBounds().height * (2 * padding.y);
 	line.setSize(sf::Vector2f(interiorBack.width, interiorBack.height * 0.03f));
+	line.setOrigin(line.getLocalBounds().width / 2.f,
+		line.getLocalBounds().height / 2.f);
 	cursor.setSize(sf::Vector2f(line.getGlobalBounds().height * 2.f, line.getGlobalBounds().height * 2.f));
+	cursor.setOrigin(cursor.getLocalBounds().width / 2.f, cursor.getLocalBounds().height / 2.f);
 	if (hasTitle && charSize != -1)
 		NameOfSlider.setCharacterSize(charSize);
 	if (charSize != -1)

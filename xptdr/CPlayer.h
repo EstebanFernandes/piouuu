@@ -56,7 +56,7 @@ private:
 	sf::Vector2f R2Offset;
 	//Liste des effets sur les balles, on les ajoutes avant de tirer 
 	bool hittype = false;
-
+	sf::Sound* planeSound;
 	/// <summary>
 	/// pointeur vers l'arme principal
 	/// </summary>
@@ -166,5 +166,12 @@ public:
 	std::vector<CGrapheUpdate>* getGraphs()
 	{
 		return &Upgradegraphs;
+	}
+	void playSound(bool areWe=true)
+	{
+		if (areWe && planeSound->getStatus() == sf::Sound::Stopped)
+			planeSound->play();
+		else if (!areWe)
+			planeSound->stop();
 	}
 };

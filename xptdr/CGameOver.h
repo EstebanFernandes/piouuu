@@ -156,7 +156,6 @@ template <class MType>
 void CGameOver<MType>::STEDraw(float delta)
 {
 	sf::RenderWindow& temp = data->window;
-	temp.clear();
 	temp.draw(backGroundImage, &Shader);
 	temp.draw(textGameOver);
 	temp.draw(scoreboard);

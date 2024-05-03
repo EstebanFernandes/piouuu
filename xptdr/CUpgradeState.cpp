@@ -190,7 +190,6 @@ void CUpgradeState::STEUpdate(float delta)
 
 void CUpgradeState::STEDraw(float delta)
 {
-	data->window.clear(sf::Color(174, 177, 184));
 	for (int i = 0; i < CardList.size(); i++)
 	{
 		data->window.draw(CardList[i]);
