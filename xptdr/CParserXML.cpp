@@ -91,6 +91,8 @@ void CParserXML::addEnemy(std::string enemyName,std::vector<std::string> values)
     //fade ??
     fade = values[4].find(';');
     sf::Vector2f direct = sf::Vector2f(std::stof(values[4].substr(0, fade)), std::stof(values[4].substr(fade + 1)));
+    direct.x = direct.x / 100.f * screenwidth;
+    direct.y = direct.y / 100.f * screenheight;
     if (enemyName == "roamingEnemy" || enemyName == "rusher") {
         infoE.direction = utilities::dirAtoB(infoE.pos, direct);
     }
@@ -107,7 +109,7 @@ void CParserXML::addEnemy(std::string enemyName,std::vector<std::string> values)
 
     // Direction des tirs
     if (enemyName == "shootingEnemy") {
-        W.dir = utilities::dirAtoB(infoE.pos, sf::Vector2f(std::stof(values[4].substr(0, fade)), std::stof(values[4].substr(fade + 1))));
+        W.dir = utilities::dirAtoB(infoE.pos, direct);
     }
     else if (enemyName == "bomber") {
         W.dir = sf::Vector2f(0, 1.f);

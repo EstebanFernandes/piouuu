@@ -46,13 +46,17 @@ ShootingEnemy::ShootingEnemy(CAssetManager* asset, CCharacter& stat, CWeaponStat
 void ShootingEnemy::setPos()
 {
 	if (info.spawnSide == "gauche")
-		info.pos.x = assets->sCREEN_WIDTH * 0.05f;
+		//info.pos.x = assets->sCREEN_WIDTH * 0.05f;
+		spawnPos.x = assets->sCREEN_WIDTH * 0.05f;
 	else if(info.spawnSide == "droite")
-		info.pos.x=assets->sCREEN_WIDTH * 0.95f;
+		//info.pos.x=assets->sCREEN_WIDTH * 0.95f;
+		spawnPos.x = assets->sCREEN_WIDTH * 0.95f;
 	else if (info.spawnSide == "haut")
-		info.pos.y=assets->sCREEN_HEIGHT * 0.05f;
+		//info.pos.y=assets->sCREEN_HEIGHT * 0.05f;
+		spawnPos.y = assets->sCREEN_HEIGHT * 0.05f;
 	else if (info.spawnSide == "bas")
-		info.pos.y=assets->sCREEN_HEIGHT * 0.95f;
+		//info.pos.y=assets->sCREEN_HEIGHT * 0.95f;
+		spawnPos.y = assets->sCREEN_HEIGHT * 0.05f;
 }
 void ShootingEnemy::updateMovement(float delta)
 {
