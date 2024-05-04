@@ -16,6 +16,7 @@ BomberEnemy::BomberEnemy(CAssetManager* assets)
 	BAW.setWeaponPos(sf::Vector2f(0.f, getSprite().getGlobalBounds().height / 2.f));
 	BAW.addShootType(typeAim::bombe);
 	assets->addSFX("bulletSound", &BAW.bulletSound);
+	isAnimated = false;
 }
 
 BomberEnemy::BomberEnemy(CAssetManager* assets, enemyInfo info_) :

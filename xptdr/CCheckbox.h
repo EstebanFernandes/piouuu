@@ -59,11 +59,14 @@ public:
 		box.setSize(sf::Vector2f(nameOfCheckbox.getGlobalBounds().height, nameOfCheckbox.getGlobalBounds().height));
 		box.setOrigin(box.getLocalBounds().width / 2.f, box.getLocalBounds().height / 2.f);
 		box.setOutlineThickness(box.getGlobalBounds().width * 0.1f);
+		check1.setRotation(0);
+		check2.setRotation(0);
 		check1.setSize(sf::Vector2f(box.getGlobalBounds().height * 1.5f,4.f));
 		check1.setOrigin(check1.getLocalBounds().width / 2.f,
 			check1.getLocalBounds().height / 2.f);
 		check2 = check1;
-		check2.setRotation(90);
+		check1.setRotation(45);
+		check2.setRotation(135);
 		setPosition(back.getPosition());
 	}
 	unsigned int getCharacterSize() { return nameOfCheckbox.getCharacterSize(); }

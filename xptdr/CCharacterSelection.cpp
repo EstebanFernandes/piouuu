@@ -9,6 +9,12 @@ CCharacterSelection::CCharacterSelection(GameDataRef _data)
 	currentCharacterIndex = 0;
 }
 
+CCharacterSelection::~CCharacterSelection()
+{
+	data->assets.deleteSound(selectionSound);
+	data->assets.deleteSound(validationSound);
+}
+
 void CCharacterSelection::loadCharacters()
 {
 	CParserCSV parser = CParserCSV("res/data/characters.csv");
