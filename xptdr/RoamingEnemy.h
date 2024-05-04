@@ -5,6 +5,8 @@ class RoamingEnemy : public CEnemy
 {
 protected:
 	sf::Vector2f dir;
+	CAnimation anim;
+	int a=0;
 public:
 	RoamingEnemy();
 	RoamingEnemy(CAssetManager* asset);

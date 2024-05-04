@@ -6,6 +6,7 @@
 #include"CCharacterSelectionMultiState.h"
 CMainMenuState::~CMainMenuState()
 {
+	data->assets.deleteSound(buttonSound);
 }
 CMainMenuState::CMainMenuState(GameDataRef _data)
 {

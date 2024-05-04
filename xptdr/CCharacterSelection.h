@@ -24,6 +24,7 @@ private :
 public:
 	// Constructeur
 	CCharacterSelection(GameDataRef _data);
+	~CCharacterSelection();
 	CCharacterSelection(GameDataRef _data, CCharacter* ch)
 		: CCharacterSelection(_data) {
 		returnChar = ch;

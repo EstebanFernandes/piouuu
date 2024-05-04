@@ -180,6 +180,15 @@ public:
 		computeMatrix();
 	}
 	/// <summary>
+	/// Cette fonction n'appelle pas compute matrix, cela ruinerait le principe de celle-ci, faites attention à ce que computeMatrix ne soit pas appelé par la suite.
+	/// </summary>
+	/// <param name="pos"></param>
+	/// <param name="rect"></param>
+	void changeIntRect(sf::Vector2i pos, sf::IntRect rect)
+	{
+		matrix[pos.x][pos.y] = rect;
+	}
+	/// <summary>
 	/// Change le rectangle pour toute la ligne ou la colonne (si le booleen vaut true)
 	/// </summary>
 	/// <param name="pos">attention la position est entre 0 et numberofframe-1</param>

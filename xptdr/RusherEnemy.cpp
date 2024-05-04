@@ -5,7 +5,7 @@ RusherEnemy::RusherEnemy(CAssetManager* assetParam)
 	initEnnemy(assetParam,info,"rusher");
 	info.pos.x = assets->sCREEN_WIDTH * 0.95f;
 	assets->addSFX("enemyRush", &fxRush);
-	anim = CAnimation(getPointerSprite(), sf::Vector2i( 73, 86), 1, -1.f,2);
+	anim = CAnimation(getPointerSprite(), sf::Vector2i( 73, 86),6, -1.f, 2);
 	setMoveSpeed(5.f);
 	getSprite().setScale(1.5f, 1.5f);
 	setSprite();

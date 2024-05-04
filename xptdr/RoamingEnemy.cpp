@@ -5,9 +5,16 @@ RoamingEnemy::RoamingEnemy()
 }
 
 RoamingEnemy::RoamingEnemy(CAssetManager* assetParam) {
-	info.scale.x = 0.2f;
-	info.scale.y = 0.2f;
-	initEnnemy(assetParam,info);
+	info.scale.x = 1.5f;
+	info.scale.y = 1.5f;
+	initEnnemy(assetParam, info, "rusher");
+	anim = CAnimation(getPointerSprite(), sf::Vector2i(73, 86), 2, 0.1f, 2);
+	anim.changeIntRect(sf::Vector2i(0, 0), sf::IntRect(300,0,73,86));
+	anim.changeIntRect(sf::Vector2i(1, 0), sf::IntRect(375, 0, 73, 86));
+	isAnimated = true;
+	anim.switchFrames();
+	setSprite();
+	getSprite().setColor(sf::Color::White);
 	moveSpeed = 0.5f;
 	initDirection();
 	float angle = (float)180.f+(180.f / M_PIl)* atan2(dir.y, dir.x);
@@ -29,6 +36,10 @@ RoamingEnemy::RoamingEnemy(CAssetManager* asset, CCharacter stat, enemyInfo info
 
 void RoamingEnemy::updateMovement(float delta)
 {
+	if (a++ == 1)
+		anim.setSprite(getPointerSprite());
+	if(isAnimated)
+		anim.updateAnimation();
 	if (checkGlobalCollisions())
 		needDelete = true;
 	updateLifeBar();

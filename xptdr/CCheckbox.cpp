@@ -65,8 +65,8 @@ void CCheckbox::setPosition(float x, float y)
 			interiorPos.x + inter + nameOfCheckbox.getGlobalBounds().width,
 			namePos.y);
 		check1.setPosition(box.getPosition().x-box.getOutlineThickness(),
-			box.getPosition().y - check1.getGlobalBounds().height / 2.f);
-		check2.setPosition(box.getPosition().x - check2.getGlobalBounds().width / 2.f,
+			box.getPosition().y - check1.getGlobalBounds().height / 2.f + box.getLocalBounds().height / 2.f);
+		check2.setPosition(box.getPosition().x - check2.getGlobalBounds().width / 2.f + box.getLocalBounds().width / 2.f,
 			box.getPosition().y - box.getOutlineThickness());
 	}
 
