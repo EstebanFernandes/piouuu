@@ -33,6 +33,7 @@ private:
 	/// </summary>
 	/// <returns></returns>
 	bool isFinito();
+	void initDirSpeed();
 public :
 	bool transiouuuuu = false;
 	CTransition();
