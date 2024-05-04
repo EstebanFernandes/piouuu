@@ -12,6 +12,7 @@ struct enemyInfo {
 	std::string spawnSide;//Coté où on spawn, gauche droite haut ou bas
 	sf::Vector2f direction;//Direction d'avancée
 	sf::Vector2f scale;
+	bool mustSetDirection;
 	bool isAim; //Savoir si l'unité doit viser un joueur
 	//Constructeur par défaut
 	enemyInfo() :
@@ -19,7 +20,8 @@ struct enemyInfo {
 		spawnSide("droite"),
 		direction(0.f, 0.f),
 		scale(1.f, 1.f),
-		isAim(false)
+		isAim(false),
+		mustSetDirection(false)
 	{
 	}
 };
