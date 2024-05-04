@@ -75,11 +75,9 @@ void CParserXML::addEnemy(std::string enemyName,std::vector<std::string> values)
     //Spawn side
     infoE.spawnSide = values[13];
     infoE.isAim= std::stoi(values[11]);
-    //Direction
-    size_t fade = values[4].find(';');
-    infoE.direction = sf::Vector2f(std::stof(values[4].substr(0, fade)), std::stof(values[4].substr(fade + 1)));
+    
     //Position (soit en absolu, soit en pourcentage selon l'écran
-    fade = values[3].find(';');
+    size_t fade = values[3].find(';');
     std::string posString = values[3];
     if (posString.find('%')!=std::string::npos)
     {
@@ -88,6 +86,18 @@ void CParserXML::addEnemy(std::string enemyName,std::vector<std::string> values)
     }
     else
         infoE.pos = sf::Vector2f(std::stof(values[3].substr(0, fade)), std::stof(values[3].substr(fade+1)));
+
+    // Direction
+    //fade ??
+    fade = values[4].find(';');
+    sf::Vector2f direct = sf::Vector2f(std::stof(values[4].substr(0, fade)), std::stof(values[4].substr(fade + 1)));
+    direct.x = direct.x / 100.f * screenwidth;
+    direct.y = direct.y / 100.f * screenheight;
+    if (enemyName == "roamingEnemy" || enemyName == "rusher") {
+        infoE.direction = utilities::dirAtoB(infoE.pos, direct);
+    }
+
+
     CCharacter CS;
     CS.setMaxHealth(std::stof(values[2]));
     CS.setMoveSpeed(std::stof(values[6]));
@@ -96,6 +106,15 @@ void CParserXML::addEnemy(std::string enemyName,std::vector<std::string> values)
     CS.setXp(std::stoi(values[14]));
     //VS Quand on touuche avec une balle
     CWeaponStat W;
+
+    // Direction des tirs
+    if (enemyName == "shootingEnemy") {
+        W.dir = utilities::dirAtoB(infoE.pos, direct);
+    }
+    else if (enemyName == "bomber") {
+        W.dir = sf::Vector2f(0, 1.f);
+    }
+
     W.bulletDamage = std::stof(values[8]);
     W.bulletSpeed = std::stof(values[9]);
     W.attackSpeed = std::stof(values[10]);

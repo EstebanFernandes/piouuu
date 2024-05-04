@@ -180,7 +180,7 @@ void CMainMenuState::addLevelType()
 		data->machine.AddState(StateRef(new CTestGame(data,characters)), true);
 		break;
 	case 1:
-		data->machine.AddState(StateRef(new CLevelGameState(data, characters, "res/level/deuxiemeniveau.piou")), true);
+		data->machine.AddState(StateRef(new CLevelGameState(data, characters, "res/level/TestDirection.piou")), true);
 		break;
 	case 2:
 		//data->machine.AddState(StateRef(new CInfiniteGameState(data)), true);
