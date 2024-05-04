@@ -32,8 +32,8 @@ void CCheckbox::initCheckbox()
 	check1.setOrigin(check1.getLocalBounds().width / 2.f,
 		check1.getLocalBounds().height / 2.f);
 	check2 = check1;
-	//check1.setRotation(45);
-	check2.setRotation(90);
+	check1.setRotation(45);
+	check2.setRotation(135);
 	box.setSize(sf::Vector2f(interiorBack.height-3.f, interiorBack.height - 3.f));
 	box.setOrigin(box.getLocalBounds().width / 2.f, box.getLocalBounds().height / 2.f);
 	float width = nameOfCheckbox.getGlobalBounds().width+interiorBack.height;

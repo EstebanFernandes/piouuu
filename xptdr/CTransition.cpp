@@ -9,27 +9,60 @@ CTransition::CTransition()
 
 bool CTransition::isFinito()
 {
-	bool isAvant = true; //Définit si on doit regarder si c'est avant ou après
+	sf::FloatRect bound = backTransi.getGlobalBounds();
 	switch (sens)
 	{
 	case GAUCHE:
-
+		if (bound.left + bound.width >= asset->sCREEN_WIDTH)
+		{
+			return true;
+		}
+			break;
 	case DROITE:
+		if (bound.left <= 0.f )
+			return true;
+		break;
 	case HAUT:
+		if (bound.top >= 0.f)
+			return true;
+		break;
 	case BAS:
-		dir = dir * -1.f;
+		if (bound.top +bound.height<= 0.f)
+			return true;
+		break;
+	case MILIEU:
+		break;
+	case NULLTRANSITION:
+		break;
+	}
+	return false;
+}
+
+void CTransition::initDirSpeed()
+{
+	switch (sens)
+	{
+	case GAUCHE:
+		dir = sf::Vector2f(1, 0);
+		speed = asset->sCREEN_WIDTH / (time * 60.f);
+		break;
+	case DROITE:
+		dir = sf::Vector2f(-1, 0);
+		speed = asset->sCREEN_WIDTH / (time * 60.f);
+		break;
+	case HAUT:
+		dir = sf::Vector2f(0, 1);
+		speed = asset->sCREEN_HEIGHT / (time * 60.f);
+		break;
+	case BAS:
+		dir = sf::Vector2f(0, -1);
+		speed = asset->sCREEN_HEIGHT / (time * 60.f);
 		break;
 	case MILIEU:
 		dir = sf::Vector2f(0, 0);
 		//On verra
 		break;
-	case NULLTRANSITION:
-		dir = sf::Vector2f(0, 0);
-		speed = 0.f;
-		break;
 	}
-	transiouuuuu = true;
-	return false;
 }
 
 
@@ -48,25 +81,29 @@ void CTransition::initTransition()
 		switch (sens)
 		{
 		case GAUCHE:
+			sens = DROITE;
+			break;
 		case DROITE:
+			sens = GAUCHE;
+			break;
 		case HAUT:
+			sens = BAS;
+			break;
 		case BAS:
-			dir = dir*-1.f;
+			sens = HAUT;
 			break;
 		case MILIEU:
-			dir = sf::Vector2f(0, 0);
-			//On verra
 			break;
 		case NULLTRANSITION:
-			dir = sf::Vector2f(0, 0);
-			speed = 0.f;
 			break;
 		}
 		transiouuuuu = true;
+		initDirSpeed();
 	}
+
 	else if(sens!=NULLTRANSITION)
 	{
-		backTransi = sf::RectangleShape(sf::Vector2f(asset->sCREEN_WIDTH * 2.f, asset->sCREEN_HEIGHT * 2.f));
+		backTransi = sf::RectangleShape(sf::Vector2f(asset->sCREEN_WIDTH, asset->sCREEN_HEIGHT));
 		backTransi.setFillColor(sf::Color::Black);
 		switch (sens)
 		{
@@ -102,16 +139,18 @@ void CTransition::initTransition()
 bool CTransition::updateTransition(float delta)
 {
 	alreadyBeenRendered = false; //Permet de jouer avec la transition, la rendre avant le draw etc
-	if(clock.getElapsedTime().asSeconds()<time)
+	if(clock.getElapsedTime().asSeconds()>=time&& isFinito())
 	{
-		return false;
-	}
 		if (transiState == 0)
 			transiState = 1;
 		else
 			transiState = 2;
 		transiouuuuu = false;
 	return true;
+	}
+
+	backTransi.move(dir * speed);
+	return false;
 
 }
 
@@ -119,7 +158,6 @@ void CTransition::renderTransition(sf::RenderWindow& window)
 {
 	if(sens!=NULLTRANSITION&&alreadyBeenRendered==false)
 	{
-		backTransi.move(dir * speed);
 		window.draw(backTransi);
 		alreadyBeenRendered = true;
 	}
