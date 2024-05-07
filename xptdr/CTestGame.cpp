@@ -88,10 +88,6 @@ void CTestGame::STEHandleInput()
 		if (sf::Event::Closed == event.type)
 			data->window.close();
 		if (event.type == sf::Event::KeyReleased) {
-			if (event.key.code == sf::Keyboard::Escape)
-			{
-				data->machine.AddState(StateRef(new CGameMenu(data)), false);
-			}
 			if (event.key.code == sf::Keyboard::Space)
 			{
 				players.begin()->gainXP(5);
@@ -128,15 +124,26 @@ void CTestGame::STEHandleInput()
 			{
 				for (auto i = players.begin(); i != players.end(); i++)
 				{
-					i->AAA();
+					i->gainXP(20);
 				}
 			
 			}
 			//TEMP C POUR MOURIR
 			if (event.key.code == sf::Keyboard::M)
 			{
-				players.begin()->reduceHP(players.begin()->getMaxHealth());
+				for (auto it = players.begin(); it != players.end(); it++)
+				{
+					it->reduceHP(40);
+
+				}
 				//GameOver();
+			}
+		}
+		else if(event.type==sf::Event::KeyPressed)
+		{
+			if (event.key.code == sf::Keyboard::Escape)
+			{
+				data->machine.AddState(StateRef(new CGameMenu(data, this)), false);
 			}
 		}
 	}
@@ -212,7 +219,7 @@ void CTestGame::STEUpdate(float delta)
 		if (player->hasLevelUp == true )
 		{
 			// Les graphes doivent dépendre des joueurs
-			data->machine.AddState(StateRef(new CUpgradeState(data, &(*player),&US )), false);
+			data->machine.AddState(StateRef(new CUpgradeState(data, &(*player),&US,this )), false);
 		}
 	}
 	totalScore = 0;

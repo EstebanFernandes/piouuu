@@ -5,10 +5,10 @@ La première colonne n'est pas lu par le parser, c'est juste pour nous;<start>;<n
 4;;1;0;côte à côte !;Nos ingénieurs ont fixé la ballistique ! ;*1.1;*1.2;*1.1;doubleTirs2;;;;;;4;1;0;quoicoubeh;"Le ""amazon prime"" des améliorations !";1.0;;1;velocUp;;;
 4;;2;0;Dégat +;ça va tabasser là;*1.5;*1.2;;;;;;;;4;2;0;Blue Balls;ça va tabasser là!;1.2;;1.5;;;;
 4;;3;0;Triple Tirs;pareil mais un tir en plus ;*1.2;*1.2;;doubleTirs3;;;;;;7;3;1;Amélioration;Woah attend mais tu vas vraiment faire mal;1.2;;1;;;;
-7;;4;1;Am‚lioration;Woah attend mais tu vas vraiment faire mal;;*1.2;*1.4;explosiveBullet;;;;;;7;4;2;Bullets in the blue  sky;Le nom c'est une ref … une chanson de U2 ( la confiture etc etc);1.5;;1;;;;
+7;;4;1;Amélioration;Woah attend mais tu vas vraiment faire mal;;*1.2;*1.4;explosiveBullet;;;;;;7;4;2;Bullets in the blue  sky;Le nom c'est une ref … une chanson de U2 ( la confiture etc etc);1.5;;1;;;;
 7;;5;2;Bullets in the blue  sky;Le nom c'est une ref à une chanson de U2 ( la confiture etc etc);;*1.5;*1.4;;;;;;;10;5;3;Triple canon;T'abuse l…;1;3;1;;;;
 10;;6;3;Triple canon;T'abuse !;;;;;;;;;;10;6;4;I Need More Bullets;Glizzy overdrive activated;;;1;;;;
-10;;7;4;I Need More Bullets;Glizzy overdrive activated;;;;;;;;;;;<endColumn>;;;;;;;;;;
+10;;7;4;I Need More Bullets;Glizzy overdrive activated;;;;;2;;;;;;<endColumn>;;;;;;;;;;
 ;;<endColumn>;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;

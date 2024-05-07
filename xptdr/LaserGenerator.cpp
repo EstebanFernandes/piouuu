@@ -124,7 +124,7 @@ float LaserGenerator::lengthToBound(sf::Vector2f& pos, float& angle)
 
 
 		// Convertir l'angle en radians
-		float angleEnRadians = angle * 3.14159265 / 180;
+		float angleEnRadians = angle * 3.14159265f / 180.f;
 		int bound = whichBound(pos, angle);
 		// Calculer la pente de la droite
 		float m = std::tan(angleEnRadians);

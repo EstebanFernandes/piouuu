@@ -64,5 +64,6 @@ public:
 	virtual void STEResume() {};
 	//Méthode appelé une fois la transac effectué ;)
 	virtual void afterTransi() {};
+	virtual void drawOnTarget(sf::RenderTarget& target,float interpolation){}
 };
 

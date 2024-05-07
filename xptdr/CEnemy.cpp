@@ -102,9 +102,9 @@ void CEnemy::updatewPlayer(float delta, CPlayer& player)
 	{
 		if(gavexP==false)
 		{
-			player.gainXP(level);
+			player.gainXP(info.xpGived);
 			gavexP=true;
-			player.addToScore(scoreGived);
+			player.addToScore((float)info.scoreGived);
 			if (player.getMainWeapon()->typeTir == 1)
 				player.seekForTarget = true;
 		}

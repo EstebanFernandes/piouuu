@@ -21,16 +21,15 @@ void CGameMenu::choosedButton()
 	}
 }
 
-CGameMenu::CGameMenu(GameDataRef _data) : data(_data)
+CGameMenu::CGameMenu(GameDataRef _data, CState* prevState)
+	: data(_data),gamePointer(prevState)
 {
+	index = 0;
 }
 
 void CGameMenu::STEInit()
 {
 	data->assets.pauseMusique("PartieJour");
-	texta.create(data->window.getSize().x, data->window.getSize().y);
-	texta.update(data->window);
-	backGroundImage.setTexture(texta);
 	CButton temp(&(data->assets));
 	temp.setString("Reprendre");
 	temp.setSize(data->assets.sCREEN_WIDTH * 0.3f, data->assets.sCREEN_HEIGHT * 0.1f);
@@ -50,6 +49,10 @@ void CGameMenu::STEInit()
 	buttons.push_back(temp);
 	buttons[index].setOutlineThickness(3.f);
 	resizeScreen();
+	if (!blurShader.loadFromFile("shaders/vertexbandw.vert", "shaders/blurFrag.frag"))
+		std::cout << "bof";
+	blurShader.setUniform("texture", sf::Shader::CurrentTexture);
+	blurShader.setUniform("u_resolution", sf::Glsl::Vec2((float)data->assets.sCREEN_WIDTH, (float)data->assets.sCREEN_HEIGHT));
 }
 
 void CGameMenu::STEHandleInput()
@@ -121,7 +124,14 @@ void CGameMenu::STEUpdate(float delta)
 
 void CGameMenu::STEDraw(float delta)
 {
-	data->window.draw(backGroundImage);
+	sf::RenderTexture back;
+	back.create(data->assets.sCREEN_WIDTH, data->assets.sCREEN_HEIGHT);
+	back.clear();
+	blurShader.setUniform("texture", sf::Shader::CurrentTexture);
+	gamePointer->drawOnTarget(back, delta);
+	back.display();
+	backGroundImage = sf::Sprite(back.getTexture());
+	data->window.draw(backGroundImage, &blurShader);
 	if(resumeClicked)
 		data->window.draw(decompte);
 	else {

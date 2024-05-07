@@ -17,10 +17,11 @@ public:
 	void enemyShoot() {}
 
 	CEnemy* clone() override {
-		initPosition();
-		initDirection();
-		setSprite();
-		return new RoamingEnemy(*this);
+		RoamingEnemy* temp = new RoamingEnemy(*this);
+		temp->initPosition();
+		temp->initDirection();
+		temp->setSprite();
+		return temp;
 	}
 	/// <summary>
 	/// Surcharge de la direction adapté au roaming enemy

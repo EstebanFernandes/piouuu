@@ -33,7 +33,10 @@ void CStateMachine::ProcessStateChanges()
 	{
 		if ( ! states.empty() ) {
 			if (_isReplacing) 
+			{
+				std::cout << "On supprime un etat" << std::endl;
 				states.pop();
+			}
 			else {
 				states.top()->STEPause();
 			}

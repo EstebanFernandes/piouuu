@@ -56,7 +56,7 @@ void ShootingEnemy::setPos()
 		spawnPos.y = assets->sCREEN_HEIGHT * 0.05f;
 	else if (info.spawnSide == "bas")
 		//info.pos.y=assets->sCREEN_HEIGHT * 0.95f;
-		spawnPos.y = assets->sCREEN_HEIGHT * 0.05f;
+		spawnPos.y = assets->sCREEN_HEIGHT * 0.95f;
 }
 void ShootingEnemy::updateMovement(float delta)
 {

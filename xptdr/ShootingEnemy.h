@@ -32,6 +32,7 @@ public:
 		temp->initAnimation();
 		temp->initDirection();
 		temp->setSprite();
+		assets->addSFX("bulletSound", &temp->BAW.bulletSound);
 		return temp;
 	}
 	void setSprite()

@@ -45,7 +45,7 @@ public :
 	/// <param name="delta"></param>
 	/// <returns></returns>
 	bool updateTransition(float delta);
-	void renderTransition(sf::RenderWindow& window);
+	void renderTransition(sf::RenderTarget& window);
 	/// <summary>
 	/// Dit si la transition est fini
 	/// </summary>

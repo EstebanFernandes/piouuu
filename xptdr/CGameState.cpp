@@ -126,10 +126,11 @@ void CGameState::STEHandleInput()
 			i->PLYupdateMovement(event);
 		if (sf::Event::Closed == event.type)
 			data->window.close();
-		if (event.type == sf::Event::KeyReleased) {
+		if (event.type == sf::Event::KeyPressed) {
 			if (event.key.code == sf::Keyboard::Escape)
 			{
-				data->machine.AddState(StateRef(new CGameMenu(data)), false);
+				data->machine.AddState(StateRef(new CGameMenu(data,this)), false);
+				hasChanges = true;
 			}
 		}
 	}
@@ -234,7 +235,7 @@ void CGameState::STEUpdate(float delta)
 	{
 		if (player->hasLevelUp == true )
 		{
-			data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), &US)), false);
+			data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), &US,this)), false);
 		}
 	}
 }
@@ -273,34 +274,38 @@ void CGameState::updateTime()
 }
 
 
-void CGameState::renderBackground()
+void CGameState::renderBackground(sf::RenderTarget& target)
 {
-	BG1.renderBackground(data->window);
+	BG1.renderBackground(target);
 }
 
 void CGameState::STEDraw(float delta)
 {
-	sf::RenderWindow& r = data->window;
-	renderBackground();
+	drawOnTarget(data->window,delta);
+}
+
+void CGameState::drawOnTarget(sf::RenderTarget& target, float interpolation)
+{
+	renderBackground(target);
 	for (auto i = players.begin(); i != players.end(); i++)
-		i->renderEntity(data->window);
+		i->renderEntity(target);
 	for (int i = 0; i < entityList.size(); i++)
 	{
-		entityList[i]->renderEntity(r);
+		entityList[i]->renderEntity(target);
 	}
 
-	r.setView(data->window.getDefaultView());
+	target.setView(data->window.getDefaultView());
 	//Permet de remettre la vue par défaut et donc pas de soucis sur la suite
 	for (int i = 0; i < entityList.size(); i++)
 	{
-		entityList[i]->renderUI(r);
+		entityList[i]->renderUI(target);
 	}
 	for (auto i = players.begin(); i != players.end(); i++)
 	{
-		i->renderUI(data->window);
+		i->renderUI(target);
 	}
-	r.draw(uitext);
-	r.draw(gameClockText);
+	target.draw(uitext);
+	target.draw(gameClockText);
 }
 
 void CGameState::STEResume()

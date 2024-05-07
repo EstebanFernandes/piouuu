@@ -34,6 +34,13 @@ void CParserXML::coreFunction()
     std::cout << "Fini" << std::endl;
 }
 
+void CParserXML::headerLevel()
+{
+    pt::read_xml(filePath, tree);
+    pt::ptree::const_iterator it = tree.begin();
+    //explore_attribute(it,,);
+}
+
 void CParserXML::parse_tree(const pt::ptree& pt, std::string key)
 {
     std::string nkey;
@@ -75,7 +82,8 @@ void CParserXML::addEnemy(std::string enemyName,std::vector<std::string> values)
     //Spawn side
     infoE.spawnSide = values[13];
     infoE.isAim= std::stoi(values[11]);
-    
+    infoE.scoreGived = std::stoi(values[12]);
+    infoE.xpGived = std::stoi(values[14]);
     //Position (soit en absolu, soit en pourcentage selon l'écran
     size_t fade = values[3].find(';');
     std::string posString = values[3];
@@ -94,7 +102,7 @@ void CParserXML::addEnemy(std::string enemyName,std::vector<std::string> values)
     direct.x = direct.x / 100.f * screenwidth;
     direct.y = direct.y / 100.f * screenheight;
     if (enemyName == "roamingEnemy" || enemyName == "rusher") {
-        infoE.direction = utilities::dirAtoB(infoE.pos, direct);
+        //infoE.direction = utilities::dirAtoB(infoE.pos, direct);
     }
 
 

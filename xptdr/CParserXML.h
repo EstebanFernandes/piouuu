@@ -63,6 +63,7 @@ public:
     /// Méthode que l'on appelle pour exécuter le parsing, on l'appelle après qu'on ait utilisé 
     /// </summary>
     void coreFunction();
+    void headerLevel();
     Level getLevel() { return level; }
 
 };

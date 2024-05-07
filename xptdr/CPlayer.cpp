@@ -463,6 +463,8 @@ void CPlayer::updateEntity(float dt)
 		{
 			needDelete = true;
 		}
+		secondaryWeapon->updateWeapon(dt);
+		mainWeapon->updateWeapon(dt);
 	}
 	else
 	{

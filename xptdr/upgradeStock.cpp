@@ -4,6 +4,7 @@ upgradeStock::upgradeStock()
 {
 	graphs.push_back(std::vector<CGrapheUpdate>());
 	graphs[0].push_back(CGrapheUpdate());
+	graphs[0][0].GRAAjouterSommet(0);
 }
 
 void upgradeStock::addGraphs(std::string fileName)
@@ -55,7 +56,12 @@ void upgradeStock::avancer(graphComponent& comp, int next)
 		//ON ne fait rien
 	}
 	else //Comportement normal (la ligne de dingo)
-		comp.pointerToSommet = &(graphs[comp.pos.y][comp.pos.x].GRAObtenirListeSommet().at(graphs[comp.pos.x][comp.pos.y].GRATrouverSommet(comp.pointerToSommet->SOMLireArcPartant().at(next).ARCObtenirDest())));
+	{
+		CGrapheUpdate& curGraph = graphs[comp.pos.y][comp.pos.x];
+		int idProchainSommet = comp.pointerToSommet->SOMLireArcPartant().at(next).ARCObtenirDest();
+		//comp.pointerToSommet = &(curGraph.GRAObtenirListeSommet().at(curGraph.GRATrouverSommet(idProchainSommet)));
+		comp.pointerToSommet = &(curGraph.GRAObtenirListeSommet().at(curGraph.GRATrouverSommet(idProchainSommet)));
+	}
 	//Permet de vérifier si on est en fin de graphe ou non
 	if(comp.pointerToSommet->SOMLireArcPartant().size()==0&& comp.pos.y!=0)
 	{
