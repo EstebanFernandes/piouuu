@@ -36,12 +36,14 @@ void CGameState::initPlayer()
 	data->assets.LoadTexture("R2D2", "res\\img\\characters\\Droide2.png");
 	data->assets.LoadTexture("logonormal", "res\\img\\characters\\logonormal2.png");
 	data->assets.LoadSFX("planeSound", "res\\sfx\\plane.mp3");
+	data->assets.LoadTexture("muzzleFlash", "res\\img\\muzzleFlash.png");
 	int numero = 1;
 	for (auto i = players.begin(); i != players.end(); i++)
 	{
 		i->setAssets(&(data->assets));
 		i->updateMisc();
 		i->setNumero(numero);
+		i->setTouche(&inputOfPlayers[numero - 1]);
 		numero++;
 	}
 	if (numero == 2)//Qu'un joueur
@@ -67,9 +69,25 @@ void CGameState::initBackground()
 	BG1.setAssets(&(data->assets));
 	BG1.setWindowSize(data->window.getSize());
 	sf::Sprite t1,t2,t3,t4,t5;
-
+	sf::Vector2i zero(0, 0);
+	CAnimation anim(NULL, zero, sf::Vector2i(1, 6), 0.f, 2);
+	anim.changeIntRect(zero, sf::IntRect(0, 0, 34, 7));
+	zero.y++;
+	anim.changeIntRect(zero, sf::IntRect(0, 9, 117, 15));
+	zero.y++;
+	anim.changeIntRect(zero, sf::IntRect(0, 26, 43, 10));
+	zero.y++;
+	anim.changeIntRect(zero, sf::IntRect(0, 38, 50, 10));
+	zero.y++;
+	anim.changeIntRect(zero, sf::IntRect(0, 50, 97, 14));
+	zero.y++;
+	anim.changeIntRect(zero, sf::IntRect(0, 66, 61, 12));
+	data->assets.LoadTexture("nuages",
+		"res\\img\\layers\\nuages.png");
+	data->assets.LoadTexture("sun",
+		"res\\img\\layers\\soleil.png");
 	data->assets.LoadTexture("background", 
-		"res\\img\\layers\\parallax-mountain-bg.png");
+		"res\\img\\layers\\fondvide.png");
 
 	TextureSize = data->assets.GetTexture("background").getSize(); //Get size of texture.
 	WindowSize = data->window.getSize();
@@ -79,10 +97,18 @@ void CGameState::initBackground()
 
 	t1.setTexture(data->assets.GetTexture("background"));
 	t1.setScale(ScaleX, ScaleY);      //Set scale. 
-	BG1.addLayer(t1, "background", 0.0001f,CBackground::background);
-
+	BG1.addLayer(t1, "background", 0.f,CBackground::background);
+	//Soleil
+	sf::Sprite soleil(data->assets.GetTexture("sun"));
+	soleil.setScale(2.f, 2.f);
+	BG1.addLayer(soleil, "sun", 0.0f, CBackground::sun);
+	BG1.addClouds("nuages", "nuage", 0.25f, anim);
 	data->assets.LoadTexture("firstLayer", 
 		"res\\img\\layers\\parallax-mountain-montain-far.png");
+	ellipseForSun = EllipseShape(sf::Vector2f((float)data->assets.sCREEN_WIDTH / 2.f, (float)data->assets.sCREEN_HEIGHT ));
+	ellipseForSun.setPointCount(600);
+	ellipseForSun.setOrigin(ellipseForSun.getLocalBounds().width / 2.f, ellipseForSun.getLocalBounds().height / 2.f);
+	ellipseForSun.setPosition(ellipseForSun.getRadius());
 	TextureSize = data->assets.GetTexture("firstLayer").getSize(); //Get size of texture.
 	WindowSize = data->window.getSize();
 
@@ -107,6 +133,7 @@ void CGameState::initBackground()
 	gameClockText.setFillColor(sf::Color::White);
 	gameClockText.setFont(data->assets.GetFont("Nouvelle"));
 	gameTime.Zero;
+	updateBackground(0.f);
 }
 void CGameState::STEInit()
 {
@@ -244,6 +271,8 @@ void CGameState::STEUpdate(float delta)
 void CGameState::updateBackground(float delta)
 {
 	BG1.updateCBackground(delta);
+	indexForSun = static_cast<int>(floor(time/2.5f)+ (int)ellipseForSun.getPointCount()/2 + (int)ellipseForSun.getPointCount() / 4)% (int)ellipseForSun.getPointCount();
+	BG1.getLayer("sun").sprite.setPosition(ellipseForSun.getPoint(indexForSun));
 }
 
 void CGameState::deleteEntity(int i)

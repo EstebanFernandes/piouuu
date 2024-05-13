@@ -144,4 +144,34 @@ namespace utilities {
 	{
 
 	}
+	inline //Fonction qui renverse le sprite selon une symétrie axiale
+		void flipSprite(sf::Sprite& Sprite,bool horizontal=true) {
+		if(horizontal)
+		{
+			sf::IntRect temp(Sprite.getTextureRect());
+			if (temp.left != 0)
+			{
+				temp.left = 0;
+			}
+			else
+			{
+				temp.left = temp.width;
+			}
+			temp.width = -temp.width;
+			Sprite.setTextureRect(temp);
+		}
+		else {
+			sf::IntRect temp(Sprite.getTextureRect());
+			if (temp.top != 0)
+			{
+				temp.top = 0;
+			}
+			else
+			{
+				temp.top = temp.height;
+			}
+			temp.height = -temp.height;
+			Sprite.setTextureRect(temp);
+		}
+	}
 }

@@ -23,7 +23,7 @@ void CUpgradeState::plusStats()
 {
 	int screen_Height = data->assets.sCREEN_HEIGHT;
 	int screen_Width = data->assets.sCREEN_WIDTH;
-	int nbofUpgrade = 3;
+	int nbofUpgrade = 4;
 	fillUpgrade(nbofUpgrade);
 	for (int i = 0; i < nbofUpgrade; i++)
 	{
@@ -154,7 +154,7 @@ void CUpgradeState::STEHandleInput()
 	{
 		if (sf::Event::Closed == event.type)
 			data->window.close();
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) ) {
+		else if (sf::Keyboard::isKeyPressed(inputOfPlayers[this->pointerToPlayer1->numero-1].button1)) {
 			//prevent from multiple key detection
 			if (hasPressedKey++ == 1)
 			{
@@ -167,11 +167,11 @@ void CUpgradeState::STEHandleInput()
 		else if (event.type == sf::Event::KeyPressed)
 		{
 				int previousSelec = iCardSelection;
-			if (event.key.code == sf::Keyboard::D)
+			if (event.key.code == inputOfPlayers[this->pointerToPlayer1->numero-1].moveRight)
 			{
 				iCardSelection = (iCardSelection + 1) % CardList.size();
 			}
-			else if (event.key.code == sf::Keyboard::Q)
+			else if (event.key.code == inputOfPlayers[this->pointerToPlayer1->numero-1].moveLeft)
 			{
 				if (iCardSelection == 0) {
 					iCardSelection = (int)CardList.size() - 1;

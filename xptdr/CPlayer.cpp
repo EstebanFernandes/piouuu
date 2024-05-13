@@ -51,6 +51,14 @@ void CPlayer::setValue(int& init, std::string modif)
 	}
 }
 
+void CPlayer::updateXpBar()
+{
+	float perc = (xp > maxXp) ? (float)maxXp : (float)xp;
+	perc = (perc == 0) ? 0.05f : perc;
+	float fullSize = lifeBarBG2.getGlobalBounds().width - lifeBarBG2.getOutlineThickness();
+		xpBar.setSize(sf::Vector2f(fullSize* perc / maxXp, 10.f));
+}
+
 void CPlayer::setAssets(CAssetManager* a)
 {
 	mainWeapon = new CGunslinger();
@@ -69,17 +77,21 @@ void CPlayer::setAssets(CAssetManager* a)
 	std::string nameImage;
 	CWeaponStat ws((float)damagePerBullet, bulletSpeed, sf::Vector2f(1.f, 0.f), 0, nameImage, sf::Vector2f(1.f, 1.f), attackSpeed);
 	mainWeapon->setWeaponStats(ws);
+	muzzleFlash.setTexture(assets->GetTexture("muzzleFlash"));
+	muzzleFlash.setOrigin(0.f,muzzleFlash.getLocalBounds().height/2.f);
+	muzzleFlash.setScale(0.05f, 0.05f);
 	if (name.find("Rancoeur") != std::string::npos) {
 		mainWeapon->setBulletAsset("bulletImageRancoeur");
 		nameImage = "bulletImageRancoeur";
 		anim.changeIntRect(1, sf::Vector2i(153, 67));
 		anim.changeIntRect(2, sf::Vector2i(153, 67));
-		//mainWeapon->getWeaponStats().bulletScale = sf::Vector2f(1.5f, 1.5f);
+		muzzleFlash.setColor(sf::Color(116, 66, 200));
 	}
 	else if (name.find("Golden") != std::string::npos) {
 		mainWeapon->setBulletAsset("bulletImageGolden");
 		anim.changeIntRect(1, sf::Vector2i(153, 63));
 		anim.changeIntRect(2, sf::Vector2i(153, 72));
+		muzzleFlash.setColor(sf::Color(255, 255, 0));
 		nameImage = "bulletImageGolden";
 	}
 	explosionSprite.setTexture(assets->GetTexture("explosionPlayer"));
@@ -312,44 +324,53 @@ void CPlayer::initLifeBar()
 	lifeBarBackground.setOutlineColor(playerColor);
 	lifeBarBackground.setOutlineThickness(baseThickness);
 	lifeBarBackground.setOrigin(0.f, lifeBarBackground.getLocalBounds().height / 2.f);
+	xpBar.setSize(sf::Vector2f(10.f, 10.f));
+	//Violet rgb(204, 102, 255)
+	xpBar.setFillColor(sf::Color(204,102,255,200));
+	updateXpBar();
 }
 
 
 void CPlayer::PLYupdateMovement(sf::Event& event)
 {
+	/*isMovingUp = (sf::Keyboard::isKeyPressed(inputForPlayer->moveUp)) ? true : false;
+	isMovingDown = (sf::Keyboard::isKeyPressed(inputForPlayer->moveDown)) ? true : false;
+	isMovingLeft = (sf::Keyboard::isKeyPressed(inputForPlayer->moveLeft)) ? true : false;
+	isMovingRight = (sf::Keyboard::isKeyPressed(inputForPlayer->moveRight)) ? true : false;
+	wantToDash = (sf::Keyboard::isKeyPressed(inputForPlayer->button3)) ? true : false;*/
 	switch (event.type)
 	{
-	case sf::Event::KeyPressed :
-		if (event.key.code == upKey)
-			isMovingUp = true;
-		else if (event.key.code == leftKey)
-			isMovingLeft = true;
-		else if (event.key.code == downKey)
-			isMovingDown = true;
-		else if (event.key.code == rightKey)
-			isMovingRight = true;
-		if (event.key.code == dashKey &&dashClock.getElapsedTime().asSeconds()>=cdDash)
+		case sf::Event::KeyPressed :
 		{
-			wantToDash = true;
-			dashClock.restart();
+				if (event.key.code == inputForPlayer->moveUp)
+					isMovingUp = true;
+				if (event.key.code == inputForPlayer->moveLeft)
+					isMovingLeft = true;
+				if (event.key.code == inputForPlayer->moveDown)
+					isMovingDown = true;
+				if (event.key.code == inputForPlayer->moveRight)
+					isMovingRight = true;
+				if (event.key.code == inputForPlayer->button3 && dashClock.getElapsedTime().asSeconds() >= cdDash)
+				{
+					wantToDash = true;
+					dashClock.restart();
+				}
+				break;
 		}
-		break;
-	case sf::Event::KeyReleased:
-		if (event.key.code == upKey)
-			isMovingUp = false;
-		else if (event.key.code == leftKey)
-			isMovingLeft = false;
-		else if (event.key.code == downKey)
-			isMovingDown = false;
-		else if (event.key.code == rightKey)
-			isMovingRight = false;
-		if (event.key.code == dashKey)
-			wantToDash = false;
-		break;
-	default:
-		break;
-
-
+		case sf::Event::KeyReleased:
+		{
+			if (event.key.code == inputForPlayer->moveUp)
+				isMovingUp = false;
+			if (event.key.code == inputForPlayer->moveLeft)
+				isMovingLeft = false;
+			if (event.key.code == inputForPlayer->moveDown)
+				isMovingDown = false;
+			if (event.key.code == inputForPlayer->moveRight)
+				isMovingRight = false;
+			if (event.key.code == inputForPlayer->button3)
+				wantToDash = false;
+			break;
+		}
 	}
 }
 void CPlayer::updateDash(float delta)
@@ -387,9 +408,9 @@ void CPlayer::updateMovement(float dt)
 		if (direction.y == 1.f)
 		{
 			R2Anim.setDifferentAnimation(2);
+			anim.setDifferentAnimation(2);
 			R2Offset.y = -8.f;
 			setPositionEntity(getSprite().getPosition());
-			anim.setDifferentAnimation(2);
 		}
 		else if (direction.y == -1.f)
 		{
@@ -422,6 +443,7 @@ void CPlayer::updateMovement(float dt)
 
 void CPlayer::renderLifeBar(sf::RenderTarget& target)
 {
+	target.draw(xpBar);
 	target.draw(lifeBarBG2);
 	target.draw(lifeBarBackground);
 	target.draw(lifeBar);
@@ -434,6 +456,7 @@ void CPlayer::renderLifeBar(sf::RenderTarget& target)
 void CPlayer::gainXP(int xp_)
 {
 	xp += xp_;
+	updateXpBar();
 }
 void CPlayer::updateLifeBar()
 {
@@ -495,7 +518,13 @@ void CPlayer::updateEntity(float dt)
 
 void CPlayer::renderEntity(sf::RenderTarget& target)
 {
+	bool isShooting = mainWeapon->isWeaponShooting();
 	mainWeapon->renderWeapon(target);
+	if (isShooting)
+	{
+		target.draw(muzzleFlash);
+		utilities::flipSprite(muzzleFlash,false);
+	}
 	secondaryWeapon->renderWeapon(target);
 	if(animExplosionSprite.getCurrentFrameNumber().x<4&&needDelete==false)
 	{
@@ -554,6 +583,9 @@ void CPlayer::setLifeBarPosition(sf::Vector2f& pos)
 	newpos.x -= lifeBarBackground.getOutlineThickness() / 2.f;
 	newpos.y += lifeBarBackground.getOutlineThickness();
 	lifeBarBackground.setPosition(newpos);
+	newpos.x -= lifeBarBackground.getOutlineThickness();
+	newpos.y += lifeBarBackground.getGlobalBounds().height/2.f- lifeBarBackground.getOutlineThickness() / 2.f;
+	xpBar.setPosition(newpos);
 }
 
 void CPlayer::setNumero(int& i)
@@ -563,13 +595,6 @@ void CPlayer::setNumero(int& i)
 	case 2:
 	{
 		playerColor = sf::Color(52, 199, 62);
-		upKey = sf::Keyboard::Up;
-		downKey = sf::Keyboard::Down;
-		leftKey = sf::Keyboard::Left;
-		rightKey = sf::Keyboard::Right;
-		getMainWeapon()->setTouche(sf::Keyboard::U);
-		getSecondaryWeapon()->setTouche(sf::Keyboard::J);
-		dashKey = sf::Keyboard::I;
 		break;
 	}
 	}
@@ -584,5 +609,16 @@ void CPlayer::setNumero(int& i)
 		pos = sf::Vector2f(assets->sCREEN_WIDTH * 0.95f - lifeBarBG2.getGlobalBounds().width-iconCircle2.getGlobalBounds().width, assets->sCREEN_HEIGHT * 0.05f);
 		setLifeBarPosition(pos);
 		break;
+	}
+	numero = i;
+}
+
+void CPlayer::setTouche(inputPlayer* inputt)
+{
+	if (inputt != NULL)
+	{
+		inputForPlayer = inputt;
+		mainWeapon->setTouche(inputForPlayer->button1);
+		secondaryWeapon->setTouche(inputForPlayer->button2);
 	}
 }

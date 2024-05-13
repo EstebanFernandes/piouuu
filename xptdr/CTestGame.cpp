@@ -40,6 +40,7 @@ void CTestGame::STEInit()
 	bulletstorage = bulletStorage(&(data->assets));
 	entityList.push_back(&bulletstorage);
 	currentTransi.initTransition();
+	int i = 0;
 	for (auto it = players.begin(); it != players.end(); it++)
 	{
 		it->curUpgrade.push_back(US.initVert(ARME_PRINCIPALE));
@@ -72,6 +73,7 @@ void CTestGame::initAssets()
 	data->assets.LoadTexture("rusher", "res\\img\\ennemies\\rusher.png");
 	data->assets.LoadTexture("logonormal", "res\\img\\characters\\logonormal2.png");
 	data->assets.LoadTexture("bulletTear", "res\\img\\ennemies\\bulletTear.png");
+	data->assets.LoadTexture("muzzleFlash", "res\\img\\muzzleFlash.png");
 	data->assets.LoadSFX("bulletSound", "res\\sfx\\Piou.wav");
 	data->assets.LoadSFX("enemyRush", "res\\sfx\\vaisseau_fonce.wav");
 	data->assets.LoadSFX("planeSound", "res\\sfx\\plane.mp3");
@@ -124,7 +126,7 @@ void CTestGame::STEHandleInput()
 			{
 				for (auto i = players.begin(); i != players.end(); i++)
 				{
-					i->gainXP(20);
+					//i->gainXP(20);
 				}
 			
 			}

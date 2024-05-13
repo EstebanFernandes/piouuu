@@ -51,10 +51,13 @@ public:
 			matrix.push_back(std::vector<sf::IntRect>(nbframe.y, temp));
 		}
 		//matrix = matrixSpriteSheet(nbframe.x, std::vector<sf::IntRect>(nbframe.y,temp));
-		currentSprite = sprit;
-		currentSprite->setOrigin(matrix[currentFrame.x][currentFrame.y].width / 2.f, matrix[currentFrame.x][currentFrame.y].height / 2.f);
-		computeMatrix();
-		switchFrames();
+		if(sprit!=NULL)
+		{
+			currentSprite = sprit;
+			currentSprite->setOrigin(matrix[currentFrame.x][currentFrame.y].width / 2.f, matrix[currentFrame.x][currentFrame.y].height / 2.f);
+			computeMatrix();
+			switchFrames();
+		}
 	}
 
 	CAnimation(sf::Sprite* sprit, sf::Vector2i frame, int nbframe, float time, int pxbFrame = 0)
@@ -116,6 +119,7 @@ public:
 
 	}
 	void switchFrames() {
+		if(currentSprite!=NULL)
 			currentSprite->setTextureRect(matrix[currentFrame.x][currentFrame.y]);
 	}
 	void setDifferentAnimation(int t) {

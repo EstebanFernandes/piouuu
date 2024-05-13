@@ -3,6 +3,7 @@
 #include<SFML/Graphics.hpp>
 #include"CAnimation.h"
 #include"CCharacter.h"
+#include"SpinningCard.hpp"
 class CCharacterSelectionMultiState : public CState
 {
 private:
@@ -14,18 +15,21 @@ private:
 		 int MDRRcafonctionne = 0;
 	 };
 	 struct joueur {
-		keys keys;
+		 inputPlayer* curInput;
 		sf::Text avionName;
 		sf::Text avionDescription;
 		sf::Text avionplayerNumber;
 		sf::Text trueAvionPlayerNumber;
 		int index=0;
+		float degree = 0.f;
 		bool isValid = false;
 		sf::FloatRect zone;
+		sw::SpinningCard* spinArrow;
 		sf::Sprite arrowSprite;
 		sf::Sprite preViewSprite;
 		bool sens = false;//if false on descend, true on monte pour la fleche
 	};
+	 float arrowMid=0.f;
 		GameDataRef data;
 		std::vector<avion> avions;
 		sf::RectangleShape fondMiTransparent;
@@ -49,6 +53,7 @@ private:
 		void updateArrow(int index);
 		void drawElements(bool onlyAvion=false);
 public:
+	~CCharacterSelectionMultiState();
 	CCharacterSelectionMultiState(GameDataRef data_);
 	CCharacterSelectionMultiState(GameDataRef data_,std::vector<CCharacter>* pointerToVectCharact);
 	void STEInit();

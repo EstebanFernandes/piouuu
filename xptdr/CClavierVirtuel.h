@@ -32,7 +32,7 @@ private:
 
 	int nbJoueur = 0;
 	struct joueur {
-		keys keys;
+		inputPlayer* input;
 		sf::RectangleShape fondBlanc; //Fond où on affiche le nom
 		unsigned int stringPosition = 0; //Position de la bar, on peut faire fleche de droite pour écrire au milieu du text
 		std::string name="";

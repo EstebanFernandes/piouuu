@@ -67,7 +67,7 @@ void CGameMenu::STEHandleInput()
 				data->window.close();
 			else if (event.type == sf::Event::KeyPressed)
 			{
-				if (event.key.code == sf::Keyboard::Z)
+				if (event.key.code == inputOfPlayers[0].moveUp)
 				{
 					if (index == 0) {
 						index = (int)buttons.size() - 1;
@@ -76,11 +76,11 @@ void CGameMenu::STEHandleInput()
 						index = (index - 1) % buttons.size();
 					}
 				}
-				else if (event.key.code == sf::Keyboard::S)
+				else if (event.key.code == inputOfPlayers[0].moveDown)
 				{
 					index = (index + 1) % buttons.size();
 				}
-				else if (event.key.code == sf::Keyboard::Enter)
+				else if (event.key.code == inputOfPlayers[0].button1)
 					choosedButton();
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 				{
@@ -89,11 +89,6 @@ void CGameMenu::STEHandleInput()
 				}
 				buttons[previousSelec].setOutlineThickness(0.f);
 				buttons[index].setOutlineThickness(3.f);
-			}
-			else if (event.type == sf::Event::MouseButtonPressed)
-			{
-				if (event.key.code == sf::Mouse::Left)
-					choosedButton();
 			}
 		}
 
@@ -109,6 +104,7 @@ void CGameMenu::STEUpdate(float delta)
 		if (temp > 3.f)
 		{
 			data->machine.RemoveState();
+			hasChanges = true;
 		}
 		else if (temp > 2.f)
 			temp2 = "1";

@@ -41,6 +41,8 @@ protected:
 	void initBackground();
 	void deleteEntity(int i);
 	void updateTime();
+	EllipseShape ellipseForSun;
+	int indexForSun = 0;
 public:
 	CGameState();
 	CGameState(GameDataRef _data);

@@ -52,7 +52,7 @@ void CButtonState::STEHandleInput()
 			data->window.close();
 		else if (event.type == sf::Event::KeyPressed)
 		{
-			if (event.key.code == sf::Keyboard::Q)
+			if (event.key.code == inputOfPlayers[0].moveLeft)
 			{
 				if (index == 0) {
 					index = (int)buttonList.size() - 1;
@@ -61,16 +61,11 @@ void CButtonState::STEHandleInput()
 					index = (index - 1) % buttonList.size();
 				}
 			}
-			else if (event.key.code == sf::Keyboard::D)
+			else if (event.key.code == inputOfPlayers[0].moveRight)
 			{
 				index = (index + 1) % buttonList.size();
 			}
-			else if (event.key.code == sf::Keyboard::Enter)
-				choosedButton();
-		}
-		else if (event.type == sf::Event::MouseButtonPressed)
-		{
-			if (event.key.code == sf::Mouse::Left)
+			else if (event.key.code == inputOfPlayers[0].button1)
 				choosedButton();
 		}
 	}

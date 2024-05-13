@@ -1,11 +1,13 @@
 #pragma once
 #include"CAssetManager.h"
 #include<SFML/Graphics.hpp>
+#include"CAnimation.h"
+#include"utilities.h"
 
 struct BGContainer {
 	std::string name;
 	sf::Sprite sprite;
-	float speed;
+	sf::Vector2f direction;
 	int type;
 };
 //Classe qui gère les fond de chaque map, il faut rentrer les couches de la dernière à la 1ere
@@ -15,16 +17,24 @@ private:
 	CAssetManager* assets;
 	sf::Vector2u windowSize;
 	std::vector<BGContainer> allLayer;
+	std::vector<BGContainer> cloudLayers; //POur gérer les nuages
+	std::vector<BGContainer> cloudLayersCopies; //POur gérer les nuages
 	std::vector<BGContainer> layerCopies;
 	std::vector<sf::Shader*> shaders;
 	bool typeBG;//Si true c'est un background ingame, sinon c'est un bg de menu
 	float* time;//Represente le temps
 	sf::RectangleShape fond;
+	bool hasCloud = false;
+	sf::Clock cloudClocks;
+	int cloudLayer = -1; //Indique la couche où l'on doit rendre les nuages
+	float cloudTimer =0.5f;
 public:
 	enum type{
 		background,
 		bot,
 		top,
+		clouds,
+		sun,
 		basicBG //Spécial pour les menus de pause sélection de perso etc, contient deux shaders
 	};
 	CBackground(CAssetManager* a);
@@ -34,6 +44,7 @@ public:
 	void addAndScaleLayer(std::string fileName, std::string name, float speed);
 	void addLayer(std::string fileName,std::string name, float speed, int type);
 	void addLayer(sf::Sprite sprite, std::string name, float speed, int type);
+	void addClouds(std::string textureName, std::string name, float speed,CAnimation& anim);
 	bool deleteLayer(std::string name);
 	/// <summary>
 	/// 
@@ -60,5 +71,17 @@ public:
 		}
 	}
 	void setTimePointer(float* time_) { time = time_; }
+
+	BGContainer& getLayer(std::string name)
+	{
+		for (int i = 0; i < allLayer.size(); i++)
+		{
+			if (allLayer[i].name == name)
+				return allLayer[i];
+		}
+		BGContainer temp;
+		temp.type = -1;
+		return temp;
+	}
 };
 

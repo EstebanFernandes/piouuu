@@ -76,7 +76,7 @@ void CBackground::addLayer(std::string fileName, std::string name, float speed,i
 	BGContainer temp;
 	temp.sprite.setTexture(assets->GetTexture(name));
 	temp.name = name;
-	temp.speed = speed;
+	temp.direction = sf::Vector2f(-speed, 0.f);
 	temp.type = type;
 	allLayer.push_back(temp);
 	sf::Vector2f f = temp.sprite.getPosition();
@@ -90,12 +90,33 @@ void CBackground::addLayer(sf::Sprite sprite, std::string name, float speed, int
 	BGContainer temp;
 	temp.sprite = sprite;
 	temp.name = name;
-	temp.speed = speed;
+	temp.direction = sf::Vector2f(-speed,0.f);
+	temp.type = type;
 	allLayer.push_back(temp);
-	sf::Vector2f f = temp.sprite.getPosition();
-	f.x += temp.sprite.getGlobalBounds().width;
-	temp.sprite.setPosition(f);
-	layerCopies.push_back(temp);
+		sf::Vector2f f = temp.sprite.getPosition();
+		f.x += temp.sprite.getGlobalBounds().width;
+		temp.sprite.setPosition(f);
+		layerCopies.push_back(temp);
+	
+}
+
+void CBackground::addClouds(std::string textureName, std::string name, float speed, CAnimation& anim)
+{
+	sf::Texture& textureCloud = assets->GetTexture(textureName);
+	for (int i = 0; i < anim.getMaxFrame().y; i++)
+	{
+		anim.setDifferentAnimation(i);
+		BGContainer temp;
+		temp.direction = sf::Vector2f(speed, 0.f);
+		temp.sprite.setTexture(textureCloud);
+		temp.sprite.setTextureRect((*anim.getCurrentFrame()));
+		temp.sprite.setScale(5.f, 5.f);
+		temp.type = i;
+		temp.name = name;
+		cloudLayersCopies.push_back(temp);
+	}
+	cloudLayer = (int)allLayer.size();
+	hasCloud = true;
 }
 
 bool CBackground::deleteLayer(std::string name)
@@ -121,6 +142,47 @@ void CBackground::updateCBackground(float delta)
 		shaders[0]->setUniform("u_time", currentTime);
 	}
 	else {
+		if (hasCloud) //UPdate pour les nuages
+		{
+			for (auto it = cloudLayers.begin();it!=cloudLayers.end();)
+			{
+				sf::Sprite& currentCloud = it->sprite;
+				if (currentCloud.getGlobalBounds().left >= (float)assets->sCREEN_WIDTH)
+					it = cloudLayers.erase(it);
+				else
+				{
+					currentCloud.move(it->direction);
+					it++;
+				}
+			}
+			if(cloudLayers.size() <= cloudLayersCopies.size() / 1.25 || cloudClocks.getElapsedTime().asSeconds() >=cloudTimer)
+			{
+				int nbMax = (int)cloudLayersCopies.size()/1.5,nbAjouter=0;
+				if (nbMax > 1)
+					nbAjouter = rand() % nbMax + 1;//On ajout un nombre random de nuage
+				else
+					nbAjouter = nbMax;
+				for (int i = 0; i < nbAjouter; i++)
+				{
+					BGContainer temp;
+					int randomNuage = rand() % cloudLayersCopies.size();
+					if(cloudLayers.size()!=0)
+					{
+						while (randomNuage == cloudLayers.back().type)
+							randomNuage = rand() % cloudLayersCopies.size();
+					}
+					temp = cloudLayersCopies.at(randomNuage);
+					if (rand() % 2 + 1 == 1)
+						utilities::flipSprite(temp.sprite);
+
+					float yPosition = utilities::RandomFloat(0.f, (float)assets->sCREEN_HEIGHT * 0.5f);
+					temp.sprite.setPosition(sf::Vector2f(-temp.sprite.getGlobalBounds().width, yPosition));
+					cloudLayers.push_back(temp);
+				}
+				cloudTimer = utilities::RandomFloat(1.f, 1.5f);
+				cloudClocks.restart();
+			}
+		}
 		for (int i = 0; i < allLayer.size(); i++)
 		{
 			sf::FloatRect sprite1Pos = allLayer[i].sprite.getGlobalBounds();
@@ -129,8 +191,8 @@ void CBackground::updateCBackground(float delta)
 				allLayer[i].sprite.setPosition(sprite2Pos.left + sprite2Pos.width, sprite1Pos.top);
 			if (sprite2Pos.left + sprite2Pos.width <= 0)
 				layerCopies[i].sprite.setPosition(sprite1Pos.left + sprite1Pos.width, sprite2Pos.top);
-			allLayer[i].sprite.move(sf::Vector2f(-allLayer[i].speed, 0));
-			layerCopies[i].sprite.move(sf::Vector2f(-layerCopies[i].speed, 0));
+			allLayer[i].sprite.move(allLayer[i].direction);
+			layerCopies[i].sprite.move(layerCopies[i].direction);
 		}
 	}
 }
@@ -148,11 +210,25 @@ void CBackground::renderBackground(sf::RenderTarget& target)
 		target.draw(allLayer[0].sprite, shaders[1]);
 	}
 	else
-	{
-		for (int i = 0; i < allLayer.size(); i++)
+	{//Opérateur ternaire, on attribue la première valeur si la condition est vraie, la deuxième sinon
+		int nbLayer =(int) (hasCloud) ? allLayer.size() + 1 : allLayer.size();
+		for (int i = 0; i < nbLayer; i++)
 		{
-			target.draw(allLayer[i].sprite);
-			target.draw(layerCopies[i].sprite);
+			if(hasCloud&&cloudLayer==i)
+				for (int j = 0;j<cloudLayers.size();j++)
+					target.draw(cloudLayers[j].sprite);
+			else if(i>cloudLayer)
+			{
+				target.draw(allLayer[i-1].sprite);
+				if(allLayer[i-1].type!=sun)
+				target.draw(layerCopies[i-1].sprite);
+			}
+			else
+			{
+				target.draw(allLayer[i ].sprite);
+				if (allLayer[i ].type != sun)
+				target.draw(layerCopies[i ].sprite);
+			}
 		}
 	}
 }

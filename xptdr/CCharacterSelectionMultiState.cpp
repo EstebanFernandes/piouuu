@@ -50,6 +50,10 @@ CCharacterSelectionMultiState::CCharacterSelectionMultiState(GameDataRef data_, 
 
 void CCharacterSelectionMultiState::updateArrow(int index)
 {
+	if (players[index].degree >= 360.f)
+		players[index].degree = -0.05f;
+	players[index].degree += 0.05f;
+players[index].spinArrow->spin(players[index].degree);
 	float speed = 0.02f;
 	sf::Sprite& sprite = players[index].arrowSprite;
 	int indexAvion = players[index].index;
@@ -57,6 +61,7 @@ void CCharacterSelectionMultiState::updateArrow(int index)
 	if (players[index].sens == true)
 	{
 		players[index].trueAvionPlayerNumber.move(0.f, -speed);
+		players[index].spinArrow->move(0.f, -speed);
 		sprite.move(0.f, -speed);
 		if(sprite.getPosition().y<=minArrow)
 			players[index].sens = false;
@@ -65,6 +70,7 @@ void CCharacterSelectionMultiState::updateArrow(int index)
 	{
 		players[index].trueAvionPlayerNumber.move(0.f, speed);
 		sprite.move(0.f, speed);
+		players[index].spinArrow->move(0.f, speed);
 		if (sprite.getPosition().y >= maxArrow)
 			players[index].sens = true;
 	}
@@ -93,19 +99,17 @@ void CCharacterSelectionMultiState::STEInit()
 	//deuxiemefond.setFillColor(sf::Color(64, 62, 62,240));
 	deuxiemefond.setFillColor(sf::Color(0, 0, 0, 240));
 	 
-	players.push_back(joueur());
 	sf::FloatRect zoneJouer(0.f, height / 2.f, width / 2.f, height *0.3f);
+	for (int i = 0; i < 2; i++)
+	{
+		joueur curJoueur;
+		curJoueur.curInput = &inputOfPlayers[i];
+	players.push_back(curJoueur);
+	}
+
 	players[0].zone = zoneJouer;
-	joueur joueurdeux;
-	joueurdeux.keys.down = sf::Keyboard::Down;
-	joueurdeux.keys.up = sf::Keyboard::Up;
-	joueurdeux.keys.left = sf::Keyboard::Left;
-	joueurdeux.keys.right = sf::Keyboard::Right;
-	joueurdeux.keys.press = sf::Keyboard::U;
-	joueurdeux.keys.press2 = sf::Keyboard::I;
 	zoneJouer.left += zoneJouer.width;
-	joueurdeux.zone = zoneJouer;
-	players.push_back(joueurdeux);
+	players[1].zone = zoneJouer;
 	data->assets.LoadTexture("arrowDown", "res/img/arrowDown.png");
 	for(int i=0;i<2;i++)
 	{
@@ -124,6 +128,7 @@ void CCharacterSelectionMultiState::STEInit()
 		players[i].arrowSprite.setPosition(
 			avions[players[i].index].spriteAvion.getPosition().x + avions[players[i].index].spriteAvion.getGlobalBounds().width / 2.f,
 			minArrow);
+		players[i].spinArrow = new sw::SpinningCard(players[i].arrowSprite);
 	}
 
 	if (!bwShader.loadFromFile("shaders/vertexbandw.vert", "shaders/fragbandw.frag"))
@@ -281,11 +286,15 @@ void CCharacterSelectionMultiState::updateTexts(int index)
 		arrowSprite.setPosition(
 			avions[players[index].index].spriteAvion.getPosition().x + avions[players[index].index].spriteAvion.getGlobalBounds().width / 2.f+arrowSprite.getGlobalBounds().width / 2.f + 2.f,
 			arrowSprite.getPosition().y);
+		players[0].spinArrow->setPosition(players[0].arrowSprite.getPosition());
+		players[index].spinArrow->setPosition(arrowSprite.getPosition());
+
 	}
 	else
 	arrowSprite.setPosition(
 		avions[players[index].index].spriteAvion.getPosition().x + avions[players[index].index].spriteAvion.getGlobalBounds().width / 2.f,
 		 arrowSprite.getPosition().y);
+	players[index].spinArrow->setPosition(arrowSprite.getPosition());
 	players[index].trueAvionPlayerNumber.setPosition(
 		arrowSprite.getGlobalBounds().left
 		, arrowSprite.getGlobalBounds().top - 10.f - players[index].trueAvionPlayerNumber.getGlobalBounds().height);
@@ -304,9 +313,9 @@ void CCharacterSelectionMultiState::STEHandleInput()
 		case sf::Event::KeyPressed:
 			for (int i = 0; i < 2; i++)
 			{
-				if(players[i].isValid==false)
+				if (players[i].isValid == false)
 				{
-					if (event.key.code == players[i].keys.left)
+					if (event.key.code == players[i].curInput->moveLeft)
 					{
 						selectionSound->play();
 						if (players[i].index == 0)
@@ -315,7 +324,7 @@ void CCharacterSelectionMultiState::STEHandleInput()
 							players[i].index--;
 						containChanges = true;
 					}
-					if (event.key.code == players[i].keys.right)
+					if (event.key.code == players[i].curInput->moveRight)
 					{
 						selectionSound->play();
 						if (players[i].index == avions.size() - 1)
@@ -324,21 +333,21 @@ void CCharacterSelectionMultiState::STEHandleInput()
 							players[i].index++;
 						containChanges = true;
 					}
-					if (event.key.code == players[i].keys.press)
+					if (event.key.code == players[i].curInput->button1)
 					{
 						players[i].isValid = true;
 						validationSound->play();
 					}
 				}
-				else if(event.key.code == players[i].keys.press2)
+				else if (event.key.code == players[i].curInput->button2)
 				{
 					players[i].isValid = false;
 					containChanges = true;
 
 				}
 			}
-				break;
-			case sf::Event::Closed:
+			break;
+		case sf::Event::Closed:
 			data->window.close();
 			break;
 		}
@@ -388,7 +397,7 @@ void CCharacterSelectionMultiState::STEDraw(float interpolation)
 
 void CCharacterSelectionMultiState::drawElements(bool onlyAvion)
 {
-	data->window.draw(deuxiemefond);
+	//data->window.draw(deuxiemefond);
 	data->window.draw(Titre);
 		for (auto& element : avions)
 		{
@@ -404,11 +413,17 @@ void CCharacterSelectionMultiState::drawElements(bool onlyAvion)
 			data->window.draw(players[i].avionName);
 			if(players[i].isValid==false)
 			{
-				data->window.draw(players[i].arrowSprite);
+				data->window.draw(*players[i].spinArrow);
 				data->window.draw(players[i].trueAvionPlayerNumber);
 				data->window.draw(players[i].preViewSprite, &bwShader);
 			}
 			else
 				data->window.draw(players[i].preViewSprite);
 		}
+}
+
+CCharacterSelectionMultiState::~CCharacterSelectionMultiState()
+{
+	for (int i = 0; i < 2; i++)
+		delete players[i].spinArrow;
 }

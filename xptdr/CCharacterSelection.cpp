@@ -117,7 +117,7 @@ void CCharacterSelection::STEHandleInput()
 		switch (event.type)
 		{
 		case sf::Event::KeyPressed:
-			if (event.key.code == sf::Keyboard::D)
+			if (event.key.code == inputOfPlayers[0].moveRight)
 			{
 				if (!carousel.isMoving)
 				{
@@ -125,7 +125,7 @@ void CCharacterSelection::STEHandleInput()
 					selectionSound->play();
 				}
 			}
-			else if (event.key.code == sf::Keyboard::Q)
+			else if (event.key.code == inputOfPlayers[0].moveLeft)
 			{
 				if (!carousel.isMoving)
 				{
@@ -133,7 +133,7 @@ void CCharacterSelection::STEHandleInput()
 					selectionSound->play();
 				}
 			}
-			else if (event.key.code == sf::Keyboard::Enter)
+			else if (event.key.code == inputOfPlayers[0].button1)
 			{
 				if (!carousel.isMoving)
 				{

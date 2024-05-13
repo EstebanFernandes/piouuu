@@ -254,4 +254,5 @@ void CLevelGameState::initAssets()
 	addAsset("boss", "res\\img\\spacecraft_player_1.png");
 	addAsset("rusher", "res\\img\\ennemies\\rusher.png");
 	addAsset("enemyRush", "res\\sfx\\vaisseau_fonce.wav");
+	addAsset("muzzleFlash", "res\\img\\muzzleflash.png");
 }

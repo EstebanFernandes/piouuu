@@ -15,6 +15,8 @@ CMainMenuState::CMainMenuState(GameDataRef _data)
 
 void CMainMenuState::STEInit()
 {
+	float screenWidth = (float)data->assets.sCREEN_WIDTH;
+	float screenHeight =(float) data->assets.sCREEN_HEIGHT;
 	data->assets.jouerMusique("MenuPrincipal");
 	index = 0;
 	data->assets.LoadFont("Nouvelle", "res\\font\\SuperLegendBoy-4w8Y.ttf");
@@ -22,8 +24,8 @@ void CMainMenuState::STEInit()
 	data->assets.LoadSFX("button", "res\\sfx\\testbutton.wav");
 	data->assets.addSFX("button", &buttonSound);
 	info.setCharacterSize(40);
-	info.setFillColor(sf::Color::Transparent);
-	info.setOutlineThickness(1.f);
+	info.setFillColor(sf::Color::White);
+	info.setString("Test");
 	info.setPosition(20, 20);
 	info.setOutlineColor(sf::Color::White);
 	info.setFont(data->assets.GetFont("Nouvelle"));
@@ -91,7 +93,7 @@ void CMainMenuState::STEHandleInput()
 			data->window.close();
 		else if (event.type == sf::Event::KeyPressed)
 		{
-			if (event.key.code == sf::Keyboard::Z)
+			if (event.key.code == inputOfPlayers[0].moveUp)
 			{
 				buttonSound->play();
 				if (index == 0) {
@@ -101,20 +103,15 @@ void CMainMenuState::STEHandleInput()
 					index = (index - 1) % buttons.size();
 				}
 			}
-			else if (event.key.code == sf::Keyboard::S)
+			else if (event.key.code == inputOfPlayers[0].moveDown)
 			{
 				buttonSound->play();
 				index = (index + 1) % buttons.size();
 			}
-			else if (event.key.code == sf::Keyboard::Enter)
+			else if (event.key.code == inputOfPlayers[0].button1)
 				choosedButton();
 			buttons[previousSelec].setOutlineThickness(0.f);
 			buttons[index].setOutlineThickness(3.f);
-		}
-		else if (event.type == sf::Event::MouseButtonPressed)
-		{
-			if (event.key.code == sf::Mouse::Left)
-				choosedButton();
 		}
 	}
 }
@@ -144,10 +141,6 @@ void CMainMenuState::STEUpdate(float delta)
 {
 	updateTime();
 	background.updateCBackground(delta);
-	std::stringstream ss;
-	sf::Vector2i mousePositionScreen = sf::Mouse::getPosition(data->window);
-	ss << "mouse position : \n" << "Window : " << mousePositionScreen.x << " " << mousePositionScreen.y << "\n";
-	//info.setString("Bonjour");
 }
 
 void CMainMenuState::choosedButton()
@@ -203,7 +196,6 @@ void CMainMenuState::STEDraw(float delta)
 	data->window.draw(CMMTitle);
 	for (int i = 0; i < buttons.size(); i++)
 		data->window.draw(buttons[i]);
-	data->window.draw(info);
 }
 
 void CMainMenuState::STEResume()

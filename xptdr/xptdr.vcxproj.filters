@@ -84,6 +84,8 @@
     <ClCompile Include="upgradeStock.cpp" />
     <ClCompile Include="CTransition.cpp" />
     <ClCompile Include="CCharacterSelectionMultiState.cpp" />
+    <ClCompile Include="inputPlayer.cpp" />
+    <ClCompile Include="SpinningCard.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BomberEnemy.h" />
@@ -170,6 +172,9 @@
     <ClInclude Include="upgradeStock.h" />
     <ClInclude Include="CTransition.h" />
     <ClInclude Include="CCharacterSelectionMultiState.h" />
+    <ClInclude Include="inputPlayer.h" />
+    <ClInclude Include="Common.hpp" />
+    <ClInclude Include="SpinningCard.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragbandw.frag" />
