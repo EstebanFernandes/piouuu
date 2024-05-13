@@ -34,6 +34,17 @@ void CParserXML::coreFunction()
     std::cout << "Fini" << std::endl;
 }
 
+std::vector<std::string> CParserXML::searchLevelDatas(std::string levelName)
+{
+    pt::read_xml("res/level/"+levelName, tree);
+
+    std::vector<std::string> flag = { "isInfinite","description","creator" };
+    std::vector<std::string> defaultValue = { "0","Un niveau créé rien que pour vous :D","la PiouTeam" };
+
+    pt::ptree::const_iterator it = tree.begin();
+    return explore_attribute(it, flag, defaultValue);
+}
+
 void CParserXML::parse_tree(const pt::ptree& pt, std::string key)
 {
     std::string nkey;
@@ -166,8 +177,8 @@ bool CParserXML::flag(std::string name, pt::ptree::const_iterator& value)
         switch (it - switchCase.begin())
         {
         case 0://Level
-            flag = { "isRandom","isInfinite"};
-            defaultValue = { "0","0"};
+            flag = { "isRandom","isInfinite","description","creator"};
+            defaultValue = { "0","0","Un niveau créé rien que pour vous :D","la PiouTeam"};
             break;
         case 1://assets 
 

@@ -63,6 +63,16 @@ public:
     /// Méthode que l'on appelle pour exécuter le parsing, on l'appelle après qu'on ait utilisé 
     /// </summary>
     void coreFunction();
+
+    /// <summary>
+    /// Permet de chercher les données suivantes du niveau souhaitée :
+    /// - Infinité du niveau
+    /// - description
+    /// - nom du créateur
+    /// </summary>
+    /// <param name="levelName">: Le nom du niveau à analyser</param>
+    /// <returns>Un vector de string avec :<ul><li> 0 : isInfinite;</li><li> 1 : description;</li><li> 2 : nom du créateur</li></ul></returns>
+    std::vector<std::string> searchLevelDatas(std::string levelName);
     Level getLevel() { return level; }
 
 };

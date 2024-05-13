@@ -250,14 +250,9 @@
     <ClCompile Include="Weapon.cpp">
       <Filter>Fichiers cpp</Filter>
     </ClCompile>
+    <ClCompile Include="LevelSelectionState.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BomberEnemy.h">
-      <Filter>Fichiers source</Filter>
-    </ClInclude>
-    <ClInclude Include="Boss.h">
-      <Filter>Fichiers source</Filter>
-    </ClInclude>
     <ClInclude Include="bulletStorage.h">
       <Filter>Fichiers source</Filter>
     </ClInclude>
@@ -280,9 +275,6 @@
       <Filter>Fichiers source</Filter>
     </ClInclude>
     <ClInclude Include="CButton.h">
-      <Filter>Fichiers source</Filter>
-    </ClInclude>
-    <ClInclude Include="CButtonState.h">
       <Filter>Fichiers source</Filter>
     </ClInclude>
     <ClInclude Include="CCard.h">
@@ -318,9 +310,6 @@
     <ClInclude Include="Ceffetsonore.h">
       <Filter>Fichiers source</Filter>
     </ClInclude>
-    <ClInclude Include="CEnemy.h">
-      <Filter>Fichiers source</Filter>
-    </ClInclude>
     <ClInclude Include="CEntity.h">
       <Filter>Fichiers source</Filter>
     </ClInclude>
@@ -334,9 +323,6 @@
       <Filter>Fichiers source</Filter>
     </ClInclude>
     <ClInclude Include="CGameOver.h">
-      <Filter>Fichiers source</Filter>
-    </ClInclude>
-    <ClInclude Include="CGameState.h">
       <Filter>Fichiers source</Filter>
     </ClInclude>
     <ClInclude Include="CGraphe.h">
@@ -361,15 +347,6 @@
       <Filter>Fichiers source</Filter>
     </ClInclude>
     <ClInclude Include="CJeu.h">
-      <Filter>Fichiers source</Filter>
-    </ClInclude>
-    <ClInclude Include="CLevelGameState.h">
-      <Filter>Fichiers source</Filter>
-    </ClInclude>
-    <ClInclude Include="CLoadingState.h">
-      <Filter>Fichiers source</Filter>
-    </ClInclude>
-    <ClInclude Include="CMainMenuState.h">
       <Filter>Fichiers source</Filter>
     </ClInclude>
     <ClInclude Include="CMiscellaneous.h">
@@ -399,9 +376,6 @@
     <ClInclude Include="CScoreboard.h">
       <Filter>Fichiers source</Filter>
     </ClInclude>
-    <ClInclude Include="CSettingState.h">
-      <Filter>Fichiers source</Filter>
-    </ClInclude>
     <ClInclude Include="CSlider.h">
       <Filter>Fichiers source</Filter>
     </ClInclude>
@@ -409,12 +383,6 @@
       <Filter>Fichiers source</Filter>
     </ClInclude>
     <ClInclude Include="CSommetUpgrade.h">
-      <Filter>Fichiers source</Filter>
-    </ClInclude>
-    <ClInclude Include="CSplashState.h">
-      <Filter>Fichiers source</Filter>
-    </ClInclude>
-    <ClInclude Include="CState.h">
       <Filter>Fichiers source</Filter>
     </ClInclude>
     <ClInclude Include="CStateMachine.h">
@@ -435,9 +403,6 @@
     <ClInclude Include="CUI.h">
       <Filter>Fichiers source</Filter>
     </ClInclude>
-    <ClInclude Include="CUpgradeState.h">
-      <Filter>Fichiers source</Filter>
-    </ClInclude>
     <ClInclude Include="CWeaponStat.h">
       <Filter>Fichiers source</Filter>
     </ClInclude>
@@ -454,9 +419,6 @@
       <Filter>Fichiers source</Filter>
     </ClInclude>
     <ClInclude Include="InterfaceShootingEnemy.h">
-      <Filter>Fichiers source</Filter>
-    </ClInclude>
-    <ClInclude Include="InterfaceState.h">
       <Filter>Fichiers source</Filter>
     </ClInclude>
     <ClInclude Include="LaserGenerator.h">
@@ -477,19 +439,7 @@
     <ClInclude Include="Pattern.h">
       <Filter>Fichiers source</Filter>
     </ClInclude>
-    <ClInclude Include="RoamingEnemy.h">
-      <Filter>Fichiers source</Filter>
-    </ClInclude>
-    <ClInclude Include="RusherEnemy.h">
-      <Filter>Fichiers source</Filter>
-    </ClInclude>
-    <ClInclude Include="ShootingEnemy.h">
-      <Filter>Fichiers source</Filter>
-    </ClInclude>
     <ClInclude Include="SpecialEffect.h">
-      <Filter>Fichiers source</Filter>
-    </ClInclude>
-    <ClInclude Include="testEnemy.h">
       <Filter>Fichiers source</Filter>
     </ClInclude>
     <ClInclude Include="upgradeStock.h">
@@ -503,6 +453,58 @@
     </ClInclude>
     <ClInclude Include="Weapon.h">
       <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelSelectionState.h" />
+    <ClInclude Include="Boss.h">
+      <Filter>Fichiers source\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="BomberEnemy.h">
+      <Filter>Fichiers source\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemy.h">
+      <Filter>Fichiers source\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="RoamingEnemy.h">
+      <Filter>Fichiers source\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="RusherEnemy.h">
+      <Filter>Fichiers source\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="ShootingEnemy.h">
+      <Filter>Fichiers source\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="testEnemy.h">
+      <Filter>Fichiers source\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="CButtonState.h">
+      <Filter>Fichiers source\States</Filter>
+    </ClInclude>
+    <ClInclude Include="CGameState.h">
+      <Filter>Fichiers source\States</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevelGameState.h">
+      <Filter>Fichiers source\States</Filter>
+    </ClInclude>
+    <ClInclude Include="CLoadingState.h">
+      <Filter>Fichiers source\States</Filter>
+    </ClInclude>
+    <ClInclude Include="CMainMenuState.h">
+      <Filter>Fichiers source\States</Filter>
+    </ClInclude>
+    <ClInclude Include="CSettingState.h">
+      <Filter>Fichiers source\States</Filter>
+    </ClInclude>
+    <ClInclude Include="CSplashState.h">
+      <Filter>Fichiers source\States</Filter>
+    </ClInclude>
+    <ClInclude Include="CUpgradeState.h">
+      <Filter>Fichiers source\States</Filter>
+    </ClInclude>
+    <ClInclude Include="InterfaceState.h">
+      <Filter>Fichiers source\States</Filter>
+    </ClInclude>
+    <ClInclude Include="CState.h">
+      <Filter>Fichiers source\States</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -528,6 +530,12 @@
     </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{5946a067-ff18-429e-8d70-890bd7def39c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers source\Enemies">
+      <UniqueIdentifier>{56a5bfe4-0353-4655-b7fe-94d2709c9d6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers source\States">
+      <UniqueIdentifier>{0fb5af39-d1f8-458c-b33b-1d5366949795}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
