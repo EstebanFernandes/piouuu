@@ -23,7 +23,7 @@ struct enemyInfo {
 		direction(0.f, 0.f),
 		scale(1.f, 1.f),
 		isAim(false),
-		mustSetDirection(false)
+		mustSetDirection(false),
 		xpGived(0),
 		scoreGived(0)
 	{
