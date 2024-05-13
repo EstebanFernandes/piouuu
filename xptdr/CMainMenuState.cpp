@@ -7,10 +7,12 @@
 CMainMenuState::~CMainMenuState()
 {
 	data->assets.deleteSound(buttonSound);
+	delete levelToLaunch;
 }
 CMainMenuState::CMainMenuState(GameDataRef _data)
 {
 	data = _data;
+	levelToLaunch = new std::string();
 }
 
 void CMainMenuState::STEInit()
@@ -173,7 +175,7 @@ void CMainMenuState::addLevelType()
 		data->machine.AddState(StateRef(new CTestGame(data,characters)), true);
 		break;
 	case 1:
-		data->machine.AddState(StateRef(new CLevelGameState(data, characters, "res/level/testpremierniveau.piou")), true);
+		data->machine.AddState(StateRef(new CLevelGameState(data, characters, "res/level/"+*levelToLaunch)), true);
 		break;
 	case 2:
 		//data->machine.AddState(StateRef(new CInfiniteGameState(data)), true);
@@ -208,7 +210,7 @@ void CMainMenuState::STEResume()
 		if (characters.size() == 0)
 		{
 			characters.push_back(CCharacter());
-			data->machine.AddState(StateRef(new CCharacterSelection(data, &characters.back(),(int)characters.size())), false);
+			data->machine.AddState(StateRef(new LevelSelectionState(data, &characters, levelToLaunch)), false);
 		}
 		else
 			addLevelType();
@@ -219,7 +221,7 @@ void CMainMenuState::STEResume()
 		{
 			characters.push_back(CCharacter());
 			characters.push_back(CCharacter());
-			data->machine.AddState(StateRef(new CCharacterSelectionMultiState(data, &characters)), false);
+			data->machine.AddState(StateRef(new LevelSelectionState(data, &characters, levelToLaunch)), false);
 		}
 		else
 			addLevelType();

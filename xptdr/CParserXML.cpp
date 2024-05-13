@@ -34,11 +34,15 @@ void CParserXML::coreFunction()
     std::cout << "Fini" << std::endl;
 }
 
-void CParserXML::headerLevel()
+std::vector<std::string> CParserXML::searchLevelDatas(std::string levelName)
 {
-    pt::read_xml(filePath, tree);
+    pt::read_xml("res/level/"+levelName, tree);
+
+    std::vector<std::string> flag = { "isInfinite","description","creator" };
+    std::vector<std::string> defaultValue = { "0","Un niveau créé rien que pour vous :D","la PiouTeam" };
+
     pt::ptree::const_iterator it = tree.begin();
-    //explore_attribute(it,,);
+    return explore_attribute(it, flag, defaultValue);
 }
 
 void CParserXML::parse_tree(const pt::ptree& pt, std::string key)
@@ -79,6 +83,8 @@ void CParserXML::addEnemy(std::string enemyName,std::vector<std::string> values)
     enemyToAdd.spawnerTiming = std::stof(values[1]);
     //Info sur l'ennemi direction/Position et spawn side
     enemyInfo infoE;
+    // mustSetDirection
+    infoE.mustSetDirection = std::stoi(values[15]);
     //Spawn side
     infoE.spawnSide = values[13];
     infoE.isAim= std::stoi(values[11]);
@@ -101,8 +107,9 @@ void CParserXML::addEnemy(std::string enemyName,std::vector<std::string> values)
     sf::Vector2f direct = sf::Vector2f(std::stof(values[4].substr(0, fade)), std::stof(values[4].substr(fade + 1)));
     direct.x = direct.x / 100.f * screenwidth;
     direct.y = direct.y / 100.f * screenheight;
-    if (enemyName == "roamingEnemy" || enemyName == "rusher") {
-        //infoE.direction = utilities::dirAtoB(infoE.pos, direct);
+    // On vérifie que l'ennemi est un roaming ou un rusher ET que sa direction doit être saisie
+    if ((enemyName == "roamingEnemy" || enemyName == "rusher") && infoE.mustSetDirection) {
+        infoE.direction = utilities::dirAtoB(infoE.pos, direct);
     }
 
 
@@ -116,7 +123,7 @@ void CParserXML::addEnemy(std::string enemyName,std::vector<std::string> values)
     CWeaponStat W;
 
     // Direction des tirs
-    if (enemyName == "shootingEnemy") {
+    if (enemyName == "shootingEnemy" && infoE.mustSetDirection) {
         W.dir = utilities::dirAtoB(infoE.pos, direct);
     }
     else if (enemyName == "bomber") {
@@ -171,8 +178,8 @@ bool CParserXML::flag(std::string name, pt::ptree::const_iterator& value)
         switch (it - switchCase.begin())
         {
         case 0://Level
-            flag = { "isRandom","isInfinite"};
-            defaultValue = { "0","0"};
+            flag = { "isRandom","isInfinite","description","creator"};
+            defaultValue = { "0","0","Un niveau créé rien que pour vous :D","la PiouTeam"};
             break;
         case 1://assets 
 
@@ -192,9 +199,9 @@ bool CParserXML::flag(std::string name, pt::ptree::const_iterator& value)
             break;
         case 5://Enemy
             flag = { "type","spawnTime","health", "pos","direction","moveTo","moveSpeed",
-                "damage","damageonPerBullet","bulletSpeed","attackSpeed","autoAim","scoreGived","apparitionDirection","xpGived"};
+                "damage","damageonPerBullet","bulletSpeed","attackSpeed","autoAim","scoreGived","apparitionDirection","xpGived", "mustSetDirection"};
             defaultValue = { "undefined","0","20", "-1;-1","-2;-2", "-1;-1" , "2",
-                "3","3","1","0.5","0","0","droite","3"};
+                "3","3","1","0.5","0","0","droite","3", "0"};
             break;
         }
         test = explore_attribute(value, flag, defaultValue);

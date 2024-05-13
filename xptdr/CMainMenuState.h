@@ -11,6 +11,7 @@
 #include"EllipseShape.h"
 #include"CButton.h"
 #include"InterfaceState.h"
+#include "LevelSelectionState.h"
 class CMainMenuState : public CState, public InterfaceState
 {
 private:
@@ -29,6 +30,12 @@ private:
 	std::vector<CCharacter> characters;
 	std::string nbJoueur;
 	bool charaSet = false;
+
+	/// <summary>
+	/// nom du niveau à lancer
+	/// </summary>
+	std::string* levelToLaunch;
+
 	void choosedButton();
 	void addLevelType();
 public:

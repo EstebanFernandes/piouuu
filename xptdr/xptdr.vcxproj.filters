@@ -1,91 +1,511 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="BomberEnemy.cpp" />
-    <ClCompile Include="Boss.cpp" />
-    <ClCompile Include="bulletStorage.cpp" />
-    <ClCompile Include="CAnimation.cpp" />
-    <ClCompile Include="CArc.cpp" />
-    <ClCompile Include="CAssetManager.cpp" />
-    <ClCompile Include="CBackground.cpp" />
-    <ClCompile Include="CBullet.cpp" />
-    <ClCompile Include="CButton.cpp" />
-    <ClCompile Include="CBulletAuto.cpp" />
-    <ClCompile Include="CCard.cpp" />
-    <ClCompile Include="CCardUpgrade.cpp" />
-    <ClCompile Include="CCarousel.cpp" />
-    <ClCompile Include="CCharacter.cpp" />
-    <ClCompile Include="CCharacterSelection.cpp" />
-    <ClCompile Include="CCharacterStat.cpp" />
-    <ClCompile Include="CCheckbox.cpp" />
-    <ClCompile Include="CCollision.cpp" />
-    <ClCompile Include="Ceffetsonore.cpp" />
-    <ClCompile Include="CEnemy.cpp" />
-    <ClCompile Include="CException.cpp" />
-    <ClCompile Include="CGraphe.cpp" />
-    <ClCompile Include="CGrapheUpdate.cpp" />
-    <ClCompile Include="CHugoDecrypte.cpp" />
-    <ClCompile Include="CMiscellaneous.cpp" />
-    <ClCompile Include="CMob.cpp" />
-    <ClCompile Include="CEntity.cpp" />
-    <ClCompile Include="CFile.cpp" />
-    <ClCompile Include="CGameMenu.cpp" />
-    <ClCompile Include="CGameOver.cpp" />
-    <ClCompile Include="CGameState.cpp" />
-    <ClCompile Include="CGunslinger.cpp" />
-    <ClCompile Include="CHitbox.cpp" />
-    <ClCompile Include="CHittingEntity.cpp" />
-    <ClCompile Include="CInputManager.cpp" />
-    <ClCompile Include="CJeu.cpp" />
-    <ClCompile Include="CMainMenuState.cpp" />
-    <ClCompile Include="Cmusique.cpp" />
-    <ClCompile Include="CParserCSV.cpp" />
-    <ClCompile Include="CPhysics.cpp" />
-    <ClCompile Include="CPlayer.cpp" />
-    <ClCompile Include="CPowerUp.cpp" />
-    <ClCompile Include="CClavierVirtuel.cpp" />
-    <ClCompile Include="CScoreboard.cpp" />
-    <ClCompile Include="CSettingState.cpp" />
-    <ClCompile Include="CSlider.cpp" />
-    <ClCompile Include="CSommet.cpp" />
-    <ClCompile Include="CSommetUpgrade.cpp" />
-    <ClCompile Include="CSplashState.cpp" />
-    <ClCompile Include="CState.cpp" />
-    <ClCompile Include="CStateMachine.cpp" />
-    <ClCompile Include="CTestGame.cpp" />
-    <ClCompile Include="CTile.cpp" />
-    <ClCompile Include="CTileMap.cpp" />
-    <ClCompile Include="CUI.cpp" />
-    <ClCompile Include="CUpgradeState.cpp" />
-    <ClCompile Include="CWeaponStat.cpp" />
-    <ClCompile Include="dot.cpp" />
-    <ClCompile Include="effetspecial.cpp" />
-    <ClCompile Include="EllipseShape.cpp" />
-    <ClCompile Include="InterfaceShootingEnemy.cpp" />
-    <ClCompile Include="InterfaceState.cpp" />
-    <ClCompile Include="LaserGenerator.cpp" />
-    <ClCompile Include="lifeBarForEntity.cpp" />
-    <ClCompile Include="lifeForEntity.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="RoamingEnemy.cpp" />
-    <ClCompile Include="RusherEnemy.cpp" />
-    <ClCompile Include="ShootingEnemy.cpp" />
-    <ClCompile Include="SpecialEffect.cpp" />
-    <ClCompile Include="testEnemy.cpp" />
-    <ClCompile Include="Weapon.cpp" />
-    <ClCompile Include="CParserXML.cpp" />
-    <ClCompile Include="Wave.cpp" />
-    <ClCompile Include="Level.cpp" />
-    <ClCompile Include="Pattern.cpp" />
-    <ClCompile Include="CLevelGameState.cpp" />
-    <ClCompile Include="laserWeapon.cpp" />
-    <ClCompile Include="CButtonState.cpp" />
-    <ClCompile Include="CLoadingState.cpp" />
-    <ClCompile Include="upgradeStock.cpp" />
-    <ClCompile Include="CTransition.cpp" />
-    <ClCompile Include="CCharacterSelectionMultiState.cpp" />
-    <ClCompile Include="inputPlayer.cpp" />
-    <ClCompile Include="SpinningCard.cpp" />
+    <ClCompile Include="BomberEnemy.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="bulletStorage.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimation.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CArc.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CAssetManager.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CBackground.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CBullet.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletAuto.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CButton.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CButtonState.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CCard.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CCardUpgrade.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CCarousel.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CCharacter.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CCharacterSelection.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CCharacterSelectionMultiState.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CCharacterStat.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CCheckbox.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CClavierVirtuel.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollision.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Ceffetsonore.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemy.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CEntity.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CException.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CFile.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CGameMenu.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CGameOver.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CGameState.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CGraphe.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CGrapheUpdate.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CGunslinger.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CHitbox.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CHittingEntity.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CHugoDecrypte.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CInputManager.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CJeu.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelGameState.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CLoadingState.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CMainMenuState.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CMiscellaneous.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CMob.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Cmusique.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CParserCSV.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CParserXML.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CPhysics.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayer.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CPowerUp.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CScoreboard.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CSettingState.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CSlider.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CSommet.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CSommetUpgrade.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CSplashState.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CState.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CStateMachine.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CTestGame.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CTile.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CTileMap.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CTransition.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CUpgradeState.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CWeaponStat.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="dot.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="effetspecial.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="EllipseShape.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="InterfaceShootingEnemy.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="InterfaceState.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="LaserGenerator.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="laserWeapon.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Level.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="lifeBarForEntity.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="lifeForEntity.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Pattern.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="RoamingEnemy.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="RusherEnemy.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="ShootingEnemy.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="SpecialEffect.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="testEnemy.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="upgradeStock.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Wave.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>Fichiers cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelSelectionState.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="bulletStorage.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimation.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CArc.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CAssetManager.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CBackground.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CBullet.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletAuto.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CButton.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CCard.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CCardUpgrade.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CCarousel.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CCharacter.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CCharacterSelection.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CCharacterSelectionMultiState.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CCharacterStat.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CCheckbox.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CClavierVirtuel.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CCollision.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="Ceffetsonore.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CEntity.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CException.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CFile.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CGameMenu.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CGameOver.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CGraphe.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CGrapheUpdate.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CGunslinger.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CHitbox.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CHittingEntity.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CHugoDecrypte.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CInputManager.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CJeu.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CMiscellaneous.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CMob.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="Cmusique.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CParserCSV.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CParserXML.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CPhysics.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayer.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CPowerUp.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CScoreboard.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CSlider.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CSommet.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CSommetUpgrade.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CStateMachine.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CTestGame.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CTile.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CTileMap.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CTransition.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="CWeaponStat.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="DEFINITIONS.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="dot.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="effetspecial.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="EllipseShape.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="InterfaceShootingEnemy.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="LaserGenerator.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="laserWeapon.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="Level.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="lifeBarForEntity.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="lifeForEntity.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="Pattern.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="SpecialEffect.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="upgradeStock.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="Wave.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>Fichiers source</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelSelectionState.h" />
+    <ClInclude Include="Boss.h">
+      <Filter>Fichiers source\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="BomberEnemy.h">
+      <Filter>Fichiers source\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemy.h">
+      <Filter>Fichiers source\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="RoamingEnemy.h">
+      <Filter>Fichiers source\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="RusherEnemy.h">
+      <Filter>Fichiers source\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="ShootingEnemy.h">
+      <Filter>Fichiers source\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="testEnemy.h">
+      <Filter>Fichiers source\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="CButtonState.h">
+      <Filter>Fichiers source\States</Filter>
+    </ClInclude>
+    <ClInclude Include="CGameState.h">
+      <Filter>Fichiers source\States</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevelGameState.h">
+      <Filter>Fichiers source\States</Filter>
+    </ClInclude>
+    <ClInclude Include="CLoadingState.h">
+      <Filter>Fichiers source\States</Filter>
+    </ClInclude>
+    <ClInclude Include="CMainMenuState.h">
+      <Filter>Fichiers source\States</Filter>
+    </ClInclude>
+    <ClInclude Include="CSettingState.h">
+      <Filter>Fichiers source\States</Filter>
+    </ClInclude>
+    <ClInclude Include="CSplashState.h">
+      <Filter>Fichiers source\States</Filter>
+    </ClInclude>
+    <ClInclude Include="CUpgradeState.h">
+      <Filter>Fichiers source\States</Filter>
+    </ClInclude>
+    <ClInclude Include="InterfaceState.h">
+      <Filter>Fichiers source\States</Filter>
+    </ClInclude>
+    <ClInclude Include="CState.h">
+      <Filter>Fichiers source\States</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BomberEnemy.h" />
@@ -177,9 +597,20 @@
     <ClInclude Include="SpinningCard.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\fragbandw.frag" />
-    <None Include="shaders\vertexbandw.vert" />
-    <None Include="shaders\test.frag" />
-    <None Include="shaders\blurFrag.frag" />
+    <Filter Include="Fichiers source">
+      <UniqueIdentifier>{1046bc70-217d-486d-890e-7da6ab68bbb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers cpp">
+      <UniqueIdentifier>{9448686d-ae33-41cb-9632-f789cf1239f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{5946a067-ff18-429e-8d70-890bd7def39c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers source\Enemies">
+      <UniqueIdentifier>{56a5bfe4-0353-4655-b7fe-94d2709c9d6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers source\States">
+      <UniqueIdentifier>{0fb5af39-d1f8-458c-b33b-1d5366949795}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
