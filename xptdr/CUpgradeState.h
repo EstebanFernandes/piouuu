@@ -11,6 +11,7 @@
 class CUpgradeState : public CState, public InterfaceState
 {
 private:
+	CState* pointertoGameState;
 	GameDataRef data;
 	int nbOfGraph;
 	int type;
@@ -29,9 +30,10 @@ private:
 	//Graphique
 	std::vector<CCardUpgrade> CardList;
 	sf::Text title;
+	sf::Shader blurShader;
+	sf::Sprite fond;
 	//Selection
 	int iCardSelection = 0;
-
 	void fillUpgrade(int nbofUpgrade);
 	//Méthodes et constructeurs
 	int whichKindofUpgrade() {
@@ -106,7 +108,7 @@ private:
 	int setValue(int init, std::string modif);
 	bool matchTypeWithValue(std::string type, std::string value);
 public:
-	CUpgradeState(GameDataRef d, CPlayer* player, upgradeStock* pointerToUpgradeStocks);
+	CUpgradeState(GameDataRef d, CPlayer* player, upgradeStock* pointerToUpgradeStocks,CState* prev);
 	void STEInit(); 
 	void STEHandleInput();
 	void STEUpdate(float delta);

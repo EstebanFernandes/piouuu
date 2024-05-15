@@ -203,6 +203,7 @@
     <ClCompile Include="dot.cpp" />
     <ClCompile Include="effetspecial.cpp" />
     <ClCompile Include="EllipseShape.cpp" />
+    <ClCompile Include="inputPlayer.cpp" />
     <ClCompile Include="InterfaceShootingEnemy.cpp" />
     <ClCompile Include="InterfaceState.cpp" />
     <ClCompile Include="LaserGenerator.cpp" />
@@ -217,6 +218,7 @@
     <ClCompile Include="RusherEnemy.cpp" />
     <ClCompile Include="ShootingEnemy.cpp" />
     <ClCompile Include="SpecialEffect.cpp" />
+    <ClCompile Include="SpinningCard.cpp" />
     <ClCompile Include="testEnemy.cpp" />
     <ClCompile Include="upgradeStock.cpp" />
     <ClCompile Include="Wave.cpp" />
@@ -265,6 +267,7 @@
     <ClInclude Include="CJeu.h" />
     <ClInclude Include="CMainMenuState.h" />
     <ClInclude Include="Cmusique.h" />
+    <ClInclude Include="Common.hpp" />
     <ClInclude Include="CParserCSV.h" />
     <ClInclude Include="CParserXML.h" />
     <ClInclude Include="CPhysics.h" />
@@ -290,6 +293,7 @@
     <ClInclude Include="dot.h" />
     <ClInclude Include="effetspecial.h" />
     <ClInclude Include="EllipseShape.h" />
+    <ClInclude Include="inputPlayer.h" />
     <ClInclude Include="InterfaceShootingEnemy.h" />
     <ClInclude Include="InterfaceState.h" />
     <ClInclude Include="LaserGenerator.h" />
@@ -303,6 +307,7 @@
     <ClInclude Include="RusherEnemy.h" />
     <ClInclude Include="ShootingEnemy.h" />
     <ClInclude Include="SpecialEffect.h" />
+    <ClInclude Include="SpinningCard.hpp" />
     <ClInclude Include="testEnemy.h" />
     <ClInclude Include="upgradeStock.h" />
     <ClInclude Include="utilities.h" />

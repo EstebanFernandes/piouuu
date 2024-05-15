@@ -14,6 +14,8 @@ struct enemyInfo {
 	sf::Vector2f scale;
 	bool mustSetDirection;
 	bool isAim; //Savoir si l'unité doit viser un joueur
+	int xpGived;
+	int scoreGived;
 	//Constructeur par défaut
 	enemyInfo() :
 		pos(-1.f, -1.f),
@@ -21,7 +23,9 @@ struct enemyInfo {
 		direction(0.f, 0.f),
 		scale(1.f, 1.f),
 		isAim(false),
-		mustSetDirection(false)
+		mustSetDirection(false),
+		xpGived(0),
+		scoreGived(0)
 	{
 	}
 };
@@ -50,8 +54,8 @@ protected:
 	sf::Vector2f spawnPos = sf::Vector2f(0.f,0.f);
 	//float directionY;
 	int r = 0;
-	bool gavexP=false;
 	int damage;
+	bool gavexP = false;
 	/// <summary>
 	/// Cette fonction set les informations de la classe CEnemy.
 	/// </summary>

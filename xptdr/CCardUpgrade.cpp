@@ -158,24 +158,27 @@ void CCardUpgrade::resizeTexts()
 void CCardUpgrade::fillSpace(std::vector<sf::Text>& texts, sf::FloatRect border)
 {
 	int nbText = (int)texts.size();
-	for (int i = 0; i < nbText; i++)
-		resizeText(texts[i],5,false);
-	//Espace (en hauteur) pas pris par 
-	float t = border.height - (texts[0].getGlobalBounds().height * nbText);
-	while (t < 0.f)
+	if (nbText != 0)
 	{
 		for (int i = 0; i < nbText; i++)
-			texts[i].setCharacterSize(texts[i].getCharacterSize() - 1);
-	}
-	if (t > 0.f)//C'est qu'on a la place de mettre les textes
-	{
-		for (int i = 0; i < nbText; i++)
+			resizeText(texts[i],5,false);
+		//Espace (en hauteur) pas pris par 
+		float t = border.height - (texts[0].getGlobalBounds().height * nbText);
+		while (t < 0.f)
 		{
-			sf::Vector2f posTemp;
-			float spaceBetweenCard = t / (float)(nbText + 1);
-			posTemp.x = border.left;
-			posTemp.y = border.top+spaceBetweenCard + (spaceBetweenCard + texts[i].getGlobalBounds().height) * i;
-			utilities::readaptText(texts[i], posTemp);
+			for (int i = 0; i < nbText; i++)
+				texts[i].setCharacterSize(texts[i].getCharacterSize() - 1);
+		}
+		if (t > 0.f)//C'est qu'on a la place de mettre les textes
+		{
+			for (int i = 0; i < nbText; i++)
+			{
+				sf::Vector2f posTemp;
+				float spaceBetweenCard = t / (float)(nbText + 1);
+				posTemp.x = border.left;
+				posTemp.y = border.top+spaceBetweenCard + (spaceBetweenCard + texts[i].getGlobalBounds().height) * i;
+				utilities::readaptText(texts[i], posTemp);
+			}
 		}
 	}
 }

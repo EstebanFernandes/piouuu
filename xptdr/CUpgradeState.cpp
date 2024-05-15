@@ -23,7 +23,7 @@ void CUpgradeState::plusStats()
 {
 	int screen_Height = data->assets.sCREEN_HEIGHT;
 	int screen_Width = data->assets.sCREEN_WIDTH;
-	int nbofUpgrade = 3;
+	int nbofUpgrade = 4;
 	fillUpgrade(nbofUpgrade);
 	for (int i = 0; i < nbofUpgrade; i++)
 	{
@@ -94,7 +94,8 @@ int CUpgradeState::setValue(int init, std::string modif)
 }
 
 
-CUpgradeState::CUpgradeState(GameDataRef d, CPlayer* player, upgradeStock* pointerToUpgradeStocks) : data(d)
+CUpgradeState::CUpgradeState(GameDataRef d, CPlayer* player, upgradeStock* pointerToUpgradeStocks, CState* prev)
+	: data(d),pointertoGameState(prev)
 {
 	if (player != NULL)
 	{
@@ -141,7 +142,10 @@ void CUpgradeState::STEInit()
 	title.setFont(data->assets.GetFont("Nouvelle"));
 	title.setCharacterSize(40);
 	title.setPosition(sf::Vector2f((data->assets.sCREEN_WIDTH - title.getGlobalBounds().width) / 2, (data->assets.sCREEN_HEIGHT * 0.1f - title.getGlobalBounds().height) / 2));
-	
+	if (!blurShader.loadFromFile("shaders/vertexbandw.vert", "shaders/blurFrag.frag"))
+		std::cout << "bof";
+	blurShader.setUniform("texture", sf::Shader::CurrentTexture);
+	blurShader.setUniform("u_resolution", sf::Glsl::Vec2((float)data->assets.sCREEN_WIDTH,(float)data->assets.sCREEN_HEIGHT));
 }
 void CUpgradeState::STEHandleInput()
 {
@@ -150,7 +154,7 @@ void CUpgradeState::STEHandleInput()
 	{
 		if (sf::Event::Closed == event.type)
 			data->window.close();
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) ) {
+		else if (sf::Keyboard::isKeyPressed(inputOfPlayers[this->pointerToPlayer1->numero-1].button1)) {
 			//prevent from multiple key detection
 			if (hasPressedKey++ == 1)
 			{
@@ -163,11 +167,11 @@ void CUpgradeState::STEHandleInput()
 		else if (event.type == sf::Event::KeyPressed)
 		{
 				int previousSelec = iCardSelection;
-			if (event.key.code == sf::Keyboard::D)
+			if (event.key.code == inputOfPlayers[this->pointerToPlayer1->numero-1].moveRight)
 			{
 				iCardSelection = (iCardSelection + 1) % CardList.size();
 			}
-			else if (event.key.code == sf::Keyboard::Q)
+			else if (event.key.code == inputOfPlayers[this->pointerToPlayer1->numero-1].moveLeft)
 			{
 				if (iCardSelection == 0) {
 					iCardSelection = (int)CardList.size() - 1;
@@ -190,6 +194,14 @@ void CUpgradeState::STEUpdate(float delta)
 
 void CUpgradeState::STEDraw(float delta)
 {
+	sf::RenderTexture back;
+	back.create(data->assets.sCREEN_WIDTH, data->assets.sCREEN_HEIGHT);
+	back.clear();
+	blurShader.setUniform("texture", sf::Shader::CurrentTexture);
+	pointertoGameState->drawOnTarget(back,delta);
+	back.display();
+	fond = sf::Sprite(back.getTexture());
+	data->window.draw(fond, &blurShader);
 	for (int i = 0; i < CardList.size(); i++)
 	{
 		data->window.draw(CardList[i]);

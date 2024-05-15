@@ -9,16 +9,7 @@ CClavierVirtuel::CClavierVirtuel(GameDataRef _data, float scoreParam, int rankPa
 	for(int i=0;i<nbJoueur;i++)
 	{
 		joueur tempJoueur;
-		if(i==1)
-		{
-			keys keysecondPlayer;
-			keysecondPlayer.up = sf::Keyboard::Up;
-			keysecondPlayer.down= sf::Keyboard::Down;
-			keysecondPlayer.right = sf::Keyboard::Right;
-			keysecondPlayer.left  = sf::Keyboard::Left;
-			keysecondPlayer.press = sf::Keyboard::U;
-			tempJoueur.keys = keysecondPlayer;
-		}
+		tempJoueur.input = &inputOfPlayers[i];
 		players.push_back(tempJoueur);
 	}
 }
@@ -210,13 +201,13 @@ void CClavierVirtuel::STEHandleInput()
 			{
 				int& x = players[i].playerSelection.x;
 				int& y = players[i].playerSelection.y;
-				keys& currentKey = players[i].keys;
-				if (event.key.code == currentKey.up)
+				inputPlayer* curInput = players[i].input;
+				if (event.key.code == curInput->moveUp)
 				{
 					if (y != 0)
 						y -= 1;
 				}
-				if (event.key.code == currentKey.left)
+				if (event.key.code == curInput->moveLeft)
 				{
 					if (y == 4 && x == 2)
 						break;
@@ -225,21 +216,21 @@ void CClavierVirtuel::STEHandleInput()
 					else if (x != 0)
 						x -= 1;
 				}
-				if (event.key.code == currentKey.down)
+				if (event.key.code == curInput->moveDown)
 				{
 					if (y == 3 && (x < 2 || x > 9))
 						break;
 					if (y != 4)
 						y += 1;
 				}
-				if (event.key.code == currentKey.right)
+				if (event.key.code == curInput->moveRight)
 				{
 					if (y == 4 && x == 9)
 						break;
 					if (x != 11)
 						x += 1;
 				}
-				if (event.key.code == currentKey.press)
+				if (event.key.code == curInput->moveUp)
 				{
 					players[i].isPressed = true;
 				}

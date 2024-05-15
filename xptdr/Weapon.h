@@ -43,6 +43,7 @@ protected:
 	CWeaponStat referenceStat;
 	sf::Keyboard::Key touche;
 	float angleOffset;
+	bool isShooting = false;
 public:
 	~Weapon();
 
@@ -99,5 +100,10 @@ public:
 	{
 		seekForTarget = pointToBool;
 	}
+	/// <summary>
+	/// Renvoie true si on vient de tirer
+	/// </summary>
+	/// <returns></returns>
+	bool isWeaponShooting() { return isShooting; }
 };
 

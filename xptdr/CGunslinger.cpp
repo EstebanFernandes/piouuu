@@ -57,7 +57,6 @@ void CGunslinger::updateWeapon(float dt)
 		}
 		else
 			angleOffset = 0;
-		//std::cout << angleOffset << std::endl;
 	}
 }
 
@@ -83,6 +82,7 @@ void CGunslinger::weaponShoot()
 
 void CGunslinger::iNeedMoreBullets(sf::Vector2f pos)
 {
+	isShooting = true;
 	CBulletAuto reference(getWeaponStats(), assets);
 	reference.setBulletPos(pos);
 	initBuff(reference);
@@ -118,6 +118,8 @@ void CGunslinger::renderWeapon(sf::RenderTarget& target)
 	for (std::list<CBulletAuto>::iterator it = magasine.begin(); it != magasine.end(); ++it) {
 		it->renderEntity(target);
 	}
+	if (isShooting)
+		isShooting = false;
 }
 
 void CGunslinger::traiterMisc(int misc)

@@ -54,29 +54,24 @@ void RoamingEnemy::initDirection()
 {
 	if (info.direction.x == 0.f && info.direction.y == 0.f)
 	{//On veut du random
+		float minAngle = 0.f, maxAngle = 0.f;
 		if (info.spawnSide == "droite" || info.spawnSide == "gauche")
 		{
-			int ySpawnMax = assets->sCREEN_HEIGHT - (int)getGlobalBounds().height;
-			float maxDirY = 0.16f * (1.f - (spawnPos.y / ySpawnMax));
-			float minDirY = -(0.16f * spawnPos.y / (float)ySpawnMax);
-			moveSpeed = 0.5f;
-			dir.y = RandomFloat(minDirY, maxDirY);
-			if (info.spawnSide == "droite")
-				dir.x = -1.f;
-			else
-				dir.x = 1.f;
+			minAngle = utilities::getAngleFromDirection(utilities::dirAtoB(spawnPos, sf::Vector2f(0.f,(float) assets->sCREEN_HEIGHT)));
+			maxAngle = utilities::getAngleFromDirection(utilities::dirAtoB(spawnPos, sf::Vector2f(0.f, 0.f)));
 		}
 		else
 		{
-			int xSpawnMax = assets->sCREEN_WIDTH - (int)getGlobalBounds().width;
-			float maxDirX = 0.16f * (1.f - (spawnPos.x / xSpawnMax));
-			float minDirX = -(0.16f * spawnPos.x / (float)xSpawnMax);
-			moveSpeed = 0.5f;
-			dir.x = RandomFloat(minDirX, maxDirX);
-			if (info.spawnSide == "bas")
-				dir.y = -1.f;
-			else
-				dir.y = 1.f;
+			minAngle = utilities::getAngleFromDirection(utilities::dirAtoB(spawnPos, sf::Vector2f(0.f,0.f)));
+			maxAngle = utilities::getAngleFromDirection(utilities::dirAtoB(spawnPos, sf::Vector2f((float)assets->sCREEN_WIDTH, 0.f)));
+
+		}
+		if(minAngle != 0.f &&maxAngle!=0.f)
+		{
+			float angle = RandomFloat(minAngle, maxAngle);
+			std::cout << "angle pour celui là : " << angle << std::endl;
+			dir = utilities::getDirectionFromAngle(angle);
+			setRotation(180.f+angle);
 		}
 	}
 	else

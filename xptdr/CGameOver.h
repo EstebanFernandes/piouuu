@@ -115,17 +115,17 @@ void CGameOver<MType>::STEHandleInput()
 		else if (data->inputs.IsTextClicked(buttons[1], sf::Mouse::Left, data->window))
 			data->machine.AddState(StateRef(new MType(data, character)), true);*/
 		else if (event.type == sf::Event::KeyReleased) {
-			if (event.key.code == sf::Keyboard::D) {
+			if (event.key.code == inputOfPlayers[0].moveRight) {
 				buttonList[selectedButton].setOutlineThickness(0);
 				selectedButton = (selectedButton + 1) % 2;
 				buttonList[selectedButton].setOutlineThickness(5);
 			}
-			else if (event.key.code == sf::Keyboard::Q) {
+			else if (event.key.code == inputOfPlayers[0].moveLeft) {
 				buttonList[selectedButton].setOutlineThickness(0);
 				selectedButton = abs(selectedButton - 1) % 2;
 				buttonList[selectedButton].setOutlineThickness(5);
 			}
-			else if (event.key.code == sf::Keyboard::Enter) {
+			else if (event.key.code == inputOfPlayers[0].button1) {
 				if (selectedButton == 0) {
 					data->machine.AddState(StateRef(new MType(data, characters)), true);
 				}

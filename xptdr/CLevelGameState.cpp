@@ -7,8 +7,13 @@ void CLevelGameState::GameOver()
 	{
 		isThistheEnd = true;
 		std::vector<CCharacter> temp;
+		totalScore = 0;
+
 		for (auto i = players.begin(); i != players.end(); i++)
+		{
 			temp.push_back(*i);
+			totalScore += i->getScore();
+		}
 		data->machine.AddState(StateRef(new CGameOver<CLevelGameState>(data, temp, totalScore)), true);
 	}
 }
@@ -41,7 +46,7 @@ void CLevelGameState::STEDraw(float delta)
 	}
 	else
 	{
-		renderBackground();
+		renderBackground(r);
 		for (int i = 0; i < entityList.size(); i++)
 		{
 			entityList[i]->renderEntity(r);
@@ -70,6 +75,38 @@ void CLevelGameState::afterTransi()
 	startLevel();
 }
 
+void CLevelGameState::drawOnTarget(sf::RenderTarget& target, float interpolation)
+{
+	if (currentTransi.transiouuuuu == false)
+	{
+		CGameState::drawOnTarget(target,interpolation);
+	}
+	else
+	{
+		renderBackground(target);
+		for (int i = 0; i < entityList.size(); i++)
+		{
+			entityList[i]->renderEntity(target);
+		}
+
+		target.setView(data->window.getDefaultView());
+		//Permet de remettre la vue par défaut et donc pas de soucis sur la suite
+		for (int i = 0; i < entityList.size(); i++)
+		{
+			entityList[i]->renderUI(target);
+		}
+		for (auto i = players.begin(); i != players.end(); i++)
+		{
+			i->renderUI(data->window);
+		}
+		target.draw(uitext);
+		target.draw(gameClockText);
+		currentTransi.renderTransition(target);
+		for (auto i = players.begin(); i != players.end(); i++)
+			i->renderEntity(target);
+	}
+}
+
 
 
 void CLevelGameState::deleteEntity(int& i)
@@ -79,6 +116,15 @@ void CLevelGameState::deleteEntity(int& i)
 		level.deleteEnemy(entityList[i]);
 	}
 	CGameState::deleteEntity(i);
+}
+
+void CLevelGameState::deleteEntity(std::vector<CHittingEntity*>::iterator& entity)
+{
+	if ((*entity)->getType() == 1)
+	{
+		level.deleteEnemy((*entity));
+	}
+	entity = entityList.erase(entity);
 }
 
 void CLevelGameState::startLevel()
@@ -153,26 +199,22 @@ void CLevelGameState::STEUpdate(float delta)
 				i->seekForTarget = false;
 			}
 		}
-
-		size_t temp = entityList.size();
-		int previousMax = (int)temp;
-		for (int i = 0; i < temp; i++)
+		for (std::vector<CHittingEntity*>::iterator entity = entityList.begin();entity!=entityList.end();)
 		{
 			for (auto player = players.begin(); player != players.end(); player++)
-				entityList[i]->updatewPlayer(delta, (*player));
-			if (entityList[i]->needDelete == true)
+				(*entity)->updatewPlayer(delta, (*player));
+			if ((*entity)->needDelete == true)
 			{
-				deleteEntity(i);
-				i--;
-				temp--;
+				deleteEntity(entity);
 			}
 			else
 			{
-				entityList[i]->updateEntity(delta);
-				if (entityList[i]->seekForTarget)
+				(*entity)->updateEntity(delta);
+				if ((*entity)->seekForTarget)
 				{
-					entityList[i]->setTarget(nearestPlayer(entityList[i]->getPosition()));
+					(*entity)->setTarget(nearestPlayer((*entity)->getPosition()));
 				}
+				entity++;
 			}
 		}
 		if (players.begin()->needDelete && players.back().needDelete)
@@ -184,7 +226,7 @@ void CLevelGameState::STEUpdate(float delta)
 		{
 			if (player->hasLevelUp == true )
 			{
-				//data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), &US )), false);
+				data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), &US,this )), false);
 			}
 		}
 		if (level.updateLevel())
@@ -212,4 +254,5 @@ void CLevelGameState::initAssets()
 	addAsset("boss", "res\\img\\spacecraft_player_1.png");
 	addAsset("rusher", "res\\img\\ennemies\\rusher.png");
 	addAsset("enemyRush", "res\\sfx\\vaisseau_fonce.wav");
+	addAsset("muzzleFlash", "res\\img\\muzzleflash.png");
 }

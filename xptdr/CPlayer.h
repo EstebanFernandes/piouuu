@@ -10,6 +10,7 @@
 #include"SFML/Audio.hpp"
 #include"CGrapheUpdate.h"
 #include "upgradeStock.h"
+#include"inputPlayer.h"
 //CLASSE qui représente un joueur
 class CPlayer :  public CMob
 {
@@ -22,16 +23,19 @@ private:
 	sf::Clock animationTimer;
 	sf::Sprite explosionSprite;
 	CAnimation animExplosionSprite;
-	//La barre de vie est une liste de sprite représentant chacun un point de vie
+	//Barre de vie
 	sf::CircleShape iconCircle;
 	sf::CircleShape iconCircle2;
 	sf::RectangleShape lifeBarBG2;
 	sf::Sprite icon;
+	sf::RectangleShape xpBar; //Barre violette en dessous de la barre de vie 
 	//les deux suivants servent à gérer la barre de vie
 	float previouslifePoint;
 	float previousMaxHealth;
 	//Liste de graphes d'amélioration pour le joueur
 	std::vector<CGrapheUpdate> Upgradegraphs;
+	//Mouvement
+	inputPlayer* inputForPlayer;
 	bool isMovingUp;
 	bool isMovingDown;
 	bool isMovingLeft;
@@ -51,37 +55,28 @@ private:
 	bool isDashInvicible = false;
 	float dashDamage = 0.f;
 	sf::Clock hitClock;
+	//Animation etc sur R2D2
 	sf::Sprite R2Sprite;
 	CAnimation R2Anim;
 	sf::Vector2f R2Offset;
 	//Liste des effets sur les balles, on les ajoutes avant de tirer 
 	bool hittype = false;
 	sf::Sound* planeSound;
-	/// <summary>
 	/// pointeur vers l'arme principal
-	/// </summary>
 	Weapon* mainWeapon = NULL;
-
-	/// <summary>
+	sf::Sprite muzzleFlash; //Sprite de fumée qu'on draw quand on tire
 	/// pointeur vers l'arme secondaire
-	/// </summary>
 	Weapon* secondaryWeapon = NULL;
-
-	// Constrcuteurs et destruceurs 
+ 
 	void setSprite();
 	void initStat();
 	void setValue(float& init, std::string modif);
 	void setValue(int& init, std::string modif);
+
+	void updateXpBar();
 public:
 	std::vector<graphComponent> curUpgrade;
 	int numero = -1;
-	//Mouvement
-
-	sf::Keyboard::Key upKey = sf::Keyboard::Z;
-	sf::Keyboard::Key downKey = sf::Keyboard::S;
-	sf::Keyboard::Key leftKey = sf::Keyboard::Q;
-	sf::Keyboard::Key rightKey = sf::Keyboard::D;
-	sf::Keyboard::Key dashKey = sf::Keyboard::T;
 	bool hasLevelUp = false;
 	bool seekForTarget=false;
 	CPlayer();
@@ -137,6 +132,7 @@ public:
 		}
 		getSprite().move(mov);
 		R2Sprite.move(mov);
+		muzzleFlash.move(mov);
 	}
 	void setPositionEntity(sf::Vector2f f)
 	{
@@ -147,7 +143,7 @@ public:
 		getSprite().setPosition(x,y);
 		R2Sprite.setPosition(getGlobalBounds().left+ R2Sprite.getOrigin().x+R2Offset.x,
 			getGlobalBounds().top+ R2Sprite.getOrigin().y+R2Offset.y);
-		//std::cout << R2Sprite.getPosition().x << " y :" << R2Sprite.getPosition().y << std::endl;
+		muzzleFlash.setPosition(getGlobalBounds().left + getGlobalBounds().width, y);
 	}
 	/// <summary>
 	/// set la position de la  bar de vie, la position correspond au haut à droite de la petite image de l'avion
@@ -174,4 +170,5 @@ public:
 		else if (!areWe)
 			planeSound->stop();
 	}
+	void setTouche(inputPlayer* inputt);
 };

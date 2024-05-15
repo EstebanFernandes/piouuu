@@ -3,6 +3,7 @@
 #include <string>
 #include "CTransition.h"
 #include"CBackground.h"
+#include"inputPlayer.h"
 //Classe virtuelle qu'on doit hériter pour construire une scène, on redéfinit les méthodes init (appelés en premier),
 //update( appelé pour update la scène (faire bouger les personnages par exemple))
 //HandleInput où on peut gérer les inputs et ce que l'on fait avec
@@ -10,17 +11,7 @@
 class CState
 {
 protected:
-	/// <summary>
-	/// Structure pour les clés pour un joueur
-	/// </summary>
-	struct keys {
-		sf::Keyboard::Key up = sf::Keyboard::Z;
-		sf::Keyboard::Key down = sf::Keyboard::S;
-		sf::Keyboard::Key left = sf::Keyboard::Q;
-		sf::Keyboard::Key right = sf::Keyboard::D;
-		sf::Keyboard::Key press = sf::Keyboard::R;
-		sf::Keyboard::Key press2 = sf::Keyboard::T;
-	};
+	
 	//Liste qui contient les texture que l'on doit charger 
 	std::vector<std::pair<std::string, std::string>> assetToload;
 	/// <summary>
@@ -42,11 +33,14 @@ protected:
 	inline void addAsset(std::string name, std::string filepath) {
 		assetToload.push_back(std::pair<std::string, std::string>(name, filepath));
 	}
+
 	sf::Clock clock;//Clock on the currentstate
 	static float time; 
 	virtual void updateTime();
 	static sf::Clock globalClock;
 	static CBackground background;
+
+	static inputPlayer inputOfPlayers[2];
 public:
 	static float angleOffset;
 	virtual ~CState();
@@ -64,5 +58,6 @@ public:
 	virtual void STEResume() {};
 	//Méthode appelé une fois la transac effectué ;)
 	virtual void afterTransi() {};
+	virtual void drawOnTarget(sf::RenderTarget& target,float interpolation){}
 };
 

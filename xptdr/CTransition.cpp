@@ -103,7 +103,7 @@ void CTransition::initTransition()
 
 	else if(sens!=NULLTRANSITION)
 	{
-		backTransi = sf::RectangleShape(sf::Vector2f(asset->sCREEN_WIDTH, asset->sCREEN_HEIGHT));
+		backTransi = sf::RectangleShape(sf::Vector2f((float)asset->sCREEN_WIDTH, (float)asset->sCREEN_HEIGHT));
 		backTransi.setFillColor(sf::Color::Black);
 		switch (sens)
 		{
@@ -154,7 +154,7 @@ bool CTransition::updateTransition(float delta)
 
 }
 
-void CTransition::renderTransition(sf::RenderWindow& window)
+void CTransition::renderTransition(sf::RenderTarget& window)
 {
 	if(sens!=NULLTRANSITION&&alreadyBeenRendered==false)
 	{

@@ -72,13 +72,13 @@ void CSettingState::STEInit()
 	value = { 100,100,0,0 };
 	sf::Vector2f size(data->assets.sCREEN_WIDTH * 0.5f, data->assets.sCREEN_HEIGHT * 0.2f);
 	musicVolume = CSlider(&(data->assets),size,"Volume de la musique");
-	musicVolume.setColor(sf::Color::Transparent);
+	musicVolume.setColor(sf::Color(0,0,0,100));
 	SoundVolume = CSlider(&(data->assets), size, "Volume des sons");
-	SoundVolume.setColor(sf::Color::Transparent);
+	SoundVolume.setColor(sf::Color(0, 0, 0, 100));
 	fullScreenCon = CCheckbox(&(data->assets), "Plein écran");
-	fullScreenCon.setColor(sf::Color::Transparent);
+	fullScreenCon.setColor(sf::Color(0, 0, 0, 100));
 	backbutton = CButton(&(data->assets) , "Retour", 300.f, 100.f);
-	backbutton.setColor(sf::Color::Transparent);
+	backbutton.setColor(sf::Color(0, 0, 0, 100));
 	resizeScreen();
 
 	//On va charger les infos du sons etc depuis ce fichier
@@ -118,15 +118,15 @@ void CSettingState::STEHandleInput()
 			data->window.close();
 		else if (event.type == sf::Event::KeyPressed)
 		{
-			if (event.key.code == sf::Keyboard::Q)
+			if (event.key.code == inputOfPlayers[0].moveLeft)
 			{
 				onAction(index, 0);
 			}
-			else if (event.key.code == sf::Keyboard::D)
+			else if (event.key.code == inputOfPlayers[0].moveRight)
 			{
 				onAction(index, 1);
 			}
-			if (event.key.code == sf::Keyboard::Z)
+			if (event.key.code == inputOfPlayers[0].moveUp)
 			{
 				if (index == 0) {
 					index = (int)keyWord.size() - 1;
@@ -136,12 +136,12 @@ void CSettingState::STEHandleInput()
 				}
 				selectionButton->play();
 			}
-			else if (event.key.code == sf::Keyboard::S)
+			else if (event.key.code == inputOfPlayers[0].moveDown)
 			{
 				index = (index + 1) % keyWord.size();
 				selectionButton->play();
 			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+			else if (sf::Keyboard::isKeyPressed(inputOfPlayers[0].button1))
 			{
 				onAction(index, 2);
 			}

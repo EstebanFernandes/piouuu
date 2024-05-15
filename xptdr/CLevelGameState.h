@@ -10,6 +10,7 @@ private:
 	bool isLevelInit = false;
 	bool isLevelSet = false;
 	void deleteEntity(int& i);
+	void deleteEntity(std::vector<CHittingEntity*>::iterator& entity);
 	void startLevel();
 public:
 	CLevelGameState(GameDataRef _data);
@@ -26,6 +27,7 @@ public:
 	void STEResume();
 	void STEDraw(float delta);
 	void afterTransi();
+	void drawOnTarget(sf::RenderTarget& target, float interpolation);
 };
 
 

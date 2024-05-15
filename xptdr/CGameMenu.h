@@ -6,12 +6,13 @@ class CGameMenu : public CState, public InterfaceState
 {
 private:
 	GameDataRef data;
+	CState* gamePointer;
 	// On met un petit compteur avant de reprendre
 	bool resumeClicked = false;
-	sf::Texture texta;
 	sf::Sprite backGroundImage;
 	std::vector<CButton> buttons;
 	std::vector<float> where;
+	sf::Shader blurShader;
 	int index;
 	sf::Clock resumeClock;
 	sf::Time ahah;
@@ -19,7 +20,7 @@ private:
 	bool mdrr = false;
 	void choosedButton();
 public:
-	CGameMenu(GameDataRef _data);
+	CGameMenu(GameDataRef _data,CState* prevState);
 	void STEInit();
 	void STEHandleInput();
 	void STEUpdate(float delta);

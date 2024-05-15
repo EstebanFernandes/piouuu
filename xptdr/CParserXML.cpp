@@ -88,7 +88,8 @@ void CParserXML::addEnemy(std::string enemyName,std::vector<std::string> values)
     //Spawn side
     infoE.spawnSide = values[13];
     infoE.isAim= std::stoi(values[11]);
-    
+    infoE.scoreGived = std::stoi(values[12]);
+    infoE.xpGived = std::stoi(values[14]);
     //Position (soit en absolu, soit en pourcentage selon l'écran
     size_t fade = values[3].find(';');
     std::string posString = values[3];

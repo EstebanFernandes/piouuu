@@ -21,16 +21,15 @@ void CGameMenu::choosedButton()
 	}
 }
 
-CGameMenu::CGameMenu(GameDataRef _data) : data(_data)
+CGameMenu::CGameMenu(GameDataRef _data, CState* prevState)
+	: data(_data),gamePointer(prevState)
 {
+	index = 0;
 }
 
 void CGameMenu::STEInit()
 {
 	data->assets.pauseMusique("PartieJour");
-	texta.create(data->window.getSize().x, data->window.getSize().y);
-	texta.update(data->window);
-	backGroundImage.setTexture(texta);
 	CButton temp(&(data->assets));
 	temp.setString("Reprendre");
 	temp.setSize(data->assets.sCREEN_WIDTH * 0.3f, data->assets.sCREEN_HEIGHT * 0.1f);
@@ -50,6 +49,10 @@ void CGameMenu::STEInit()
 	buttons.push_back(temp);
 	buttons[index].setOutlineThickness(3.f);
 	resizeScreen();
+	if (!blurShader.loadFromFile("shaders/vertexbandw.vert", "shaders/blurFrag.frag"))
+		std::cout << "bof";
+	blurShader.setUniform("texture", sf::Shader::CurrentTexture);
+	blurShader.setUniform("u_resolution", sf::Glsl::Vec2((float)data->assets.sCREEN_WIDTH, (float)data->assets.sCREEN_HEIGHT));
 }
 
 void CGameMenu::STEHandleInput()
@@ -64,7 +67,7 @@ void CGameMenu::STEHandleInput()
 				data->window.close();
 			else if (event.type == sf::Event::KeyPressed)
 			{
-				if (event.key.code == sf::Keyboard::Z)
+				if (event.key.code == inputOfPlayers[0].moveUp)
 				{
 					if (index == 0) {
 						index = (int)buttons.size() - 1;
@@ -73,11 +76,11 @@ void CGameMenu::STEHandleInput()
 						index = (index - 1) % buttons.size();
 					}
 				}
-				else if (event.key.code == sf::Keyboard::S)
+				else if (event.key.code == inputOfPlayers[0].moveDown)
 				{
 					index = (index + 1) % buttons.size();
 				}
-				else if (event.key.code == sf::Keyboard::Enter)
+				else if (event.key.code == inputOfPlayers[0].button1)
 					choosedButton();
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 				{
@@ -86,11 +89,6 @@ void CGameMenu::STEHandleInput()
 				}
 				buttons[previousSelec].setOutlineThickness(0.f);
 				buttons[index].setOutlineThickness(3.f);
-			}
-			else if (event.type == sf::Event::MouseButtonPressed)
-			{
-				if (event.key.code == sf::Mouse::Left)
-					choosedButton();
 			}
 		}
 
@@ -106,6 +104,7 @@ void CGameMenu::STEUpdate(float delta)
 		if (temp > 3.f)
 		{
 			data->machine.RemoveState();
+			hasChanges = true;
 		}
 		else if (temp > 2.f)
 			temp2 = "1";
@@ -121,7 +120,14 @@ void CGameMenu::STEUpdate(float delta)
 
 void CGameMenu::STEDraw(float delta)
 {
-	data->window.draw(backGroundImage);
+	sf::RenderTexture back;
+	back.create(data->assets.sCREEN_WIDTH, data->assets.sCREEN_HEIGHT);
+	back.clear();
+	blurShader.setUniform("texture", sf::Shader::CurrentTexture);
+	gamePointer->drawOnTarget(back, delta);
+	back.display();
+	backGroundImage = sf::Sprite(back.getTexture());
+	data->window.draw(backGroundImage, &blurShader);
 	if(resumeClicked)
 		data->window.draw(decompte);
 	else {

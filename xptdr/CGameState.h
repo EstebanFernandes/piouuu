@@ -41,6 +41,8 @@ protected:
 	void initBackground();
 	void deleteEntity(int i);
 	void updateTime();
+	EllipseShape ellipseForSun;
+	int indexForSun = 0;
 public:
 	CGameState();
 	CGameState(GameDataRef _data);
@@ -65,8 +67,9 @@ public:
 	// Méthode qui initialise les assets du niveau.
 	virtual void initAssets() = 0;
 	virtual void GameOver() = 0;
-	void renderBackground();
+	void renderBackground(sf::RenderTarget& target);
 	void STEDraw(float delta);
+	void drawOnTarget(sf::RenderTarget& target, float interpolation);
 	void STEResume();
 	void STEPause();
 	void setData(GameDataRef dataa) { data = dataa; }

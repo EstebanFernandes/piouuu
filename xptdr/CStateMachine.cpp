@@ -26,6 +26,7 @@ void CStateMachine::ProcessStateChanges()
 		if (!states.empty())
 		{
 			states.top()->STEResume();
+			states.top()->hasChanges = false;
 		}
 		_isRemoving = false;
 	}
@@ -33,7 +34,10 @@ void CStateMachine::ProcessStateChanges()
 	{
 		if ( ! states.empty() ) {
 			if (_isReplacing) 
+			{
+				std::cout << "On supprime un etat" << std::endl;
 				states.pop();
+			}
 			else {
 				states.top()->STEPause();
 			}
@@ -42,6 +46,7 @@ void CStateMachine::ProcessStateChanges()
 		states.push(std::move(newState));
 		_isAdding = false;
 		states.top()->STEInit();
+		states.top()->hasChanges = false;
 	}
 	
 }
