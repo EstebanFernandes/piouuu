@@ -126,7 +126,7 @@ void CTestGame::STEHandleInput()
 			{
 				for (auto i = players.begin(); i != players.end(); i++)
 				{
-					//i->gainXP(20);
+					i->gainXP(20);
 				}
 			
 			}
@@ -214,16 +214,14 @@ void CTestGame::STEUpdate(float delta)
 
 	//Clock updates
 	updateClock();
-
-	//Condition qui assure que le joueur prend bien un niveau par un niveau
+	bool wantToLevelUp = true;
 	for (auto player = players.begin(); player != players.end(); player++)
 	{
-		if (player->hasLevelUp == true )
-		{
-			// Les graphes doivent dépendre des joueurs
-			data->machine.AddState(StateRef(new CUpgradeState(data, &(*player),&US,this )), false);
-		}
+		if(!player->wantToLevelUp)
+			wantToLevelUp=false;
 	}
+	if(wantToLevelUp)
+		data->machine.AddState(StateRef(new CUpgradeState(data, &players, &US, this)), false);
 	totalScore = 0;
 	for (auto player = players.begin(); player != players.end(); player++)
 	{

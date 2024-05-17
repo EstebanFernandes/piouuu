@@ -58,5 +58,7 @@ public:
 	}
 	bool checkCollisions(CMob& b);
 	void renderEntity(sf::RenderTarget& target);
+	float getGunshotDistance() { return gunshotDistance; }
+	float getGunshotTotalDistance() { return gunShotTotalDistance; }
 };
 

@@ -33,7 +33,6 @@ private:
 	float previouslifePoint;
 	float previousMaxHealth;
 	//Liste de graphes d'amélioration pour le joueur
-	std::vector<CGrapheUpdate> Upgradegraphs;
 	//Mouvement
 	inputPlayer* inputForPlayer;
 	bool isMovingUp;
@@ -68,16 +67,22 @@ private:
 	/// pointeur vers l'arme secondaire
 	Weapon* secondaryWeapon = NULL;
  
+	//UI Upgrade
+	sf::Text upgradeText;
+	CAnimation animboutonUpgrade;
+	sf::Sprite spriteButtonUpgrade;
+	sf::Clock timeUpgradeAnim;
 	void setSprite();
 	void initStat();
 	void setValue(float& init, std::string modif);
 	void setValue(int& init, std::string modif);
 
-	void updateXpBar();
 public:
 	std::vector<graphComponent> curUpgrade;
 	int numero = -1;
+	void updateXpBar();
 	bool hasLevelUp = false;
+	bool wantToLevelUp = false;
 	bool seekForTarget=false;
 	CPlayer();
 	CPlayer(CAssetManager* a);
@@ -102,6 +107,19 @@ public:
 	void renderEntity(sf::RenderTarget& target);
 	void renderUI(sf::RenderTarget& target) {
 		renderLifeBar(target);
+		if (hasLevelUp)
+		{
+			float timeUpgrade = timeUpgradeAnim.getElapsedTime().asSeconds();
+			if (timeUpgrade <= 5.f)
+			{
+				if ((int)(timeUpgrade/0.9f) % 2 == 0) //Tous les 0.7 secondes on va changer 
+					animboutonUpgrade.setcurrentXFrameNumber(5);
+				else
+					animboutonUpgrade.setcurrentXFrameNumber(0);
+				target.draw(upgradeText);
+				target.draw(spriteButtonUpgrade);
+			}
+		}
 	}
 	void updateFx();
 	void setAssets(CAssetManager* a);
@@ -159,16 +177,12 @@ public:
 	{
 		hasLevelUp = a;
 	}
-	std::vector<CGrapheUpdate>* getGraphs()
-	{
-		return &Upgradegraphs;
-	}
 	void playSound(bool areWe=true)
 	{
-		if (areWe && planeSound->getStatus() == sf::Sound::Stopped)
+		/*if (areWe && planeSound->getStatus() == sf::Sound::Stopped)
 			planeSound->play();
 		else if (!areWe)
-			planeSound->stop();
+			planeSound->stop();*/
 	}
 	void setTouche(inputPlayer* inputt);
 };

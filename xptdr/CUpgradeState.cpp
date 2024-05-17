@@ -3,32 +3,32 @@
 
 
 
-void CUpgradeState::fillUpgrade(int nbofUpgrade)
+void CUpgradeState::fillUpgrade(upgradeForOnePlayer& player, int nbofUpgrade)
 {
 	std::vector<std::string> typeString = { "maxHealthPoint",
 										"moveSpeed","damagePerBullet",
-											"attackSpeed","bulletSpeed",};
+											"attackSpeed","bulletSpeed","dashDamage" };
 	do {
 		int randInt = (rand() % typeString.size());
-		if (std::find(listUpgradeMax.begin(), listUpgradeMax.end(), typeString[randInt]) != listUpgradeMax.end())
+		if (std::find(player.listUpgradeMax.begin(), player.listUpgradeMax.end(), typeString[randInt]) != player.listUpgradeMax.end())
 		{}
 		else {
-			listUpgradeMax.push_back(typeString[randInt]);
+			player.listUpgradeMax.push_back(typeString[randInt]);
 		}
-	} while (listUpgradeMax.size() != nbofUpgrade);
+	} while (player.listUpgradeMax.size() != nbofUpgrade);
 }
 
 //Si on a plus d'améliorations possible
-void CUpgradeState::plusStats()
+void CUpgradeState::plusStats(upgradeForOnePlayer& player)
 {
-	int screen_Height = data->assets.sCREEN_HEIGHT;
-	int screen_Width = data->assets.sCREEN_WIDTH;
-	int nbofUpgrade = 4;
-	fillUpgrade(nbofUpgrade);
+	float screen_Height = player.bord.height;
+	float screen_Width = player.bord.width;
+	int nbofUpgrade = 6;
+	fillUpgrade(player,nbofUpgrade);
 	for (int i = 0; i < nbofUpgrade; i++)
 	{
 		sf::Vector2f pos;
-		CCardUpgrade temp("*1.1", listUpgradeMax[i], &(data->assets));
+		CCardUpgrade temp("*1.1", player.listUpgradeMax[i], &(data->assets));
 		float ratio = 1 / (float)nbofUpgrade;
 		//Distance qui n'est pas prise par les cartes
 		float t = screen_Width - (temp.getGlobalBounds().width * nbofUpgrade);
@@ -38,18 +38,18 @@ void CUpgradeState::plusStats()
 			t = screen_Width - (temp.getGlobalBounds().width * nbofUpgrade);
 		}
 		float spaceBetweenCard = t / (float)(nbofUpgrade + 1);
-		pos.x = spaceBetweenCard + (spaceBetweenCard + temp.getGlobalBounds().width) * i;
+		pos.x =player.bord.left+ spaceBetweenCard + (spaceBetweenCard + temp.getGlobalBounds().width) * i;
 		pos.y = (screen_Height / 2.f) - (temp.getGlobalBounds().height / 2.f);
 		temp.setPosition(pos);
-		CardList.push_back(temp);
+		player.CardList.push_back(temp);
 	}
 }
 
-void CUpgradeState::applyStats()
+void CUpgradeState::applyStats(upgradeForOnePlayer& player)
 {
-	for (int i = 0; i < CardList[iCardSelection].type.size(); i++)
+	for (int i = 0; i < player.CardList[player.iCardSelection].type.size(); i++)
 	{
-		matchTypeWithValue(CardList[iCardSelection].type[i], CardList[iCardSelection].Upgrade[i]);
+		matchTypeWithValue(player,player.CardList[player.iCardSelection].type[i], player.CardList[player.iCardSelection].Upgrade[i]);
 	}
 }
 
@@ -97,9 +97,33 @@ int CUpgradeState::setValue(int init, std::string modif)
 CUpgradeState::CUpgradeState(GameDataRef d, CPlayer* player, upgradeStock* pointerToUpgradeStocks, CState* prev)
 	: data(d),pointertoGameState(prev)
 {
+	sf::FloatRect bord(0.f, 0.f, (float)d->assets.sCREEN_WIDTH, (float)d->assets.sCREEN_HEIGHT);
 	if (player != NULL)
 	{
-		pointerToPlayer1 = player; 
+		upgradeForOnePlayer temp;
+		temp.pointerToPlayer = player;
+		temp.bord = bord;
+		players.push_back(temp);
+	}
+	if (pointerToUpgradeStocks != NULL)
+		US = pointerToUpgradeStocks;
+}
+
+CUpgradeState::CUpgradeState(GameDataRef d, std::list<CPlayer>* players, upgradeStock* pointerToUpgradeStocks, CState* prev)
+	:data(d),pointertoGameState(prev)
+{
+	sf::FloatRect bord(0.f,0.f, (float)d->assets.sCREEN_WIDTH, (float)d->assets.sCREEN_HEIGHT);
+	if (players->size()==2)
+	{
+		bord.width = bord.width/2.f;
+	}
+	for (auto player = (*players).begin(); player != (*players).end(); player++)
+	{
+		upgradeForOnePlayer temp;
+		temp.pointerToPlayer = &(*player);
+		temp.bord = bord;
+		bord.left += bord.width;
+		this->players.push_back(temp);
 	}
 	if (pointerToUpgradeStocks != NULL)
 		US = pointerToUpgradeStocks;
@@ -107,41 +131,43 @@ CUpgradeState::CUpgradeState(GameDataRef d, CPlayer* player, upgradeStock* point
 
 void CUpgradeState::STEInit() 
 {
-	levelofPlayer = pointerToPlayer1->getLevel();
-	if (levelofPlayer <= 2)
-		isFirstTime = true;
-	else
-		isFirstTime = false;
-	type = whichKindofUpgrade();
-	playerComp = &pointerToPlayer1->curUpgrade[type];
-	currentGraph = &US->currentGraph((*playerComp));
-	CreateCard();
-	std::string typestring;
-	switch (type)
+	for (int i = 0; i < players.size(); i++)
 	{
-	case 0:
-		typestring = "\nAmélioration de l'arme principale ";
-		pointerToWeapon = pointerToPlayer1->getMainWeapon();
-		break;
-	case 1:
-		typestring = "\nAmélioration de l'arme secondaire ";
-		pointerToWeapon = pointerToPlayer1->getSecondaryWeapon();
-		break;
-	case 2:
-		typestring = "\nAmélioration diverse ";
-		break;
-	}
-	CardList[iCardSelection].setOutlineThickNess(10.f);
-	applyCardUpgrademaxMinCharSize(CardList);
-	for (int i = 0; i < CardList.size(); i++)
-	{
-		CardList[i].resizeTexts();
-	}
-	std::string temp = "Passage au niveau " + std::to_string(this->levelofPlayer) + typestring;
-	title.setString(temp);
-	title.setFont(data->assets.GetFont("Nouvelle"));
-	title.setCharacterSize(40);
-	title.setPosition(sf::Vector2f((data->assets.sCREEN_WIDTH - title.getGlobalBounds().width) / 2, (data->assets.sCREEN_HEIGHT * 0.1f - title.getGlobalBounds().height) / 2));
+		players[i].levelOfPlayer = players[i].pointerToPlayer->getLevel();
+		if (players[i].levelOfPlayer <= 2)
+			players[i].isFirstTime = true;
+		else
+			players[i].isFirstTime = false;
+		players[i].type = whichKindofUpgrade(players[i]);
+		players[i].playerComp = &(players[i].pointerToPlayer->curUpgrade[players[i].type]);
+		CreateCard(players[i]);
+		std::string typestring;
+		switch (players[i].type)
+		{
+		case 0:
+			typestring = "\nAmélioration de l'arme principale ";
+			players[i].pointerToWeaponPlayer = players[i].pointerToPlayer->getMainWeapon();
+			break;
+		case 1:
+			typestring = "\nAmélioration de l'arme secondaire ";
+			players[i].pointerToWeaponPlayer = players[i].pointerToPlayer->getSecondaryWeapon();
+			break;
+		case 2:
+			typestring = "\nAmélioration diverse ";
+			break;
+		}
+		players[i].CardList[players[i].iCardSelection].setOutlineThickNess(10.f);
+		applyCardUpgrademaxMinCharSize(players[i].CardList);
+		for (int j = 0; j < players[i].CardList.size(); j++)
+		{
+			players[i].CardList[j].resizeTexts();
+		}
+		std::string temp = "Passage au niveau " + std::to_string(players[i].levelOfPlayer) + typestring;
+		players[i].title.setString(temp);
+		players[i].title.setFont(data->assets.GetFont("Nouvelle"));
+		players[i].title.setCharacterSize(20);
+		players[i].title.setPosition(sf::Vector2f(players[i].bord.left+((players[i].bord.width - players[i].title.getGlobalBounds().width) / 2.f), (players[i].bord.height * 0.1f - players[i].title.getGlobalBounds().height) / 2.f));
+		}
 	if (!blurShader.loadFromFile("shaders/vertexbandw.vert", "shaders/blurFrag.frag"))
 		std::cout << "bof";
 	blurShader.setUniform("texture", sf::Shader::CurrentTexture);
@@ -154,34 +180,9 @@ void CUpgradeState::STEHandleInput()
 	{
 		if (sf::Event::Closed == event.type)
 			data->window.close();
-		else if (sf::Keyboard::isKeyPressed(inputOfPlayers[this->pointerToPlayer1->numero-1].button1)) {
-			//prevent from multiple key detection
-			if (hasPressedKey++ == 1)
-			{
-				applyStats();
-				US->avancer(*playerComp,iCardSelection);
-				pointerToPlayer1->setBoolLevelUp(false);
-				data->machine.RemoveState();
-			}
-		}
-		else if (event.type == sf::Event::KeyPressed)
+		for (int i = 0; i < players.size(); i++)
 		{
-				int previousSelec = iCardSelection;
-			if (event.key.code == inputOfPlayers[this->pointerToPlayer1->numero-1].moveRight)
-			{
-				iCardSelection = (iCardSelection + 1) % CardList.size();
-			}
-			else if (event.key.code == inputOfPlayers[this->pointerToPlayer1->numero-1].moveLeft)
-			{
-				if (iCardSelection == 0) {
-					iCardSelection = (int)CardList.size() - 1;
-				}
-				else {
-					iCardSelection = (iCardSelection - 1) % CardList.size();
-				}
-			}
-				CardList[previousSelec].setOutlineThickNess(0.f);
-				CardList[iCardSelection].setOutlineThickNess(10.f);
+			handleInput(players[i], event);
 		}
 	}
 }
@@ -189,7 +190,13 @@ void CUpgradeState::STEHandleInput()
 
 void CUpgradeState::STEUpdate(float delta)
 {
-
+	bool finalBool = false;
+	for (int i = 0; i < players.size(); i++)
+	{
+		finalBool = (players[i].cfini) ? true : false;
+	}
+	if (finalBool)
+		data->machine.RemoveState();
 }
 
 void CUpgradeState::STEDraw(float delta)
@@ -202,14 +209,22 @@ void CUpgradeState::STEDraw(float delta)
 	back.display();
 	fond = sf::Sprite(back.getTexture());
 	data->window.draw(fond, &blurShader);
-	for (int i = 0; i < CardList.size(); i++)
+	for(int i=0;i<players.size();i++)
 	{
-		data->window.draw(CardList[i]);
+		for (int j = 0;j < players[i].CardList.size(); j++)
+		{
+			data->window.draw(players[i].CardList[j]);
+		}
+		data->window.draw(players[i].CardList[players[i].iCardSelection]);
+		data->window.draw(players[i].title);
 	}
-	data->window.draw(title);
+	for (int i = 0; i < players.size(); i++)
+	{
+		data->window.draw(players[i].CardList[players[i].iCardSelection]);
+	}
 }
 
-bool CUpgradeState::matchTypeWithValue(std::string type, std::string value)
+bool CUpgradeState::matchTypeWithValue(upgradeForOnePlayer& player, std::string type, std::string value)
 {
 	std::vector<std::string> typeString = { "maxXp","healthPoint","maxHealthPoint",
 									"moveSpeed","canonNumber","damagePerBullet",
@@ -224,27 +239,27 @@ bool CUpgradeState::matchTypeWithValue(std::string type, std::string value)
 			switch (pos)
 			{
 			case 0: //Max XP
-				pointerToPlayer1->setMaxXp(setValue(pointerToPlayer1->getMaxXp(), value));
+				player.pointerToPlayer->setMaxXp(setValue(player.pointerToPlayer->getMaxXp(), value));
 				break;
 			case 1:  //Health Point
-				pointerToPlayer1->setLifePoint(setValue(pointerToPlayer1->getLifePoint(), value));
+				player.pointerToPlayer->setLifePoint(setValue(player.pointerToPlayer->getLifePoint(), value));
 			case 2: // Max HealthPoint
-				pointerToPlayer1->setMaxXp((int)setValue(pointerToPlayer1->getMaxHealth(), value));
+				player.pointerToPlayer->setMaxXp((int)setValue(player.pointerToPlayer->getMaxHealth(), value));
 				break;
 			case 3: //move Speed
-				pointerToPlayer1->setMoveSpeed(setValue(pointerToPlayer1->getMoveSpeed(), value));
+				player.pointerToPlayer->setMoveSpeed(setValue(player.pointerToPlayer->getMoveSpeed(), value));
 				break;
 			case 4: //canon number
 				//On s'en branle
 				break;
 			case 5: //DamagePerBullet
-				pointerToWeapon->getWeaponStats().bulletDamage = setValue(pointerToWeapon->getWeaponStats().bulletDamage, value);
+				player.pointerToWeaponPlayer->getWeaponStats().bulletDamage = setValue(player.pointerToWeaponPlayer->getWeaponStats().bulletDamage, value);
 				break;
 			case 6: //attack speed
-				pointerToWeapon->getWeaponStats().attackSpeed = setValue(pointerToWeapon->getWeaponStats().attackSpeed, value);
+				player.pointerToWeaponPlayer->getWeaponStats().attackSpeed = setValue(player.pointerToWeaponPlayer->getWeaponStats().attackSpeed, value);
 				break;
 			case 7: // bullet speed
-				pointerToWeapon->getWeaponStats().bulletSpeed = setValue(pointerToWeapon->getWeaponStats().bulletSpeed, value);
+				player.pointerToWeaponPlayer->getWeaponStats().bulletSpeed = setValue(player.pointerToWeaponPlayer->getWeaponStats().bulletSpeed, value);
 				break;
 			case 8: //misc
 				switch (value[0])
@@ -259,15 +274,15 @@ bool CUpgradeState::matchTypeWithValue(std::string type, std::string value)
 					return false;
 					break;
 				default:
-					pointerToPlayer1->traitermisc(value, this->type);
+					player.pointerToPlayer->traitermisc(value, player.type);
 					break;
 				}
 				break;
 			case 9: //dash distance
-				pointerToPlayer1->setDashDistance(setValue(pointerToPlayer1->getDashDistance(), value));
+				player.pointerToPlayer->setDashDistance(setValue(player.pointerToPlayer->getDashDistance(), value));
 				break;
 			case 10: // dash damage
-				pointerToPlayer1->setDashDamage(setValue(pointerToPlayer1->getDashDamage(), value));
+				player.pointerToPlayer->setDashDamage(setValue(player.pointerToPlayer->getDashDamage(), value));
 				break;
 			case 11: //isDashInvicible
 				bool temp;
@@ -281,11 +296,55 @@ bool CUpgradeState::matchTypeWithValue(std::string type, std::string value)
 				}
 				else
 					break;
-				pointerToPlayer1->setIsDashInvicible(temp);
+				player.pointerToPlayer->setIsDashInvicible(temp);
 				break;
 			}
 		}
 		return true;
 	}
 	return true;
+}
+
+void CUpgradeState::handleInput(upgradeForOnePlayer& player, sf::Event& event)
+{
+	if (sf::Keyboard::isKeyPressed(inputOfPlayers[player.pointerToPlayer->numero - 1].button1)&&player.cfini==false) {
+		//prevent from multiple key detection
+		if (player.hasPressedKey++ == 1)
+		{
+			applyStats(player);
+			US->avancer(*player.playerComp, player.iCardSelection);
+			player.pointerToPlayer->setBoolLevelUp(false);
+			player.pointerToPlayer->wantToLevelUp = false;
+			player.pointerToPlayer->updateXpBar();
+			player.cfini = true;
+			player.hasPressedKey = 0;
+		}
+	}
+	else if (sf::Keyboard::isKeyPressed(inputOfPlayers[player.pointerToPlayer->numero - 1].button2) && player.cfini == true) {
+		//prevent from multiple key detection
+		if (player.hasPressedKey++ == 1)
+		{
+			player.cfini = false;
+			player.hasPressedKey = 0;
+		}
+	}
+	else if (event.type == sf::Event::KeyPressed && player.cfini == false)
+	{
+		int previousSelec = player.iCardSelection;
+		if (event.key.code == inputOfPlayers[player.pointerToPlayer->numero - 1].moveRight)
+		{
+			player.iCardSelection = (player.iCardSelection + 1) % player.CardList.size();
+		}
+		else if (event.key.code == inputOfPlayers[player.pointerToPlayer->numero - 1].moveLeft)
+		{
+			if (player.iCardSelection == 0) {
+				player.iCardSelection = (int)player.CardList.size() - 1;
+			}
+			else {
+				player.iCardSelection = (player.iCardSelection - 1) % player.CardList.size();
+			}
+		}
+		player.CardList[previousSelec].setOutlineThickNess(0.f);
+		player.CardList[player.iCardSelection].setOutlineThickNess(10.f);
+	}
 }

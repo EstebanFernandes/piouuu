@@ -114,7 +114,7 @@ bool CBulletAuto::checkCollisions(CMob& b)
 	{
 
 		isThisIt = true;
-		hitbox.setFillColor(sf::Color(255, 255, 255, 128));
+		hitbox.setFillColor(sf::Color(255, 255, 255, 100));
 		hitbox.setSize(sf::Vector2f(200.f, 200.f));
 		hitbox.setOrigin(hitbox.getLocalBounds().width / 2.f, hitbox.getLocalBounds().height / 2.f );
 		hitbox.setPosition(getSprite().getPosition());
@@ -128,7 +128,7 @@ bool CBulletAuto::checkCollisions(CMob& b)
 
 void CBulletAuto::renderEntity(sf::RenderTarget& target)
 {
-	if (isThisIt)
+	//if (isThisIt)
 		target.draw(hitbox);
 	CBullet::renderEntity(target);
 }

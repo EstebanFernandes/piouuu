@@ -18,7 +18,7 @@ Ce qui est colorié en jaune est obligatoire en terme de placements sur un tablea
 ;;;;;;;;;;;;;;;<column>;<id>;<previd>;<var>name;<var>description;<var>damagePerBullet;<var>attackSpeed;<var>bulletSpeed;<var>moveSpeed;<var> penetration;<var>misc;<endLine>
 <start>;<name>fusil à pompe (on a tout pris à Cuphead);;;;;;;;;;;;;;1;0;;Sniper;One Shot;*5;*0.2;*5;;;;
 <column>;<id>;<previd>;<var>name;<var>description;<var>damagePerBullet;<var>attackSpeed;<var>bulletSpeed;<var>misc;<var>moveSpeed;;<endLine>;;;;4;1;0;Balle blindée;Avec ça on va percer c'est sur!;*2;;;;2;;
-1;0;;Gunshot;très bon pour gérer le corps à corps;1.2;4;1.1;gunshot;;;;;;;4;2;0;Main Leste;Deux atouts piqué;*1.2;*1.5;;;1;;
+1;0;;Gunshot;très bon pour gérer le corps à corps;1.2;2;1.1;gunshot;;;;;;;4;2;0;Main Leste;Deux atouts piqué;*1.2;*1.5;;;1;;
 4;1;0;Balle blindée;Avec ça on va percer c'est sur!;;;;;;;;;;;4;3;0;Sprinter;Le véhicule mercredes;*1.2;;;*1.4;;;
 4;2;0;Main Leste;Deux atouts piqué;;;;;;;;;;;7;4;1;;;;;;;;;
 ;3;0;Sprinter;;;;;;;;;;;;7;5;2;Amélioration;Woah attend mais tu vas vraiment faire mal;*1.2;;1;;;;

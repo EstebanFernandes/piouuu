@@ -12,14 +12,14 @@ bool Level::updateLevel()
 				index = 0;
 			patternList.push_back(patternListStock[index]);
 		}
-		else {
+		else { //On rajoute un pattern aléatoire
 			int min = 0;
 			int max = (int)patternListStock.size()-1;
 			patternList.push_back(patternListStock[min + std::rand() % (max - min + 1)]);
 		}
 	}
-	// Pour que ça fonctionne en release mdrr
-	pat = patternList.at(0);
+	// Pour que ça fonctionne en release 
+	//pat = patternList.at(0);
 		if(pat.updatePattern(*clock - offset, ennemyList) == true)
 		{
 			patternList.erase(patternList.begin());

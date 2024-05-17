@@ -56,7 +56,8 @@ void CPlayer::updateXpBar()
 	float perc = (xp > maxXp) ? (float)maxXp : (float)xp;
 	perc = (perc == 0) ? 0.05f : perc;
 	float fullSize = lifeBarBG2.getGlobalBounds().width - lifeBarBG2.getOutlineThickness();
-		xpBar.setSize(sf::Vector2f(fullSize* perc / maxXp, 10.f));
+	xpBar.setSize(sf::Vector2f(fullSize* perc / maxXp, 10.f));
+	xpBar.setFillColor(sf::Color(204, 150-150 * perc / maxXp, 255, 200));
 }
 
 void CPlayer::setAssets(CAssetManager* a)
@@ -342,6 +343,8 @@ void CPlayer::PLYupdateMovement(sf::Event& event)
 	{
 		case sf::Event::KeyPressed :
 		{
+			if (event.key.code == inputForPlayer->button5 && hasLevelUp)
+				wantToLevelUp = true;
 				if (event.key.code == inputForPlayer->moveUp)
 					isMovingUp = true;
 				if (event.key.code == inputForPlayer->moveLeft)
@@ -502,6 +505,11 @@ void CPlayer::updateEntity(float dt)
 			xp -= maxXp;
 			maxXp += 10;
 			hasLevelUp = true;
+			timeUpgradeAnim.restart();
+			if (level == 1)
+				spriteButtonUpgrade.setPosition(
+				upgradeText.getGlobalBounds().left+ upgradeText.getGlobalBounds().width*1.1f+ spriteButtonUpgrade.getGlobalBounds().width/2.f,
+					upgradeText.getGlobalBounds().top+( (spriteButtonUpgrade.getGlobalBounds().height - upgradeText.getGlobalBounds().height*0.5f)/2.f) );
 		}
 		sf::Vector2f nezdeLavion(getSprite().getPosition().x + getGlobalBounds().width / 2.f,
 			getSprite().getPosition().y);
@@ -611,6 +619,17 @@ void CPlayer::setNumero(int& i)
 		break;
 	}
 	numero = i;
+
+	upgradeText.setFont(assets->GetFont("Nouvelle"));
+	upgradeText.setCharacterSize(15);
+	upgradeText.setString("+1 NIVEAU \nAppuyez sur");
+	spriteButtonUpgrade.setTexture(assets->GetTexture("buttonArcade"));
+	animboutonUpgrade = CAnimation(&spriteButtonUpgrade, sf::Vector2i(47, 33), 7,-1.f,1);
+	upgradeText.setPosition(xpBar.getPosition().x, xpBar.getPosition().y + xpBar.getSize().y * 1.5f);
+	if(assets->sCREEN_WIDTH==1280.f)
+		spriteButtonUpgrade.setScale(2.f,2.f);
+	else
+		spriteButtonUpgrade.setScale(1.5f, 1.5f);
 }
 
 void CPlayer::setTouche(inputPlayer* inputt)

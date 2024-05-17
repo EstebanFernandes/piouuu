@@ -74,6 +74,10 @@ public:
 	void STEPause();
 	void setData(GameDataRef dataa) { data = dataa; }
 	void updateClock();
+	/// <summary>
+	/// Méthode appelé qui regarde si les joueurs ont level up
+	/// </summary>
+	virtual void updateXpPlayers();
 	void afterTransi();
 	CMob* nearEnemy(CMob* player);
 	CMob* nearestPlayer(sf::Vector2f pos);

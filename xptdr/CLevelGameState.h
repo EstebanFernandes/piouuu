@@ -27,6 +27,7 @@ public:
 	void STEResume();
 	void STEDraw(float delta);
 	void afterTransi();
+	void updateXpPlayers();
 	void drawOnTarget(sf::RenderTarget& target, float interpolation);
 };
 

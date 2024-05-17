@@ -9,11 +9,14 @@ void CStateMachine::AddState(StateRef newState_, bool isReplacing)
 	_isAdding = true;
 	_isReplacing = isReplacing;
 	newState = std::move(newState_);
+	if(states.size()!=0)
+		states.top()->hasChanges = true;
 }
 
 void CStateMachine::RemoveState()
 {
 	_isRemoving = true;
+	states.top()->hasChanges = true;
 }
 
 void CStateMachine::ProcessStateChanges()

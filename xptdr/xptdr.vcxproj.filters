@@ -251,6 +251,9 @@
       <Filter>Fichiers cpp</Filter>
     </ClCompile>
     <ClCompile Include="LevelSelectionState.cpp" />
+    <ClCompile Include="inputPlayer.cpp" />
+    <ClCompile Include="SpinningCard.cpp" />
+    <ClCompile Include="CMenuInterfaceState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bulletStorage.h">
@@ -506,6 +509,7 @@
     <ClInclude Include="CState.h">
       <Filter>Fichiers source\States</Filter>
     </ClInclude>
+    <ClInclude Include="CMenuInterfaceState.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BomberEnemy.h" />
@@ -612,5 +616,11 @@
     <Filter Include="Fichiers source\States">
       <UniqueIdentifier>{0fb5af39-d1f8-458c-b33b-1d5366949795}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\fragbandw.frag" />
+    <None Include="shaders\test.frag" />
+    <None Include="shaders\blurFrag.frag" />
+    <None Include="shaders\vertexbandw.vert" />
   </ItemGroup>
 </Project>

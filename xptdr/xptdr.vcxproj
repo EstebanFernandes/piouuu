@@ -165,6 +165,7 @@
     <ClCompile Include="CHugoDecrypte.cpp" />
     <ClCompile Include="CLevelGameState.cpp" />
     <ClCompile Include="CLoadingState.cpp" />
+    <ClCompile Include="CMenuInterfaceState.cpp" />
     <ClCompile Include="CMiscellaneous.cpp" />
     <ClCompile Include="CMob.cpp" />
     <ClCompile Include="CEntity.cpp" />
@@ -253,6 +254,7 @@
     <ClInclude Include="CHugoDecrypte.h" />
     <ClInclude Include="CLevelGameState.h" />
     <ClInclude Include="CLoadingState.h" />
+    <ClInclude Include="CMenuInterfaceState.h" />
     <ClInclude Include="CMiscellaneous.h" />
     <ClInclude Include="CMob.h" />
     <ClInclude Include="CEntity.h" />

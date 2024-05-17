@@ -11,33 +11,38 @@
 class CUpgradeState : public CState, public InterfaceState
 {
 private:
+	const sf::Vector2f sizeOfCard = sf::Vector2f(255, 366.f);
 	CState* pointertoGameState;
 	GameDataRef data;
-	int nbOfGraph;
-	int type;
+
+	struct upgradeForOnePlayer{
+		sf::FloatRect bord;
+		int nbOfGraph;
+		int type;
+		graphComponent* playerComp;
+		CPlayer* pointerToPlayer;
+		Weapon* pointerToWeaponPlayer;
+		int levelOfPlayer;
+		//Liste qui gère les améliorations une fois que l'on arrive à la fin d'un arbre
+		std::vector<std::string> listUpgradeMax;
+		bool isFirstTime = false;
+		bool isGraphEnd = false;
+		int hasPressedKey = 0;
+		//Graphique
+		std::vector<CCardUpgrade> CardList;
+		//Selection
+		int iCardSelection = 0;
+		sf::Text title;
+		bool cfini = false;
+	};
 	upgradeStock* US;
-	graphComponent* playerComp;
-	//Pointeur sur le joueur afin d'accéder plus facilement à ces stats
-	CPlayer* pointerToPlayer1;
-	Weapon* pointerToWeapon;
-	int levelofPlayer;
-	//Liste qui gère les améliorations une fois que l'on arrive à la fin d'un arbre
-	std::vector<std::string> listUpgradeMax;
-	CGrapheUpdate* currentGraph;
-	bool isFirstTime = false;
-	bool isGraphEnd = false;
-	int hasPressedKey = 0;
-	//Graphique
-	std::vector<CCardUpgrade> CardList;
-	sf::Text title;
+	std::vector<upgradeForOnePlayer> players;
 	sf::Shader blurShader;
 	sf::Sprite fond;
-	//Selection
-	int iCardSelection = 0;
-	void fillUpgrade(int nbofUpgrade);
+	void fillUpgrade(upgradeForOnePlayer& player ,int nbofUpgrade);
 	//Méthodes et constructeurs
-	int whichKindofUpgrade() {
-		int temp = levelofPlayer;
+	int whichKindofUpgrade(upgradeForOnePlayer& player) {
+		int temp = player.levelOfPlayer;
 		int res = temp % 3;
 		if (res == 0)
 		{
@@ -59,56 +64,61 @@ private:
 	/// </summary>
 	/// <param name="type"></param>
 	/// <param name="isFirstTime"></param>
-	void CreateCard()
+	void CreateCard(upgradeForOnePlayer& player)
 	{
 
-		int screen_Height = data->assets.sCREEN_HEIGHT;
-		int screen_Width = data->assets.sCREEN_WIDTH;
-		CSommetUpgrade& baseSommet = (*playerComp->pointerToSommet);
-		if (playerComp->isGraphEnd())//Si le graphe est fini on met les trucs supplémentaire
+		float screen_Height = player.bord.height;
+		float screen_Width = player.bord.width;
+		CSommetUpgrade& baseSommet = (*player.playerComp->pointerToSommet);
+		if (player.playerComp->isGraphEnd())//Si le graphe est fini on met les trucs supplémentaire
 		{
-			isGraphEnd = true;
-			plusStats();
+			player.isGraphEnd = true;
+			plusStats(player);
 		}
 		else
 		{
+			sf::Vector2f trueSizeOfCard = (players.size() == 2) ? sf::Vector2f(sizeOfCard * 0.8f) : sizeOfCard;
 			int nbofUpgrade = (int)baseSommet.SOMLireArcPartant().size();
-				for (int i = 0; i < nbofUpgrade; i++)
+
+			float totalRectanglesWidth = (float)nbofUpgrade * trueSizeOfCard.x;
+			// Calculer l'espacement nécessaire
+			float totalSpacing = player.bord.width - totalRectanglesWidth;
+			float spacing = totalSpacing / (nbofUpgrade + 1);
+
+			// Calculer la position de départ
+			float startX = player.bord.left+ spacing;
+
+			for (int i = 0; i < nbofUpgrade; i++)
+			{
+				sf::Vector2f pos;
+					int iDNextVert = baseSommet.SOMLireArcPartant()[i].ARCObtenirDest();
+					CSommetUpgrade nextVert = US->currentGraph((*player.playerComp)).GRAObtenirListeSommet()[US->currentGraph((*player.playerComp)).GRATrouverSommet(iDNextVert)];
+				CCardUpgrade temp;
+				if(player.isFirstTime==false)
 				{
-					sf::Vector2f pos;
-						int iDNextVert = baseSommet.SOMLireArcPartant()[i].ARCObtenirDest();
-						CSommetUpgrade nextVert = currentGraph->GRAObtenirListeSommet()[currentGraph->GRATrouverSommet(iDNextVert)];
-					CCardUpgrade temp;
-					if(isFirstTime==false)
-					{
-						temp = CCardUpgrade(nextVert.returnValues(), US->graphs[playerComp->pos.y][playerComp->pos.x].ListeType, &(data->assets));
-					}
-					else {
-						temp = CCardUpgrade(nextVert.returnValues(), US->graphs[playerComp->pos.x][iDNextVert-1].ListeType, &(data->assets));
-					}
-					float ratio = 1 / (float)nbofUpgrade;
-					//Distance qui n'est pas prise par les cartes
-					float t = screen_Width - (temp.getGlobalBounds().width * nbofUpgrade);
-					while (t <= screen_Width * 0.2)
-					{
-						temp.reduceScale();
-						t = screen_Width - (temp.getGlobalBounds().width * nbofUpgrade);
-					}
-					float spaceBetweenCard = t / (float)(nbofUpgrade + 1);
-					pos.x = spaceBetweenCard + (spaceBetweenCard + temp.getGlobalBounds().width) * i;
-					pos.y = (screen_Height / 2.f) - (temp.getGlobalBounds().height / 2.f);
-					temp.setPosition(pos);
-					CardList.push_back(temp);
+					temp = CCardUpgrade(nextVert.returnValues(), US->graphs[player.playerComp->pos.y][player.playerComp->pos.x].ListeType, &(data->assets));
 				}
+				else {
+					temp = CCardUpgrade(nextVert.returnValues(), US->graphs[player.playerComp->pos.x][iDNextVert-1].ListeType, &(data->assets));
+				}
+				temp.setSize(trueSizeOfCard);
+				pos.x = startX;
+				pos.y = (screen_Height / 2.f) - (temp.getGlobalBounds().height / 2.f);
+				temp.setPosition(pos);
+				player.CardList.push_back(temp);
+				startX += trueSizeOfCard.x+spacing;
+			}
 		}
 	}
-	void plusStats();
-	void applyStats();
+	void plusStats(upgradeForOnePlayer& player);
+	void applyStats(upgradeForOnePlayer& player);
 	float setValue(float init, std::string modif);
 	int setValue(int init, std::string modif);
-	bool matchTypeWithValue(std::string type, std::string value);
+	bool matchTypeWithValue(upgradeForOnePlayer& player, std::string type, std::string value);
+	void handleInput(upgradeForOnePlayer& player, sf::Event& event);
 public:
 	CUpgradeState(GameDataRef d, CPlayer* player, upgradeStock* pointerToUpgradeStocks,CState* prev);
+	CUpgradeState(GameDataRef d, std::list<CPlayer>* player, upgradeStock* pointerToUpgradeStocks, CState* prev);
 	void STEInit(); 
 	void STEHandleInput();
 	void STEUpdate(float delta);

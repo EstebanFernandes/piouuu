@@ -83,7 +83,7 @@ void CGunslinger::weaponShoot()
 void CGunslinger::iNeedMoreBullets(sf::Vector2f pos)
 {
 	isShooting = true;
-	CBulletAuto reference(getWeaponStats(), assets);
+	CBulletAuto reference(referenceStat, assets);
 	reference.setBulletPos(pos);
 	initBuff(reference);
 	if(typeTir==autoAim)	
@@ -91,9 +91,22 @@ void CGunslinger::iNeedMoreBullets(sf::Vector2f pos)
 	for (int i = 0; i < referenceStat.dir2.size(); i++)
 	{
 		sf::Vector2f tempDirection = referenceStat.dir2[i];
+		if (typeTir == gunshotAim)
+		{
+			tempDirection = utilities::getDirectionFromAngle(utilities::RandomatXPerc(15.f,utilities::getAngleFromDirection(tempDirection)));
+			reference.setGunShotDistance(utilities::RandomatXPerc(15.f,reference.getGunshotTotalDistance() ));
+			reference.setBulletSpeed(utilities::RandomatXPerc(0.5f, reference.getBulletSpeed()));
+		}
 		if (typeTir == Spin)
 		{
 			tempDirection = utilities::getDirectionFromAngle(utilities::getAngleFromDirection(tempDirection) + angleOffset);
+		}
+		if (typeTir == doubleTirs2)
+		{
+			if(i==0)
+				reference.setBulletPos(sf::Vector2f(pos.x, pos.y - 7.f));
+			else
+				reference.setBulletPos(sf::Vector2f(pos.x, pos.y + 7.f));
 		}
 		if (typeTir != bombe)
 		{
@@ -103,6 +116,11 @@ void CGunslinger::iNeedMoreBullets(sf::Vector2f pos)
 		magasine.push_back(reference);
 	setAnimation(magasine.back());
 		bulletSound->play();
+		if (typeTir == gunshotAim)
+		{
+			reference.setGunShotDistance(referenceStat.maxDistance);
+			reference.setBulletSpeed(referenceStat.bulletSpeed);
+		}
 	}
 }
 
