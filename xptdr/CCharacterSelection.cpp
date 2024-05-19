@@ -1,7 +1,7 @@
 #include "CCharacterSelection.h"
 #include "CTestGame.h"
 #include "CParserCSV.h"
-
+#include"CMainMenuState.h"
 
 CCharacterSelection::CCharacterSelection(GameDataRef _data) 
 {
@@ -117,6 +117,7 @@ void CCharacterSelection::STEHandleInput()
 		switch (event.type)
 		{
 		case sf::Event::KeyPressed:
+		{
 			if (event.key.code == inputOfPlayers[0].moveRight)
 			{
 				if (!carousel.isMoving)
@@ -140,11 +141,20 @@ void CCharacterSelection::STEHandleInput()
 					LaunchTransi = true;
 					validationSound->play();
 				}
+
+			}
+			else if (event.key.code == inputOfPlayers[0].button2)
+			{
+				data->machine.RemoveState();
 				break;
+			}
+			break;
+		}
 		case sf::Event::Closed:
+		{
 			data->window.close();
 			break;
-			}
+		}
 		}
 	}
 }

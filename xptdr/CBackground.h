@@ -45,6 +45,7 @@ public:
 	void addLayer(std::string fileName,std::string name, float speed, int type);
 	void addLayer(sf::Sprite sprite, std::string name, float speed, int type);
 	void addClouds(std::string textureName, std::string name, float speed,CAnimation& anim);
+	void initClouds();
 	bool deleteLayer(std::string name);
 	/// <summary>
 	/// 

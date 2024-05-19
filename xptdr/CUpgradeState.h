@@ -39,6 +39,7 @@ private:
 	std::vector<upgradeForOnePlayer> players;
 	sf::Shader blurShader;
 	sf::Sprite fond;
+	sf::RectangleShape frontiere;
 	void fillUpgrade(upgradeForOnePlayer& player ,int nbofUpgrade);
 	//Méthodes et constructeurs
 	int whichKindofUpgrade(upgradeForOnePlayer& player) {

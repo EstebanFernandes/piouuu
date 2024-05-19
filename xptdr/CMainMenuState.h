@@ -35,7 +35,7 @@ private:
 	/// nom du niveau à lancer
 	/// </summary>
 	std::string* levelToLaunch;
-
+	bool isTest = false;
 	void choosedButton();
 	void addLevelType();
 public:

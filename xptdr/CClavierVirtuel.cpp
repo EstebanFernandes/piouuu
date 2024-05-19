@@ -230,9 +230,13 @@ void CClavierVirtuel::STEHandleInput()
 					if (x != 11)
 						x += 1;
 				}
-				if (event.key.code == curInput->moveUp)
+				if (event.key.code == curInput->button1)
 				{
 					players[i].isPressed = true;
+				}
+				if (event.key.code == curInput->button2)
+				{
+					data->machine.RemoveState();
 				}
 			}
 		}

@@ -172,6 +172,12 @@ void CUpgradeState::STEInit()
 		std::cout << "bof";
 	blurShader.setUniform("texture", sf::Shader::CurrentTexture);
 	blurShader.setUniform("u_resolution", sf::Glsl::Vec2((float)data->assets.sCREEN_WIDTH,(float)data->assets.sCREEN_HEIGHT));
+	if (players.size() == 2)
+	{
+		frontiere.setSize(sf::Vector2f(10.f, (float)data->assets.sCREEN_HEIGHT));
+		frontiere.setOrigin(5.f, 0.f);
+		frontiere.setPosition((float)data->assets.sCREEN_WIDTH / 2.f, 0.f);
+	}
 }
 void CUpgradeState::STEHandleInput()
 {
@@ -209,6 +215,8 @@ void CUpgradeState::STEDraw(float delta)
 	back.display();
 	fond = sf::Sprite(back.getTexture());
 	data->window.draw(fond, &blurShader);
+	if(players.size()==2)
+		data->window.draw(frontiere);
 	for(int i=0;i<players.size();i++)
 	{
 		for (int j = 0;j < players[i].CardList.size(); j++)
