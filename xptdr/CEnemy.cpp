@@ -74,9 +74,18 @@ void CEnemy::updateEntity(float delta)
 			needDelete = true;
 	}
 	else {
-		updateLifeBar();
 		updateMovement(delta);
 		updateBuff(delta);
+		if (hasBeenHit)
+		{
+			getSprite().setColor(sf::Color::Red);
+			hitClock.restart();
+		}
+		else if (hitClock.getElapsedTime().asSeconds() >= 0.5f)
+		{
+			getSprite().setColor(baseColor);
+		}
+		updateLifeBar();
 	}
 }
 
@@ -97,6 +106,7 @@ void CEnemy::updatewPlayer(float delta, CPlayer& player)
 	{
 		isDead = true;
 		onAvance = false;
+		deleteBuffs();
 	}
 	if (isDead == true)
 	{
@@ -162,7 +172,6 @@ void CEnemy::renderEntity(sf::RenderTarget& target)
 	if(isDead==false)
 		renderTheEntity(target);
 	else{
-		//std::cout << r << std::endl;
 		target.draw(explosionSprite);
 	}
 }

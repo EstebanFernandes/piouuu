@@ -74,7 +74,6 @@ void ShootingEnemy::updateMovement(float delta)
 	}
 	if (checkGlobalCollisions() && isPositionated)
 		needDelete = true;
-	updateLifeBar();
 	if (onAvance == true && !isPositionated)
 		moveEntity(info.direction*moveSpeed * delta); 
 	if (!isPositionated && 

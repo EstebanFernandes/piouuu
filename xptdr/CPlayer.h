@@ -4,7 +4,7 @@
 #include<iostream>
 #include "CPhysics.h"
 #include"CBullet.h"
-#include "CMob.h"
+#include "CBuffEntity.h"
 #include "laserWeapon.h"
 #include "CAnimation.h"
 #include"SFML/Audio.hpp"
@@ -12,7 +12,7 @@
 #include "upgradeStock.h"
 #include"inputPlayer.h"
 //CLASSE qui représente un joueur
-class CPlayer :  public CMob
+class CPlayer :  public CMob, public CBuffEntity
 {
 private:
 	//Attributs
@@ -29,10 +29,7 @@ private:
 	sf::RectangleShape lifeBarBG2;
 	sf::Sprite icon;
 	sf::RectangleShape xpBar; //Barre violette en dessous de la barre de vie 
-	//les deux suivants servent à gérer la barre de vie
-	float previouslifePoint;
-	float previousMaxHealth;
-	//Liste de graphes d'amélioration pour le joueur
+
 	//Mouvement
 	inputPlayer* inputForPlayer;
 	bool isMovingUp;
@@ -45,7 +42,6 @@ private:
 	float score;
 	sf::Vector2f dir;
 	//grr paw
-	sf::Clock bulletClock;
 	sf::Clock dashClock;
 	float cdDash = 0.5f;
 	float dashDistance = 100.f;
@@ -58,7 +54,6 @@ private:
 	sf::Sprite R2Sprite;
 	CAnimation R2Anim;
 	sf::Vector2f R2Offset;
-	//Liste des effets sur les balles, on les ajoutes avant de tirer 
 	bool hittype = false;
 	sf::Sound* planeSound;
 	/// pointeur vers l'arme principal
@@ -179,10 +174,14 @@ public:
 	}
 	void playSound(bool areWe=true)
 	{
-		/*if (areWe && planeSound->getStatus() == sf::Sound::Stopped)
+		if (areWe && planeSound->getStatus() == sf::Sound::Stopped)
 			planeSound->play();
 		else if (!areWe)
-			planeSound->stop();*/
+			planeSound->stop();
 	}
 	void setTouche(inputPlayer* inputt);
+	void AAAA() {
+		mainWeapon->traiterMisc(11);
+	}
+	void reduceHP(float damage);
 };

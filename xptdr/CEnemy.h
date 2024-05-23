@@ -56,6 +56,7 @@ protected:
 	int r = 0;
 	int damage;
 	bool gavexP = false;
+	sf::Clock hitClock;
 	/// <summary>
 	/// Cette fonction set les informations de la classe CEnemy.
 	/// </summary>
@@ -93,7 +94,7 @@ public:
 	void updatewPlayer( float delta,CPlayer& player);
 	void specialBehaviorwithPlayer(CPlayer& player);
 	void updateAnimation();
-	void renderEntity(sf::RenderTarget& target);
+	virtual void renderEntity(sf::RenderTarget& target);
 	void renderUI(sf::RenderTarget& target) {
 		if (isDead == false)
 		{

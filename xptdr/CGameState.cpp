@@ -168,7 +168,7 @@ void CGameState::STEHandleInput()
 void CGameState::addEnemy(std::string enemyName)
 {
 	enemyInfo e;
-	e.spawnSide = "gauche";
+	e.spawnSide = "droite";
 	e.isAim = true;
 	if (enemyName == "roaming") {
 		RoamingEnemy* enemy = new RoamingEnemy(&(data->assets));

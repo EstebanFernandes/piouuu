@@ -463,10 +463,9 @@ void CPlayer::gainXP(int xp_)
 }
 void CPlayer::updateLifeBar()
 {
-	if (previouslifePoint != healthPoint)
+	if (hasBeenHit)
 	{
 		lifeBar.setSize(sf::Vector2f(lifeBarBG2.getSize().x * healthPoint / maxHealthPoint, 15.f));
-		previouslifePoint = healthPoint;
 		hasBeenHit = false;
 	}
 	if (healthPoint <= 0)
@@ -546,7 +545,7 @@ void CPlayer::renderEntity(sf::RenderTarget& target)
 
 void CPlayer::updateFx()
 {
-	if (getAnimated()) {
+	if (isAnimated) {
 		anim.updateAnimation();
 		R2Anim.updateAnimation();
 	}
@@ -640,4 +639,9 @@ void CPlayer::setTouche(inputPlayer* inputt)
 		mainWeapon->setTouche(inputForPlayer->button1);
 		secondaryWeapon->setTouche(inputForPlayer->button2);
 	}
+}
+
+void CPlayer::reduceHP(float damage)
+{
+	CMob::reduceHP(damage);
 }

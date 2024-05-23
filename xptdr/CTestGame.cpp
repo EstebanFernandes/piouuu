@@ -77,6 +77,7 @@ void CTestGame::initAssets()
 	data->assets.LoadSFX("bulletSound", "res\\sfx\\Piou.wav");
 	data->assets.LoadSFX("enemyRush", "res\\sfx\\vaisseau_fonce.wav");
 	data->assets.LoadSFX("planeSound", "res\\sfx\\plane.mp3");
+	data->assets.LoadTexture("fireSpriteSheet", "res\\img\\fireSheet.png");
 	
 }
 
@@ -124,10 +125,12 @@ void CTestGame::STEHandleInput()
 			}
 			if (event.key.code == sf::Keyboard::T)
 			{
+
 				for (auto i = players.begin(); i != players.end(); i++)
 				{
-					i->gainXP(20);
+					i->AAAA();
 				}
+				players.begin()->gainXP(10);
 			
 			}
 			//TEMP C POUR MOURIR
@@ -189,6 +192,17 @@ void CTestGame::STEUpdate(float delta)
 	}
 	size_t temp = entityList.size();
 	int previousMax = (int)temp;
+	std::vector<CMob*>mobs;
+	for (CHittingEntity* entity : entityList) {
+		// Utilisez dynamic_cast pour vérifier le type réel à l'exécution
+		if (CMob* mob = dynamic_cast<CMob*>(entity)) {
+			mobs.push_back(mob);
+		}
+		else {
+			std::cerr << "Erreur : L'entité ne peut pas être castée en CMob" << std::endl;
+		}
+	}
+	CBuffEntity::useGlobal(mobs);
 	for (int i = 0; i < temp; i++)
 	{
 		for (auto player = players.begin(); player != players.end(); player++)
@@ -214,14 +228,26 @@ void CTestGame::STEUpdate(float delta)
 
 	//Clock updates
 	updateClock();
-	bool wantToLevelUp = true;
+	bool wantToLevelUpOne = true
+		,wantToLevelUpTwo = (players.size()==1) ? false : true;
 	for (auto player = players.begin(); player != players.end(); player++)
 	{
-		if(!player->wantToLevelUp)
-			wantToLevelUp=false;
+		if(player==players.begin())
+		{
+			if (!player->wantToLevelUp)
+				wantToLevelUpOne = false;
+		}
+		else {
+			if (!player->wantToLevelUp)
+				wantToLevelUpTwo = false;
+		}
 	}
-	if(wantToLevelUp)
+	if(wantToLevelUpOne&&wantToLevelUpTwo&& players.size() == 2)
 		data->machine.AddState(StateRef(new CUpgradeState(data, &players, &US, this)), false);
+	else if (wantToLevelUpOne)
+		data->machine.AddState(StateRef(new CUpgradeState(data, & (*players.begin()), &US, this)), false);
+	else if(players.size()==2&& wantToLevelUpTwo)
+		data->machine.AddState(StateRef(new CUpgradeState(data, &players.back(), &US, this)), false);
 	totalScore = 0;
 	for (auto player = players.begin(); player != players.end(); player++)
 	{

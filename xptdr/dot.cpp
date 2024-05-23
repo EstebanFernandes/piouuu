@@ -1,6 +1,7 @@
 #include "dot.h"
 
-dot::dot(CCharacter* targetparam, float damage, float timer, float duration)
+dot::dot(CMob* targetparam, float damage, float timer, float duration)
+	: effetspecial(typeEffet::dot)
 {
 	target = targetparam;
 	this->damage = damage;
@@ -24,6 +25,5 @@ void dot::update(float delta)
 
 void dot::action()
 {
-		float newHP = target->getLifePoint() - damage;
-		target->setLifePoint(newHP);
+	target->reduceHP(damage);
 }

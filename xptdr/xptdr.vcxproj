@@ -144,6 +144,7 @@
     <ClCompile Include="CArc.cpp" />
     <ClCompile Include="CAssetManager.cpp" />
     <ClCompile Include="CBackground.cpp" />
+    <ClCompile Include="CBuffEntity.cpp" />
     <ClCompile Include="CBullet.cpp" />
     <ClCompile Include="CButton.cpp" />
     <ClCompile Include="CBulletAuto.cpp" />
@@ -204,6 +205,8 @@
     <ClCompile Include="dot.cpp" />
     <ClCompile Include="effetspecial.cpp" />
     <ClCompile Include="EllipseShape.cpp" />
+    <ClCompile Include="fire.cpp" />
+    <ClCompile Include="ice.cpp" />
     <ClCompile Include="inputPlayer.cpp" />
     <ClCompile Include="InterfaceShootingEnemy.cpp" />
     <ClCompile Include="InterfaceState.cpp" />
@@ -233,6 +236,7 @@
     <ClInclude Include="CArc.h" />
     <ClInclude Include="CAssetManager.h" />
     <ClInclude Include="CBackground.h" />
+    <ClInclude Include="CBuffEntity.h" />
     <ClInclude Include="CBullet.h" />
     <ClInclude Include="CButton.h" />
     <ClInclude Include="CBulletAuto.h" />
@@ -295,6 +299,8 @@
     <ClInclude Include="dot.h" />
     <ClInclude Include="effetspecial.h" />
     <ClInclude Include="EllipseShape.h" />
+    <ClInclude Include="fire.h" />
+    <ClInclude Include="ice.h" />
     <ClInclude Include="inputPlayer.h" />
     <ClInclude Include="InterfaceShootingEnemy.h" />
     <ClInclude Include="InterfaceState.h" />

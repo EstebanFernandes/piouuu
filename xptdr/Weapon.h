@@ -3,8 +3,8 @@
 #include "CAssetManager.h"
 #include"CWeaponStat.h"
 #include "CMob.h"
-
-#define nbBullet 4
+#include"CBuffEntity.h"
+#define nbBullet 5
 	typedef enum
 	{
 		doubleTirs1 = 4,
@@ -22,7 +22,8 @@
 		classic,
 		dotBullet,
 		explosiveBullet,
-		fire
+		fireBullet,
+		iceBullet
 	} typeBullet;
 
 class Weapon

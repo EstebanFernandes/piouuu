@@ -1,4 +1,6 @@
 #include "CGunslinger.h"
+#include"fire.h"
+#include"ice.h"
 #include <bitset>
 
 void CGunslinger::initBuff(CBulletAuto& ref)
@@ -85,11 +87,11 @@ void CGunslinger::iNeedMoreBullets(sf::Vector2f pos)
 	isShooting = true;
 	CBulletAuto reference(referenceStat, assets);
 	reference.setBulletPos(pos);
-	initBuff(reference);
 	if(typeTir==autoAim)	
 		*seekForTarget = true;
 	for (int i = 0; i < referenceStat.dir2.size(); i++)
 	{
+		initBuff(reference);
 		sf::Vector2f tempDirection = referenceStat.dir2[i];
 		if (typeTir == gunshotAim)
 		{
@@ -122,6 +124,7 @@ void CGunslinger::iNeedMoreBullets(sf::Vector2f pos)
 			reference.setBulletSpeed(referenceStat.bulletSpeed);
 		}
 	}
+	reference.isReference = true;
 }
 
 
@@ -170,6 +173,18 @@ void CGunslinger::traiterMisc(int misc)
 		referenceStat.dotCD = 0.2f;
 		referenceStat.dotDamage = 2.f;
 		referenceStat.dotTimer = 5.f;
+		break;
+	case 10: //Fire
+		addBulletType(fireBullet);
+		referenceStat.dotCD = 0.2f;
+		referenceStat.dotDamage = 2.f;
+		referenceStat.dotTimer = 2.5f;
+		break;
+	case 11: //Ice
+		addBulletType(iceBullet);
+		referenceStat.dotCD = 0.2f;
+		referenceStat.dotDamage = 2.f;
+		referenceStat.dotTimer = 2.5f;
 		break;
 	case 7: //explosiveBullet
 		addBulletType(explosiveBullet);
@@ -263,6 +278,19 @@ void CGunslinger::addByIndex(CBulletAuto& ref , int index)
 	case explosiveBullet:
 		ref.isExplosive = true;
 		break;
+	case fireBullet:
+	{
+		fire* temp = new fire(NULL, getWeaponStats().dotDamage, getWeaponStats().dotCD, getWeaponStats().dotTimer, assets);
+		temp->hasGlobal = true;
+		ref.addBuff(temp, false);
+		break;
+	}
+	case iceBullet:
+	{
+		ice* tempi = new ice(NULL, getWeaponStats().dotTimer, 0.3f);
+		ref.addBuff(tempi, false);
+		break;
+	}
 	}
 }
 

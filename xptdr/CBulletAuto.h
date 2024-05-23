@@ -38,6 +38,9 @@ public:
 		gunShotTotalDistance = totaldistance;
 		isGunShot = true;
 	}
+	~CBulletAuto() {
+		
+	}
 	void setDirection(sf::Vector2f d)
 	{
 		direction = d;

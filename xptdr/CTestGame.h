@@ -6,6 +6,7 @@
 class CTestGame : public CGameState
 {
 public:
+	std::vector<effetspecial*> globalBuffs;
 	CTestGame(GameDataRef _data); 
 	CTestGame(GameDataRef _data, CCharacter characterParam);
 	CTestGame(GameDataRef _data, std::vector<CCharacter>& characterParam);

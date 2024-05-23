@@ -254,6 +254,9 @@
     <ClCompile Include="inputPlayer.cpp" />
     <ClCompile Include="SpinningCard.cpp" />
     <ClCompile Include="CMenuInterfaceState.cpp" />
+    <ClCompile Include="CBuffEntity.cpp" />
+    <ClCompile Include="fire.cpp" />
+    <ClCompile Include="ice.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bulletStorage.h">
@@ -510,6 +513,9 @@
       <Filter>Fichiers source\States</Filter>
     </ClInclude>
     <ClInclude Include="CMenuInterfaceState.h" />
+    <ClInclude Include="CBuffEntity.h" />
+    <ClInclude Include="fire.h" />
+    <ClInclude Include="ice.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BomberEnemy.h" />
