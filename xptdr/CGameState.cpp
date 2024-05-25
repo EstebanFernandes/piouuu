@@ -30,6 +30,7 @@ void CGameState::initPlayer()
 {
 	data->assets.LoadSFX("bulletSound", "res\\sfx\\Piou.wav");
 	data->assets.LoadTexture("bulletImage", "res\\img\\characters\\bulletImage.png");
+	data->assets.LoadTexture("bulletSecond", "res\\img\\characters\\bullet_Second.png");
 	data->assets.LoadTexture("explosionPlayer", "res\\img\\characters\\explosionPlayer.png");
 	data->assets.LoadTexture("bulletImageRancoeur", "res\\img\\characters\\bulletRancoeur.png");
 	data->assets.LoadTexture("bulletImageGolden", "res\\img\\bullet_Golden.png");

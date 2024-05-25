@@ -158,6 +158,7 @@
     <ClCompile Include="CCharacterStat.cpp" />
     <ClCompile Include="CCheckbox.cpp" />
     <ClCompile Include="CCollision.cpp" />
+    <ClCompile Include="CCommentJouer.cpp" />
     <ClCompile Include="Ceffetsonore.cpp" />
     <ClCompile Include="CEnemy.cpp" />
     <ClCompile Include="CException.cpp" />
@@ -250,6 +251,7 @@
     <ClInclude Include="CCharacterStat.h" />
     <ClInclude Include="CCheckbox.h" />
     <ClInclude Include="CCollision.h" />
+    <ClInclude Include="CCommentJouer.h" />
     <ClInclude Include="Ceffetsonore.h" />
     <ClInclude Include="CEnemy.h" />
     <ClInclude Include="CException.h" />

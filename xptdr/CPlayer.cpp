@@ -353,7 +353,7 @@ void CPlayer::PLYupdateMovement(sf::Event& event)
 					isMovingDown = true;
 				if (event.key.code == inputForPlayer->moveRight)
 					isMovingRight = true;
-				if (event.key.code == inputForPlayer->button3 && dashClock.getElapsedTime().asSeconds() >= cdDash)
+				if (event.key.code == inputForPlayer->button4 && dashClock.getElapsedTime().asSeconds() >= cdDash)
 				{
 					wantToDash = true;
 					dashClock.restart();
@@ -370,7 +370,7 @@ void CPlayer::PLYupdateMovement(sf::Event& event)
 				isMovingDown = false;
 			if (event.key.code == inputForPlayer->moveRight)
 				isMovingRight = false;
-			if (event.key.code == inputForPlayer->button3)
+			if (event.key.code == inputForPlayer->button4)
 				wantToDash = false;
 			break;
 		}
