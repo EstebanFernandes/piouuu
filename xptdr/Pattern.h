@@ -12,6 +12,7 @@ private:
 	std::vector<Wave> waveListStock;
 	bool isRandom = false;
 	bool notTimeDep;//Le pattern ne dépend pas du temps
+	unsigned int difficulty = 1;
 public:
 	void startPattern();
 	bool updatePattern(float clock, std::vector<CHittingEntity*>* ennemyList);
@@ -26,5 +27,7 @@ public:
 	int getOrder() { return order; }
 	Wave* getCurrentWave() { return &waveList[0]; }
 	std::string getName() { return nameOfPattern; }
+	unsigned int getDifficulty() { return difficulty; }
+	void setDifficulty(unsigned int diffucultyParam) { difficulty = diffucultyParam; }
 };
 

@@ -31,6 +31,20 @@ void CParserXML::coreFunction()
 {
     pt::read_xml(filePath, tree);
     parse_tree(tree, "level");
+    // On récupère les infos sur la difficulté
+    int maxDifficulty = 1;
+    for (Pattern pattern : level.getPatternStock()) {
+        // Difficulté max du niveau
+        if (pattern.getDifficulty() > maxDifficulty) {
+            maxDifficulty = pattern.getDifficulty();
+        }
+        // ajouter dans la map des difficultés
+        level.patternsPerDifficulty[pattern.getDifficulty()].push_back(pattern);
+
+        // On ajoute au nombre de patterns
+        level.totalPatternNumber += 1;
+    }
+    level.maxDifficultyPattern = maxDifficulty;
     std::cout << "Fini" << std::endl;
 }
 
@@ -190,8 +204,8 @@ bool CParserXML::flag(std::string name, pt::ptree::const_iterator& value)
             break;
         case 3://Pattern
 
-            flag = { "duration", "order","name","random" };
-            defaultValue = { "-1", "-1","undefined","0" };
+            flag = { "duration", "order","name","random", "difficulty"};
+            defaultValue = { "-1", "-1","undefined","0", "1"};
             break;
         case 4://Wave
             flag = { "duration" };
@@ -228,6 +242,7 @@ bool CParserXML::flag(std::string name, pt::ptree::const_iterator& value)
         case 3://Pattern
         {
             Pattern temp = Pattern(std::stof(test[0]), std::stoi(test[1]), test[2], std::stoi(test[3]));
+            temp.setDifficulty(std::stoi(test[4]));
             level.addPattern(temp);
             break;
         }
