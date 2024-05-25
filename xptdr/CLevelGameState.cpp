@@ -28,6 +28,9 @@ void CLevelGameState::STEResume()
 			it->curUpgrade.push_back(US.initVert(ARME_PRINCIPALE));
 			it->curUpgrade.push_back(US.initVert(ARME_SECONDAIRE));
 		}
+		// Durée à partir duquel il faut changer de difficulté (difficulté max atteinte en 4mn)
+		level.nextDifficultyClock = 240.f / level.maxDifficultyPattern;
+
 		level.setEnnemyList(&entityList);
 		level.setClock(&time);
 		isLevelInit = true;

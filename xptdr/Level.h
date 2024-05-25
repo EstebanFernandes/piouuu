@@ -21,6 +21,36 @@ private:
 	/// </summary>
 	std::vector<std::string> assets;
 public:
+
+	/// <summary>
+	/// Borne minimum de la difficulté
+	/// </summary>
+	unsigned int actualMinDiff = 1;
+	/// <summary>
+	/// Borne maximum de la difficulté
+	/// </summary>
+	unsigned int actualMaxDiff = 1;
+	/// <summary>
+	/// variable stockant la valeure maximale des difficultés des patterns
+	/// </summary>
+	unsigned int maxDifficultyPattern;
+
+	unsigned int totalPatternNumber = 0;
+
+	bool maxDifficultyReached = false;
+
+	/// <summary>
+	/// map permettant de répertorier les patterns par leur difficulté
+	/// </summary>
+	std::map<unsigned int, std::vector<Pattern>> patternsPerDifficulty;
+
+	sf::Clock difficultClock;
+
+	/// <summary>
+	/// temps entre deux augmentations de difficultés
+	/// </summary>
+	float nextDifficultyClock;
+
 	bool isLevelSet = false;
 	bool isInfinite = false;
 	Level() {}
@@ -46,4 +76,17 @@ public:
 	void addWave(Wave& wavetoAdd) { patternListStock.back().addWave(wavetoAdd); }
 	void addEnemy(enemy& enemyToAdd) { 
 		patternListStock.back().addEnemy(enemyToAdd); }
+	std::vector<Pattern> getPatterns() { return patternList; }
+	std::vector<Pattern> getPatternStock() { return patternListStock; }
+	/// <summary>
+	/// Renvoie tous les patterns des difficultés comprises entre min et max (min < max)
+	/// </summary>
+	/// <param name="min">Borne minimum</param>
+	/// <param name="max">Borne maximum</param>
+	/// <returns></returns>
+	std::vector<Pattern> getPatternsOfDifficulties(int min, int max);
+	/// <summary>
+	/// Augmente la difficulté tout en gardant au minimum 3 patterns dans le stock
+	/// </summary>
+	void changeDifficulty();
 };
