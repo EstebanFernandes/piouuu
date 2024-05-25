@@ -78,6 +78,10 @@ void CLevelGameState::afterTransi()
 	startLevel();
 }
 
+void CLevelGameState::updateXpPlayers()
+{
+}
+
 void CLevelGameState::drawOnTarget(sf::RenderTarget& target, float interpolation)
 {
 	if (currentTransi.transiouuuuu == false)
@@ -224,14 +228,7 @@ void CLevelGameState::STEUpdate(float delta)
 			GameOver();
 		updateClock();
 
-		//Condition qui assure que le joueur prend bien un niveau par un niveau
-		for (auto player = players.begin(); player != players.end(); player++)
-		{
-			if (player->hasLevelUp == true )
-			{
-				data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), &US,this )), false);
-			}
-		}
+		updateXpPlayers();
 		if (level.updateLevel())
 			GameOver();
 	}
@@ -257,5 +254,4 @@ void CLevelGameState::initAssets()
 	addAsset("boss", "res\\img\\spacecraft_player_1.png");
 	addAsset("rusher", "res\\img\\ennemies\\rusher.png");
 	addAsset("enemyRush", "res\\sfx\\vaisseau_fonce.wav");
-	addAsset("muzzleFlash", "res\\img\\muzzleflash.png");
 }

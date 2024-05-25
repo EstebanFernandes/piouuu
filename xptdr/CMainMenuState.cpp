@@ -151,6 +151,7 @@ void CMainMenuState::choosedButton()
 	switch (index) {
 	case 0:
 		data->machine.AddState(StateRef(new CButtonState(data,blabla,&nbJoueur, this)), false);
+		isTest = true;
 		break;
 	case 1:
 		data->machine.AddState(StateRef(new CButtonState(data, blabla, &nbJoueur,this)), false);
@@ -210,7 +211,16 @@ void CMainMenuState::STEResume()
 		if (characters.size() == 0)
 		{
 			characters.push_back(CCharacter());
+			if(isTest)
+				data->machine.AddState(StateRef(new CCharacterSelection(data, &characters.back(), (int)characters.size())),false);
+			else
 			data->machine.AddState(StateRef(new LevelSelectionState(data, &characters, levelToLaunch)), false);
+		}
+		else if(characters[0].getName()=="")
+		{
+			characters.clear();
+			nbJoueur = "";
+			isTest = false;
 		}
 		else
 			addLevelType();
@@ -221,7 +231,16 @@ void CMainMenuState::STEResume()
 		{
 			characters.push_back(CCharacter());
 			characters.push_back(CCharacter());
+			if(isTest)
+				data->machine.AddState(StateRef(new CCharacterSelectionMultiState(data, &characters)), false);
+			else
 			data->machine.AddState(StateRef(new LevelSelectionState(data, &characters, levelToLaunch)), false);
+		}
+		else if (characters[0].getName() == "")
+		{
+			nbJoueur = "";
+			characters.clear();
+			isTest = false;
 		}
 		else
 			addLevelType();

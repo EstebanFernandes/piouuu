@@ -38,6 +38,9 @@ public:
 		gunShotTotalDistance = totaldistance;
 		isGunShot = true;
 	}
+	~CBulletAuto() {
+		
+	}
 	void setDirection(sf::Vector2f d)
 	{
 		direction = d;
@@ -58,5 +61,7 @@ public:
 	}
 	bool checkCollisions(CMob& b);
 	void renderEntity(sf::RenderTarget& target);
+	float getGunshotDistance() { return gunshotDistance; }
+	float getGunshotTotalDistance() { return gunShotTotalDistance; }
 };
 

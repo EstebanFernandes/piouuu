@@ -4,7 +4,7 @@
 #include<iostream>
 #include "CPhysics.h"
 #include"CBullet.h"
-#include "CMob.h"
+#include "CBuffEntity.h"
 #include "laserWeapon.h"
 #include "CAnimation.h"
 #include"SFML/Audio.hpp"
@@ -12,7 +12,7 @@
 #include "upgradeStock.h"
 #include"inputPlayer.h"
 //CLASSE qui représente un joueur
-class CPlayer :  public CMob
+class CPlayer :  public CMob, public CBuffEntity
 {
 private:
 	//Attributs
@@ -29,11 +29,7 @@ private:
 	sf::RectangleShape lifeBarBG2;
 	sf::Sprite icon;
 	sf::RectangleShape xpBar; //Barre violette en dessous de la barre de vie 
-	//les deux suivants servent à gérer la barre de vie
-	float previouslifePoint;
-	float previousMaxHealth;
-	//Liste de graphes d'amélioration pour le joueur
-	std::vector<CGrapheUpdate> Upgradegraphs;
+
 	//Mouvement
 	inputPlayer* inputForPlayer;
 	bool isMovingUp;
@@ -46,7 +42,6 @@ private:
 	float score;
 	sf::Vector2f dir;
 	//grr paw
-	sf::Clock bulletClock;
 	sf::Clock dashClock;
 	float cdDash = 0.5f;
 	float dashDistance = 100.f;
@@ -59,7 +54,6 @@ private:
 	sf::Sprite R2Sprite;
 	CAnimation R2Anim;
 	sf::Vector2f R2Offset;
-	//Liste des effets sur les balles, on les ajoutes avant de tirer 
 	bool hittype = false;
 	sf::Sound* planeSound;
 	/// pointeur vers l'arme principal
@@ -68,16 +62,22 @@ private:
 	/// pointeur vers l'arme secondaire
 	Weapon* secondaryWeapon = NULL;
  
+	//UI Upgrade
+	sf::Text upgradeText;
+	CAnimation animboutonUpgrade;
+	sf::Sprite spriteButtonUpgrade;
+	sf::Clock timeUpgradeAnim;
 	void setSprite();
 	void initStat();
 	void setValue(float& init, std::string modif);
 	void setValue(int& init, std::string modif);
 
-	void updateXpBar();
 public:
 	std::vector<graphComponent> curUpgrade;
 	int numero = -1;
+	void updateXpBar();
 	bool hasLevelUp = false;
+	bool wantToLevelUp = false;
 	bool seekForTarget=false;
 	CPlayer();
 	CPlayer(CAssetManager* a);
@@ -102,6 +102,19 @@ public:
 	void renderEntity(sf::RenderTarget& target);
 	void renderUI(sf::RenderTarget& target) {
 		renderLifeBar(target);
+		if (hasLevelUp)
+		{
+			float timeUpgrade = timeUpgradeAnim.getElapsedTime().asSeconds();
+			if (timeUpgrade <= 5.f)
+			{
+				if ((int)(timeUpgrade/0.9f) % 2 == 0) //Tous les 0.7 secondes on va changer 
+					animboutonUpgrade.setcurrentXFrameNumber(5);
+				else
+					animboutonUpgrade.setcurrentXFrameNumber(0);
+				target.draw(upgradeText);
+				target.draw(spriteButtonUpgrade);
+			}
+		}
 	}
 	void updateFx();
 	void setAssets(CAssetManager* a);
@@ -159,10 +172,6 @@ public:
 	{
 		hasLevelUp = a;
 	}
-	std::vector<CGrapheUpdate>* getGraphs()
-	{
-		return &Upgradegraphs;
-	}
 	void playSound(bool areWe=true)
 	{
 		if (areWe && planeSound->getStatus() == sf::Sound::Stopped)
@@ -171,4 +180,8 @@ public:
 			planeSound->stop();
 	}
 	void setTouche(inputPlayer* inputt);
+	void AAAA() {
+		mainWeapon->traiterMisc(11);
+	}
+	void reduceHP(float damage);
 };

@@ -1,7 +1,7 @@
 #pragma once
 #include "CPlayer.h"
 //entité qui doivent rentrer en collision avec le joueur.
-class CHittingEntity : public CMob
+class CHittingEntity : public CMob, public CBuffEntity
 {
 protected:
 	float scoreGived;
@@ -9,6 +9,7 @@ public:
 	bool seekForTarget = false;
 	CHittingEntity() { scoreGived = 0; }
 	virtual ~CHittingEntity(){}
+
 	/// <summary>
 	/// Cette méthode est à appeler sur chaque entité qui rentre en contact avec le joueur
 	/// </summary>

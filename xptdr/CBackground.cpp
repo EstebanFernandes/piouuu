@@ -117,6 +117,30 @@ void CBackground::addClouds(std::string textureName, std::string name, float spe
 	}
 	cloudLayer = (int)allLayer.size();
 	hasCloud = true;
+	initClouds();
+	cloudClocks.restart();
+}
+
+void CBackground::initClouds()
+{
+	int nbAjouter = 15;
+	for (int i = 0; i < nbAjouter; i++)
+	{
+		BGContainer temp;
+		int randomNuage = rand() % cloudLayersCopies.size();
+		if (cloudLayers.size() != 0)
+		{
+			while (randomNuage == cloudLayers.back().type)
+				randomNuage = rand() % cloudLayersCopies.size();
+		}
+		temp = cloudLayersCopies.at(randomNuage);
+		if (rand() % 2 + 1 == 1)
+			utilities::flipSprite(temp.sprite);
+
+		sf::Vector2f Position = sf::Vector2f(utilities::RandomFloat(0.f, (float)assets->sCREEN_WIDTH),utilities::RandomFloat(0.f, (float)assets->sCREEN_HEIGHT * 0.5f));
+		temp.sprite.setPosition(Position);
+		cloudLayers.push_back(temp);
+	}
 }
 
 bool CBackground::deleteLayer(std::string name)
@@ -211,7 +235,7 @@ void CBackground::renderBackground(sf::RenderTarget& target)
 	}
 	else
 	{//Opérateur ternaire, on attribue la première valeur si la condition est vraie, la deuxième sinon
-		int nbLayer =(int) (hasCloud) ? allLayer.size() + 1 : allLayer.size();
+		int nbLayer = (hasCloud) ? (int)allLayer.size() + 1 : (int)allLayer.size();
 		for (int i = 0; i < nbLayer; i++)
 		{
 			if(hasCloud&&cloudLayer==i)

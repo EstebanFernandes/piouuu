@@ -37,6 +37,7 @@ void CGameState::initPlayer()
 	data->assets.LoadTexture("logonormal", "res\\img\\characters\\logonormal2.png");
 	data->assets.LoadSFX("planeSound", "res\\sfx\\plane.mp3");
 	data->assets.LoadTexture("muzzleFlash", "res\\img\\muzzleFlash.png");
+	data->assets.LoadTexture("buttonArcade", "res\\img\\UI\\boutonenfonce2.png");
 	int numero = 1;
 	for (auto i = players.begin(); i != players.end(); i++)
 	{
@@ -167,7 +168,7 @@ void CGameState::STEHandleInput()
 void CGameState::addEnemy(std::string enemyName)
 {
 	enemyInfo e;
-	e.spawnSide = "gauche";
+	e.spawnSide = "droite";
 	e.isAim = true;
 	if (enemyName == "roaming") {
 		RoamingEnemy* enemy = new RoamingEnemy(&(data->assets));
@@ -257,14 +258,7 @@ void CGameState::STEUpdate(float delta)
 
 	//Clock updates
 	updateClock();
-	//Condition qui assure que le joueur prend bien un niveau par un niveau
-	for (auto player = players.begin(); player != players.end(); player++)
-	{
-		if (player->hasLevelUp == true )
-		{
-			data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), &US,this)), false);
-		}
-	}
+	updateXpPlayers();
 }
 
 
@@ -360,6 +354,18 @@ void CGameState::updateClock()
 	if (ti != i.size())
 		gameClockText.setPosition(sf::Vector2f(data->assets.sCREEN_WIDTH / 2 - gameClockText.getGlobalBounds().width / 2, 20.f));
 
+}
+void CGameState::updateXpPlayers()
+{
+	//Condition qui assure que le joueur prend bien un niveau par un niveau
+	for (auto player = players.begin(); player != players.end(); player++)
+	{
+		if (player->hasLevelUp == true)
+		{
+			data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), &US, this)), false);
+			player->wantToLevelUp = false;
+		}
+	}
 }
 void CGameState::afterTransi()
 {

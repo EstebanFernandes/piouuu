@@ -82,7 +82,7 @@ void LevelSelectionState::STEHandleInput()
 			data->window.close();
 		}
 		else if (event.type == sf::Event::KeyPressed) {
-			if (event.key.code == sf::Keyboard::Enter) {
+			if (event.key.code == inputOfPlayers[0].button1) {
 				// On enregistre le niveau sélectionné dans le pointeur
 				*levelToLauch = levels[levelIndex].levelName;
 				// TEMP on passe à l'étape suivante
@@ -96,7 +96,7 @@ void LevelSelectionState::STEHandleInput()
 				}
 			}
 			int previousSelec = levelIndex;
-			if (event.key.code == sf::Keyboard::Z) {
+			if (event.key.code == inputOfPlayers[0].moveUp) {
 				if (levelIndex == 0) {
 					levelIndex = (int)levels.size() - 1;
 				}
@@ -104,8 +104,11 @@ void LevelSelectionState::STEHandleInput()
 					levelIndex = (levelIndex - 1) % levels.size();
 				}
 			}
-			else if (event.key.code == sf::Keyboard::S) {
+			else if (event.key.code == inputOfPlayers[0].moveDown) {
 				levelIndex = (levelIndex + 1) % levels.size();
+			}
+			else if (event.key.code == inputOfPlayers[0].button2) {
+				data->machine.RemoveState();
 			}
 			levels[previousSelec].button.setOutlineThickness(0.f);
 			levels[levelIndex].button.setOutlineThickness(3.f);

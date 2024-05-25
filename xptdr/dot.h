@@ -2,11 +2,14 @@
 #include"effetspecial.h"
 class dot : public effetspecial
 {
-private:
+protected:
 	float timer;
 	float damage;
 public:
-	dot(CCharacter* targetparam, float damage, float timer,float duration);
+	dot(CMob* targetparam, float damage, float timer,float duration);
+	dot(int type_) :effetspecial(type_)
+	{
+	}
 	void update(float delta);
 	void action();
 	effetspecial* clone() const override { return new dot(*this); }

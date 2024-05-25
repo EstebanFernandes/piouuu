@@ -1,4 +1,5 @@
 #include "CCharacterSelectionMultiState.h"
+#include"CMainMenuState.h"
 #include "CParserCSV.h"
 #include"utilities.h"
 #include<math.h>
@@ -138,6 +139,15 @@ void CCharacterSelectionMultiState::STEInit()
 	deuxiemefond.setPosition(0.f, +players[0].trueAvionPlayerNumber.getGlobalBounds().top-5.f);
 	deuxiemefond.setSize(sf::Vector2f(width, 
 		height/2.f -deuxiemefond.getPosition().y+ players[0].zone.height));
+	returnTexte.setFont(data->assets.GetFont("Nouvelle"));
+	returnTexte.setString("Retour vers \nle menu principal");
+	returnTexte.setCharacterSize(20);
+	returnTexte.setPosition(width * 0.05f, height * 0.05f);
+	retourBar.setSize(returnTexte.getGlobalBounds().getSize());
+	retourBar.setPosition(returnTexte.getGlobalBounds().left, returnTexte.getGlobalBounds().top);
+	retourBar.setFillColor(sf::Color::Black);
+	retourBar.setOutlineThickness(2.f);
+	retourBar.setOutlineColor(sf::Color::Black);
 }
 
 void CCharacterSelectionMultiState::loadCharacters()
@@ -308,11 +318,11 @@ void CCharacterSelectionMultiState::STEHandleInput()
 {
 	sf::Event event;
 	while (data->window.pollEvent(event)) {
-		switch (event.type)
+		for (int i = 0; i < 2; i++)
 		{
-		case sf::Event::KeyPressed:
-			for (int i = 0; i < 2; i++)
+			switch (event.type)
 			{
+			case sf::Event::KeyPressed:
 				if (players[i].isValid == false)
 				{
 					if (event.key.code == players[i].curInput->moveLeft)
@@ -338,6 +348,12 @@ void CCharacterSelectionMultiState::STEHandleInput()
 						players[i].isValid = true;
 						validationSound->play();
 					}
+					if (event.key.code == players[i].curInput->button2)
+					{
+						if (!isPressingReturn)//Première fois que l'on appuie
+							returnClock.restart();
+						isPressingReturn = true;
+					}
 				}
 				else if (event.key.code == players[i].curInput->button2)
 				{
@@ -345,11 +361,19 @@ void CCharacterSelectionMultiState::STEHandleInput()
 					containChanges = true;
 
 				}
+				
+			break;
+
+			case sf::Event::KeyReleased:
+				if (players[i].isValid == false && event.key.code == players[i].curInput->button2)
+				{
+					isPressingReturn = false;
+				}
+				break;
+			case sf::Event::Closed:
+				data->window.close();
+				break;
 			}
-			break;
-		case sf::Event::Closed:
-			data->window.close();
-			break;
 		}
 	}
 }
@@ -387,6 +411,13 @@ void CCharacterSelectionMultiState::STEUpdate(float dt)
 		currentTransi = CTransition(&(data->assets), DROITE, 2.f);
 		currentTransi.initTransition();
 	}
+	if(isPressingReturn&& returnClock.getElapsedTime().asSeconds() >= 2.5f)
+		data->machine.RemoveState();
+	else if (isPressingReturn)
+	{
+		retourBar.setFillColor(sf::Color(0, 0, 0, (int)(returnClock.getElapsedTime().asSeconds() * 255.f / 2.5f)));
+		retourBar.setOutlineColor(retourBar.getFillColor());
+	}
 }
 
 void CCharacterSelectionMultiState::STEDraw(float interpolation)
@@ -399,6 +430,11 @@ void CCharacterSelectionMultiState::drawElements(bool onlyAvion)
 {
 	//data->window.draw(deuxiemefond);
 	data->window.draw(Titre);
+	if (isPressingReturn)
+	{
+		data->window.draw(retourBar);
+		data->window.draw(returnTexte);
+	}
 		for (auto& element : avions)
 		{
 			

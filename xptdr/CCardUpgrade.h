@@ -43,6 +43,7 @@ public:
 		}
 		return minSize;
 	}
+	void setSize(sf::Vector2f size);
 
 };
 

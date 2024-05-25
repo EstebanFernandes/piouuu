@@ -67,6 +67,8 @@ void CButtonState::STEHandleInput()
 			}
 			else if (event.key.code == inputOfPlayers[0].button1)
 				choosedButton();
+			else if (event.key.code == inputOfPlayers[0].button2)
+				data->machine.RemoveState();
 		}
 	}
 }

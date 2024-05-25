@@ -40,8 +40,12 @@ private:
 		sf::Text Titre;
 		sf::Sound* selectionSound;
 		sf::Sound* validationSound;
+		sf::Text returnTexte;//Texte qu'on affiche lorsqu'on appuie sur le bouton pour revenir en arrière
+		sf::RectangleShape retourBar;
 		float maxArrow;
 		float minArrow;
+		bool isPressingReturn = false;
+		sf::Clock returnClock;
 		bool containChanges = false;
 		void loadCharacters();
 		//On l'appelle après loadCharacters

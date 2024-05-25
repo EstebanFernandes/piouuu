@@ -1,9 +1,9 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 #include "DEFINITIONS.h"
-#include"CMob.h"
 #include "CAnimation.h"
-class CBullet : public CMob
+#include"CBuffEntity.h"
+class CBullet : public CMob, public CBuffEntity
 {
 protected:
 	sf::Vector2f direction;

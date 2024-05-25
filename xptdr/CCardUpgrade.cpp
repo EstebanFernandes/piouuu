@@ -195,6 +195,14 @@ void CCardUpgrade::fillSpace(sf::Text& text, sf::FloatRect border)
 	}
 }
 
+void CCardUpgrade::setSize(sf::Vector2f size)
+{
+	cardBack.setSize(size);
+	xSize = size.x;
+	ySize = size.y;
+	resizeTexts();
+}
+
 void CCardUpgrade::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	target.draw(cardBack);
 	target.draw(cardTitle);

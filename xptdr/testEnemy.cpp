@@ -16,3 +16,9 @@ void testEnemy::updateMovement(float delta)
 void testEnemy::enemyShoot()
 {
 }
+
+void testEnemy::renderEntity(sf::RenderTarget& target)
+{
+	CEnemy::renderEntity(target);
+	renderBuffs(target);
+}

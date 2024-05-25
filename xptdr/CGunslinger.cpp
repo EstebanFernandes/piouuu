@@ -1,4 +1,6 @@
 #include "CGunslinger.h"
+#include"fire.h"
+#include"ice.h"
 #include <bitset>
 
 void CGunslinger::initBuff(CBulletAuto& ref)
@@ -83,17 +85,30 @@ void CGunslinger::weaponShoot()
 void CGunslinger::iNeedMoreBullets(sf::Vector2f pos)
 {
 	isShooting = true;
-	CBulletAuto reference(getWeaponStats(), assets);
+	CBulletAuto reference(referenceStat, assets);
 	reference.setBulletPos(pos);
-	initBuff(reference);
 	if(typeTir==autoAim)	
 		*seekForTarget = true;
 	for (int i = 0; i < referenceStat.dir2.size(); i++)
 	{
+		initBuff(reference);
 		sf::Vector2f tempDirection = referenceStat.dir2[i];
+		if (typeTir == gunshotAim)
+		{
+			tempDirection = utilities::getDirectionFromAngle(utilities::RandomatXPerc(15.f,utilities::getAngleFromDirection(tempDirection)));
+			reference.setGunShotDistance(utilities::RandomatXPerc(15.f,reference.getGunshotTotalDistance() ));
+			reference.setBulletSpeed(utilities::RandomatXPerc(0.5f, reference.getBulletSpeed()));
+		}
 		if (typeTir == Spin)
 		{
 			tempDirection = utilities::getDirectionFromAngle(utilities::getAngleFromDirection(tempDirection) + angleOffset);
+		}
+		if (typeTir == doubleTirs2)
+		{
+			if(i==0)
+				reference.setBulletPos(sf::Vector2f(pos.x, pos.y - 7.f));
+			else
+				reference.setBulletPos(sf::Vector2f(pos.x, pos.y + 7.f));
 		}
 		if (typeTir != bombe)
 		{
@@ -103,7 +118,13 @@ void CGunslinger::iNeedMoreBullets(sf::Vector2f pos)
 		magasine.push_back(reference);
 	setAnimation(magasine.back());
 		bulletSound->play();
+		if (typeTir == gunshotAim)
+		{
+			reference.setGunShotDistance(referenceStat.maxDistance);
+			reference.setBulletSpeed(referenceStat.bulletSpeed);
+		}
 	}
+	reference.isReference = true;
 }
 
 
@@ -152,6 +173,18 @@ void CGunslinger::traiterMisc(int misc)
 		referenceStat.dotCD = 0.2f;
 		referenceStat.dotDamage = 2.f;
 		referenceStat.dotTimer = 5.f;
+		break;
+	case 10: //Fire
+		addBulletType(fireBullet);
+		referenceStat.dotCD = 0.2f;
+		referenceStat.dotDamage = 2.f;
+		referenceStat.dotTimer = 2.5f;
+		break;
+	case 11: //Ice
+		addBulletType(iceBullet);
+		referenceStat.dotCD = 0.2f;
+		referenceStat.dotDamage = 2.f;
+		referenceStat.dotTimer = 2.5f;
 		break;
 	case 7: //explosiveBullet
 		addBulletType(explosiveBullet);
@@ -245,6 +278,19 @@ void CGunslinger::addByIndex(CBulletAuto& ref , int index)
 	case explosiveBullet:
 		ref.isExplosive = true;
 		break;
+	case fireBullet:
+	{
+		fire* temp = new fire(NULL, getWeaponStats().dotDamage, getWeaponStats().dotCD, getWeaponStats().dotTimer, assets);
+		temp->hasGlobal = true;
+		ref.addBuff(temp, false);
+		break;
+	}
+	case iceBullet:
+	{
+		ice* tempi = new ice(NULL, getWeaponStats().dotTimer, 0.3f);
+		ref.addBuff(tempi, false);
+		break;
+	}
 	}
 }
 

@@ -174,4 +174,14 @@ namespace utilities {
 			Sprite.setTextureRect(temp);
 		}
 	}
+	/// <summary>
+	/// Renvoie un float à X% près de chaque côté
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="value"></param>
+	/// <returns></returns>
+	inline float RandomatXPerc(float x,float value)
+	{
+		return RandomFloat(value - x, value + x);
+	}
 }
