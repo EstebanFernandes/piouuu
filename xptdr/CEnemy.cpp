@@ -200,5 +200,4 @@ bool CEnemy::onestPose()
 void CEnemy::setInfo(enemyInfo info_)
 {
 	info = info_;
-	initPosition();
 }
