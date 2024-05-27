@@ -41,9 +41,14 @@ void Level::deleteEnemy(CHittingEntity* entity)
 void Level::startLevel()
 {
 	if (isInfinite) {
-		patternListStock = getPatternsOfDifficulties(1, 1);
-		if (patternListStock.size() < 3) {
-			changeDifficulty();
+		if (totalPatternNumber <= 3) {
+			maxDifficultyReached = true;
+		}
+		else {
+			patternListStock = getPatternsOfDifficulties(1, 1);
+			if (patternListStock.size() < 3 && !maxDifficultyReached) {
+				changeDifficulty();
+			}
 		}
 	}
 	patternList = patternListStock;
