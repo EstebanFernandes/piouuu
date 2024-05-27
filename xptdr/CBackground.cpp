@@ -181,7 +181,7 @@ void CBackground::updateCBackground(float delta)
 			}
 			if(cloudLayers.size() <= cloudLayersCopies.size() / 1.25 || cloudClocks.getElapsedTime().asSeconds() >=cloudTimer)
 			{
-				int nbMax = (int)cloudLayersCopies.size()/1.5,nbAjouter=0;
+				int nbMax = (int)((float)cloudLayersCopies.size()/1.5),nbAjouter=0;
 				if (nbMax > 1)
 					nbAjouter = rand() % nbMax + 1;//On ajout un nombre random de nuage
 				else

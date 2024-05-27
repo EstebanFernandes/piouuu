@@ -242,7 +242,6 @@ void CLevelGameState::initAssets()
 	data->assets.deleteEverythingBut(ouioui);
 	data->assets.clearSoundBuffer();
 
-	addAsset("lifepoint", LIFEPOINTTEXTURE);
 	addAsset("bomber", "res\\img\\lance-bombe.png");
 	addAsset("lifePowerUp", "res\\img\\lifePowerUp.png");
 	addAsset("enemyImage", ENEMYPNG_FILEPATH);

@@ -4,6 +4,7 @@
 #include"CLevelGameState.h"
 #include"CButtonState.h"
 #include"CCharacterSelectionMultiState.h"
+#include"CCommentJouer.h"
 CMainMenuState::~CMainMenuState()
 {
 	data->assets.deleteSound(buttonSound);
@@ -157,7 +158,7 @@ void CMainMenuState::choosedButton()
 		data->machine.AddState(StateRef(new CButtonState(data, blabla, &nbJoueur,this)), false);
 		break;
 	case 2:
-		data->machine.AddState(StateRef(new CClavierVirtuel(data,10,2,&blab,1)), false);
+		data->machine.AddState(StateRef(new CCommentJouer(data)), false);
 		break;
 	case 3:
 		data->machine.AddState(StateRef(new CSettingState(data)), false);

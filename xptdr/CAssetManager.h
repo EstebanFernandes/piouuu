@@ -22,6 +22,10 @@ public:
 	CAssetManager() {};
 	~CAssetManager() {};
 	//Méthodes :
+	sf::Vector2i getEcranBound() {
+		return sf::Vector2i(sCREEN_WIDTH, sCREEN_HEIGHT);
+	}
+
 	void LoadTexture(std::string name, std::string fileName);
 	void LoadTexture(std::string name, sf::Texture tex);
 	sf::Texture& GetTexture(std::string name);
@@ -30,7 +34,10 @@ public:
 	void DeleteTexture(std::string name) {
 		Textures.erase(name);
 	}
-
+	/// <summary>
+	/// Delete tous les assets de texture qui ne correspondent pas à ce qui est passé en paramètre
+	/// </summary>
+	/// <param name="name"></param>
 	void deleteEverythingBut(std::string name);
 	void deleteEverythingBut(std::vector<std::string>& names);
 	/// <summary>

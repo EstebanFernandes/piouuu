@@ -35,15 +35,25 @@ public:
 	void enemyShoot() {};
 	CEnemy* clone()  override {
 		RusherEnemy* temp = new RusherEnemy(*this);
+		temp->assets = assets;
 		temp->initPosition();
 		temp->initDirection(target);
 		temp->setSprite();
+		temp->initAnimation();
 		return temp;
 	}
 	//Update rusher animation
 	void  updateAnim();
 	void setTarget(CMob* target_) {
 		target = target_;
+	}
+	void initAnimation()
+	{
+		anim = CAnimation(getPointerSprite(), sf::Vector2i(73, 86), 6, -1.f, 2);
+		colorSwitchClock.restart();
+		redColorSwitchClock.restart();
+		if (info.spawnSide=="gauche")
+			flipSprite();
 	}
 };
 

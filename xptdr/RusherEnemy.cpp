@@ -12,23 +12,24 @@ RusherEnemy::RusherEnemy(CAssetManager* assetParam)
 	direction = sf::Vector2f(-1.f, 0.f);
 	target = NULL;
 	info.isAim = true;
-	if (info.isAim)
-	{
-		baseColor= sf::Color::Black;
-		getSprite().setColor(baseColor);
-	}
 }
 
 RusherEnemy::RusherEnemy(CAssetManager* assets, CCharacter stat, enemyInfo info_)
-	:RusherEnemy(assets)
+	
 {
-	setCharacterStats(stat);
 	info_.scale = info.scale;
 	info = info_;
-	if (info.isAim)
-	{
-		getSprite().setColor(sf::Color::Black);
-	}
+	setCharacterStats(stat);
+	target = NULL;
+	setType(Enemy);
+	this->assets = assets;
+	CEnemy::initAnimation();
+	setTexture("rusher");
+	getSprite().setScale(info.scale);
+	assets->addSFX("enemyRush", &fxRush);
+	anim = CAnimation(getPointerSprite(), sf::Vector2i(73, 86), 6, -1.f, 2);
+	getSprite().setScale(info.scale);
+	setSprite();
 }
 
 
@@ -61,23 +62,23 @@ void RusherEnemy::initDirection(CMob* target_)
 	{
 		CEnemy::initDirection();
 	}
-	else {
-		baseColor = sf::Color(232,118,118,122);
-		getSprite().setColor(baseColor);
-	}
 	direction = utilities::dirAtoB(spawnPos, info.pos);
+	setRotation(utilities::getAngleFromDirection(direction)+180.f);
 }
 
 void RusherEnemy::updateEntity(float delta)
 {
 	CEnemy::updateEntity(delta);
-	updateAnim();
+	if(isPositionated)
+		updateAnim();
 	if (isPositionated && counter < 3 && isRed == false && colorSwitchClock.getElapsedTime().asSeconds() >= dureeTotale/3.f) {
 		isRed = true;
 		counter++;
 		dureePasseTotale += colorSwitchClock.getElapsedTime();
 		colorSwitchClock.restart();
-		getSprite().setColor(sf::Color::Red);
+		baseColor = sf::Color::Red;
+		getSprite().setColor(baseColor);
+		std::cout << "rouge" << std::endl;
 		redColorSwitchClock.restart();
 		if(counter==3)
 		{
@@ -88,7 +89,8 @@ void RusherEnemy::updateEntity(float delta)
 		}
 	}
 	else if (isRed == true && redColorSwitchClock.getElapsedTime().asSeconds() >= 0.5f) {
-		getSprite().setColor(baseColor);
+		baseColor = sf::Color::White;
+		std::cout << "blanc" << std::endl;
 		isRed = false;
 	}
 	else if (isRushing==false&& counter == 3 && colorSwitchClock.getElapsedTime().asSeconds() >= dureeTotale/3.f) {

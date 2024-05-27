@@ -184,4 +184,6 @@ public:
 		mainWeapon->traiterMisc(11);
 	}
 	void reduceHP(float damage);
+	sf::Vector2f getDirection() { return dir; }
+	bool getDashButton() { return wantToDash; }
 };

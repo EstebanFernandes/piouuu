@@ -29,6 +29,7 @@ public:
 	CEnemy* clone() override {
 		ShootingEnemy* temp = new ShootingEnemy(*this);
 		temp->initPosition();
+		std::cout << temp->getPosition().x << " et pos en y : " << temp->getPosition().y << std::endl;
 		temp->initAnimation();
 		temp->initDirection();
 		temp->setSprite();
@@ -49,5 +50,12 @@ public:
 		float tbf = timeBetweenBullets / 5;
 		anim = CAnimation(getPointerSprite(), sf::Vector2i( 82, 86),5,tbf,2 );
 	}
+	void initDirection() {
+			CEnemy::initDirection();
+		BAW.getWeaponStats().dir = info.direction;
+		BAW.getWeaponStats().changeDir(info.direction);
+		setRotation(utilities::getAngleFromDirection(info.direction));
+	}
+
 };
 

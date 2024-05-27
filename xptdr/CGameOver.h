@@ -114,7 +114,7 @@ void CGameOver<MType>::STEHandleInput()
 			data->machine.AddState(StateRef(new CMainMenuState(data)), true);
 		else if (data->inputs.IsTextClicked(buttons[1], sf::Mouse::Left, data->window))
 			data->machine.AddState(StateRef(new MType(data, character)), true);*/
-		else if (event.type == sf::Event::KeyReleased) {
+		else if (event.type == sf::Event::KeyPressed) {
 			if (event.key.code == inputOfPlayers[0].moveRight) {
 				buttonList[selectedButton].setOutlineThickness(0);
 				selectedButton = (selectedButton + 1) % 2;

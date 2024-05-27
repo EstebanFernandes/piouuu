@@ -184,4 +184,8 @@ namespace utilities {
 	{
 		return RandomFloat(value - x, value + x);
 	}
+	inline void centerObject(sf::Shape& lala) {
+		lala.setOrigin(lala.getLocalBounds().width / 2.f,
+			lala.getLocalBounds().height / 2.f);
+	}
 }

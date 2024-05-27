@@ -4,12 +4,12 @@ ShootingEnemy::ShootingEnemy(CAssetManager* assetParam) {
 	BAW.assets = assetParam;
 	BAW.assets->addSFX("bulletSound", &BAW.bulletSound);
 	initEnnemy(assetParam, info, "shooter");
-	initDirection();
 	info.pos.x = assets->sCREEN_WIDTH *0.95f;
 	moveSpeed = 2.f;
 	attackSpeed = 1.5f;
 	bulletSpeed = 1.f;
 	BAW.setWeaponStats(CWeaponStat((float)damagePerBullet, bulletSpeed, sf::Vector2f(-1.f, 0.f), 0, "", BAW.bulletScale, attackSpeed));
+	initDirection();
 	BAW.setBulletAsset("bulletTear");
 	explosionSprite.setColor(sf::Color::Red);
 	initAnimation();
@@ -23,9 +23,8 @@ ShootingEnemy::ShootingEnemy(CAssetManager* asset, enemyInfo ee)
 {
 	setInfo(ee);
 	setPos();
-	initDirection();
-	setRotation(utilities::getAngleFromDirection(info.direction)+180.f);
-	BAW.getWeaponStats().changeDir(info.direction);
+	//initDirection();
+	BAW.getWeaponStats().dir = info.direction;
 	setSprite();
 }
 
@@ -36,7 +35,7 @@ ShootingEnemy::ShootingEnemy(CAssetManager* asset, CCharacter& stat, CWeaponStat
 	BAW.setWeaponStats(WeaponStat);
 	if (BAW.getWeaponStats().dir.x == 0.f&& BAW.getWeaponStats().dir.y == 0.f)
 	{
-		BAW.getWeaponStats().changeDir(info.direction);
+		BAW.getWeaponStats().dir  =info.direction;
 	}
 	BAW.setBulletAsset("bulletTear");
 	damage = stat.getDamagePerBullet();
@@ -46,11 +45,16 @@ ShootingEnemy::ShootingEnemy(CAssetManager* asset, CCharacter& stat, CWeaponStat
 void ShootingEnemy::setPos()
 {
 	if (info.spawnSide == "gauche")
+	{
 		//info.pos.x = assets->sCREEN_WIDTH * 0.05f;
 		spawnPos.x = assets->sCREEN_WIDTH * 0.05f;
+	}
 	else if(info.spawnSide == "droite")
+	{
 		//info.pos.x=assets->sCREEN_WIDTH * 0.95f;
 		spawnPos.x = assets->sCREEN_WIDTH * 0.95f;
+		flipSprite();
+	}
 	else if (info.spawnSide == "haut")
 		//info.pos.y=assets->sCREEN_HEIGHT * 0.05f;
 		spawnPos.y = assets->sCREEN_HEIGHT * 0.05f;
@@ -68,7 +72,7 @@ void ShootingEnemy::updateMovement(float delta)
 			isReadyToShoot = true;
 		if ( info.isAim&&target!=NULL)
 		{		
-			setRotation(utilities::getAngleFromDirection(utilities::dirAtoB(getSprite().getPosition(), target->getSprite().getPosition()))+180.f);
+			setRotation(utilities::getAngleFromDirection(utilities::dirAtoB(getSprite().getPosition(), target->getSprite().getPosition())));
 			
 		}
 	}
@@ -79,7 +83,7 @@ void ShootingEnemy::updateMovement(float delta)
 	if (!isPositionated && 
 		onestPose()) {
 		isPositionated = true;
-		setRotation(180.f+utilities::getAngleFromDirection( BAW.getWeaponStats().dir));
+		setRotation(utilities::getAngleFromDirection(BAW.getWeaponStats().dir));
 		if (info.isAim)
 		{
 			seekForTarget = true;
@@ -93,8 +97,6 @@ void ShootingEnemy::enemyShoot()
 		if (info.isAim && target != NULL)
 		{
 			float temp = 0.f;
-			if (isSpriteFlip())
-				temp = 180.f;
 			sf::Vector2f posPlayer = target->getSprite().getPosition();
 			BAW.shootTowardDirection(
 				utilities::shootPos((getSprite().getPosition()),

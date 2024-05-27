@@ -123,13 +123,17 @@ public:
 	/// </summary>
 	virtual void initPosition()
 	{
+
+
 		if (info.spawnSide == "droite")
 		{
 			spawnPos.x = (float)assets->sCREEN_WIDTH;
+			info.pos.x = (info.pos.x == -1.f) ? spawnPos.x - getGlobalBounds().width * 0.8f : info.pos.x;
 		}
 		else if (info.spawnSide == "gauche")
 		{
 			spawnPos.x = 0.f;
+			info.pos.x = (info.pos.x == -1.f) ? getGlobalBounds().width * 0.8f : info.pos.x;
 		}
 		if (info.pos.x == -1.f&&(info.spawnSide == "haut" || info.spawnSide == "bas"))
 		{
@@ -145,10 +149,12 @@ public:
 		if (info.spawnSide == "bas")
 		{
 			spawnPos.y = (float)assets->sCREEN_HEIGHT;
+			info.pos.y = (info.pos.y == -1.f) ? spawnPos.y - getGlobalBounds().height * 0.8f : info.pos.y;
 		}
 		else if (info.spawnSide == "haut")
 		{
 			spawnPos.y = 0.f;
+			info.pos.y = (info.pos.y == -1.f) ? getGlobalBounds().height * 0.8f : info.pos.y;
 		}
 		if (info.pos.y == -1.f && (info.spawnSide == "gauche" || info.spawnSide == "droite"))
 		{

@@ -55,7 +55,6 @@ void CTestGame::initAssets()
 		ouioui.push_back(i->getName());
 	data->assets.deleteEverythingBut(ouioui);
 	data->assets.clearSoundBuffer();
-	data->assets.LoadTexture("lifepoint", LIFEPOINTTEXTURE);
 	data->assets.LoadTexture("bomber", "res\\img\\lance-bombe.png");
 	data->assets.LoadTexture("lifePowerUp", "res\\img\\lifePowerUp.png");
 	data->assets.LoadTexture("enemyImage", ENEMYPNG_FILEPATH);

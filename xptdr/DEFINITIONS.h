@@ -15,9 +15,5 @@
 #define GAME_SPACESHIP_FILEPATH "res/img/onessaye.png"
 #define SCROLLING_SPEED 0.5f
 
-#define LIFEPOINTTEXTURE "res\\img\\lifepoint2.png"
 #define ENEMYPNG_FILEPATH "res\\img\\enemy.png"
 # define M_PIl          3.141592653589793238462643383279502884f /* pi */
-
-//characters
-#define CHARACTERBACKGROUND "res/img/characters/characterBackground.gif"
