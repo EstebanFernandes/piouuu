@@ -179,21 +179,39 @@ void CTestGame::STEUpdate(float delta)
 	updateBackground(delta);
 	//Auto aim
 	//On check d'abord les collisions entre le joueur et les entités. ensuite on update
-	for (auto i = players.begin(); i != players.end(); i++)
+	if (players.size() == 1)
 	{
-		if (i->isBetweenLifeAndDeath())
+		players.front().updateEntity(delta);
+		if (players.front().getMainWeapon()->typeTir == typeAim::autoAim && players.front().seekForTarget)
 		{
-			i->updateCercleRevive((i == players.begin()) ? players.back() : players.front());
-			i->getMainWeapon()->updateWeapon(delta);
-			i->getSecondaryWeapon()->updateWeapon(delta);
-		}else
+			CMob* cible = nearEnemy(&players.front());
+			players.front().getMainWeapon()->changeTarget(cible);
+			players.front().seekForTarget = false;
+		}
+	}else
+	{
+		for (auto i = players.begin(); i != players.end(); i++)
 		{
-			i->updateEntity(delta);
-			if (i->getMainWeapon()->typeTir == typeAim::autoAim && i->seekForTarget)
+			CPlayer& otherPlayer = (i == players.begin()) ? players.back() : players.front();
+			if (i->isBetweenLifeAndDeath())
 			{
-				CMob* cible = nearEnemy(&(*i));
-				i->getMainWeapon()->changeTarget(cible);
-				i->seekForTarget = false;
+				if (otherPlayer.needDelete)
+					i->needDelete = true;
+				otherPlayer.setReviveness(false);
+				i->updateCercleRevive(otherPlayer);
+				i->getMainWeapon()->updateWeapon(delta);
+				i->getSecondaryWeapon()->updateWeapon(delta);
+			}
+			else
+			{
+				otherPlayer.setReviveness(true);
+				i->updateEntity(delta);
+				if (i->getMainWeapon()->typeTir == typeAim::autoAim && i->seekForTarget)
+				{
+					CMob* cible = nearEnemy(&(*i));
+					i->getMainWeapon()->changeTarget(cible);
+					i->seekForTarget = false;
+				}
 			}
 		}
 	}

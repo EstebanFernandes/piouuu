@@ -51,6 +51,7 @@ void CGameState::initPlayer()
 	if (numero == 2)//Qu'un joueur
 	{
 		players.begin()->setPositionEntity(data->assets.sCREEN_WIDTH * 0.2f, data->assets.sCREEN_HEIGHT * 0.5f);
+		players.begin()->setReviveness(false);
 	}
 	else {
 		float height = 0.4f;

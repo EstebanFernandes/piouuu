@@ -20,6 +20,7 @@ private:
 		sf::CircleShape cercleFond;
 		sf::CircleShape cercleProgression;
 		sf::Clock cercleClock;
+		bool canRevive=true;
 		float radius;
 		void initCercle(CPlayer* pointerToPlayer) {
 			player = pointerToPlayer;
@@ -42,7 +43,7 @@ private:
 		{
 			float timer = cercleClock.getElapsedTime().asSeconds();
 			bool isIn = (utilities::intersects(cercleFond, otherPlayer.getGlobalBounds())) ? true : false;
-			if(isIn)
+			if(isIn&&!otherPlayer.isDead)
 			{
 				if (timer >= 7.f)
 				{
@@ -240,4 +241,5 @@ public:
 		return betweenDeathAndLife;
 	}
 	void updateCercleRevive(CPlayer& otherPlayer) { cercleRevive.updateCercle(otherPlayer); }
+	void setReviveness(bool canRevive) { cercleRevive.canRevive = canRevive; }
 };

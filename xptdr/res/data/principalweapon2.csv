@@ -14,10 +14,10 @@ La première colonne n'est pas lu par le parser, c'est juste pour nous;<start>;<n
 10;;7;4;I Need More Bullets;Glizzy overdrive activated;;;;;2;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 Fichier qui est lu par le jeu et qui permet de voir toutes les différentes améliorations pour l'arme principale;;;;;;;;Si une valeur est un float ou un int il faut préciser le type d'opération qu'on effectue desssus, * + - et rien équivaut à une affectation;;;;;;;;;;;;;;;;;;
-Ce qui est colorié en jaune est obligatoire en terme de placements sur un tableau ;;;;;;;;;;;;;;;<start>;<name>Sniper;;;;;;;;;;
+;;;;;;;;;;;;;;;<start>;<name>Sniper;;;;;;;;;;
 ;;;;;;;;;;;;;;;<column>;<id>;<previd>;<var>name;<var>description;<var>damagePerBullet;<var>attackSpeed;<var>bulletSpeed;<var>moveSpeed;<var> penetration;<var>misc;<endLine>
 <start>;<name>fusil à pompe (on a tout pris à Cuphead);;;;;;;;;;;;;;1;0;;Sniper;One Shot;*2.5;*0.5;*5;;;;
-<column>;<id>;<previd>;<var>name;<var>description;<var>damagePerBullet;<var>attackSpeed;<var>bulletSpeed;<var>misc;<var>moveSpeed;;<endLine>;;;;4;1;0;Balle blindée;On va percer c'est sûr;*1.1;;;;2;;
+<column>;<id>;<previd>;<var>name;<var>description;<var>damagePerBullet;<var>attackSpeed;<var>bulletSpeed;<var>misc;<var>moveSpeed;<endLine>;;;;;4;1;0;Balle blindée;On va percer c'est sûr;*1.1;;;;2;;
 1;0;;Gunshot;Attention ça pique;*0.75;;1.25;gunshot;;;;;;;4;2;0;Main Leste;Deux atouts piqué;*1.2;*1.5;;;1;;
 4;1;0;Automatique;Sinon faut juste mieux viser …;;*1.5;;;;;;;;;4;3;0;Sprinter;Le véhicule mercredes;*1.2;;;*1.4;;;
 4;2;0;Plus large !;Pour être moins précis;*1,25;;;;;;;;;;7;4;1;Laser;Amélioration non équilibrée;;;;*1.4;;laser;

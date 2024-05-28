@@ -488,8 +488,13 @@ void CPlayer::updateEntity(float dt)
 		animExplosionSprite.updateAnimation();
 		if (animExplosionSprite.getCurrentFrameNumber().x == 11)
 		{
-			betweenDeathAndLife = true;
-			cercleRevive.centerCercle();
+			if(cercleRevive.canRevive)
+				betweenDeathAndLife = true;
+			else {//On est tout seul
+				needDelete = true;
+			}
+			if(cercleRevive.canRevive)
+				cercleRevive.centerCercle();
 		}
 		secondaryWeapon->updateWeapon(dt);
 		mainWeapon->updateWeapon(dt);
