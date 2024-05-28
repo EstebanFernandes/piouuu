@@ -13,7 +13,8 @@
 		gunshotAim,
 		circleShot,
 		bombe,
-		Spin
+		Spin,
+		doubleTirs3
 	} typeAim;
 
 

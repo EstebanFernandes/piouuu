@@ -16,7 +16,45 @@ class CPlayer :  public CMob, public CBuffEntity
 private:
 	struct circleRevive//Gère le cercle qui apparait quand un joueur tombe à 0¨PV
 	{
-
+		CPlayer* player = NULL;
+		sf::CircleShape cercleFond;
+		sf::CircleShape cercleProgression;
+		sf::Clock cercleClock;
+		float radius;
+		void initCercle(CPlayer* pointerToPlayer) {
+			player = pointerToPlayer;
+			cercleFond.setRadius(100.f);
+			utilities::centerObject(cercleFond);
+			cercleFond.setFillColor(sf::Color(0, 0, 0, 100));
+			cercleProgression.setFillColor(sf::Color(255, 255, 255, 120));
+			utilities::centerObject(cercleProgression);
+		}
+		void renderCercle(sf::RenderTarget& target) 
+		{ 
+			target.draw(cercleFond);
+			target.draw(cercleProgression);
+		}
+		void centerCercle() {
+			cercleFond.setPosition(player->getPosition());
+			cercleProgression.setPosition(cercleFond.getPosition());
+		}
+		void updateCercle(CPlayer& otherPlayer)
+		{
+			float timer = cercleClock.getElapsedTime().asSeconds();
+			bool isIn = (utilities::intersects(cercleFond, otherPlayer.getGlobalBounds())) ? true : false;
+			if(isIn)
+			{
+				if (timer >= 7.f)
+				{
+					player->revivePlayer();
+				}
+			}
+			else {
+				cercleClock.restart();
+			}
+			cercleProgression.setRadius(timer / 7.f * cercleFond.getRadius());
+			utilities::centerObject(cercleProgression);
+		}
 	};
 	//Attributs
 	sf::Color playerColor = sf::Color(3,140,252);
@@ -64,16 +102,23 @@ private:
 	sf::Sprite muzzleFlash; //Sprite de fumée qu'on draw quand on tire
 	/// pointeur vers l'arme secondaire
 	Weapon* secondaryWeapon = NULL;
- 
+
+	
+
 	//UI Upgrade
 	sf::Text upgradeText;
 	CAnimation animboutonUpgrade;
 	sf::Sprite spriteButtonUpgrade;
 	sf::Clock timeUpgradeAnim;
+
+	//Death Timer
+	circleRevive cercleRevive;
+	bool betweenDeathAndLife = false;
 	void setSprite();
 	void initStat();
 	void setValue(float& init, std::string modif);
 	void setValue(int& init, std::string modif);
+
 
 public:
 	std::vector<graphComponent> curUpgrade;
@@ -108,13 +153,13 @@ public:
 		if (hasLevelUp)
 		{
 			float timeUpgrade = timeUpgradeAnim.getElapsedTime().asSeconds();
+				target.draw(upgradeText);
 			if (timeUpgrade <= 5.f)
 			{
 				if ((int)(timeUpgrade/0.9f) % 2 == 0) //Tous les 0.7 secondes on va changer 
 					animboutonUpgrade.setcurrentXFrameNumber(5);
 				else
 					animboutonUpgrade.setcurrentXFrameNumber(0);
-				target.draw(upgradeText);
 				target.draw(spriteButtonUpgrade);
 			}
 		}
@@ -189,4 +234,10 @@ public:
 	void reduceHP(float damage);
 	sf::Vector2f getDirection() { return dir; }
 	bool getDashButton() { return wantToDash; }
+
+	void revivePlayer();
+	bool isBetweenLifeAndDeath() {
+		return betweenDeathAndLife;
+	}
+	void updateCercleRevive(CPlayer& otherPlayer) { cercleRevive.updateCercle(otherPlayer); }
 };

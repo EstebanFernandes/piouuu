@@ -5,7 +5,7 @@
 CTestGame::CTestGame(GameDataRef _data)
 {
 	setData(_data);
-	US.addGraphs("res/data/principalweapon.csv");
+	US.addGraphs("res/data/principalweapon2.csv");
 	US.addGraphs("res/data/secondaryweapon.csv");
 }
 
@@ -181,12 +181,20 @@ void CTestGame::STEUpdate(float delta)
 	//On check d'abord les collisions entre le joueur et les entités. ensuite on update
 	for (auto i = players.begin(); i != players.end(); i++)
 	{
-		i->updateEntity(delta);
-		if (i->getMainWeapon()->typeTir == typeAim::autoAim && i->seekForTarget)
+		if (i->isBetweenLifeAndDeath())
 		{
-			CMob* cible = nearEnemy(&(*i));
-			i->getMainWeapon()->changeTarget(cible);
-			i->seekForTarget = false;
+			i->updateCercleRevive((i == players.begin()) ? players.back() : players.front());
+			i->getMainWeapon()->updateWeapon(delta);
+			i->getSecondaryWeapon()->updateWeapon(delta);
+		}else
+		{
+			i->updateEntity(delta);
+			if (i->getMainWeapon()->typeTir == typeAim::autoAim && i->seekForTarget)
+			{
+				CMob* cible = nearEnemy(&(*i));
+				i->getMainWeapon()->changeTarget(cible);
+				i->seekForTarget = false;
+			}
 		}
 	}
 	size_t temp = entityList.size();

@@ -192,6 +192,9 @@ void CGunslinger::traiterMisc(int misc)
 	case 8: //Spin
 		addShootType(Spin);
 		break;
+	case 9: //doubleTirs3 = ie Triple tirs
+		addShootType(doubleTirs3);
+		break;
 	}
 }
 
@@ -249,6 +252,41 @@ void CGunslinger::addShootType(int type)
 			{
 			referenceStat.changeDir(temp,i);
 			}
+		}
+		break;
+		case doubleTirs3:
+		{
+			sf::Vector2f tempLast = referenceStat.dir;
+			referenceStat.dir2.clear();
+			referenceStat.addDir(tempLast);
+			for (int i = 0; i < 1; i++)
+			{
+				sf::Vector2f temp = referenceStat.dir2[i];
+				sf::Vector2f addDir;
+				if (temp.y == 0)
+				{
+					temp.y = 0.75f;
+					addDir = temp;
+					utilities::normalizeVector(addDir);
+					referenceStat.changeDir(addDir, i);
+					temp.y = -0.75f;
+					addDir = temp;
+					utilities::normalizeVector(addDir);
+					referenceStat.addDir(temp);
+				}
+				if (temp.x == 0)
+				{
+					temp.x = 0.75f;
+					addDir = temp;
+					utilities::normalizeVector(addDir);
+					referenceStat.changeDir(temp, i);
+					temp.x = -0.75f;
+					addDir = temp;
+					utilities::normalizeVector(addDir);
+					referenceStat.addDir(temp);
+				}
+			}
+			referenceStat.addDir(tempLast);
 		}
 		break;
 		case gunshotAim:

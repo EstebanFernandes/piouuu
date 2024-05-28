@@ -188,4 +188,36 @@ namespace utilities {
 		lala.setOrigin(lala.getLocalBounds().width / 2.f,
 			lala.getLocalBounds().height / 2.f);
 	}
+	inline void normalizeVector(sf::Vector2f& direction)
+	{
+		direction = direction / (float)std::sqrt(std::pow(direction.x, 2) + std::pow(direction.y, 2));
+	}
+	inline bool intersects(sf::CircleShape& circle, sf::FloatRect rect)
+	{
+		sf::Vector2f circleDistance;
+		float cornerDistance_sq;
+
+		// Get the center positions of the circle and the rectangle
+		sf::Vector2f circleCenter = circle.getPosition();
+
+		sf::Vector2f rectCenter(rect.left + rect.width / 2.f, rect.top + rect.height / 2.f);
+
+		// Calculate the distance between the centers
+		circleDistance.x = std::abs(circleCenter.x - rectCenter.x);
+		circleDistance.y = std::abs(circleCenter.y - rectCenter.y);
+
+		// Check if the circle is too far from the rectangle
+		if (circleDistance.x > (rect.width / 2.f + circle.getRadius())) { return false; }
+		if (circleDistance.y > (rect.height / 2.f + circle.getRadius())) { return false; }
+
+		// Check if the circle is close enough to intersect the rectangle
+		if (circleDistance.x <= (rect.width / 2.f)) { return true; }
+		if (circleDistance.y <= (rect.height / 2.f)) { return true; }
+
+		// Check for collision at the rectangle corners
+		cornerDistance_sq = std::pow(circleDistance.x - rect.width / 2.f, 2.f) +
+			std::pow(circleDistance.y - rect.height / 2.f, 2.f);
+
+		return (cornerDistance_sq <= std::pow(circle.getRadius(), 2.f));
+	}
 }

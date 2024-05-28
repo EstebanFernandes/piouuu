@@ -113,6 +113,7 @@ void CPlayer::setAssets(CAssetManager* a)
 	planeSound->setPitch(0.5f);
 	planeSound->setLoop(true);
 	planeSound->play();
+	cercleRevive.initCercle(this);
 }
 
 bool CPlayer::checkGlobalCollisions()
@@ -185,7 +186,7 @@ void CPlayer::setSecondaryWeapon(Weapon* weaponParam)
 	delete secondaryWeapon;
 	secondaryWeapon = weaponParam;
 }
-
+//Si on ne précise pas c'est que l'on applique le bonus sur l'arme principale et secondaire
 void CPlayer::traitermisc(std::string& misc)
 {
 	const std::vector<std::string> supportedMisc{ "autoAim","velocUp" ,"doubleTirs1","doubleTirs2","gunshot","dot", "laser","explosiveBullet"};
@@ -207,7 +208,8 @@ void CPlayer::traitermisc(std::string& misc)
 
 void CPlayer::traitermisc(std::string& misc, int type)
 {
-	const std::vector<std::string> supportedMisc{ "autoAim","velocUp" ,"doubleTirs1","doubleTirs2","gunshot","dot", "laser","explosiveBullet","spin"};
+	const std::vector<std::string> supportedMisc{ "autoAim","velocUp" ,"doubleTirs1","doubleTirs2",
+"gunshot","dot", "laser","explosiveBullet","spin","doubleTirs3" };
 	int pos = (int)(std::find(supportedMisc.begin(), supportedMisc.end(), misc) - supportedMisc.begin());
 	if (pos >= supportedMisc.size()) {
 		std::cout << "Rien a été trouvé\n";
@@ -486,7 +488,8 @@ void CPlayer::updateEntity(float dt)
 		animExplosionSprite.updateAnimation();
 		if (animExplosionSprite.getCurrentFrameNumber().x == 11)
 		{
-			needDelete = true;
+			betweenDeathAndLife = true;
+			cercleRevive.centerCercle();
 		}
 		secondaryWeapon->updateWeapon(dt);
 		mainWeapon->updateWeapon(dt);
@@ -533,13 +536,19 @@ void CPlayer::renderEntity(sf::RenderTarget& target)
 		utilities::flipSprite(muzzleFlash,false);
 	}
 	secondaryWeapon->renderWeapon(target);
-	if(animExplosionSprite.getCurrentFrameNumber().x<4&&needDelete==false)
+	if (!isDead)
 	{
 		target.draw(getSprite());
 		target.draw(R2Sprite);
 	}
-	if (isDead&&needDelete==false)
+	if(animExplosionSprite.getCurrentFrameNumber().x<4&&betweenDeathAndLife==false)
+	{
+	}
+	if (isDead&& betweenDeathAndLife ==false)
 		target.draw(explosionSprite);
+	else if(betweenDeathAndLife){
+		cercleRevive.renderCercle(target);
+	}
 }
 
 
@@ -644,4 +653,13 @@ void CPlayer::setTouche(inputPlayer* inputt)
 void CPlayer::reduceHP(float damage)
 {
 	CMob::reduceHP(damage);
+}
+
+void CPlayer::revivePlayer()
+{
+	betweenDeathAndLife = false;
+	isDead = false;
+	healthPoint = maxHealthPoint * 0.4f;
+	hasBeenHit = true;
+	updateLifeBar();
 }
