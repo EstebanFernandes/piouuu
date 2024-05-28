@@ -40,5 +40,6 @@ public:
 	void addPowerUp();
 	void GameOver();
 	void STEUpdate(float delta);
+	void updateXpPlayers();
 };
 

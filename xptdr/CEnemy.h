@@ -90,7 +90,7 @@ public:
 	//renvoie true si l'animation d'explosion est finie
 	bool updateExplosionSprite();
 	virtual void setSprite();
-	void updateEntity(float delta);
+	virtual void updateEntity(float delta);
 	void updatewPlayer( float delta,CPlayer& player);
 	void specialBehaviorwithPlayer(CPlayer& player);
 	void updateAnimation();

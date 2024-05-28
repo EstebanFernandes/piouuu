@@ -3,6 +3,11 @@
 #include <SFML/Graphics.hpp>
 #include "Cmusique.h"
 #include"Ceffetsonore.h"
+#include"CAnimation.h"
+struct image {//Struct qui encapsule ce qu'on a besoin pour gérer une image 
+	sf::Sprite sprite;
+	CAnimation anim;
+};
 //La classe assetmanager est partagé par toutes les entités qui doivent avoir des sprites, donc c'est également ici que l'on met la taille de l'écran
 
 class CAssetManager

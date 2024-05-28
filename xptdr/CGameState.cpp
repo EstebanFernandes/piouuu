@@ -358,15 +358,27 @@ void CGameState::updateClock()
 }
 void CGameState::updateXpPlayers()
 {
-	//Condition qui assure que le joueur prend bien un niveau par un niveau
+	bool wantToLevelUpOne = true
+		, wantToLevelUpTwo = (players.size() == 1) ? false : true;
 	for (auto player = players.begin(); player != players.end(); player++)
 	{
-		if (player->hasLevelUp == true)
+		if (player == players.begin())
 		{
-			data->machine.AddState(StateRef(new CUpgradeState(data, &(*player), &US, this)), false);
-			player->wantToLevelUp = false;
+			if (!player->wantToLevelUp)
+				wantToLevelUpOne = false;
+		}
+		else {
+			if (!player->wantToLevelUp)
+				wantToLevelUpTwo = false;
 		}
 	}
+	if (wantToLevelUpOne && wantToLevelUpTwo && players.size() == 2)
+		data->machine.AddState(StateRef(new CUpgradeState(data, &players, &US, this)), false);
+	else if (wantToLevelUpOne)
+		data->machine.AddState(StateRef(new CUpgradeState(data, &(*players.begin()), &US, this)), false);
+	else if (players.size() == 2 && wantToLevelUpTwo)
+		data->machine.AddState(StateRef(new CUpgradeState(data, &players.back(), &US, this)), false);
+
 }
 void CGameState::afterTransi()
 {

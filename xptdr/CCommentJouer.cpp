@@ -23,6 +23,9 @@ void CCommentJouer::initAssets()
 	//Initialisation joystick et bouton
 	data->assets.LoadTexture("joystick", "res/img/ui/joystick.png");
 	data->assets.LoadTexture("bouton", "res/img/ui/boutonseul.png");
+	data->assets.LoadTexture("micel", "res\\img\\characters\\micel.png");
+	data->assets.LoadTexture("micelsb", "res\\img\\characters\\miceletsb.png");
+	data->assets.LoadTexture("sb", "res\\img\\characters\\sb.png");
 	data->assets.LoadSFX("bulletSound", "res\\sfx\\Piou.wav");
 	data->assets.LoadTexture("bulletImage", "res\\img\\characters\\bulletImage.png");
 	data->assets.LoadTexture("bulletSecond", "res\\img\\characters\\bullet_Second.png");
@@ -58,7 +61,7 @@ void CCommentJouer::STEInit()
 	sf::Vector2i size(20, 20);
 	joystick.sprite.setOrigin(joystick.sprite.getLocalBounds().width/2.f, joystick.sprite.getLocalBounds().height);
 	
-	joystick.sprite.setPosition(width * 0.6f, height * 0.5f-joystick.sprite.getGlobalBounds().height/2.f);
+	joystick.sprite.setPosition(width * 0.05f, height * 0.8f-joystick.sprite.getGlobalBounds().height/2.f);
 	sf::Vector2f basePosition(
 		joystick.sprite.getPosition().x + joystick.sprite.getGlobalBounds().width / 2.f +width*0.1f,
 		joystick.sprite.getPosition().y-(joystick.sprite.getGlobalBounds().height + 33.f*scale/2.f) / 2.f
@@ -230,6 +233,10 @@ void CCommentJouer::STEInit()
 	buttons[4].texte = text;
 	for (int i = 0; i < 6; i++)
 		buttons[i].cercle.setPosition(buttons[i].sprite.getPosition());
+
+	//Mannequin
+	mannequin.setAssets(&data->assets);
+
 }
 
 void CCommentJouer::STEHandleInput()
@@ -291,6 +298,8 @@ void CCommentJouer::STEUpdate(float delta)
 	updateTime();
 	background.updateCBackground(delta);
 	player.updateEntity(delta);
+	mannequin.updateEntity(delta);
+	mannequin.updatewPlayer(delta, player);
 	sf::Vector2f direction = player.getDirection();
 	sf::Vector2i anim(0,0);
 	switch ((int)direction.x)
@@ -338,6 +347,7 @@ void CCommentJouer::STEDraw(float delta)
 		}
 	}
 	data->window.draw(joystickText);
+	mannequin.renderEntity(data->window);
 	player.renderEntity(data->window);
 	/*for (int i = 0; i < entityList.size(); i++)
 	{

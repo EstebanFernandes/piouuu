@@ -218,6 +218,7 @@
     <ClCompile Include="lifeBarForEntity.cpp" />
     <ClCompile Include="lifeForEntity.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mannequin.cpp" />
     <ClCompile Include="Pattern.cpp" />
     <ClCompile Include="RoamingEnemy.cpp" />
     <ClCompile Include="RusherEnemy.cpp" />
@@ -312,6 +313,7 @@
     <ClInclude Include="LevelSelectionState.h" />
     <ClInclude Include="lifeBarForEntity.h" />
     <ClInclude Include="lifeForEntity.h" />
+    <ClInclude Include="Mannequin.h" />
     <ClInclude Include="Pattern.h" />
     <ClInclude Include="RoamingEnemy.h" />
     <ClInclude Include="RusherEnemy.h" />

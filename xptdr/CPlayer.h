@@ -6,7 +6,6 @@
 #include"CBullet.h"
 #include "CBuffEntity.h"
 #include "laserWeapon.h"
-#include "CAnimation.h"
 #include"SFML/Audio.hpp"
 #include"CGrapheUpdate.h"
 #include "upgradeStock.h"
@@ -15,6 +14,10 @@
 class CPlayer :  public CMob, public CBuffEntity
 {
 private:
+	struct circleRevive//Gère le cercle qui apparait quand un joueur tombe à 0¨PV
+	{
+
+	};
 	//Attributs
 	sf::Color playerColor = sf::Color(3,140,252);
 	//sf::Color playerColor = sf::Color::Green;
@@ -181,7 +184,7 @@ public:
 	}
 	void setTouche(inputPlayer* inputt);
 	void AAAA() {
-		mainWeapon->traiterMisc(11);
+		mainWeapon->traiterMisc(10);
 	}
 	void reduceHP(float damage);
 	sf::Vector2f getDirection() { return dir; }

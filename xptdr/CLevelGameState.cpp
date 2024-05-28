@@ -78,9 +78,7 @@ void CLevelGameState::afterTransi()
 	startLevel();
 }
 
-void CLevelGameState::updateXpPlayers()
-{
-}
+
 
 void CLevelGameState::drawOnTarget(sf::RenderTarget& target, float interpolation)
 {

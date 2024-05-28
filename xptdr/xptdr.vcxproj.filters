@@ -258,6 +258,7 @@
     <ClCompile Include="fire.cpp" />
     <ClCompile Include="ice.cpp" />
     <ClCompile Include="CCommentJouer.cpp" />
+    <ClCompile Include="Mannequin.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bulletStorage.h">
@@ -518,6 +519,7 @@
     <ClInclude Include="fire.h" />
     <ClInclude Include="ice.h" />
     <ClInclude Include="CCommentJouer.h" />
+    <ClInclude Include="Mannequin.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BomberEnemy.h" />

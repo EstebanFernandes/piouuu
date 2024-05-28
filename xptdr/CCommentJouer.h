@@ -2,11 +2,7 @@
 #include"CState.h"
 #include "CPlayer.h"
 #include "CJeu.h"
-	struct image{//Struct qui encapsule ce qu'on a besoin pour gérer une image 
-		sf::Sprite sprite;
-		CAnimation anim;
-		bool isDraw = false;
-	};
+#include"Mannequin.h"
 	struct line {
 		sf::RectangleShape rs1;
 		sf::RectangleShape rs2;
@@ -56,6 +52,7 @@ private:
 	sf::Text joystickText;
 	sf::RectangleShape fond;
 	float scale = 5.f;
+	Mannequin mannequin;
 public:
 	CCommentJouer(GameDataRef data_);
 	void initAssets();

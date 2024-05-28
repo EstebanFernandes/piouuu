@@ -199,7 +199,9 @@ bool CGunslinger::checkCollisions(CMob& b)
 {
 	for (std::list<CBulletAuto>::iterator it = magasine.begin(); it != magasine.end(); ++it) {
 		if (it->checkCollisions(b))
+		{
 			return true;
+		}
 	}
 	return false;
 }

@@ -19,11 +19,11 @@ Ce qui est colorié en jaune est obligatoire en terme de placements sur un tablea
 <start>;<name>fusil à pompe (on a tout pris à Cuphead);;;;;;;;;;;;;;1;0;;Sniper;One Shot;*5;*0.2;*5;;;;
 <column>;<id>;<previd>;<var>name;<var>description;<var>damagePerBullet;<var>attackSpeed;<var>bulletSpeed;<var>misc;<var>moveSpeed;;<endLine>;;;;4;1;0;Balle blindée;Avec ça on va percer c'est sur!;*2;;;;2;;
 1;0;;Gunshot;très bon pour gérer le corps à corps;1.2;2;1.1;gunshot;;;;;;;4;2;0;Main Leste;Deux atouts piqué;*1.2;*1.5;;;1;;
-4;1;0;Balle blindée;Avec ça on va percer c'est sur!;;;;;;;;;;;4;3;0;Sprinter;Le véhicule mercredes;*1.2;;;*1.4;;;
-4;2;0;Main Leste;Deux atouts piqué;;;;;;;;;;;7;4;1;;;;;;;;;
-;3;0;Sprinter;;;;;;;;;;;;7;5;2;Amélioration;Woah attend mais tu vas vraiment faire mal;*1.2;;1;;;;
-7;4;1;Amélioration;Woah attend mais tu vas vraiment faire mal;;;;;;;;;;;7;6;3;Bullets in the blue  sky;Le nom c'est une ref … une chanson de U2 ( la confiture etc etc);*1.5;;1;;;;
-7;5;2;Bullets in the blue  sky;Le nom c'est une ref … une chanson de U2 ( la confiture etc etc);;;;;;;;;;;10;7;4;Laser;Eh beh;*1.4;*1.5;;;;laser;
+4;1;0;Balle blindée;Avec ça on va percer c'est sur!;;;;;;;;;;;4;3;0;Sprinter;Le véhicule mercredes;1.5;;;*1.4;1;;
+4;2;0;Main Leste;Deux atouts piqué;;;;;;;;;;;7;4;1;Laser;;;;;;;laser;
+;3;0;Sprinter;;;;;;;;;;;;7;5;2;Amélioration;Woah attend mais tu vas vraiment faire mal;*1.2;;;;;;
+7;4;1;Amélioration;Woah attend mais tu vas vraiment faire mal;;;;;;;;;;;7;6;3;HBFS;Les attaques ralentissent désormais les ennemis;*1.5;;;1.4;1;ice;
+7;5;2;Bullets in the blue  sky;Le nom c'est une ref … une chanson de U2 ( la confiture etc etc);;;;;;;;;;;10;7;4;Laser;Eh beh;*1.4;*1.5;;;;;
 10;6;3;Triple canon;T'abuse l…;;;;;;;;;;;10;8;5;Triple canon;T'abuse l…;*1.5;3;1;;;;
 10;7;4;I Need More Bullets;Glizzy overdrive activated;;;;;;;;;;;10;9;6;I Need More Bullets;Glizzy overdrive activated;;;1;;;;
 ;<endColumn>;;;;;;;;;;;;;;;<endColumn>;;;;;;;;;;
@@ -38,7 +38,7 @@ Ce qui est colorié en jaune est obligatoire en terme de placements sur un tablea
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;gç_i_uiàçoiàoç;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;

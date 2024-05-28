@@ -227,11 +227,20 @@ void CTestGame::STEUpdate(float delta)
 
 	//Clock updates
 	updateClock();
-	bool wantToLevelUpOne = true
-		,wantToLevelUpTwo = (players.size()==1) ? false : true;
+	updateXpPlayers();
 	for (auto player = players.begin(); player != players.end(); player++)
 	{
-		if(player==players.begin())
+		totalScore += player->getScore();
+	}
+}
+
+void CTestGame::updateXpPlayers()
+{
+	bool wantToLevelUpOne = true
+		, wantToLevelUpTwo = (players.size() == 1) ? false : true;
+	for (auto player = players.begin(); player != players.end(); player++)
+	{
+		if (player == players.begin())
 		{
 			if (!player->wantToLevelUp)
 				wantToLevelUpOne = false;
@@ -241,15 +250,11 @@ void CTestGame::STEUpdate(float delta)
 				wantToLevelUpTwo = false;
 		}
 	}
-	if(wantToLevelUpOne&&wantToLevelUpTwo&& players.size() == 2)
+	if (wantToLevelUpOne && wantToLevelUpTwo && players.size() == 2)
 		data->machine.AddState(StateRef(new CUpgradeState(data, &players, &US, this)), false);
 	else if (wantToLevelUpOne)
-		data->machine.AddState(StateRef(new CUpgradeState(data, & (*players.begin()), &US, this)), false);
-	else if(players.size()==2&& wantToLevelUpTwo)
+		data->machine.AddState(StateRef(new CUpgradeState(data, &(*players.begin()), &US, this)), false);
+	else if (players.size() == 2 && wantToLevelUpTwo)
 		data->machine.AddState(StateRef(new CUpgradeState(data, &players.back(), &US, this)), false);
-	totalScore = 0;
-	for (auto player = players.begin(); player != players.end(); player++)
-	{
-		totalScore += player->getScore();
-	}
+
 }
