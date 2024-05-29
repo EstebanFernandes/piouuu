@@ -24,7 +24,7 @@ private:
 		float radius;
 		void initCercle(CPlayer* pointerToPlayer) {
 			player = pointerToPlayer;
-			cercleFond.setRadius(100.f);
+			cercleFond.setRadius(150.f);
 			utilities::centerObject(cercleFond);
 			cercleFond.setFillColor(sf::Color(0, 0, 0, 100));
 			cercleProgression.setFillColor(sf::Color(255, 255, 255, 120));

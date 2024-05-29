@@ -178,30 +178,48 @@ void CLevelGameState::STEInit()
 
 void CLevelGameState::STEUpdate(float delta)
 {
-	if(level.isLevelSet==false && isLevelSet==false)
-	{
-		infoForloading temp;
-		temp.bulletStorage = &bulletstorage;
-		temp.fileName = levelFilePath;
-		temp.level = &level;
-		temp.US= &US;
-		data->machine.AddState(StateRef(new CLoadingState(data, temp,&players)), false);
-		hasChanges = true;
-		isLevelSet = true;
-	}
-
 	if(isThistheEnd == false&&level.isLevelSet)
 	{
 		updateBackground(delta);
 		//Auto aim
-		for (auto i = players.begin(); i != players.end(); i++)
+		updateBackground(delta);
+		//Auto aim
+		//On check d'abord les collisions entre le joueur et les entités. ensuite on update
+		if (players.size() == 1)
 		{
-			i->updateEntity(delta);
-			if (i->getMainWeapon()->typeTir == typeAim::autoAim && i->seekForTarget)
+			players.front().updateEntity(delta);
+			if (players.front().getMainWeapon()->typeTir == typeAim::autoAim && players.front().seekForTarget)
 			{
-				CMob* cible = nearEnemy(&(*i));
-				i->getMainWeapon()->changeTarget(cible);
-				i->seekForTarget = false;
+				CMob* cible = nearEnemy(&players.front());
+				players.front().getMainWeapon()->changeTarget(cible);
+				players.front().seekForTarget = false;
+			}
+		}
+		else
+		{
+			for (auto i = players.begin(); i != players.end(); i++)
+			{
+				CPlayer& otherPlayer = (i == players.begin()) ? players.back() : players.front();
+				if (i->isBetweenLifeAndDeath())
+				{
+					if (otherPlayer.needDelete)
+						i->needDelete = true;
+					otherPlayer.setReviveness(false);
+					i->updateCercleRevive(otherPlayer);
+					i->getMainWeapon()->updateWeapon(delta);
+					i->getSecondaryWeapon()->updateWeapon(delta);
+				}
+				else
+				{
+					otherPlayer.setReviveness(true);
+					i->updateEntity(delta);
+					if (i->getMainWeapon()->typeTir == typeAim::autoAim && i->seekForTarget)
+					{
+						CMob* cible = nearEnemy(&(*i));
+						i->getMainWeapon()->changeTarget(cible);
+						i->seekForTarget = false;
+					}
+				}
 			}
 		}
 		for (std::vector<CHittingEntity*>::iterator entity = entityList.begin();entity!=entityList.end();)

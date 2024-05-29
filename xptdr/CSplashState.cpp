@@ -5,6 +5,7 @@ CSplashState::CSplashState(GameDataRef _data) : data(_data)
 
 void CSplashState::STEInit()
 {
+	std::cout << data->window.getSettings().majorVersion <<"majeur mineur" << data->window.getSettings().minorVersion;
 	globalClock.restart();
 	background.initBackground(&(data->assets), false);
 	background.setTimePointer(&time);

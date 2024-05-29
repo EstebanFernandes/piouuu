@@ -489,7 +489,10 @@ void CPlayer::updateEntity(float dt)
 		if (animExplosionSprite.getCurrentFrameNumber().x == 11)
 		{
 			if(cercleRevive.canRevive)
+			{
 				betweenDeathAndLife = true;
+				cercleRevive.cercleClock.restart();
+			}
 			else {//On est tout seul
 				needDelete = true;
 			}
