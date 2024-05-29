@@ -1,4 +1,4 @@
-#version 330 core
+#version 460 core
 
 uniform vec2 u_resolution;
 uniform float u_time;

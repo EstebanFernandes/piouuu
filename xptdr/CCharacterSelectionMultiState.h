@@ -26,6 +26,7 @@ private:
 		sf::FloatRect zone;
 		sw::SpinningCard* spinArrow;
 		sf::Sprite arrowSprite;
+		sf::Sprite preViewSpriteFirst;
 		sf::Sprite preViewSprite;
 		bool sens = false;//if false on descend, true on monte pour la fleche
 	};
@@ -36,7 +37,6 @@ private:
 		std::vector<CCharacter>* pointerToCharacters;
 		std::vector<joueur> players;
 		sf::RectangleShape deuxiemefond;
-		sf::Shader bwShader;
 		sf::Text Titre;
 		sf::Sound* selectionSound;
 		sf::Sound* validationSound;

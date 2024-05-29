@@ -131,10 +131,6 @@ void CCharacterSelectionMultiState::STEInit()
 			minArrow);
 		players[i].spinArrow = new sw::SpinningCard(players[i].arrowSprite);
 	}
-
-	if (!bwShader.loadFromFile("shaders/vertex.vert","shaders/fragbandw.frag"))
-		std::cout << "bof";
-	bwShader.setUniform("textureSampler", sf::Shader::CurrentTexture);
 	containChanges = true;
 	STEUpdate(0.0003f);
 	deuxiemefond.setPosition(0.f, +players[0].trueAvionPlayerNumber.getGlobalBounds().top-5.f);
@@ -313,6 +309,8 @@ void CCharacterSelectionMultiState::updateTexts(int index)
 	players[index].preViewSprite.setPosition(
 		players[index].zone.left+players[index].zone.width / 2.f- players[index].preViewSprite.getGlobalBounds().width/2.f,
 		players[index].zone.top + players[index].zone.height / 2.f - players[index].preViewSprite.getGlobalBounds().height / 2.f);
+	if(!players[index].isValid)
+		players[index].preViewSprite.setColor(sf::Color(0, 0, 0, 122));
 }
 
 void CCharacterSelectionMultiState::STEHandleInput()
@@ -348,6 +346,7 @@ void CCharacterSelectionMultiState::STEHandleInput()
 					{
 						players[i].isValid = true;
 						validationSound->play();
+						players[i].preViewSprite.setColor(sf::Color::White);
 					}
 					if (event.key.code == players[i].curInput->button2)
 					{
@@ -452,7 +451,7 @@ void CCharacterSelectionMultiState::drawElements(bool onlyAvion)
 			{
 				data->window.draw(*players[i].spinArrow);
 				data->window.draw(players[i].trueAvionPlayerNumber);
-				data->window.draw(players[i].preViewSprite, &bwShader);
+				data->window.draw(players[i].preViewSprite);
 			}
 			else
 				data->window.draw(players[i].preViewSprite);
