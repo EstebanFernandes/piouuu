@@ -101,9 +101,9 @@ CUpgradeState::CUpgradeState(GameDataRef d, CPlayer* player, upgradeStock* point
 	if (player != NULL)
 	{
 		upgradeForOnePlayer temp;
-		temp.pointerToPlayer = player;
 		temp.bord = bord;
 		players.push_back(temp);
+		players.front().pointerToPlayer = player;
 	}
 	if (pointerToUpgradeStocks != NULL)
 		US = pointerToUpgradeStocks;

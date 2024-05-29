@@ -35,11 +35,11 @@ void CBackground::initBackground(bool TYPE)
 	{
 		sf::Shader* first = new sf::Shader(); //Draw the zigzag
 		sf::Shader* second = new sf::Shader();//Apply the blur
-		if (!first->loadFromFile("shaders/vertexbandw.vert", "shaders/test.frag"))
+		if (!first->loadFromFile( "shaders/test.frag",  sf::Shader::Fragment))
 			std::cout << "non non";
 		first->setUniform("u_resolution", sf::Glsl::Vec2(windowSize));
 		first->setUniform("angle",utilities::RandomFloat(0.f,360.f));
-		if (!second->loadFromFile("shaders/vertexbandw.vert", "shaders/blurFrag.frag"))
+		if (!second->loadFromFile( "shaders/blurFrag.frag",sf::Shader::Fragment))
 			std::cout << "bof";
 		second->setUniform("texture", sf::Shader::CurrentTexture);
 		second->setUniform("u_resolution", sf::Glsl::Vec2(windowSize));

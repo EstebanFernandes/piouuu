@@ -359,27 +359,35 @@ void CGameState::updateClock()
 }
 void CGameState::updateXpPlayers()
 {
-	bool wantToLevelUpOne = true
-		, wantToLevelUpTwo = (players.size() == 1) ? false : true;
-	for (auto player = players.begin(); player != players.end(); player++)
-	{
-		if (player == players.begin())
-		{
-			if (!player->wantToLevelUp)
-				wantToLevelUpOne = false;
-		}
-		else {
-			if (!player->wantToLevelUp)
-				wantToLevelUpTwo = false;
-		}
-	}
-	if (wantToLevelUpOne && wantToLevelUpTwo && players.size() == 2)
-		data->machine.AddState(StateRef(new CUpgradeState(data, &players, &US, this)), false);
-	else if (wantToLevelUpOne)
-		data->machine.AddState(StateRef(new CUpgradeState(data, &(*players.begin()), &US, this)), false);
-	else if (players.size() == 2 && wantToLevelUpTwo)
-		data->machine.AddState(StateRef(new CUpgradeState(data, &players.back(), &US, this)), false);
+	bool wantToLevelUp = false, wantToLevelUpOne = players.front().wantToLevelUp
+		, wantToLevelUpTwo = (players.size() == 1) ? false : players.back().wantToLevelUp
+		,twoPUpdate=false;
 
+	if (wantToLevelUpOne || wantToLevelUpTwo)
+		wantToLevelUp = true;
+	else 
+		wantToLevelUp = false;
+	if (wantToLevelUp)//ça level up
+	{
+		if (wantToLevelUpOne)
+		{
+			if (players.size() == 1)
+				data->machine.AddState(StateRef(new CUpgradeState(data, &(*players.begin()), &US, this)), false);
+			else if(players.back().hasLevelUp|| players.back().wantToLevelUp)
+				twoPUpdate = true;
+			else {
+				data->machine.AddState(StateRef(new CUpgradeState(data, &(*players.begin()), &US, this)), false);
+			}
+		}else if (wantToLevelUpTwo)
+		{
+			if (players.front().hasLevelUp)
+				twoPUpdate = true;
+			else
+				data->machine.AddState(StateRef(new CUpgradeState(data, &(players.back()), &US, this)), false);
+		}
+		if(twoPUpdate)
+			data->machine.AddState(StateRef(new CUpgradeState(data, &players, &US, this)), false);
+	}
 }
 void CGameState::afterTransi()
 {
