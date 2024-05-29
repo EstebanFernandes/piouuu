@@ -39,6 +39,10 @@ void CGameState::initPlayer()
 	data->assets.LoadSFX("planeSound", "res\\sfx\\plane.mp3");
 	data->assets.LoadTexture("muzzleFlash", "res\\img\\muzzleFlash.png");
 	data->assets.LoadTexture("buttonArcade", "res\\img\\UI\\boutonenfonce2.png");
+	data->assets.LoadTexture("beginLaser", "res\\img\\laser\\beginLaser.png");
+	data->assets.LoadTexture("fullLaser", "res\\img\\laser\\fullLaser.png");
+	data->assets.GetTexture("fullLaser").setRepeated(true);
+	
 	int numero = 1;
 	for (auto i = players.begin(); i != players.end(); i++)
 	{

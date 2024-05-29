@@ -4,6 +4,7 @@ void Cmusique::ajouterMusique(const std::string& id, const std::string& filePath
 {
     std::unique_ptr<sf::Music> music = std::make_unique<sf::Music>();
     music->openFromFile(filePath);
+    music->setLoop(true);
     musiques[id].music = std::move(music);
 }
 

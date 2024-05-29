@@ -41,7 +41,7 @@ void CBackground::initBackground(bool TYPE)
 		first->setUniform("angle",utilities::RandomFloat(0.f,360.f));
 		if (!second->loadFromFile( "shaders/blurFrag.frag",sf::Shader::Fragment))
 			std::cout << "bof";
-		second->setUniform("texture", sf::Shader::CurrentTexture);
+		second->setUniform("textureSampler", sf::Shader::CurrentTexture);
 		second->setUniform("u_resolution", sf::Glsl::Vec2(windowSize));
 		shaders.push_back(first);
 		shaders.push_back(second);

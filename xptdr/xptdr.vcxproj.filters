@@ -631,6 +631,6 @@
     <None Include="shaders\fragbandw.frag" />
     <None Include="shaders\test.frag" />
     <None Include="shaders\blurFrag.frag" />
-    <None Include="shaders\vertexbandw.vert" />
+    <None Include="shaders\vertex.vert" />
   </ItemGroup>
 </Project>

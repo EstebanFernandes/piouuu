@@ -132,8 +132,9 @@ void CCharacterSelectionMultiState::STEInit()
 		players[i].spinArrow = new sw::SpinningCard(players[i].arrowSprite);
 	}
 
-	if (!bwShader.loadFromFile("shaders/vertexbandw.vert", "shaders/fragbandw.frag"))
+	if (!bwShader.loadFromFile("shaders/vertex.vert","shaders/fragbandw.frag"))
 		std::cout << "bof";
+	bwShader.setUniform("textureSampler", sf::Shader::CurrentTexture);
 	containChanges = true;
 	STEUpdate(0.0003f);
 	deuxiemefond.setPosition(0.f, +players[0].trueAvionPlayerNumber.getGlobalBounds().top-5.f);

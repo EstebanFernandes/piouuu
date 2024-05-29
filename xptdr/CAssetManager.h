@@ -4,7 +4,8 @@
 #include "Cmusique.h"
 #include"Ceffetsonore.h"
 #include"CAnimation.h"
-struct image {//Struct qui encapsule ce qu'on a besoin pour gérer une image 
+
+struct image {//Struct qui encapsule ce qu'on a besoin pour gérer un sprite 
 	sf::Sprite sprite;
 	CAnimation anim;
 };
