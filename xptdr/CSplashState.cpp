@@ -26,7 +26,7 @@ void CSplashState::STEHandleInput(sf::Event& event)
 
 void CSplashState::STEUpdate(float delta)
 {
-	if ((int)CSSClock.getElapsedTime().asSeconds() == SPLASH_STATE_SHOW_TIME && !CESTBON) {
+	if ((int)CSSClock.getElapsedTime().asSeconds() >= SPLASH_STATE_SHOW_TIME && !CESTBON) {
 		// Switch to the main menu
 		data->machine.RemoveState();
 		data->machine.AddState(StateRef (new CMainMenuState(data)), false);

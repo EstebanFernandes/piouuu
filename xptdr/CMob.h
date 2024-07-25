@@ -61,7 +61,7 @@ public:
 	void moveEntity(float x, float y) {
 		moveEntity(sf::Vector2f(x, y));
 	}
-	void renderTheEntity(sf::RenderTarget& target) {
+	virtual void renderTheEntity(sf::RenderTarget& target) {
 		target.draw(getSprite());
 	}
 	virtual void reduceHP(float damage) {
