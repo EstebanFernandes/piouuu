@@ -105,14 +105,14 @@
       <PreprocessorDefinitions>
       </PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\xptdr\imgui;$(SolutionDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-system-d.lib;sfml-graphics-d.lib;sfml-audio-d.lib;sfml-window-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-system-d.lib;sfml-graphics-d.lib;sfml-audio-d.lib;sfml-window-d.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -164,6 +164,7 @@
     <ClCompile Include="CException.cpp" />
     <ClCompile Include="CGraphe.cpp" />
     <ClCompile Include="CGrapheUpdate.cpp" />
+    <ClCompile Include="chargeShot.cpp" />
     <ClCompile Include="CHugoDecrypte.cpp" />
     <ClCompile Include="CLevelGameState.cpp" />
     <ClCompile Include="CLoadingState.cpp" />
@@ -208,6 +209,12 @@
     <ClCompile Include="EllipseShape.cpp" />
     <ClCompile Include="fire.cpp" />
     <ClCompile Include="ice.cpp" />
+    <ClCompile Include="imgui\imgui-SFML.cpp" />
+    <ClCompile Include="imgui\imgui.cpp" />
+    <ClCompile Include="imgui\imgui_demo.cpp" />
+    <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="imgui\imgui_tables.cpp" />
+    <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="inputPlayer.cpp" />
     <ClCompile Include="InterfaceShootingEnemy.cpp" />
     <ClCompile Include="InterfaceState.cpp" />
@@ -222,10 +229,12 @@
     <ClCompile Include="Pattern.cpp" />
     <ClCompile Include="RoamingEnemy.cpp" />
     <ClCompile Include="RusherEnemy.cpp" />
+    <ClCompile Include="ShakeSpinningCard.cpp" />
     <ClCompile Include="ShootingEnemy.cpp" />
     <ClCompile Include="SpecialEffect.cpp" />
     <ClCompile Include="SpinningCard.cpp" />
     <ClCompile Include="testEnemy.cpp" />
+    <ClCompile Include="thunder.cpp" />
     <ClCompile Include="upgradeStock.cpp" />
     <ClCompile Include="Wave.cpp" />
     <ClCompile Include="Weapon.cpp" />
@@ -258,6 +267,7 @@
     <ClInclude Include="CException.h" />
     <ClInclude Include="CGraphe.h" />
     <ClInclude Include="CGrapheUpdate.h" />
+    <ClInclude Include="chargeShot.h" />
     <ClInclude Include="CHugoDecrypte.h" />
     <ClInclude Include="CLevelGameState.h" />
     <ClInclude Include="CLoadingState.h" />
@@ -317,17 +327,21 @@
     <ClInclude Include="Pattern.h" />
     <ClInclude Include="RoamingEnemy.h" />
     <ClInclude Include="RusherEnemy.h" />
+    <ClInclude Include="ShakeSpinningCard.h" />
     <ClInclude Include="ShootingEnemy.h" />
     <ClInclude Include="SpecialEffect.h" />
     <ClInclude Include="SpinningCard.hpp" />
     <ClInclude Include="testEnemy.h" />
+    <ClInclude Include="thunder.h" />
     <ClInclude Include="upgradeStock.h" />
     <ClInclude Include="utilities.h" />
     <ClInclude Include="Wave.h" />
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\fadeFrag.frag" />
     <None Include="shaders\fragbandw.frag" />
+    <None Include="shaders\lightFrag.frag" />
     <None Include="shaders\test.frag" />
     <None Include="shaders\blurFrag.frag" />
     <None Include="shaders\vertex.vert" />

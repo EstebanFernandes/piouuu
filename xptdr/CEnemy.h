@@ -185,5 +185,6 @@ public:
 	/// <returns></returns>
 	bool onestPose();
 	void setInfo(enemyInfo info_);
+	void renderTheEntity(sf::RenderTarget& target);
 };
 

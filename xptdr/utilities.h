@@ -1,5 +1,5 @@
 #pragma once
-#include"SFML/Graphics.hpp"
+#include "SFML/Graphics.hpp"
 /// <summary>
 /// Namespace qui contient des méthodes utilisés à différents niveaux du codes
 /// </summary>
@@ -110,6 +110,8 @@ namespace utilities {
 		return maxWidth;
 	}
 
+
+
 	/// <summary>
 	/// Return the maximum height in a float from a vector of text
 	/// </summary>
@@ -188,6 +190,20 @@ namespace utilities {
 		lala.setOrigin(lala.getLocalBounds().width / 2.f,
 			lala.getLocalBounds().height / 2.f);
 	}
+
+	inline bool isNumberBetween(int min, int max, int value)
+	{
+		return (value > min && value < max);
+	}
+
+	inline void centerObject(sf::Sprite& lala) {
+		lala.setOrigin(lala.getLocalBounds().width / 2.f,
+			lala.getLocalBounds().height / 2.f);
+	}
+	inline void centerObject(sf::Text& lala) {
+		lala.setOrigin(lala.getLocalBounds().width / 2.f,
+			lala.getLocalBounds().height / 2.f);
+	}
 	inline void normalizeVector(sf::Vector2f& direction)
 	{
 		direction = direction / (float)std::sqrt(std::pow(direction.x, 2) + std::pow(direction.y, 2));
@@ -219,5 +235,60 @@ namespace utilities {
 			std::pow(circleDistance.y - rect.height / 2.f, 2.f);
 
 		return (cornerDistance_sq <= std::pow(circle.getRadius(), 2.f));
+	}
+	inline float minimumDistance(const sf::FloatRect& rect1, const sf::FloatRect& rect2) {
+		// Si les rectangles se chevauchent, la distance minimale est 0
+		if (rect1.intersects(rect2)) {
+			return 0.0f;
+		}
+
+		// Calculer la distance entre les bords les plus proches
+		float left = std::max(rect1.left, rect2.left);
+		float right = std::min(rect1.left + rect1.width, rect2.left + rect2.width);
+		float top = std::max(rect1.top, rect2.top);
+		float bottom = std::min(rect1.top + rect1.height, rect2.top + rect2.height);
+
+		// Cas où un rectangle est entièrement à gauche ou à droite de l'autre
+		float horizontalDistance = std::max(0.0f, std::max(rect1.left - (rect2.left + rect2.width), rect2.left - (rect1.left + rect1.width)));
+
+		// Cas où un rectangle est entièrement au-dessus ou en dessous de l'autre
+		float verticalDistance = std::max(0.0f, std::max(rect1.top - (rect2.top + rect2.height), rect2.top - (rect1.top + rect1.height)));
+
+		// Distance minimum entre les bords
+		float edgeDistance = std::sqrt(horizontalDistance * horizontalDistance + verticalDistance * verticalDistance);
+
+		// Vérifier la distance entre les coins
+		float cornerDistance = std::numeric_limits<float>::max();
+
+		// Les coins de rect1
+		sf::Vector2f corners1[] = {
+			{rect1.left, rect1.top},
+			{rect1.left + rect1.width, rect1.top},
+			{rect1.left, rect1.top + rect1.height},
+			{rect1.left + rect1.width, rect1.top + rect1.height}
+		};
+
+		// Les coins de rect2
+		sf::Vector2f corners2[] = {
+			{rect2.left, rect2.top},
+			{rect2.left + rect2.width, rect2.top},
+			{rect2.left, rect2.top + rect2.height},
+			{rect2.left + rect2.width, rect2.top + rect2.height}
+		};
+
+		// Comparer chaque coin de rect1 avec chaque coin de rect2
+		for (const auto& c1 : corners1) {
+			for (const auto& c2 : corners2) {
+				cornerDistance = std::min(cornerDistance, getDistancefrom2Pos(c1, c2));
+			}
+		}
+
+		// La distance minimale est la plus petite des deux distances trouvées
+		return std::min(edgeDistance, cornerDistance);
+	}
+
+	inline sf::Vector2f glslCoord(sf::Vector2f baseCoord,float yWindowSize)
+	{
+		return sf::Vector2f(baseCoord.x, yWindowSize - baseCoord.y);
 	}
 }

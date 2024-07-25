@@ -4,10 +4,11 @@
 #include "Cmusique.h"
 #include"Ceffetsonore.h"
 #include"CAnimation.h"
-
+#define TRANSI_TIME 1.25f
 struct image {//Struct qui encapsule ce qu'on a besoin pour gérer un sprite 
 	sf::Sprite sprite;
 	CAnimation anim;
+	bool isAnimated = false;
 };
 //La classe assetmanager est partagé par toutes les entités qui doivent avoir des sprites, donc c'est également ici que l'on met la taille de l'écran
 

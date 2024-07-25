@@ -18,13 +18,10 @@ void CSplashState::STEInit()
 		targetSize.y / CSSBackground.getLocalBounds().height);
 }
 
-void CSplashState::STEHandleInput()
+void CSplashState::STEHandleInput(sf::Event& event)
 {
-	sf::Event event;
-	while (data->window.pollEvent(event))
-	{
-		if (sf::Event::Closed == event.type)	data->window.close();
-	}
+	if (sf::Event::Closed == event.type)	
+		data->window.close();
 }
 
 void CSplashState::STEUpdate(float delta)

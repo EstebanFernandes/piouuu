@@ -64,7 +64,7 @@ public:
 	LevelSelectionState(GameDataRef _data, std::vector<CCharacter>* charactersParam, std::string* levelToLauchParam);
 
 	void STEInit();
-	void STEHandleInput();
+	void STEHandleInput(sf::Event& event);
 	void STEUpdate(float delta);
 	void STEDraw(float delta); // différence entre les frames
 	void STEResume();

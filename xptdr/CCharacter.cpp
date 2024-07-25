@@ -228,21 +228,30 @@ bool CCharacter::matchTypewithValue(std::string type, std::string value)
 		return true;
 	}
 }
-
+/// <summary>
+/// Méthode qui prend en paramètre un des types d'améliorations avec le nom interne et renvoie le nom jolie
+/// </summary>
+/// <param name="type"></param>
+/// <param name="value"></param>
+/// <returns></returns>
 std::string CCharacter::returnTypeStylish(std::string type, std::string value)
 {
 	std::string operatorandvalue;
 	std::string returnType;
 	std::vector<std::string> typeString = { "maxXp","healthPoint","maxHealthPoint",
-										"moveSpeed","canonNumber","damagePerBullet",
-											"attackSpeed","bulletSpeed","misc" };
+	"moveSpeed","damagePerBullet","attackSpeed","bulletSpeed",
+		"misc","dashDistance","dashDamage","isDashInvicible",
+	"dotCD","dotTimer","dotDamage","factor","penetration" };
 	int pos = (int)(std::find(typeString.begin(), typeString.end(), type) - typeString.begin());
+	if (type == "dotDamage")
+		pos = 13;
 	if (pos >= typeString.size()) {
 		return "";
 	}
 	else {
 		if (value != "")
 		{
+			bool isMisc = false;
 			float fvalue = 0.f;
 			int ivalue = 0;
 			switch (value[0])
@@ -285,22 +294,102 @@ std::string CCharacter::returnTypeStylish(std::string type, std::string value)
 			case 3: //move Speed
 				returnType = "Vitesse de déplacement : ";
 				break;
-			case 4: //canon number
-				returnType = "Nombre de canon : ";
-				break;
-			case 5: //DamagePerBullet
+			case 4: //DamagePerBullet
 				returnType = "Dégat par balles : ";
 				break;
-			case 6: //attack speed
+			case 5: //attack speed
 				returnType = "Vitesse d'attaque : ";
 				break;
-			case 7: // bullet speed
-				returnType = "Vitesse d'une balle :";
+			case 6: // bullet speed
+				returnType = "Vitesse d'une balle : ";
 				break;
-			case 8: //misc
+			case 7: //misc
 				returnType = "Spécifité : ";
+				isMisc = true;
+				break;
+			case 8: //dash distance
+				returnType = "Distance de dash : ";
+				break;
+
+			case 9: // dash damage
+				returnType = "Dégat du dash : ";
+				break;
+			case 10: //isDashInvicible
+				bool temp;
+				if (value == "true" || value == "1")
+				{
+				returnType = "Le dash rend invincible : ";
+				}
+				else if (value == "false" || value == "0")
+				{
+					returnType = "Le dash ne rend plus in : ";
+				}
+				break;
+			case 11: //dotCD
+				returnType = "Dégats tous les ";
+				operatorandvalue = value + " s";
+				break;
+			case 12: //dotTimer
+				returnType = "Temps total du buff : ";
+				operatorandvalue = value + " s";
+				break;
+			case 13: // dotDamage
+				returnType = "Dégat du buff : ";
+				break;
+			case 14: //Factor(j'attends le merge avec mathéo)
+				returnType = "Facteur du buff : ";
+				break;
+			case 15: //Penetration(j'attends le merge avec mathéo)
+				returnType = "Penetration de la balle : ";
 				break;
 			} 
+			if (isMisc)
+			{
+				const std::vector<std::string> supportedMisc{ "autoAim","doubleTirs1","doubleTirs2",
+				"gunshot","dot", "laser","explosiveBullet","spin","doubleTirs3","fire","ice","thunder" };
+				 pos = (int)(std::find(supportedMisc.begin(), supportedMisc.end(), value) - supportedMisc.begin());
+				switch (pos)
+				{
+				case 0: //Max XP
+					operatorandvalue = "Visée automatique";
+					break;
+				case 1:  //Health Point
+					operatorandvalue = "Double tirs v1";
+					break;
+				case 2: // Max HealthPoint
+					operatorandvalue = "Double tirs v2";
+					break;
+				case 3: //move Speed
+					operatorandvalue = "Tir courte portée";
+					break;
+				case 4: //DamagePerBullet
+					operatorandvalue = "Dégat sur la durée";
+					break;
+				case 5: //attack speed
+					operatorandvalue = "Puissant laser";
+					break;
+				case 6: // bullet speed
+					operatorandvalue = "Balle explosive";
+					break;
+				case 7: //misc
+					operatorandvalue = "Merry go round";
+					break;
+				case 8: //dash distance
+					operatorandvalue = " Triple tirs ";
+					break;
+
+				case 9: // dash damage
+					operatorandvalue = "Feu ";
+					break;
+				case 10: //isDashInvicible
+					operatorandvalue = "Glace";
+					break;
+				case 11: //dotCD
+					operatorandvalue = "Foudre";
+					break;
+			
+				}
+			}
 		}
 		return returnType + operatorandvalue;
 	}

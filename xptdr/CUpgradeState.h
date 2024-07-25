@@ -7,14 +7,73 @@
 #include"CCardUpgrade.h"
 #include"InterfaceState.h"
 #include"upgradeStock.h"
+#include"SpinningCard.hpp"
 //état qui gère les améliorations d'un joueur 
 class CUpgradeState : public CState, public InterfaceState
 {
 private:
-	const sf::Vector2f sizeOfCard = sf::Vector2f(255, 366.f);
+	const sf::Vector2f sizeOfCard = sf::Vector2f(255, 365.f);
 	CState* pointertoGameState;
 	GameDataRef data;
+	const float speedCard = 1.5f;
+	struct cardHandler{
+		sf::Vector2f finalPos;
+		sw::SpinningCard* cardBack;
+		sw::SpinningCard* cardFace;
+		float degree;
+		float scale=1.f;
+		bool canMove=false;
+		void freeMemory() {
+			delete cardBack;
+			delete cardFace;
+		}
+		void move(sf::Vector2f offset)
+		{
+			cardFace->move(offset);
+			cardBack->move(offset);
+		}
+		void move(float x,float y)
+		{
+			cardFace->move(x,y);
+			cardBack->move(x,y);
+		}
+		void setScale(float newScale)
+		{
+			scale = newScale;
+			cardFace->setScale(scale, scale);
+		cardBack->setScale(scale, scale);
+		}
+		sf::Vector2f getScale() {
+			return cardFace->getScale();
+		}
+		void spin(float spin)
+		{
+			cardFace->spin(spin);
+			cardBack->spin(spin);
+		}
 
+		void spinVertically(float angleInDegrees) {
+			cardFace->spinVertically(angleInDegrees);
+		cardBack->spinVertically(angleInDegrees);
+		}
+		void setPosition(sf::Vector2f pos)
+		{
+			cardFace->setPosition(pos);
+			cardBack->setPosition(pos);
+		}
+		void draw(sf::RenderTarget& renderTarget)
+		{
+			bool backFirst = (degree > 90.f && degree < 270.f) ? true : false;
+			if (backFirst)
+			{
+				renderTarget.draw(*cardBack);
+			}
+			else {
+				renderTarget.draw(*cardBack);
+				renderTarget.draw(*cardFace);
+			}
+		}
+	};
 	struct upgradeForOnePlayer{
 		sf::FloatRect bord;
 		int nbOfGraph;
@@ -29,17 +88,27 @@ private:
 		bool isGraphEnd = false;
 		int hasPressedKey = 0;
 		//Graphique
-		std::vector<CCardUpgrade> CardList;
+		std::vector<cardHandler> CardList;
 		//Selection
 		int iCardSelection = 0;
 		sf::Text title;
+		sf::Text subtitle;
 		bool cfini = false;
+		int indexesUpgrade[3];
+		float timeOffset=-1.f;
+		sf::Texture cardTexture;
+		int nbDeTours = 3;
+		bool weStop = false;
 	};
+	sf::Texture backCardTexture;
 	upgradeStock* US;
 	std::vector<upgradeForOnePlayer> players;
 	sf::Shader blurShader;
+	sf::Shader fadeShader;
 	sf::Sprite fond;
 	sf::RectangleShape frontiere;
+	//0 Intro,1 sélection et 2 outro 
+	int state = 0;
 	void fillUpgrade(upgradeForOnePlayer& player ,int nbofUpgrade);
 	//Méthodes et constructeurs
 	int whichKindofUpgrade(upgradeForOnePlayer& player) {
@@ -67,7 +136,7 @@ private:
 	/// <param name="isFirstTime"></param>
 	void CreateCard(upgradeForOnePlayer& player)
 	{
-
+		backCardTexture.loadFromFile("res/img/backCard.png");
 		float screen_Height = player.bord.height;
 		float screen_Width = player.bord.width;
 		CSommetUpgrade& baseSommet = (*player.playerComp->pointerToSommet);
@@ -76,52 +145,97 @@ private:
 			player.isGraphEnd = true;
 			plusStats(player);
 		}
-		else
+		int nbofUpgrade = (int)baseSommet.SOMLireArcPartant().size();
+		int trueNbOfUpgrade = (nbofUpgrade <3) ? nbofUpgrade : 3;
+		for (int i = 0; i < trueNbOfUpgrade; i++) //Décide aléatoirement des augmentes
 		{
-			sf::Vector2f trueSizeOfCard = (players.size() == 2) ? sf::Vector2f(sizeOfCard * 0.8f) : sizeOfCard;
-			int nbofUpgrade = (int)baseSommet.SOMLireArcPartant().size();
-
-			float totalRectanglesWidth = (float)nbofUpgrade * trueSizeOfCard.x;
-			// Calculer l'espacement nécessaire
-			float totalSpacing = player.bord.width - totalRectanglesWidth;
-			float spacing = totalSpacing / (nbofUpgrade + 1);
-
-			// Calculer la position de départ
-			float startX = player.bord.left+ spacing;
-
-			for (int i = 0; i < nbofUpgrade; i++)
+			//Index du prochain sommet dans la liste des sommets du graphe
+			int nextIndex = baseSommet.SOMLireArcPartant()[(rand() % nbofUpgrade)].ARCObtenirDest();
+			while (isNumberInArray(player.indexesUpgrade, 3, nextIndex))
 			{
-				sf::Vector2f pos;
-					int iDNextVert = baseSommet.SOMLireArcPartant()[i].ARCObtenirDest();
-					CSommetUpgrade nextVert = US->currentGraph((*player.playerComp)).GRAObtenirListeSommet()[US->currentGraph((*player.playerComp)).GRATrouverSommet(iDNextVert)];
-				CCardUpgrade temp;
-				if(player.isFirstTime==false)
-				{
-					temp = CCardUpgrade(nextVert.returnValues(), US->graphs[player.playerComp->pos.y][player.playerComp->pos.x].ListeType, &(data->assets));
-				}
-				else {
-					temp = CCardUpgrade(nextVert.returnValues(), US->graphs[player.playerComp->pos.x][iDNextVert-1].ListeType, &(data->assets));
-				}
-				temp.setSize(trueSizeOfCard);
-				pos.x = startX;
-				pos.y = (screen_Height / 2.f) - (temp.getGlobalBounds().height / 2.f);
-				temp.setPosition(pos);
-				player.CardList.push_back(temp);
-				startX += trueSizeOfCard.x+spacing;
+				nextIndex = baseSommet.SOMLireArcPartant()[(rand() % nbofUpgrade)].ARCObtenirDest();
 			}
+			player.indexesUpgrade[i] = nextIndex;
+				
 		}
+		 //Comportement normal
+		createCardTexture(player,trueNbOfUpgrade);
+		
+		
+		bool isAlone = (players.size() == 2) ? false : true;
+		sf::Vector2f trueSizeOfCard = (players.size() == 2) ? sf::Vector2f(sizeOfCard * 0.8f) : sizeOfCard;
+		float totalRectanglesWidth = (float)trueNbOfUpgrade * trueSizeOfCard.x;
+		// Calculer l'espacement nécessaire
+		float totalSpacing = player.bord.width - totalRectanglesWidth;
+		float spacing = totalSpacing / (trueNbOfUpgrade + 1);
+
+		// Calculer la position de départ
+		float startX = player.bord.left+ spacing;
+		CCardUpgrade cardArray[3];
+		for (int i = 0; i < trueNbOfUpgrade; i++)
+		{
+			sf::Vector2f pos;
+			sf::Sprite spriteCard(player.cardTexture), backSpriteCard(backCardTexture);
+			spriteCard.setTextureRect(
+				sf::IntRect(
+					sf::Vector2i((int)sizeOfCard.x * i, 0), sf::Vector2i(sizeOfCard)));
+			utilities::centerObject(spriteCard);
+			utilities::centerObject(backSpriteCard);
+			if (!isAlone)
+				spriteCard.setScale(0.8f, 0.8f);
+			pos.x = startX+spriteCard.getGlobalBounds().width/2.f;
+			pos.y = screen_Height / 2.f;
+			cardHandler tempCard;
+			tempCard.finalPos = pos;
+				
+			sw::SpinningCard* tempSpCard = new sw::SpinningCard(spriteCard);
+			sw::SpinningCard* cardBackFace = new sw::SpinningCard(backSpriteCard);
+			tempCard.cardBack = cardBackFace;
+			tempCard.cardFace = tempSpCard;
+	
+			tempCard.degree = 180.f;//Les cartes commencent retournées
+			sf::Vector2f moveTo(pos.x, screen_Height + spriteCard.getGlobalBounds().height);
+			tempCard.move(moveTo);
+			tempCard.spin(180.f);
+			player.CardList.push_back(tempCard);
+			startX += trueSizeOfCard.x + spacing;
+		}
+		
 	}
+	void createCardTexture(upgradeForOnePlayer& player, int nbOfUpgrade);
 	void plusStats(upgradeForOnePlayer& player);
 	void applyStats(upgradeForOnePlayer& player);
 	float setValue(float init, std::string modif);
 	int setValue(int init, std::string modif);
 	bool matchTypeWithValue(upgradeForOnePlayer& player, std::string type, std::string value);
 	void handleInput(upgradeForOnePlayer& player, sf::Event& event);
+
+	bool isNumberInArray(int arr[], int size, int number) {
+		for (int i = 0; i < size; ++i) {
+			if (arr[i] == number) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	bool updateCards(upgradeForOnePlayer& player);
+	void updateState();
+	void updateChosenCard(upgradeForOnePlayer& player,int previousSelec);
 public:
 	CUpgradeState(GameDataRef d, CPlayer* player, upgradeStock* pointerToUpgradeStocks,CState* prev);
 	CUpgradeState(GameDataRef d, std::list<CPlayer>* player, upgradeStock* pointerToUpgradeStocks, CState* prev);
+	~CUpgradeState() {
+		for (int i = 0; i < players.size(); i++)
+		{
+			for (int j = 0; j < players[i].CardList.size(); j++)
+			{
+				players[i].CardList[j].freeMemory();
+			}
+		}
+	}
 	void STEInit(); 
-	void STEHandleInput();
+	void STEHandleInput(sf::Event& event);
 	void STEUpdate(float delta);
 	void STEDraw(float delta);
 	

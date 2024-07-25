@@ -30,6 +30,8 @@ public:
 
     // Arrête la musique
     void stopMusique(const std::string& id);
+    //Avoir la musique
+    sf::Music* getMusique(const std::string& id);
 
     /// <summary>
     /// Règle le volume de la piste

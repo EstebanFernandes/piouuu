@@ -22,7 +22,7 @@ private:
 public:
 	CGameMenu(GameDataRef _data,CState* prevState);
 	void STEInit();
-	void STEHandleInput();
+	void STEHandleInput(sf::Event& event);
 	void STEUpdate(float delta);
 	void STEDraw(float delta);
 	void outline(int previndex);

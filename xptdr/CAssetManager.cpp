@@ -89,7 +89,11 @@ void CAssetManager::addSFX(std::string name,sf::Sound** son)
 
 void CAssetManager::InitialiserMusiques(float volumeMusic,float volumeSon)
 {
-	musiqueManager.ajouterMusique("MenuPrincipal", "res\\sfx\\musique_menu_test.mp3");
+	musiqueManager.ajouterMusique("MenuPrincipal", "res\\sfx\\ecran_titre.wav");
+	sf::Music::TimeSpan ts;
+	ts.offset = sf::milliseconds(25600);
+	ts.length = sf::milliseconds(505181);
+	musiqueManager.getMusique("MenuPrincipal")->setLoopPoints(ts);
 	musiqueManager.ajouterMusique("PartieJour", "res\\sfx\\Partie_de_jour.mp3");
 	setOverAllvolumeMusique(volumeMusic);
 	setOverAllvolumeSon(volumeSon);

@@ -74,10 +74,9 @@ void LevelSelectionState::STEInit()
 	}
 }
 
-void LevelSelectionState::STEHandleInput()
+void LevelSelectionState::STEHandleInput(sf::Event& event)
 {
-	sf::Event event;
-	while (data->window.pollEvent(event)) {
+	
 		if (sf::Event::Closed == event.type) {
 			data->window.close();
 		}
@@ -113,7 +112,6 @@ void LevelSelectionState::STEHandleInput()
 			levels[previousSelec].button.setOutlineThickness(0.f);
 			levels[levelIndex].button.setOutlineThickness(3.f);
 		}
-	}
 }
 
 void LevelSelectionState::STEUpdate(float delta)

@@ -96,12 +96,9 @@ void CEnemy::updatewPlayer(float delta, CPlayer& player)
 		player.reduceHP((float)damage);
 	}
 	
-	if (player.getMainWeapon()->checkCollisions(*this)) {
-		reduceHP((float)player.getDamagePerBullet());
-	}
-	if (player.getSecondaryWeapon()->checkCollisions(*this)) {
-		reduceHP((float)player.getDamagePerBullet());
-	}
+	reduceHP((float)player.getMainWeapon()->checkCollisions(*this));
+		
+	reduceHP((float)player.getSecondaryWeapon()->checkCollisions(*this));
 	if (healthPoint <= 0)
 	{
 		isDead = true;
@@ -170,7 +167,10 @@ bool CEnemy::updateExplosionSprite()
 void CEnemy::renderEntity(sf::RenderTarget& target)
 {
 	if(isDead==false)
+	{
 		renderTheEntity(target);
+		renderBuffs(target);
+	}
 	else{
 		target.draw(explosionSprite);
 	}
@@ -200,4 +200,16 @@ bool CEnemy::onestPose()
 void CEnemy::setInfo(enemyInfo info_)
 {
 	info = info_;
+}
+
+void CEnemy::renderTheEntity(sf::RenderTarget& target)
+{
+	if (isDead == false)
+	{
+		CMob::renderTheEntity(target);
+		renderBuffs(target);
+	}
+	else {
+		target.draw(explosionSprite);
+	}
 }

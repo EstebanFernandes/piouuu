@@ -43,13 +43,19 @@ protected:
 	void updateTime();
 	EllipseShape ellipseForSun;
 	int indexForSun = 0;
+
+	//Handle light fx
+	sf::Shader lightShader;
+	sf::RenderTexture renderTexture;
+	sf::RenderTexture shadowMask;
+	sf::Sprite spriteRender;
 public:
 	CGameState();
 	CGameState(GameDataRef _data);
 	CGameState(GameDataRef _data, std::vector<CCharacter>& characterParam);
 	~CGameState();
 	virtual void STEInit();
-	void STEHandleInput();
+	void STEHandleInput(sf::Event& event);
 	
 	/// <summary>
 	/// Possibilities :
@@ -69,7 +75,7 @@ public:
 	virtual void GameOver() = 0;
 	void renderBackground(sf::RenderTarget& target);
 	void STEDraw(float delta);
-	void drawOnTarget(sf::RenderTarget& target, float interpolation);
+	virtual void drawOnTarget(sf::RenderTarget& target, float interpolation);
 	void STEResume();
 	void STEPause();
 	void setData(GameDataRef dataa) { data = dataa; }
@@ -82,4 +88,36 @@ public:
 	CMob* nearEnemy(CMob* player);
 	CMob* nearestPlayer(sf::Vector2f pos);
 	GameDataRef getData();
+
+	void drawOnTargetEntity(sf::RenderTarget& target, float interpolation)
+	{
+		BG1.drawEverythingButFirstLayer(target, interpolation);
+		for (auto i = players.begin(); i != players.end(); i++)
+			i->renderEntity(target);
+		for (int i = 0; i < entityList.size(); i++)
+		{
+			entityList[i]->renderTheEntity(target);
+		}
+		for (int i = 0; i < entityList.size(); i++)
+		{
+			entityList[i]->renderBuffs(target);
+		}
+	}
+
+	//Rend uniquement les élements d'interface graphique
+	void drawOnTargetUI(sf::RenderTarget& target, float interpolation)
+	{
+
+		for (int i = 0; i < entityList.size(); i++)
+		{
+			entityList[i]->renderUI(target);
+		}
+		for (auto i = players.begin(); i != players.end(); i++)
+		{
+			i->renderUI(target);
+		}
+		target.draw(uitext);
+		target.draw(gameClockText);
+	}
+
 };

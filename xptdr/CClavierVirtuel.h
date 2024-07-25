@@ -52,7 +52,7 @@ public:
 	CClavierVirtuel(GameDataRef _data, float scoreParam, int rankParam, std::string *playerNameParam,int nbJoueur);
 	void keyboardInit();
 	void STEInit();
-	void STEHandleInput();
+	void STEHandleInput(sf::Event& event);
 	void STEUpdate(float delta);
 	void UpdateText(int joueur);
 	void STEDraw(float delta);

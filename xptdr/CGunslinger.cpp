@@ -1,6 +1,7 @@
 #include "CGunslinger.h"
 #include"fire.h"
 #include"ice.h"
+#include"thunder.h"
 #include <bitset>
 
 void CGunslinger::initBuff(CBulletAuto& ref)
@@ -174,6 +175,15 @@ void CGunslinger::traiterMisc(int misc)
 		referenceStat.dotDamage = 2.f;
 		referenceStat.dotTimer = 5.f;
 		break;
+	case 7: //explosiveBullet
+		addBulletType(explosiveBullet);
+		break;
+	case 8: //Spin
+		addShootType(Spin);
+		break;
+	case 9: //doubleTirs3 = ie Triple tirs
+		addShootType(doubleTirs3);
+		break;
 	case 10: //Fire
 		addBulletType(fireBullet);
 		referenceStat.dotCD = 0.2f;
@@ -186,24 +196,18 @@ void CGunslinger::traiterMisc(int misc)
 		referenceStat.dotDamage = 2.f;
 		referenceStat.dotTimer = 2.5f;
 		break;
-	case 7: //explosiveBullet
-		addBulletType(explosiveBullet);
-		break;
-	case 8: //Spin
-		addShootType(Spin);
-		break;
-	case 9: //doubleTirs3 = ie Triple tirs
-		addShootType(doubleTirs3);
+	case 12: //doubleTirs3 = ie Triple tirs
+		addBulletType(thunderBullet);
 		break;
 	}
 }
 
-bool CGunslinger::checkCollisions(CMob& b)
+int CGunslinger::checkCollisions(CMob& b)
 {
 	for (std::list<CBulletAuto>::iterator it = magasine.begin(); it != magasine.end(); ++it) {
 		if (it->checkCollisions(b))
 		{
-			return true;
+			return it->getDamage();
 		}
 	}
 	return false;
@@ -328,6 +332,13 @@ void CGunslinger::addByIndex(CBulletAuto& ref , int index)
 	case iceBullet:
 	{
 		ice* tempi = new ice(NULL, getWeaponStats().dotTimer, 0.3f);
+		ref.addBuff(tempi, false);
+		break;
+	}
+	case thunderBullet:
+	{
+		thunder* tempi = new thunder(NULL, NULL, getWeaponStats().bulletDamage * 0.2f, 50.f, assets);		
+		tempi->hasGlobal = true;
 		ref.addBuff(tempi, false);
 		break;
 	}

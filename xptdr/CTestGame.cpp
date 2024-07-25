@@ -2,11 +2,10 @@
 #include"CUpgradeState.h"
 #include<math.h>
 #include"dot.h"
+#include"thunder.h"
 CTestGame::CTestGame(GameDataRef _data)
 {
 	setData(_data);
-	US.addGraphs("res/data/principalweapon2.csv");
-	US.addGraphs("res/data/secondaryweapon.csv");
 }
 
 CTestGame::CTestGame(GameDataRef _data, CCharacter characterParam)
@@ -32,6 +31,8 @@ CTestGame::CTestGame(GameDataRef _data, std::vector<CCharacter>& characters)
 
 void CTestGame::STEInit()
 {
+	US.setAssets(&data->assets);
+	US.init();
 	initAssets();
 	*enemyNumber = 0;
 	initPlayer();
@@ -46,6 +47,8 @@ void CTestGame::STEInit()
 		it->curUpgrade.push_back(US.initVert(ARME_PRINCIPALE));
 		it->curUpgrade.push_back(US.initVert(ARME_SECONDAIRE));
 	}
+
+	useIMGUI = true;
 }
 
 void CTestGame::initAssets()
@@ -77,84 +80,87 @@ void CTestGame::initAssets()
 	data->assets.LoadSFX("enemyRush", "res\\sfx\\vaisseau_fonce.wav");
 	data->assets.LoadSFX("planeSound", "res\\sfx\\plane.mp3");
 	data->assets.LoadTexture("fireSpriteSheet", "res\\img\\fireSheet.png");
-	
+	data->assets.LoadTexture("thunder", "res\\img\\thunder.png");
+	thunder::initializeThunder(&data->assets);
 }
 
-void CTestGame::STEHandleInput()
+void CTestGame::STEHandleInput(sf::Event& event)
 {
-	sf::Event event;
-	while (data->window.pollEvent(event))
-	{
-		for (auto i = players.begin(); i != players.end(); i++)
-			i->PLYupdateMovement(event);
-		if (sf::Event::Closed == event.type)
-			data->window.close();
-		if (event.type == sf::Event::KeyReleased) {
-			if (event.key.code == sf::Keyboard::Space)
-			{
-				players.begin()->gainXP(5);
-			}
-			if (event.key.code == sf::Keyboard::A)
-			{
-				addEnemy("roaming");
-			}
-			if (event.key.code == sf::Keyboard::E)
-			{
-				addEnemy("shooter");
-			}
-			if (event.key.code == sf::Keyboard::B)
-			{
-				addEnemy("boss");
-			}
-			if (event.key.code == sf::Keyboard::H)
-			{
-				addEnemy("pantin");
-			}
-			if (event.key.code == sf::Keyboard::K)
-			{
-				addEnemy("bomber");
-			}
-			if (event.key.code == sf::Keyboard::L)
-			{
-				addEnemy("bomberInverse");
-			}
-			if (event.key.code == sf::Keyboard::J)
-			{
-				addEnemy("rusher");
-			}
-			if (event.key.code == sf::Keyboard::T)
-			{
-
-				for (auto i = players.begin(); i != players.end(); i++)
-				{
-					i->AAAA();
-				}
-				players.begin()->gainXP(10);
-			
-			}
-			//TEMP C POUR MOURIR
-			if (event.key.code == sf::Keyboard::M)
-			{
-				for (auto it = players.begin(); it != players.end(); it++)
-				{
-					it->reduceHP(40);
-
-				}
-				//GameOver();
-			}
-		}
-		else if(event.type==sf::Event::KeyPressed)
+	for (auto i = players.begin(); i != players.end(); i++)
+		i->PLYupdateMovement(event);
+	if (sf::Event::Closed == event.type)
+		data->window.close();
+	if (event.type == sf::Event::KeyReleased) {
+		if (event.key.code == sf::Keyboard::Space)
 		{
-			if (event.key.code == sf::Keyboard::Escape)
+			players.begin()->gainXP(5);
+		}
+		if (event.key.code == sf::Keyboard::A)
+		{
+			addEnemy("roaming");
+		}
+		if (event.key.code == sf::Keyboard::E)
+		{
+			addEnemy("shooter");
+		}
+		if (event.key.code == sf::Keyboard::B)
+		{
+			addEnemy("boss");
+		}
+		if (event.key.code == sf::Keyboard::H)
+		{
+			addEnemy("pantin");
+		}
+		if (event.key.code == sf::Keyboard::K)
+		{
+			addEnemy("bomber");
+		}
+		if (event.key.code == sf::Keyboard::L)
+		{
+			addEnemy("bomberInverse");
+		}
+		if (event.key.code == sf::Keyboard::J)
+		{
+			addEnemy("rusher");
+		}
+		if (event.key.code == sf::Keyboard::T)
+		{
+
+			for (auto i = players.begin(); i != players.end(); i++)
 			{
-				data->machine.AddState(StateRef(new CGameMenu(data, this)), false);
+				//i->AAAA();
+			i->gainXP(10);
 			}
+			
+		}
+		//TEMP C POUR MOURIR
+		if (event.key.code == sf::Keyboard::M)
+		{
+			for (auto it = players.begin(); it != players.end(); it++)
+			{
+				it->reduceHP(40);
+
+			}
+			//GameOver();
+		}
+	}
+	else if(event.type==sf::Event::KeyPressed)
+	{
+		if (event.key.code == sf::Keyboard::Escape)
+		{
+			data->machine.AddState(StateRef(new CGameMenu(data, this)), false);
 		}
 	}
 
 }
 
 
+
+void CTestGame::debugInfo()
+{
+	string ="x pos :" +std::to_string(ellipseForSun.getPoint(indexForSun).x) + " y pos : " + std::to_string(ellipseForSun.getPoint(indexForSun).y);
+	ImGui::Text(string.c_str());
+}
 
 void CTestGame::addPowerUp()
 {
@@ -177,6 +183,7 @@ void CTestGame::GameOver()
 void CTestGame::STEUpdate(float delta)
 {
 	updateBackground(delta);
+
 	//Auto aim
 	//On check d'abord les collisions entre le joueur et les entités. ensuite on update
 	if (players.size() == 1)
@@ -260,27 +267,27 @@ void CTestGame::STEUpdate(float delta)
 	}
 }
 
-void CTestGame::updateXpPlayers()
-{
-	bool wantToLevelUpOne = true
-		, wantToLevelUpTwo = (players.size() == 1) ? false : true;
-	for (auto player = players.begin(); player != players.end(); player++)
-	{
-		if (player == players.begin())
-		{
-			if (!player->wantToLevelUp)
-				wantToLevelUpOne = false;
-		}
-		else {
-			if (!player->wantToLevelUp)
-				wantToLevelUpTwo = false;
-		}
-	}
-	if (wantToLevelUpOne && wantToLevelUpTwo && players.size() == 2)
-		data->machine.AddState(StateRef(new CUpgradeState(data, &players, &US, this)), false);
-	else if (wantToLevelUpOne)
-		data->machine.AddState(StateRef(new CUpgradeState(data, &(*players.begin()), &US, this)), false);
-	else if (players.size() == 2 && wantToLevelUpTwo)
-		data->machine.AddState(StateRef(new CUpgradeState(data, &players.back(), &US, this)), false);
-
-}
+//void CTestGame::updateXpPlayers()
+//{
+//	bool wantToLevelUpOne = true
+//		, wantToLevelUpTwo = (players.size() == 1) ? false : true;
+//	for (auto player = players.begin(); player != players.end(); player++)
+//	{
+//		if (player == players.begin())
+//		{
+//			if (!player->wantToLevelUp)
+//				wantToLevelUpOne = false;
+//		}
+//		else {
+//			if (!player->wantToLevelUp)
+//				wantToLevelUpTwo = false;
+//		}
+//	}
+//	if (wantToLevelUpOne && wantToLevelUpTwo && players.size() == 2)
+//		data->machine.AddState(StateRef(new CUpgradeState(data, &players, &US, this)), false);
+//	else if (wantToLevelUpOne)
+//		data->machine.AddState(StateRef(new CUpgradeState(data, &(*players.begin()), &US, this)), false);
+//	else if (players.size() == 2 && wantToLevelUpTwo)
+//		data->machine.AddState(StateRef(new CUpgradeState(data, &players.back(), &US, this)), false);
+//
+//}

@@ -108,49 +108,42 @@ void CSettingState::STEInit()
 	musicVolume.setOutlineThickness(outlineThickness);
 }
 
-void CSettingState::STEHandleInput()
+void CSettingState::STEHandleInput(sf::Event& event)
 {
-	sf::Event event;
-	while (data->window.pollEvent(event))
+	int previousSelec = index;
+	if (sf::Event::Closed == event.type)
+		data->window.close();
+	else if (event.type == sf::Event::KeyPressed)
 	{
-		int previousSelec = index;
-		if (sf::Event::Closed == event.type)
-			data->window.close();
-		else if (event.type == sf::Event::KeyPressed)
+		if (event.key.code == inputOfPlayers[0].moveLeft)
 		{
-			if (event.key.code == inputOfPlayers[0].moveLeft)
-			{
-				onAction(index, 0);
-			}
-			else if (event.key.code == inputOfPlayers[0].moveRight)
-			{
-				onAction(index, 1);
-			}
-			if (event.key.code == inputOfPlayers[0].moveUp)
-			{
-				if (index == 0) {
-					index = (int)keyWord.size() - 1;
-				}
-				else {
-					index = (index - 1) % keyWord.size();
-				}
-				selectionButton->play();
-			}
-			else if (event.key.code == inputOfPlayers[0].moveDown)
-			{
-				index = (index + 1) % keyWord.size();
-				selectionButton->play();
-			}
-			else if (sf::Keyboard::isKeyPressed(inputOfPlayers[0].button1))
-			{
-				onAction(index, 2);
-			}
-			outlineGood(index, previousSelec);
+			onAction(index, 0);
 		}
+		else if (event.key.code == inputOfPlayers[0].moveRight)
+		{
+			onAction(index, 1);
+		}
+		if (event.key.code == inputOfPlayers[0].moveUp)
+		{
+			if (index == 0) {
+				index = (int)keyWord.size() - 1;
+			}
+			else {
+				index = (index - 1) % keyWord.size();
+			}
+			selectionButton->play();
+		}
+		else if (event.key.code == inputOfPlayers[0].moveDown)
+		{
+			index = (index + 1) % keyWord.size();
+			selectionButton->play();
+		}
+		else if (sf::Keyboard::isKeyPressed(inputOfPlayers[0].button1))
+		{
+			onAction(index, 2);
+		}
+		outlineGood(index, previousSelec);
 	}
-
-
-
 }
 
 void CSettingState::STEUpdate(float delta)

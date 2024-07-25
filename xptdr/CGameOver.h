@@ -42,7 +42,7 @@ public:
 		askedScore = false;
 	}
 	void STEInit();
-	void STEHandleInput();
+	void STEHandleInput(sf::Event& event);
 	void STEUpdate(float delta);
 	void STEDraw(float delta);
 	void STEResume();
@@ -55,13 +55,14 @@ void CGameOver<MType>::STEInit()
 	updateCharacter();
 	texture.create(data->window.getSize().x, data->window.getSize().y);
 	texture.update(data->window);
-	if (!Shader.loadFromFile("shaders/vertexbandw.vert", "shaders/fragbandw.frag"))
+	backGroundImage.setTexture(texture);
+	if (!Shader.loadFromFile("shaders/fragbandw.frag",sf::Shader::Fragment))
 	{
 		std::cout << "bof";
 
 	}
-	backGroundImage.setTexture(texture);
-	Shader.setUniform("texture", sf::Shader::CurrentTexture);
+	Shader.setUniform("textureSampler", sf::Shader::CurrentTexture);
+	Shader.setUniform("u_resolution", sf::Glsl::Vec2(data->assets.getEcranBound()));
 
 	if (rank > 10) {
 		//écrire le nom du looser
@@ -102,11 +103,8 @@ void CGameOver<MType>::STEInit()
 	data->assets.stopMusique("PartieJour");
 }
 template <class MType>
-void CGameOver<MType>::STEHandleInput()
+void CGameOver<MType>::STEHandleInput(sf::Event& event)
 {
-	sf::Event event;
-	while (data->window.pollEvent(event))
-	{
 		if (sf::Event::Closed == event.type)
 			data->window.close();
 		/*
@@ -137,8 +135,6 @@ void CGameOver<MType>::STEHandleInput()
 				}
 			}
 		}
-	}
-
 }
 template <class MType>
 void CGameOver<MType>::STEUpdate(float delta)
@@ -157,8 +153,8 @@ void CGameOver<MType>::STEDraw(float delta)
 {
 	sf::RenderWindow& temp = data->window;
 	temp.draw(backGroundImage, &Shader);
-	temp.draw(textGameOver);
-	temp.draw(scoreboard);
+	//temp.draw(textGameOver);
+	//temp.draw(scoreboard);
 
 	for (int i = 0; i < buttonList.size(); i++) {
 		temp.draw(buttonList[i]);

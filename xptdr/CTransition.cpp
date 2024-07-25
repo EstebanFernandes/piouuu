@@ -73,6 +73,14 @@ CTransition::CTransition(CAssetManager* a, SENS_TRANSITION param, float time_)
 	time = time_;
 }
 
+CTransition::CTransition(CAssetManager* a, SENS_TRANSITION param, int state, float time_)
+: CTransition(a,param,time_)
+{
+	transiState = state;
+	backTransi = sf::RectangleShape(sf::Vector2f((float)asset->sCREEN_WIDTH, (float)asset->sCREEN_HEIGHT));
+	backTransi.setFillColor(sf::Color::Black);
+}
+
 void CTransition::initTransition()
 {
 		clock.restart();
@@ -81,6 +89,7 @@ void CTransition::initTransition()
 		switch (sens)
 		{
 		case GAUCHE:
+			backTransi.setPosition(0.f,0.f);
 			sens = DROITE;
 			break;
 		case DROITE:
@@ -100,7 +109,6 @@ void CTransition::initTransition()
 		transiouuuuu = true;
 		initDirSpeed();
 	}
-
 	else if(sens!=NULLTRANSITION)
 	{
 		backTransi = sf::RectangleShape(sf::Vector2f((float)asset->sCREEN_WIDTH, (float)asset->sCREEN_HEIGHT));

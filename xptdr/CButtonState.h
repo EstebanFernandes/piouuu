@@ -20,7 +20,7 @@ public:
 	CButtonState(GameDataRef _data);
 	CButtonState(GameDataRef _data,std::vector<std::string> listOfChoices, std::string* choice,CState* prevState);
 	void STEInit();
-	void STEHandleInput();
+	void STEHandleInput(sf::Event& event);
 	void STEUpdate(float delta);
 	void STEDraw(float delta);
 };

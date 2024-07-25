@@ -35,7 +35,7 @@ public:
 	CCard(const CCard& Param) {
 		this->operator=(Param);
 	}
-	CCard(float x, float y, std::string title, std::string description, std::string imageName, CAssetManager* assetParam, bool animated);
+	//CCard(float x, float y, std::string title, std::string description, std::string imageName, CAssetManager* assetParam, bool animated);
 	CCard(std::string title, std::string description, std::string imageName, CAssetManager* assetParam, bool animated);
 	void Drawable::draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	void update(float deltaTime);
@@ -48,8 +48,8 @@ public:
 	{
 		pos = r;
 		cardBack.setPosition(pos);
-		float xoff = cardTitle.getGlobalBounds().width;
-		sf::Vector2f offset( (xSize - xoff)/2.f, ySize * 0.02f);
+
+		sf::Vector2f offset( xSize/2.f, ySize * 0.02f);
 		utilities::readaptText(cardTitle, pos+offset);
 		cardImage.setPosition(pos.x + xSize / 2.f , pos.y + ySize/2.f - cardImage.getGlobalBounds().height/ 2.f);
 		cardDescription.setPosition(pos.x + (xSize - cardDescription.getGlobalBounds().width) / 2, pos.y + ySize * 0.6f);
@@ -69,23 +69,7 @@ public:
 		setScale(sf::Vector2f(x, y));
 	}
 
-	CCard& operator=(const CCard& Param) {
-		MDRRcafonctionne = Param.MDRRcafonctionne;
-		asset = Param.asset;
-		cardBack = Param.cardBack;
-		pos = Param.pos;
-		cardTitle = Param.cardTitle;
-		cardDescription = Param.cardDescription;
-		imagePath = Param.imagePath;
-		cardImage = Param.cardImage;
-		anim = Param.anim;
-		needImage = Param.needImage;
-		animatedImage = Param.animatedImage;
-		xSize = Param.xSize;
-		ySize = Param.ySize;
-		return *this;
-	}
-
+	sf::Sprite& getSprite() { return cardImage; }
 	void setOutlineThickNess(float r) { cardBack.setOutlineThickness(r); }
 	sf::Vector2f getPosition() { return cardBack.getPosition(); }
 	sf::Vector2f getSize() { return cardBack.getSize(); }
@@ -97,7 +81,8 @@ public:
 		cardBack.setSize(sf::Vector2f(xSize, ySize));
 		cardTitle.setCharacterSize((unsigned int)((float)cardTitle.getCharacterSize() * scale.x));
 		resizeText(cardTitle);
-		cardTitle.setPosition(pos.x + (xSize - cardTitle.getGlobalBounds().width) / 2, pos.y);
+		utilities::centerObject(cardTitle);
+		cardTitle.setPosition(pos.x + (xSize / 2.f), pos.y);
 		
 		cardImage.setPosition(pos.x + ((xSize - cardImage.getGlobalBounds().height) / 2.0f), pos.y + ySize / 2);
 		
@@ -183,6 +168,7 @@ public:
 	void setTitleCharSize(unsigned int size)
 	{
 		cardTitle.setCharacterSize(size);
+		cardTitle.setPosition(pos.x + (xSize / 2.f), cardTitle.getPosition().y);
 	}
 	unsigned int getTitleCharSize()
 	{

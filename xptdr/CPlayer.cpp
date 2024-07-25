@@ -1,5 +1,5 @@
 #include "CPlayer.h"
-
+#include"chargeShot.h"
 
 
 
@@ -100,12 +100,14 @@ void CPlayer::setAssets(CAssetManager* a)
 	animExplosionSprite = CAnimation(&explosionSprite, sf::Vector2i( 96, 96), sf::Vector2i(12,1), 2.f/12.f);
 	setSprite();
 	mainWeapon->setTouche(sf::Keyboard::Num1);
+	mainWeapon->pointerToPlayer = this;
 	ws.dir = sf::Vector2f(0.f, 1.f);
 	secondaryWeapon->setWeaponStats(ws);
 	secondaryWeapon->setBulletAsset("bulletSecond");
 	secondaryWeapon->setTouche(sf::Keyboard::Num2);
 	sf::Vector2f temp(0.f, -1.f);
 	secondaryWeapon->getWeaponStats().addDir(temp);
+	secondaryWeapon->pointerToPlayer=this;
 	mainWeapon->setAimBoolean(&seekForTarget);
 	secondaryWeapon->setAimBoolean(&seekForTarget);
 	assets->addSFX("planeSound", &planeSound);
@@ -170,10 +172,20 @@ Weapon* CPlayer::getMainWeapon()
 	return mainWeapon;
 }
 
-void CPlayer::setMainWeapon(Weapon* weaponParam)
+void CPlayer::setMainWeapon(Weapon* weaponParam,bool isFirstTime)
 {
-	delete mainWeapon;
+	std::string bulletAssets = mainWeapon->getBulletAsset();
+	sf::Keyboard::Key t = mainWeapon->getTouche();
+	CWeaponStat a = mainWeapon->getWeaponStats();
+delete mainWeapon;
 	mainWeapon = weaponParam;
+	mainWeapon->assets = assets;
+	assets->addSFX("bulletSound", &mainWeapon->bulletSound);
+	mainWeapon->setWeaponStats(a);
+	mainWeapon->setBulletAsset(bulletAssets);
+	mainWeapon->setTouche(t);
+	mainWeapon->pointerToPlayer = this;
+	mainWeapon->setAimBoolean(&seekForTarget);
 }
 
 Weapon* CPlayer::getSecondaryWeapon()
@@ -209,7 +221,7 @@ void CPlayer::traitermisc(std::string& misc)
 void CPlayer::traitermisc(std::string& misc, int type)
 {
 	const std::vector<std::string> supportedMisc{ "autoAim","velocUp" ,"doubleTirs1","doubleTirs2",
-"gunshot","dot", "laser","explosiveBullet","spin","doubleTirs3" };
+"gunshot","dot", "laser","explosiveBullet","spin","doubleTirs3","fire","ice","thunder"};
 	int pos = (int)(std::find(supportedMisc.begin(), supportedMisc.end(), misc) - supportedMisc.begin());
 	if (pos >= supportedMisc.size()) {
 		std::cout << "Rien a été trouvé\n";
@@ -336,11 +348,8 @@ void CPlayer::initLifeBar()
 
 void CPlayer::PLYupdateMovement(sf::Event& event)
 {
-	/*isMovingUp = (sf::Keyboard::isKeyPressed(inputForPlayer->moveUp)) ? true : false;
-	isMovingDown = (sf::Keyboard::isKeyPressed(inputForPlayer->moveDown)) ? true : false;
-	isMovingLeft = (sf::Keyboard::isKeyPressed(inputForPlayer->moveLeft)) ? true : false;
-	isMovingRight = (sf::Keyboard::isKeyPressed(inputForPlayer->moveRight)) ? true : false;
-	wantToDash = (sf::Keyboard::isKeyPressed(inputForPlayer->button3)) ? true : false;*/
+	mainWeapon->weaponControls(event);
+	secondaryWeapon->weaponControls(event);
 	switch (event.type)
 	{
 		case sf::Event::KeyPressed :
@@ -524,10 +533,8 @@ void CPlayer::updateEntity(float dt)
 		sf::Vector2f nezdeLavion(getSprite().getPosition().x + getGlobalBounds().width / 2.f,
 			getSprite().getPosition().y);
 		secondaryWeapon->setWeaponPos(R2Sprite.getPosition());
-		secondaryWeapon->weaponControls(sf::Event());
 		secondaryWeapon->updateWeapon(dt);
 		mainWeapon->setWeaponPos(nezdeLavion);
-		mainWeapon->weaponControls(sf::Event());
 		mainWeapon->updateWeapon(dt);
 	}
 }
@@ -656,6 +663,11 @@ void CPlayer::setTouche(inputPlayer* inputt)
 		mainWeapon->setTouche(inputForPlayer->button1);
 		secondaryWeapon->setTouche(inputForPlayer->button2);
 	}
+}
+
+void CPlayer::AAAA()
+{
+	setMainWeapon(new chargeShot(assets));
 }
 
 void CPlayer::reduceHP(float damage)

@@ -1,9 +1,108 @@
 #include "CCharacterSelection.h"
 #include "CTestGame.h"
 #include "CParserCSV.h"
-#include"CMainMenuState.h"
+#include "CMainMenuState.h"
 
-CCharacterSelection::CCharacterSelection(GameDataRef _data) 
+bool CCharacterSelection::animationEffect(float& dt)
+{
+	if (state == 0)
+	{
+		bool isInPlace = true;
+		
+		for (int i = 0; i < carousel.cards.size(); i++)
+		{
+			if (carousel.cards[i].cardFace->getPosition().x <= carousel.cards[i].finalPos.x)
+			{
+				carousel.cards[i].move(speedCard , 0.f);
+				isInPlace = false;
+			}
+			else if(carousel.cards[i].cardFace->getPosition().x <= carousel.cards[i].finalPos.x)
+			{
+				carousel.cards[i].setPosition(carousel.cards[i].finalPos);
+				carousel.cards[i].spin(0.f);
+			}
+			float distanceParcourue = carousel.cards[i].cardFace->getPosition().x;
+			float perc = distanceParcourue / carousel.cards[i].finalPos.x;
+			carousel.cards[i].degree = 180.f * (1.f - perc);
+			carousel.cards[i].spin(carousel.cards[i].degree);
+		}
+		return isInPlace;
+	}
+	else if (state == 2)
+	{
+		float finalPosY = (float)data->assets.sCREEN_HEIGHT / 2.f;
+		CCarousel::cardHandler& selectedCard = carousel.cards[currentCharacterIndex];
+		sf::Vector2f basePos = selectedCard.finalPos;
+		float totalDistance = basePos.y - finalPosY;
+		if (selectedCard.getPosition().y < finalPosY)
+		{
+			shakeitoff = ShakeSpinningCard(&selectedCard,&time);
+			shakeitoff.shake(shakeAngle, 0.5f);
+			return true;
+		}
+		else {
+			float distanceParcourue = basePos.y - selectedCard.getPosition().y;
+		float perc = distanceParcourue / totalDistance;
+		if (perc <= 0.1f)
+			perc = perc / 0.1f;
+		else if (perc >= 0.9f)
+			perc = (1.f - perc) / 0.1f;
+		else
+			perc = 1.f;
+		float angle = 30.f * perc;
+		angle = 360.f- angle;
+		selectedCard.spinVertically(angle);
+		selectedCard.move(0.f, -speedCard/4.f);
+		selectedCard.setScale(selectedCard.getScale().x + 0.003f);
+		return false;
+		}
+	}
+	else if (state == 3)
+	{
+		return shakeitoff.update(dt);
+	}
+	else if (state == 4)
+	{
+		CCarousel::cardHandler& selectedCard = carousel.cards[currentCharacterIndex];
+		selectedCard.setScale(selectedCard.getScale().x + 0.03f);
+		if(selectedCard.getSize().x>=(float)data->assets.sCREEN_WIDTH)
+		{
+			drawMask = true;
+			timec = time;
+			return true;
+		}
+		return false;
+	}
+
+	else if (state == 5)
+	{
+		if (time - timec <= TEMPS_TRANSI)
+		{
+			drawMask = true;
+		CCarousel::cardHandler& selectedCard = carousel.cards[currentCharacterIndex];
+		selectedCard.setScale(selectedCard.getScale().x + 0.03f);
+		float perc = (time - timec) / TEMPS_TRANSI;
+		int newIntensity = (int)(255.f * perc);
+		//std::cout << "Intensity : " << newIntensity;
+		mask.setFillColor(sf::Color(0, 0, 0, newIntensity));
+		}
+		else {
+			mask.setFillColor(sf::Color(0, 0, 0, 255));
+			if (returnChar == NULL)
+				data->machine.AddState(StateRef(new CTestGame(data, chosenCharacter)), true);
+			else {
+				*returnChar = chosenCharacter;
+				data->machine.RemoveState();
+				hasChanges = true;
+			}
+			data->assets.stopMusique("MenuPrincipal");
+			return true;
+		}
+		return false;
+	}
+}
+
+CCharacterSelection::CCharacterSelection(GameDataRef _data)
 {
 	data = _data;
 	currentCharacterIndex = 0;
@@ -13,13 +112,18 @@ CCharacterSelection::~CCharacterSelection()
 {
 	data->assets.deleteSound(selectionSound);
 	data->assets.deleteSound(validationSound);
+	for (int i = 0; i < carousel.cards.size(); i++)
+	{
+		carousel.cards[0].freeMemory();
+		carousel.cards.erase(carousel.cards.begin());
+	}
 }
 
 void CCharacterSelection::loadCharacters()
 {
 	CParserCSV parser = CParserCSV("res/data/characters.csv");
 	std::vector<std::vector<std::string>> charactersInfo = parser.getElements();
-
+	std::vector<CCard> cardVector;
 	//Nouvelle méthode pour initialiser les stats
 	for (int i = 1; i < charactersInfo.size(); i++) {
 		characterList.push_back(CCharacter(charactersInfo[i][1], charactersInfo[i][0], charactersInfo[i][2], charactersInfo[i][3] == "animated"));
@@ -64,99 +168,114 @@ void CCharacterSelection::loadCharacters()
 
 	}
 }
+//This suppose that the characters were already loaded
+void CCharacterSelection::loadCarousel()
+{
+	int nbCharacter = (int)characterList.size();
+	sf::Vector2f pos(0,0);
+	std::vector<CCard> cardStorage;
+	int screenwidth = data->assets.sCREEN_WIDTH;
+	int screenheight = data->assets.sCREEN_HEIGHT;
+	sf::Vector2f sizeOfCard(255.f, 365.f);
+	for (int i = 0; i < nbCharacter; i++)
+	{
+		chosenCharacter = characterList[i];
+		CCard temp(chosenCharacter.getName(), chosenCharacter.getDescription(), chosenCharacter.getName(), &(data->assets), chosenCharacter.getAnimated());
+		temp.setSize(sizeOfCard);
+		pos.x = i * sizeOfCard.x;
+		temp.setPosition(pos);
+		cardStorage.push_back(temp);
+	}
+	int minTitleCharSize = InterfaceState::getMinCharSize(cardStorage, 0);
+	int minDescCharSize = InterfaceState::getMinCharSize(cardStorage, 1);
+	for (int i = 0; i < cardStorage.size(); i++)
+	{
+		cardStorage.at(i).setTitleCharSize(minTitleCharSize);
+		cardStorage.at(i).setDescriptionCharSize(minDescCharSize);
+	}
+	carousel.addCards(cardStorage);
+}
 
 void CCharacterSelection::STEInit()
 {
+	mask.setSize(sf::Vector2f(data->assets.getEcranBound()));
+	mask.setFillColor(sf::Color(0, 0, 0, 0));
 	data->assets.LoadSFX("slideSelect", "res\\sfx\\selectCharacter.wav");
 	data->assets.LoadSFX("validation", "res\\sfx\\selectedCharacter.wav");
 	data->assets.addSFX("slideSelect", &selectionSound);
 	data->assets.addSFX("validation", &validationSound);
 	int screenwidth = data->assets.sCREEN_WIDTH;
 	int screenheight = data->assets.sCREEN_HEIGHT;
+	if (screenheight > 1000)
+		speedCard =speedCard *2.f;
 	loadCharacters();
-	ui.setCharacterSize(12);
-	ui.setFillColor(sf::Color::White);
-	ui.setFont(data->assets.GetFont("Nouvelle"));
-	//temp
-
 	//on a load les personnages donc on va les mettre dans le carousel
-	int maxPoint = (int)carousel.ellipse.getPointCount();
-	int nbCharacter = (int)characterList.size();
+	carousel.setSize(sf::Vector2f(screenwidth * 0.35f, screenheight * 0.1f));
+	carousel.setEllipseVisibility(true);
+	carousel.ellipse.setFillColor(sf::Color(0, 0, 0, 100));
+	chosenCharacter = characterList[0];
+	carousel.setCarouselPosition(sf::Vector2f(screenwidth/2.f, screenheight/2.f));
+	carousel.updatePos();
+	loadCarousel();
+	state = 0;
 
 	Title.setFont(data->assets.GetFont("Nouvelle"));
 	Title.setCharacterSize(50);
-	if (nb != -1)
-	{
-	Title.setString("Sélection de personnage J"+std::to_string(nb));
-	}
+
+	Title.setString("Choisissez votre personnage");
+	
 	Title.setPosition(
 		screenwidth / 2.f - Title.getGlobalBounds().width / 2.f,
 		screenheight*0.1f - Title.getGlobalBounds().height / 2.f);
-	carousel.setSize(sf::Vector2f(screenwidth * 0.35f, screenwidth * 0.05f));
-	carousel.setEllipseVisibility(false);
-	for (int i = 0; i < characterList.size(); i++)
-	{
-		chosenCharacter = characterList[i];
-		CCard temp(chosenCharacter.getName(), chosenCharacter.getDescription(), chosenCharacter.getName(), &(data->assets), chosenCharacter.getAnimated());
-		temp.setSize(sf::Vector2f(screenwidth / 4.5f, screenheight * 0.5f));
-		temp.setOutlineThickNess(10.f);
-		carousel.addCard(temp);
-	}
-	chosenCharacter = characterList[0];
-	float xPosition = screenwidth / 2.f - carousel.ellipse.getGlobalBounds().width / 2.f;
-	float yPosition = screenheight * 0.20f;
-	carousel.setCarouselPosition(sf::Vector2f(xPosition,
-		yPosition));
-	carousel.updatePos();
+	useIMGUI = true;
 }
 
-void CCharacterSelection::STEHandleInput()
+void CCharacterSelection::STEHandleInput(sf::Event& event)
 {
-	sf::Event event;
-	while (data->window.pollEvent(event)) {
-		switch (event.type)
-		{
-		case sf::Event::KeyPressed:
-		{
-			if (event.key.code == inputOfPlayers[0].moveRight)
+			switch (event.type)
 			{
-				if (!carousel.isMoving)
-				{
-					isMovingLeft = true;
-					selectionSound->play();
-				}
-			}
-			else if (event.key.code == inputOfPlayers[0].moveLeft)
+			case sf::Event::KeyPressed:
 			{
-				if (!carousel.isMoving)
-				{
-					isMovingRight = true;
-					selectionSound->play();
-				}
-			}
-			else if (event.key.code == inputOfPlayers[0].button1)
-			{
-				if (!carousel.isMoving)
-				{
-					LaunchTransi = true;
-					validationSound->play();
-				}
+				if (state == 1) {
+					if (event.key.code == inputOfPlayers[0].moveRight)
+					{
+						if (!carousel.isMoving)
+						{
+							isMovingLeft = true;
+							selectionSound->play();
+						}
+					}
+					else if (event.key.code == inputOfPlayers[0].moveLeft)
+					{
+						if (!carousel.isMoving)
+						{
+							isMovingRight = true;
+							selectionSound->play();
+						}
+					}
+					else if (event.key.code == inputOfPlayers[0].button1)
+					{
+						if (!carousel.isMoving)
+						{
+							state++;
+							validationSound->play();
+						}
 
-			}
-			else if (event.key.code == inputOfPlayers[0].button2)
-			{
-				data->machine.RemoveState();
+					}
+				}
+				if (event.key.code == inputOfPlayers[0].button2)
+				{
+					data->machine.RemoveState();
+					break;
+				}
 				break;
 			}
-			break;
-		}
-		case sf::Event::Closed:
-		{
-			data->window.close();
-			break;
-		}
-		}
-	}
+			case sf::Event::Closed:
+			{
+				data->window.close();
+				break;
+			}
+			}
 }
 
 
@@ -165,10 +284,13 @@ void CCharacterSelection::STEHandleInput()
 void CCharacterSelection::STEUpdate(float delta)
 {
 	updateTime();
+	std::string mousePosString = std::to_string(sf::Mouse::getPosition(data->window).x) + " " + std::to_string(sf::Mouse::getPosition(data->window).y);
+	UIText.setString(mousePosString);
+
 	background.updateCBackground(delta);
-	if(LaunchTransi==true)
+	/*if(LaunchTransi==true)
 	{
-		currentTransi = CTransition(&(data->assets), HAUT, 2.f);
+		currentTransi = CTransition(&(data->assets), HAUT, TEMPS_TRANSI);
 		if (returnChar == NULL)
 			data->machine.AddState(StateRef(new CTestGame(data, chosenCharacter)), true);
 		else {
@@ -178,39 +300,53 @@ void CCharacterSelection::STEUpdate(float delta)
 		}
 		currentTransi.initTransition();
 		data->assets.stopMusique("MenuPrincipal");
-	}
-	if (isMovingRight)
+	}*/
+	if (state == 1)
 	{
-			currentCharacterIndex = (currentCharacterIndex + 1) % characterList.size();
-			chosenCharacter = characterList[currentCharacterIndex];
-			if (carousel.move(RightMove))
-				isMovingRight = false;
-	}
-	if (isMovingLeft)
-	{
-			if (currentCharacterIndex == 0) {
-				currentCharacterIndex = (int)characterList.size() - 1;
-			}
-			else
-				currentCharacterIndex = (currentCharacterIndex - 1) % characterList.size();
-			chosenCharacter = characterList[currentCharacterIndex];
-			if (carousel.move(LeftMove))
-				isMovingLeft = false;
-	}
+		if (isMovingRight)
+		{
+			carousel.cards[currentCharacterIndex].saveCardState();
+				currentCharacterIndex = (currentCharacterIndex + 1) % characterList.size();
+				carousel.updateCurrentSelectedCard(currentCharacterIndex);
+				chosenCharacter = characterList[currentCharacterIndex];
+				if (carousel.move(RightMove))
+					isMovingRight = false;
+		}
+		if (isMovingLeft)
+		{
+				if (currentCharacterIndex == 0) {
+					carousel.cards[currentCharacterIndex].saveCardState();
+					currentCharacterIndex = (int)characterList.size() - 1;
+					carousel.updateCurrentSelectedCard(currentCharacterIndex);
+				}
+				else
+				{
+					carousel.cards[currentCharacterIndex].saveCardState();
+					currentCharacterIndex = (currentCharacterIndex - 1) % characterList.size();
+					carousel.updateCurrentSelectedCard(currentCharacterIndex);
+				}
+				chosenCharacter = characterList[currentCharacterIndex];
+				if (carousel.move(LeftMove))
+					isMovingLeft = false;
+		}
 	carousel.update(delta);
-	float e = carousel.ellipse.getPoint(carousel.ellipse.getPointCount() / 2).y+ carousel.ellipse.getPosition().y;
-	std::stringstream ss;
-	mousePositionScreen = sf::Mouse::getPosition(data->window);
-	ss << "mouse position : \n" << "Window : " << mousePositionScreen.x << " " << mousePositionScreen.y << "\n"
-		<< "point le plus bas du carousel : " << e <<std::endl;
-	ui.setString(ss.str());
+	}
+	else
+	{
+		if(state!=0)
+			carousel.update(delta);
+		if (animationEffect(delta))
+			state++;
+	}
+
 }
 
 void CCharacterSelection::STEDraw(float delta)
 {
 	background.renderBackground(data->window);
-	data->window.draw(carousel);
 	data->window.draw(Title);
-	data->window.draw(ui);
+	data->window.draw(carousel);
+	if (drawMask)
+		data->window.draw(mask);
 }
 

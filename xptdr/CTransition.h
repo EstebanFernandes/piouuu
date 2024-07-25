@@ -38,6 +38,7 @@ public :
 	bool transiouuuuu = false;
 	CTransition();
 	CTransition(CAssetManager* a,SENS_TRANSITION param, float time);
+	CTransition(CAssetManager* a, SENS_TRANSITION param,int state, float time);
 	void initTransition();
 	/// <summary>
 	/// Return true if the transi is finished

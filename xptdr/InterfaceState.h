@@ -117,5 +117,30 @@ public:
 			}
 		}
 	}
+
+	static int getMinCharSize(std::vector<CCard>& cards, int part)
+	{
+		unsigned int minCharSize = 10000;
+		for (int i = 0; i < cards.size(); i++)
+		{
+			switch (part)
+			{
+			case 0://Title 
+				if (minCharSize > cards.at(i).getTitleCharSize())
+					minCharSize = cards[i].getTitleCharSize();
+				break;
+			case 1://Description
+				if (minCharSize > cards.at(i).getDescriptionCharSize())
+					minCharSize = cards[i].getDescriptionCharSize();
+				break;
+
+			}
+		}
+		return (int)minCharSize;
+	}
+
+
+
+
 };
 

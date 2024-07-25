@@ -17,5 +17,8 @@ public:
 	}
 	void updateShootWithPlayer(CPlayer& player);
 	void transferBullet(CGunslinger& r) { bulletstorage->saveBullets(r); }
+	/*void setAttackSpeed(float attackSpeedParam) {
+		BAW.getWeaponStats().attackSpeed = attackSpeedParam;
+	}*/
 };
 

@@ -14,6 +14,6 @@ public:
 	CEnemy* clone() override {
 		return new testEnemy(*this);
 	}
-	void renderEntity(sf::RenderTarget& target);
+	void renderTheEntity(sf::RenderTarget& target);
 };
 

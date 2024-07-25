@@ -259,6 +259,15 @@
     <ClCompile Include="ice.cpp" />
     <ClCompile Include="CCommentJouer.cpp" />
     <ClCompile Include="Mannequin.cpp" />
+    <ClCompile Include="thunder.cpp" />
+    <ClCompile Include="chargeShot.cpp" />
+    <ClCompile Include="ShakeSpinningCard.cpp" />
+    <ClCompile Include="imgui\imgui.cpp" />
+    <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="imgui\imgui_tables.cpp" />
+    <ClCompile Include="imgui\imgui_widgets.cpp" />
+    <ClCompile Include="imgui\imgui-SFML.cpp" />
+    <ClCompile Include="imgui\imgui_demo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bulletStorage.h">
@@ -520,6 +529,9 @@
     <ClInclude Include="ice.h" />
     <ClInclude Include="CCommentJouer.h" />
     <ClInclude Include="Mannequin.h" />
+    <ClInclude Include="thunder.h" />
+    <ClInclude Include="chargeShot.h" />
+    <ClInclude Include="ShakeSpinningCard.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BomberEnemy.h" />
@@ -632,5 +644,7 @@
     <None Include="shaders\test.frag" />
     <None Include="shaders\blurFrag.frag" />
     <None Include="shaders\vertex.vert" />
+    <None Include="shaders\lightFrag.frag" />
+    <None Include="shaders\fadeFrag.frag" />
   </ItemGroup>
 </Project>

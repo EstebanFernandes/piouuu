@@ -9,7 +9,11 @@ CJeu::CJeu(int width, int height, std::string title)
 	if (std::stoi(retrieveInfo[2][1])) 
 		data->assets.changeScreenType(data->window, data->isFullScreen);
 	else
-		data->window.create(sf::VideoMode(width, height), title, sf::Style::Close | sf::Style::Titlebar);
+	{
+		sf::ContextSettings settings;
+		settings.antialiasingLevel = 8;
+		data->window.create(sf::VideoMode(width, height), title, sf::Style::Close | sf::Style::Titlebar,settings);
+	}
 	sf::Texture icon;
 	icon.loadFromFile("res/img/logo icon WIP.png");
 	data->window.setIcon(16, 16, icon.copyToImage().getPixelsPtr());
@@ -20,7 +24,7 @@ CJeu::CJeu(int width, int height, std::string title)
 
 void CJeu::JEURun()
 {
-
+	ImGui::SFML::Init(data->window);
 	data->window.setFramerateLimit(fps);
 	float newTime, frameTime, interpolation;
 	float currentTime = JEUClock.getElapsedTime().asSeconds();
@@ -46,20 +50,28 @@ void CJeu::JEURun()
 				break;
 			if(transiInIt==false)
 			{
-				currentState->STEHandleInput();
+				currentState->HandleInput(data->window);
 				currentState->STEUpdate(dt);
+				
 			}
 			accumulator -= dt;
 		}
 		if(!currentState->hasChanges||transiInIt==true)
 		{
+				if (currentState->getImguiBoolean())
+					currentState->updateIMGUI(data->window, dt);
 			interpolation = accumulator / dt;
 			data->window.clear();
 			data->machine.GetActiveState()->STEDraw(interpolation);
+			if (currentState->getImguiBoolean())
+				ImGui::SFML::Render(data->window);
 			if (transiInIt == true)
 				CState::currentTransi.renderTransition(data->window);
 			if(currentState->needDisplay)
+			{
 				data->window.display();
+			}
 		}
 	}
+	ImGui::SFML::Shutdown();
 }

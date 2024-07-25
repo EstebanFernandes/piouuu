@@ -2,10 +2,12 @@
 
 
 CCardUpgrade::CCardUpgrade(int levelofEntity)
+	:trueNumber(-1)
 {
 }
 
-CCardUpgrade::CCardUpgrade( std::vector<std::string> Upgrade_, std::vector<std::string> type_, CAssetManager* assetParam)
+CCardUpgrade::CCardUpgrade( std::vector<std::string> Upgrade_, std::vector<std::string> type_, CAssetManager* assetParam, int trueNumber_)
+	:trueNumber(trueNumber_)
 {
 	asset = assetParam;
 	xSize = (float)asset->sCREEN_WIDTH / 3.f;
@@ -19,6 +21,7 @@ CCardUpgrade::CCardUpgrade( std::vector<std::string> Upgrade_, std::vector<std::
 	cardBack.setFillColor(sf::Color::Black);
 	cardBack.setSize(sf::Vector2f(xSize, ySize));
 	int index;
+	std::string title;
 	auto it = std::find(type.begin(), type.end(), "name");
 	// If element was found 
 	if (it != type.end())
@@ -26,12 +29,12 @@ CCardUpgrade::CCardUpgrade( std::vector<std::string> Upgrade_, std::vector<std::
 		// calculating the index 
 		// of K 
 		index = (int)(it - type.begin());
+		title = Upgrade[index];
+		Upgrade.erase(Upgrade.begin() + index);
+		type.erase(type.begin() + index);
 	}
 	else
-		throw(2);
-	std::string title = Upgrade[index];
-	Upgrade.erase(Upgrade.begin() + index);
-	type.erase(type.begin() + index);
+		title = "Supplément";//S'il n"y a pas de titre ça correspond au carte supplémentaire
 	cardTitle.setString(title);
 	cardTitle.setFillColor(sf::Color::White);
 	cardTitle.setFont(asset->GetFont("Nouvelle"));
@@ -77,6 +80,7 @@ CCardUpgrade::CCardUpgrade( std::vector<std::string> Upgrade_, std::vector<std::
 }
 
 CCardUpgrade::CCardUpgrade(std::string Upgrade_, std::string type_, CAssetManager* assetParam)
+	:trueNumber(-1)
 {
 	asset = assetParam;
 	xSize = (float)asset->sCREEN_WIDTH / 3.f;

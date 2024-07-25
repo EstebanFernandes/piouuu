@@ -7,6 +7,7 @@ void CScoreboard::draw(sf::RenderTarget& target, sf::RenderStates states) const 
 			target.draw(textToDisplay[i][j]);
 		}
 	}
+	std::cout << "draw le scoreboard\n";
 }
 
 CScoreboard::CScoreboard()

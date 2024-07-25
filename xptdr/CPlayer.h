@@ -170,7 +170,7 @@ public:
 	bool checkGlobalCollisions();
 	void resetMovement();
 	Weapon* getMainWeapon();
-	void setMainWeapon(Weapon* weaponParam);
+	void setMainWeapon(Weapon* weaponParam,bool isFirstTime=false);
 	Weapon* getSecondaryWeapon();
 	void setSecondaryWeapon(Weapon* weaponParam);
 	void traitermisc(std::string& misc);
@@ -229,9 +229,7 @@ public:
 			planeSound->stop();
 	}
 	void setTouche(inputPlayer* inputt);
-	void AAAA() {
-		mainWeapon->traiterMisc(10);
-	}
+	void AAAA();
 	void reduceHP(float damage);
 	sf::Vector2f getDirection() { return dir; }
 	bool getDashButton() { return wantToDash; }

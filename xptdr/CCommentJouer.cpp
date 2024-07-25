@@ -239,58 +239,54 @@ void CCommentJouer::STEInit()
 
 }
 
-void CCommentJouer::STEHandleInput()
+void CCommentJouer::STEHandleInput(sf::Event& event)
 {
-	sf::Event event;
-	while (data->window.pollEvent(event))
-	{
-		player.PLYupdateMovement(event);
-		if (sf::Event::Closed == event.type)
-			data->window.close();
-		if (event.type == sf::Event::KeyPressed) {
-			if (event.key.code == sf::Keyboard::Escape)
-			{
-				data->machine.RemoveState();
-				hasChanges = true;
-			}
-		}
-		if(sf::Keyboard::isKeyPressed(inputOfPlayers[0].button1))
+	player.PLYupdateMovement(event);
+	if (sf::Event::Closed == event.type)
+		data->window.close();
+	if (event.type == sf::Event::KeyPressed) {
+		if (event.key.code == sf::Keyboard::Escape)
 		{
-			buttons[0].changeBool(true);
+			data->machine.RemoveState();
+			hasChanges = true;
 		}
-		else
-			buttons[0].changeBool(false);
-		if (sf::Keyboard::isKeyPressed(inputOfPlayers[0].button2))
-		{
-			buttons[1].changeBool(true);
-		}
-		else
-			buttons[1].changeBool(false);
-		if (sf::Keyboard::isKeyPressed(inputOfPlayers[0].button3))
-		{
-			buttons[2].changeBool(true);
-		}
-		else
-			buttons[2].changeBool(false);
-		if (sf::Keyboard::isKeyPressed(inputOfPlayers[0].button4))
-		{
-			buttons[3].changeBool(true);
-		}
-		else
-			buttons[3].changeBool(false);
-		if (sf::Keyboard::isKeyPressed(inputOfPlayers[0].button5))
-		{
-			buttons[4].changeBool(true);
-		}
-		else
-			buttons[4].changeBool(false);
-		if (sf::Keyboard::isKeyPressed(inputOfPlayers[0].button6))
-		{
-			buttons[5].changeBool(true);
-		}
-		else
-			buttons[5].changeBool(false);
 	}
+	if(sf::Keyboard::isKeyPressed(inputOfPlayers[0].button1))
+	{
+		buttons[0].changeBool(true);
+	}
+	else
+		buttons[0].changeBool(false);
+	if (sf::Keyboard::isKeyPressed(inputOfPlayers[0].button2))
+	{
+		buttons[1].changeBool(true);
+	}
+	else
+		buttons[1].changeBool(false);
+	if (sf::Keyboard::isKeyPressed(inputOfPlayers[0].button3))
+	{
+		buttons[2].changeBool(true);
+	}
+	else
+		buttons[2].changeBool(false);
+	if (sf::Keyboard::isKeyPressed(inputOfPlayers[0].button4))
+	{
+		buttons[3].changeBool(true);
+	}
+	else
+		buttons[3].changeBool(false);
+	if (sf::Keyboard::isKeyPressed(inputOfPlayers[0].button5))
+	{
+		buttons[4].changeBool(true);
+	}
+	else
+		buttons[4].changeBool(false);
+	if (sf::Keyboard::isKeyPressed(inputOfPlayers[0].button6))
+	{
+		buttons[5].changeBool(true);
+	}
+	else
+		buttons[5].changeBool(false);
 }
 
 void CCommentJouer::STEUpdate(float delta)

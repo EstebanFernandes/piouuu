@@ -49,50 +49,46 @@ void CGameMenu::STEInit()
 	buttons.push_back(temp);
 	buttons[index].setOutlineThickness(3.f);
 	resizeScreen();
-	if (!blurShader.loadFromFile("shaders/vertexbandw.vert", "shaders/blurFrag.frag"))
+	if (!blurShader.loadFromFile("shaders/blurFrag.frag",sf::Shader::Fragment))
 		std::cout << "bof";
-	blurShader.setUniform("texture", sf::Shader::CurrentTexture);
+	blurShader.setUniform("textureSampler", sf::Shader::CurrentTexture);
 	blurShader.setUniform("u_resolution", sf::Glsl::Vec2((float)data->assets.sCREEN_WIDTH, (float)data->assets.sCREEN_HEIGHT));
 }
 
-void CGameMenu::STEHandleInput()
+void CGameMenu::STEHandleInput(sf::Event& event)
 {
 	if (!resumeClicked)
 	{
-		sf::Event event;
-		while (data->window.pollEvent(event))
+		int previousSelec = index;
+		if (sf::Event::Closed == event.type)
+			data->window.close();
+		else if (event.type == sf::Event::KeyPressed)
 		{
-			int previousSelec = index;
-			if (sf::Event::Closed == event.type)
-				data->window.close();
-			else if (event.type == sf::Event::KeyPressed)
+			if (event.key.code == inputOfPlayers[0].moveUp)
 			{
-				if (event.key.code == inputOfPlayers[0].moveUp)
-				{
-					if (index == 0) {
-						index = (int)buttons.size() - 1;
-					}
-					else {
-						index = (index - 1) % buttons.size();
-					}
+				if (index == 0) {
+					index = (int)buttons.size() - 1;
 				}
-				else if (event.key.code == inputOfPlayers[0].moveDown)
-				{
-					index = (index + 1) % buttons.size();
+				else {
+					index = (index - 1) % buttons.size();
 				}
-				else if (event.key.code == inputOfPlayers[0].button1)
-					choosedButton();
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-				{
-					index = 0;
-					choosedButton();
-				}
-				buttons[previousSelec].setOutlineThickness(0.f);
-				buttons[index].setOutlineThickness(3.f);
 			}
+			else if (event.key.code == inputOfPlayers[0].moveDown)
+			{
+				index = (index + 1) % buttons.size();
+			}
+			else if (event.key.code == inputOfPlayers[0].button1)
+				choosedButton();
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+			{
+				index = 0;
+				choosedButton();
+			}
+			buttons[previousSelec].setOutlineThickness(0.f);
+			buttons[index].setOutlineThickness(3.f);
 		}
-
 	}
+
 }
 
 void CGameMenu::STEUpdate(float delta)
@@ -123,7 +119,6 @@ void CGameMenu::STEDraw(float delta)
 	sf::RenderTexture back;
 	back.create(data->assets.sCREEN_WIDTH, data->assets.sCREEN_HEIGHT);
 	back.clear();
-	blurShader.setUniform("texture", sf::Shader::CurrentTexture);
 	gamePointer->drawOnTarget(back, delta);
 	back.display();
 	backGroundImage = sf::Sprite(back.getTexture());

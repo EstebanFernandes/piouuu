@@ -4,12 +4,6 @@ CCard::CCard()
 {
 	asset = NULL;
 }
-//pas utilisé
-CCard::CCard(float x, float y, std::string title, std::string description, std::string imageName, CAssetManager* assetParam, bool animated)
-	:CCard(title, description, imageName,assetParam,animated)
-{
-	setPosition(sf::Vector2f(x, y));
-}
 
 CCard::CCard(std::string title, std::string description, std::string imageName, CAssetManager* assetParam, bool animated)
 {
@@ -32,8 +26,8 @@ CCard::CCard(std::string title, std::string description, std::string imageName, 
 	cardTitle.setFillColor(sf::Color::White);
 	cardTitle.setFont(asset->GetFont("Nouvelle"));
 	cardTitle.setCharacterSize(75);
-	cardTitle.setPosition(pos.x + (xSize - cardTitle.getGlobalBounds().width) / 2.f, pos.y);
-
+	cardTitle.setPosition(pos.x + ((xSize) / 2.f), pos.y);
+	utilities::centerObject(cardTitle);
 
 	cardImage.setTexture(asset->GetTexture(imageName));
 	//bizarre, à revoir
@@ -64,6 +58,5 @@ void CCard::update(float deltaTime)
 void CCard::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	target.draw(cardBack);
 	target.draw(cardTitle);
-	target.draw(cardImage);
 	target.draw(cardDescription);
 }

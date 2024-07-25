@@ -42,35 +42,8 @@ void CLevelGameState::STEResume()
 
 void CLevelGameState::STEDraw(float delta)
 {
-	sf::RenderWindow& r = data->window;
-	if (currentTransi.transiouuuuu==false)
-	{
-		CGameState::STEDraw(delta);
-	}
-	else
-	{
-		renderBackground(r);
-		for (int i = 0; i < entityList.size(); i++)
-		{
-			entityList[i]->renderEntity(r);
-		}
-
-		r.setView(data->window.getDefaultView());
-		//Permet de remettre la vue par défaut et donc pas de soucis sur la suite
-		for (int i = 0; i < entityList.size(); i++)
-		{
-			entityList[i]->renderUI(r);
-		}
-		for (auto i = players.begin(); i != players.end(); i++)
-		{
-			i->renderUI(data->window);
-		}
-		r.draw(uitext);
-		r.draw(gameClockText);
-		currentTransi.renderTransition(r);
-		for (auto i = players.begin(); i != players.end(); i++)
-			i->renderEntity(data->window);
-	}
+	sf::RenderWindow& rWindow = data->window;
+	drawOnTarget(rWindow,delta);
 }
 
 void CLevelGameState::afterTransi()
@@ -82,30 +55,9 @@ void CLevelGameState::afterTransi()
 
 void CLevelGameState::drawOnTarget(sf::RenderTarget& target, float interpolation)
 {
-	if (currentTransi.transiouuuuu == false)
+		CGameState::drawOnTarget(target,interpolation);	
+	if (currentTransi.transiouuuuu == true)
 	{
-		CGameState::drawOnTarget(target,interpolation);
-	}
-	else
-	{
-		renderBackground(target);
-		for (int i = 0; i < entityList.size(); i++)
-		{
-			entityList[i]->renderEntity(target);
-		}
-
-		target.setView(data->window.getDefaultView());
-		//Permet de remettre la vue par défaut et donc pas de soucis sur la suite
-		for (int i = 0; i < entityList.size(); i++)
-		{
-			entityList[i]->renderUI(target);
-		}
-		for (auto i = players.begin(); i != players.end(); i++)
-		{
-			i->renderUI(data->window);
-		}
-		target.draw(uitext);
-		target.draw(gameClockText);
 		currentTransi.renderTransition(target);
 		for (auto i = players.begin(); i != players.end(); i++)
 			i->renderEntity(target);
@@ -162,7 +114,7 @@ CLevelGameState::CLevelGameState(GameDataRef _data, std::vector<CCharacter>& cha
 
 void CLevelGameState::STEInit()
 {
-
+	//Le init du cgamestate est appelé au moment du resume
 	initAssets();
 	initPlayer();
 	infoForloading temp;
@@ -181,9 +133,6 @@ void CLevelGameState::STEUpdate(float delta)
 	if(isThistheEnd == false&&level.isLevelSet)
 	{
 		updateBackground(delta);
-		//Auto aim
-		updateBackground(delta);
-		//Auto aim
 		//On check d'abord les collisions entre le joueur et les entités. ensuite on update
 		if (players.size() == 1)
 		{

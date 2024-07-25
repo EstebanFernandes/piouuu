@@ -17,8 +17,7 @@ void testEnemy::enemyShoot()
 {
 }
 
-void testEnemy::renderEntity(sf::RenderTarget& target)
+void testEnemy::renderTheEntity(sf::RenderTarget& target)
 {
-	CEnemy::renderEntity(target);
-	renderBuffs(target);
+	CEnemy::renderTheEntity(target);
 }

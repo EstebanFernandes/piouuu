@@ -44,6 +44,7 @@ public :
 	void setBulletPos(sf::Vector2f pos) {
 		getSprite().setPosition(pos);
 	}
+	void setDamage(int dmg) { damage = dmg; }
 
 
 };

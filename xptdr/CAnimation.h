@@ -1,6 +1,7 @@
 #pragma once
 #include"SFML/Graphics.hpp"
 #include<iostream>
+#include"utilities.h"
 //Classe qui permet de gérer les animations sur un sprite
 	typedef std::vector<std::vector<sf::IntRect>> matrixSpriteSheet;
 class CAnimation
@@ -54,6 +55,7 @@ public:
 		if(sprit!=NULL)
 		{
 			currentSprite = sprit;
+			utilities::centerObject(*currentSprite);
 			currentSprite->setOrigin(matrix[currentFrame.x][currentFrame.y].width / 2.f, matrix[currentFrame.x][currentFrame.y].height / 2.f);
 			computeMatrix();
 			switchFrames();

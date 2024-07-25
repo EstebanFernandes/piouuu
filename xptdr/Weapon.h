@@ -4,10 +4,11 @@
 #include"CWeaponStat.h"
 #include "CMob.h"
 #include"CBuffEntity.h"
-#define nbBullet 5
+#include"CMob.h"
+#define nbBullet 6
 	typedef enum
 	{
-		doubleTirs1 = 4,
+		doubleTirs1 = nbBullet,
 		doubleTirs2,
 		autoAim,
 		gunshotAim,
@@ -24,7 +25,8 @@
 		dotBullet,
 		explosiveBullet,
 		fireBullet,
-		iceBullet
+		iceBullet,
+		thunderBullet
 	} typeBullet;
 
 class Weapon
@@ -47,6 +49,7 @@ protected:
 	float angleOffset;
 	bool isShooting = false;
 public:
+	CMob* pointerToPlayer;
 	~Weapon();
 
 	/// <summary>
@@ -92,12 +95,13 @@ public:
 
 	virtual void changeTarget(CMob* r) = 0;
 	virtual void traiterMisc(int misc) = 0;
-	virtual bool checkCollisions(CMob& b) = 0;
+	virtual int checkCollisions(CMob& b) = 0;
 	virtual void weaponControls(sf::Event) = 0;
 	virtual void weaponShoot() = 0;
 	virtual void updateWeapon(float dt) = 0;
 	virtual void renderWeapon(sf::RenderTarget& target) = 0;
 	virtual void setBulletAsset(std::string assetName) = 0;
+	virtual std::string getBulletAsset() = 0;
 	void setAimBoolean(bool* pointToBool)
 	{
 		seekForTarget = pointToBool;

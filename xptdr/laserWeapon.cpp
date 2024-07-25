@@ -126,13 +126,13 @@ void laserWeapon::addShootType(int type)
 	}
 }
 
-bool laserWeapon::checkCollisions(CMob& b)
+int laserWeapon::checkCollisions(CMob& b)
 {
 	if (isActive)
 	{
 		for (std::list<LaserGenerator>::iterator it = lasers.begin(); it != lasers.end(); ++it) {
 			if (it->checkCollisions(b))
-				return true;
+				return referenceStat.bulletDamage;
 		}
 	}
 	return false;
@@ -194,4 +194,9 @@ void laserWeapon::renderWeapon(sf::RenderTarget& target)
 
 void laserWeapon::setBulletAsset(std::string assetName)
 {
+}
+
+std::string laserWeapon::getBulletAsset()
+{
+	return std::string();
 }

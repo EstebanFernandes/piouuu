@@ -7,8 +7,8 @@
 class CSommetUpgrade : public CSommet
 {
 private:
-	std::vector<std::string> values;
 public:
+	std::vector<std::string> values;
 	CSommetUpgrade(int num) {
 		iSOMNumero = num;
 	}
@@ -19,7 +19,7 @@ public:
 	{
 		values.push_back(value);
 	}
-	std::vector<std::string> returnValues()
+	std::vector<std::string>& returnValues()
 	{
 		return values;
 	}

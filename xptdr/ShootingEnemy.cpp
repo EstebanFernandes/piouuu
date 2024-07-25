@@ -107,7 +107,6 @@ void ShootingEnemy::enemyShoot()
 			BAW.iNeedMoreBullets(
 				utilities::shootPos((getSprite().getPosition()),
 					getGlobalBounds().width / 2.f, utilities::getAngleFromDirection(BAW.getWeaponStats().dir)));
-			std::cout << "je tire !" << std::endl;
 		}
 		isReadyToShoot = false;
 		// vient juste le restart le timer à la fin 

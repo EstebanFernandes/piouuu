@@ -90,15 +90,18 @@ void CCharacterSelectionMultiState::STEInit()
 	Titre.setFont(data->assets.GetFont("Nouvelle"));
 	Titre.setString("Sélection des personnages");
 	Titre.setFillColor(sf::Color::White);
-	Titre.setPosition((width - Titre.getGlobalBounds().width) / 2.f, 10.f);
+	Titre.setCharacterSize(40);
+	Titre.setPosition((width - Titre.getGlobalBounds().width) / 2.f, height * 0.1f);
+	Titre.setOutlineThickness(2.f);
+
 	time = 0.f;
 	loadCharacters();
 	setAvionPosition();
 	fondMiTransparent.setSize(sf::Vector2f(width, height / 2));
 	fondMiTransparent.setFillColor(sf::Color(0, 0, 0, 120));
 	fondMiTransparent.setPosition(sf::Vector2f(0.f, height / 2));
-	//deuxiemefond.setFillColor(sf::Color(64, 62, 62,240));
-	deuxiemefond.setFillColor(sf::Color(0, 0, 0, 240));
+	deuxiemefond.setFillColor(sf::Color(64, 62, 62,150));
+	//deuxiemefond.setFillColor(sf::Color(0, 0, 0, 240));
 	 
 	sf::FloatRect zoneJouer(0.f, height / 2.f, width / 2.f, height *0.3f);
 	for (int i = 0; i < 2; i++)
@@ -152,7 +155,7 @@ void CCharacterSelectionMultiState::loadCharacters()
 	CParserCSV parser = CParserCSV("res/data/characters.csv");
 	std::vector<std::vector<std::string>> charactersInfo = parser.getElements();
 
-	//Nouvelle méthode pour initialiser les stats
+	//Nouvelle méthode pour initialiser lefs stats
 	for (int i = 1; i < charactersInfo.size(); i++) {
 		avion tempAvion;
 		tempAvion.characterAvion = CCharacter(charactersInfo[i][1], charactersInfo[i][0], charactersInfo[i][2], charactersInfo[i][3] == "animated");
@@ -313,67 +316,64 @@ void CCharacterSelectionMultiState::updateTexts(int index)
 		players[index].preViewSprite.setColor(sf::Color(0, 0, 0, 122));
 }
 
-void CCharacterSelectionMultiState::STEHandleInput()
+void CCharacterSelectionMultiState::STEHandleInput(sf::Event& event)
 {
-	sf::Event event;
-	while (data->window.pollEvent(event)) {
-		for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 2; i++)
+	{
+		switch (event.type)
 		{
-			switch (event.type)
+		case sf::Event::KeyPressed:
+			if (players[i].isValid == false)
 			{
-			case sf::Event::KeyPressed:
-				if (players[i].isValid == false)
+				if (event.key.code == players[i].curInput->moveLeft)
 				{
-					if (event.key.code == players[i].curInput->moveLeft)
-					{
-						selectionSound->play();
-						if (players[i].index == 0)
-							players[i].index = (int)avions.size() - 1;
-						else
-							players[i].index--;
-						containChanges = true;
-					}
-					if (event.key.code == players[i].curInput->moveRight)
-					{
-						selectionSound->play();
-						if (players[i].index == avions.size() - 1)
-							players[i].index = 0;
-						else
-							players[i].index++;
-						containChanges = true;
-					}
-					if (event.key.code == players[i].curInput->button1)
-					{
-						players[i].isValid = true;
-						validationSound->play();
-						players[i].preViewSprite.setColor(sf::Color::White);
-					}
-					if (event.key.code == players[i].curInput->button2)
-					{
-						if (!isPressingReturn)//Première fois que l'on appuie
-							returnClock.restart();
-						isPressingReturn = true;
-					}
-				}
-				else if (event.key.code == players[i].curInput->button2)
-				{
-					players[i].isValid = false;
+					selectionSound->play();
+					if (players[i].index == 0)
+						players[i].index = (int)avions.size() - 1;
+					else
+						players[i].index--;
 					containChanges = true;
-
 				}
-				
-			break;
-
-			case sf::Event::KeyReleased:
-				if (players[i].isValid == false && event.key.code == players[i].curInput->button2)
+				if (event.key.code == players[i].curInput->moveRight)
 				{
-					isPressingReturn = false;
+					selectionSound->play();
+					if (players[i].index == avions.size() - 1)
+						players[i].index = 0;
+					else
+						players[i].index++;
+					containChanges = true;
 				}
-				break;
-			case sf::Event::Closed:
-				data->window.close();
-				break;
+				if (event.key.code == players[i].curInput->button1)
+				{
+					players[i].isValid = true;
+					validationSound->play();
+					players[i].preViewSprite.setColor(sf::Color::White);
+				}
+				if (event.key.code == players[i].curInput->button2)
+				{
+					if (!isPressingReturn)//Première fois que l'on appuie
+						returnClock.restart();
+					isPressingReturn = true;
+				}
 			}
+			else if (event.key.code == players[i].curInput->button2)
+			{
+				players[i].isValid = false;
+				containChanges = true;
+
+			}
+				
+		break;
+
+		case sf::Event::KeyReleased:
+			if (players[i].isValid == false && event.key.code == players[i].curInput->button2)
+			{
+				isPressingReturn = false;
+			}
+			break;
+		case sf::Event::Closed:
+			data->window.close();
+			break;
 		}
 	}
 }
@@ -408,7 +408,7 @@ void CCharacterSelectionMultiState::STEUpdate(float dt)
 		pointerToCharacters->at(1) = avions[players[1].index].characterAvion;
 		data->machine.RemoveState();
 		hasChanges = true;
-		currentTransi = CTransition(&(data->assets), DROITE, 2.f);
+		currentTransi = CTransition(&(data->assets), DROITE, TEMPS_TRANSI);
 		currentTransi.initTransition();
 	}
 	if(isPressingReturn&& returnClock.getElapsedTime().asSeconds() >= 2.5f)
@@ -428,7 +428,7 @@ void CCharacterSelectionMultiState::STEDraw(float interpolation)
 
 void CCharacterSelectionMultiState::drawElements(bool onlyAvion)
 {
-	//data->window.draw(deuxiemefond);
+	data->window.draw(deuxiemefond);
 	data->window.draw(Titre);
 	if (isPressingReturn)
 	{

@@ -6,9 +6,8 @@ bool Level::updateLevel()
 	if (difficultClock.getElapsedTime().asSeconds() > nextDifficultyClock && !maxDifficultyReached) {
 		std::cout << "je change de difficulté ! " << std::endl;
 		changeDifficulty();
-	}
-	Pattern& pat = patternList[0];
-	if (patternList.size() == 1 && isInfinite==true)
+	} 
+	if (patternList.size() <= 1 && isInfinite==true)
 	{//Si la liste des pattern est quasiment vide
 			// On prend un niveau aléatoirement parmi la range de difficulté
 		int min = 0;
@@ -16,7 +15,7 @@ bool Level::updateLevel()
 		patternList.push_back(patternListStock[min + std::rand() % (max - min + 1)]);
 	}
 	// Pour que ça fonctionne en release mdrr
-	//pat = patternList.at(0);
+	Pattern& pat = patternList.at(0);
 		if(pat.updatePattern(*clock - offset, ennemyList) == true)
 		{
 			patternList.erase(patternList.begin());

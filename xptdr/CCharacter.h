@@ -68,7 +68,7 @@ public:
 	int getCanonNumber() { return canonNumber;  }
 
 	float getAttackSpeed() { return attackSpeed; }
-	void setAttackSpeed(float attackSpeedParam) { attackSpeed = attackSpeedParam; }
+	virtual void setAttackSpeed(float attackSpeedParam) { attackSpeed = attackSpeedParam; }
 
 	float getBulletSpeed() { return bulletSpeed; }
 	void setBulletSpeed(float bulletSpeedParam) { bulletSpeed = bulletSpeedParam; }

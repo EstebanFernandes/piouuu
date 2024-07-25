@@ -84,5 +84,7 @@ public:
 		temp.type = -1;
 		return temp;
 	}
+	void drawEverythingButFirstLayer(sf::RenderTarget& target, float inter);
+	void drawFirstLayer(sf::RenderTarget& target, float inter);
 };
 

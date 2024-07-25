@@ -3,4 +3,4 @@ lavion;res/img/characters/BaseCharacterSpriteSheet.png;Toujours un classique;ani
 Rancoeur;res/img/characters/RancoeurSpriteSheet.png;Reviens aux origines;animated;;0.5;;5;;;
 La Golden Shower;res/img/characters/golden.png;Plus lent que le l'it�ration de base, avec des lourds d�gats et un style fr�missant;animated;;;;;;;
 LaserMan;res/img/characters/RancoeurSpriteSheet.png;Teste ce bon vieux laser;animated;;;;;3.0;;laser
-Le testeur;res/img/characters/BaseCharacterSpriteSheet.png;pas équilibré;animated;100000000000;;;;;;
+Le testeur;res/img/characters/BaseCharacterSpriteSheet.png;pas équilibré;animated;1E+11;;;;;;

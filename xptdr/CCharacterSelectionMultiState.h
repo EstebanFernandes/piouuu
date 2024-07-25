@@ -61,7 +61,7 @@ public:
 	CCharacterSelectionMultiState(GameDataRef data_);
 	CCharacterSelectionMultiState(GameDataRef data_,std::vector<CCharacter>* pointerToVectCharact);
 	void STEInit();
-	void STEHandleInput();
+	void STEHandleInput(sf::Event& event);
 	void STEUpdate(float dt);
 	void STEDraw(float interpolation);
 

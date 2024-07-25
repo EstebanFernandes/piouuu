@@ -4,6 +4,8 @@
 #include "CTransition.h"
 #include"CBackground.h"
 #include"inputPlayer.h"
+#include "imgui/imgui.h"
+#include "imgui-sfml/imgui-SFML.h"
 //Classe virtuelle qu'on doit hériter pour construire une scène, on redéfinit les méthodes init (appelés en premier),
 //update( appelé pour update la scène (faire bouger les personnages par exemple))
 //HandleInput où on peut gérer les inputs et ce que l'on fait avec
@@ -11,8 +13,7 @@
 class CState
 {
 protected:
-	
-	//Liste qui contient les texture que l'on doit charger 
+	//Liste qui contient les texture que l'on doit charger on met d'abord le nom puis le filepath
 	std::vector<std::pair<std::string, std::string>> assetToload;
 	/// <summary>
 	/// Méthode qui regarde l'extension du nom du fichier ->pair.second
@@ -41,7 +42,16 @@ protected:
 	static CBackground background;
 
 	static inputPlayer inputOfPlayers[2];
+
+	//IMGUI
+
+	bool useIMGUI = false;
+	//Fonction a overload pour update la fenêtre IMGUI
+	//Pour moi on a besoin que d'une fenetre vu que c'est juste pour afficher des infos/modifier des valeurs
+	virtual void debugInfo() {}
+
 public:
+	virtual void updateIMGUI(sf::RenderWindow& window,float dt);
 	static float angleOffset;
 	virtual ~CState();
 	//La transition est un objet static commun à tous les états, comme ça on le passe d'état en état (génie de ma part imo)
@@ -50,7 +60,18 @@ public:
 	bool needDisplay = true;
 	//Méthodes :
 	virtual void STEInit() = 0;
-	virtual void STEHandleInput() = 0;
+	virtual void STEHandleInput(sf::Event& event) = 0;
+	void HandleInput(sf::RenderWindow& window)
+	{
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			STEHandleInput(event);
+			if (useIMGUI)
+				ImGui::SFML::ProcessEvent(window,event);
+		}
+	}
+
 	virtual void STEUpdate(float delta) = 0;
 	//on doit juste clear et draw dans ces fonctions, le display est réalisé dans la boucle principale
 	virtual void STEDraw(float delta) = 0; // différence entre les frames
@@ -59,5 +80,6 @@ public:
 	//Méthode appelé une fois la transac effectué ;)
 	virtual void afterTransi() {};
 	virtual void drawOnTarget(sf::RenderTarget& target,float interpolation){}
+	bool getImguiBoolean() { return useIMGUI; }
 };
 

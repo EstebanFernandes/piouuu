@@ -12,6 +12,7 @@ protected:
 		dot,
 		fire,
 		ice,
+		thunder
 	};
 	CMob* target;
 	float duration;

@@ -36,7 +36,7 @@ private:
 public:
 	CLoadingState(GameDataRef data_,infoForloading info_, std::list<CPlayer>* pointerToPlayers);
 	void STEInit();
-	void STEHandleInput();
+	void STEHandleInput(sf::Event& event);
 	void STEUpdate(float delta);
 	void STEDraw(float delta);
 

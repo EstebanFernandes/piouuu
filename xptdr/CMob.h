@@ -65,7 +65,7 @@ public:
 		target.draw(getSprite());
 	}
 	virtual void reduceHP(float damage) {
-		if (!isInvulnerable) {
+		if (!isInvulnerable&& damage>0) {
 			healthPoint -= damage;
 			hasBeenHit = true;
 		}

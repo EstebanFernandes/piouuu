@@ -11,13 +11,9 @@ CLoadingState::CLoadingState(GameDataRef data_, infoForloading info_,std::list<C
 
 void CLoadingState::STEInit()
 {
+	//Initialisation du visuel
 	float height = (float)data->assets.sCREEN_HEIGHT;
 	float width = (float)data->assets.sCREEN_WIDTH;
-	//Lancement du thread
-	// le premier argument de la fonction est this car c'est une fonction membre
-	std::thread t(&CLoadingState::threadFunction,this, &this->info,&(data->assets));
-	t.detach();//Lance le thread en parallèle du reste
-	//Initialisation du visuel
 	for (auto player = players->begin(); player != players->end(); player++)
 	{
 		playerPos.push_back(player->getPosition());
@@ -35,17 +31,23 @@ void CLoadingState::STEInit()
 	validText.setFont(data->assets.GetFont("Nouvelle"));
 	validText.setString("Appuyer sur entrée pour lancer la partie ");
 	validText.setPosition(width * 0.3f, height * 0.85f);
+	//Lancement du thread
+	
+
+
+	// le premier argument de la fonction est this car c'est une fonction membre
+	std::thread t(&CLoadingState::threadFunction,this, &this->info,&(data->assets));
+	t.detach();//Lance le thread en parallèle du reste
 }
 
-void CLoadingState::STEHandleInput()
+void CLoadingState::STEHandleInput(sf::Event& event)
 {
-	sf::Event event;
-	while (data->window.pollEvent(event))
+	if (sf::Event::Closed == event.type)
+		data->window.close();
+	if (event.key.code == sf::Keyboard::Enter&& isPlayerSet==true && info.level->isLevelSet)
 	{
-		if (sf::Event::Closed == event.type)
-			data->window.close();
-		if (event.key.code == sf::Keyboard::Enter&& isPlayerSet==true && info.level->isLevelSet)
-			data->machine.RemoveState();
+		currentTransi = CTransition(&data->assets, SENS_TRANSITION::GAUCHE, 1, TEMPS_TRANSI);
+		data->machine.RemoveState();
 	}
 }
 

@@ -1,10 +1,33 @@
 #include "upgradeStock.h"
+#include"CCardUpgrade.h"
+#include"InterfaceState.h"
+#include<sys/stat.h>
+void upgradeStock::plusStatGraph()
+{
+	//int nbOfUpgrade = 6;
+	//std::vector<std::string> typeString = { "name","maxHealthPoint",
+	//									"moveSpeed","damagePerBullet",
+	//										"attackSpeed","bulletSpeed","dashDamage" };
+	//CGrapheUpdate& graph = graphs[0][0];
+	//graph.ListeType = typeString;
+	//for (int i = 0; i < nbOfUpgrade; i++)
+	//{
+	//	CSommetUpgrade temp(i + 1);
+	//	temp.values = std::vector<std::string>(6);
+	//	temp.values.at(0) = "Supplément";
+	//	temp.values.at(i+1) = "<rand:0.2:0.6>";//Le premier est le nom donc ça décale tout de +1
 
+	//	graph.GRAAjouterSommet(temp);
+	//	graph.GRAAjouterArc(0, i + 1);
+	//}
+}
 upgradeStock::upgradeStock()
 {
+	assets = NULL;
 	graphs.push_back(std::vector<CGrapheUpdate>());
 	graphs[0].push_back(CGrapheUpdate());
 	graphs[0][0].GRAAjouterSommet(0);
+	plusStatGraph();
 }
 
 void upgradeStock::addGraphs(std::string fileName)
@@ -12,9 +35,10 @@ void upgradeStock::addGraphs(std::string fileName)
 	CHugoDecrypte temp(fileName);
 	graphs.push_back(temp.returnGraphs());
 	CGrapheUpdate t;
+	t.Name = std::to_string(graphs.size()-1);
 	t.GRAAjouterSommet(0);
 	int nbOfGraphs = (int)temp.returnGraphs().size();
-	//On rajoute donc un graphe qui a tous les premiers de chaque graphe
+	//On rajoute donc un graphe qui a tous les premiers sommet de chaque graphe
 	for (int i = 0; i < nbOfGraphs; i++)
 	{
 		CSommetUpgrade tempSommet = temp.returnGraphs()[i].GRAObtenirListeSommet()[0];
@@ -75,3 +99,15 @@ CGrapheUpdate& upgradeStock::currentGraph(graphComponent g)
 {
 	return graphs.at(g.pos.y).at(g.pos.x);
 }
+
+int upgradeStock::indexInGraphs(graphComponent& component)
+{
+	int index = 0;
+	for (int i = 0; i < component.pos.y; i++)
+	{
+		index += graphs[i].size();
+	}
+	index += component.pos.x;
+	return index;
+}
+

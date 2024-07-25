@@ -14,11 +14,12 @@ public:
 	void changeTarget(CMob* r);
 	void traiterMisc(int misc);
 	void addShootType(int type);
-	bool checkCollisions(CMob& b);
+	int checkCollisions(CMob& b);
 	void weaponControls(sf::Event);
 	void weaponShoot();
 	void updateWeapon(float dt);
 	void renderWeapon(sf::RenderTarget& target);
 	void setBulletAsset(std::string assetName);
+	std::string getBulletAsset();
 };
 

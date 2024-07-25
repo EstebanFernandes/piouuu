@@ -40,6 +40,16 @@ void Cmusique::stopMusique(const std::string& id)
     }
 }
 
+sf::Music* Cmusique::getMusique(const std::string& id)
+{
+    auto it = musiques.find(id);
+    if (it != musiques.end())
+    {
+        return it->second.music.get();
+    }
+    return NULL;
+}
+
 void Cmusique::volumeMusique(const std::string& id, float volume)
 {
     auto it = musiques.find(id);
@@ -47,6 +57,7 @@ void Cmusique::volumeMusique(const std::string& id, float volume)
         it->second.volumeparPiste = volume;
     }
 }
+
 
 void Cmusique::overAllVolume(float volume)
 {

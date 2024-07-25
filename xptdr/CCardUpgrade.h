@@ -7,11 +7,11 @@ private:
 public:
 	std::vector<std::string> type;
 	std::vector<std::string> Upgrade;
-
+	const int trueNumber;
 	void Drawable::draw(sf::RenderTarget& target, sf::RenderStates states) const;
-	CCardUpgrade(){}
+	CCardUpgrade() : trueNumber(-1){}
 	CCardUpgrade(int levelofEntity);//Nouvelle CCardUpgrade pour quand on a complété toutes les améliorations
-	CCardUpgrade(std::vector<std::string> Upgrade, std::vector<std::string> type, CAssetManager* assetParam);
+	CCardUpgrade(std::vector<std::string> Upgrade, std::vector<std::string> type, CAssetManager* assetParam,int trueNumber_);
 	//Surcharge pour une amélioration
 	CCardUpgrade(std::string Upgrade, std::string type, CAssetManager* assetParam);
 	void setPosition(sf::Vector2f r);
@@ -44,6 +44,9 @@ public:
 		return minSize;
 	}
 	void setSize(sf::Vector2f size);
-
+	void setTitle(std::string titre)
+	{
+		cardTitle.setString(titre);
+	}
 };
 

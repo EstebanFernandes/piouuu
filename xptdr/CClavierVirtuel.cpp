@@ -188,56 +188,52 @@ void CClavierVirtuel::STEInit()
 
 }
 
-void CClavierVirtuel::STEHandleInput()
+void CClavierVirtuel::STEHandleInput(sf::Event& event)
 {
-	sf::Event event;
-	while (data->window.pollEvent(event))
+	if (sf::Event::Closed == event.type)
+		data->window.close();
+	if (event.type == sf::Event::KeyPressed)
 	{
-		if (sf::Event::Closed == event.type)
-			data->window.close();
-		if (event.type == sf::Event::KeyPressed)
+		for (int i = 0; i < nbJoueur; i++)
 		{
-			for (int i = 0; i < nbJoueur; i++)
+			int& x = players[i].playerSelection.x;
+			int& y = players[i].playerSelection.y;
+			inputPlayer* curInput = players[i].input;
+			if (event.key.code == curInput->moveUp)
 			{
-				int& x = players[i].playerSelection.x;
-				int& y = players[i].playerSelection.y;
-				inputPlayer* curInput = players[i].input;
-				if (event.key.code == curInput->moveUp)
-				{
-					if (y != 0)
-						y -= 1;
-				}
-				if (event.key.code == curInput->moveLeft)
-				{
-					if (y == 4 && x == 2)
-						break;
-					if (y == 4 && (x >= 5 && x <= 8))
-						x = 4;
-					else if (x != 0)
-						x -= 1;
-				}
-				if (event.key.code == curInput->moveDown)
-				{
-					if (y == 3 && (x < 2 || x > 9))
-						break;
-					if (y != 4)
-						y += 1;
-				}
-				if (event.key.code == curInput->moveRight)
-				{
-					if (y == 4 && x == 9)
-						break;
-					if (x != 11)
-						x += 1;
-				}
-				if (event.key.code == curInput->button1)
-				{
-					players[i].isPressed = true;
-				}
-				if (event.key.code == curInput->button2)
-				{
-					data->machine.RemoveState();
-				}
+				if (y != 0)
+					y -= 1;
+			}
+			if (event.key.code == curInput->moveLeft)
+			{
+				if (y == 4 && x == 2)
+					break;
+				if (y == 4 && (x >= 5 && x <= 8))
+					x = 4;
+				else if (x != 0)
+					x -= 1;
+			}
+			if (event.key.code == curInput->moveDown)
+			{
+				if (y == 3 && (x < 2 || x > 9))
+					break;
+				if (y != 4)
+					y += 1;
+			}
+			if (event.key.code == curInput->moveRight)
+			{
+				if (y == 4 && x == 9)
+					break;
+				if (x != 11)
+					x += 1;
+			}
+			if (event.key.code == curInput->button1)
+			{
+				players[i].isPressed = true;
+			}
+			if (event.key.code == curInput->button2)
+			{
+				data->machine.RemoveState();
 			}
 		}
 	}

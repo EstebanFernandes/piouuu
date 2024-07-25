@@ -7,7 +7,7 @@
 #define nbAim 6
 class CGunslinger : public Weapon
 {
-private:
+protected:
 	std::list<CBulletAuto> magasine;
 	//grr paw
 	sf::Clock bulletClock;
@@ -31,10 +31,11 @@ public:
 	void setBulletAsset(std::string assetName) {
 		referenceStat.nameImage = assetName;
 	}
+	std::string getBulletAsset() { return referenceStat.nameImage; }
 	void setWeaponStats(CWeaponStat statsParam);
 	void renderWeapon(sf::RenderTarget& target);
 	void traiterMisc(int misc);
-	bool checkCollisions(CMob& b);
+	int checkCollisions(CMob& b);
 	/// <summary>
 	/// à terme on utilise que celle là
 	/// </summary>

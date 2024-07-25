@@ -43,11 +43,8 @@ void CButtonState::STEInit()
 	backFonce.setFillColor(sf::Color(0, 0, 0, 122));
 }
 
-void CButtonState::STEHandleInput()
+void CButtonState::STEHandleInput(sf::Event& event)
 {
-	sf::Event event;
-	while (data->window.pollEvent(event))
-	{
 		if (sf::Event::Closed == event.type)
 			data->window.close();
 		else if (event.type == sf::Event::KeyPressed)
@@ -70,7 +67,6 @@ void CButtonState::STEHandleInput()
 			else if (event.key.code == inputOfPlayers[0].button2)
 				data->machine.RemoveState();
 		}
-	}
 }
 
 void CButtonState::choosedButton()

@@ -256,3 +256,35 @@ void CBackground::renderBackground(sf::RenderTarget& target)
 		}
 	}
 }
+
+void CBackground::drawEverythingButFirstLayer(sf::RenderTarget& target, float inter)
+{
+	int nbLayer = (hasCloud) ? (int)allLayer.size() + 1 : (int)allLayer.size();
+	for (int i = 2; i < nbLayer; i++)
+	{
+		if (hasCloud && cloudLayer == i)
+			for (int j = 0; j < cloudLayers.size(); j++)
+				target.draw(cloudLayers[j].sprite);
+		else if (i > cloudLayer)
+		{
+			target.draw(allLayer[i - 1].sprite);
+			if (allLayer[i - 1].type != sun)
+				target.draw(layerCopies[i - 1].sprite);
+		}
+		else
+		{
+			target.draw(allLayer[i].sprite);
+			if (allLayer[i].type != sun)
+				target.draw(layerCopies[i].sprite);
+		}
+	}
+}
+
+void CBackground::drawFirstLayer(sf::RenderTarget& target, float inter)
+{
+		target.draw(allLayer[0].sprite);
+		if (allLayer[0].type != sun)
+			target.draw(layerCopies[0].sprite);
+		target.draw(allLayer[1].sprite);
+		
+}

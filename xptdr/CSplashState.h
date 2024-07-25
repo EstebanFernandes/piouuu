@@ -18,7 +18,7 @@ public:
 	CSplashState(GameDataRef _data);
 
 	void STEInit() ;
-	void STEHandleInput();
+	void STEHandleInput(sf::Event& event);
 	void STEUpdate(float delta);
 	void STEDraw(float delta);
 

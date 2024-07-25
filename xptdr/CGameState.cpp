@@ -107,7 +107,9 @@ void CGameState::initBackground()
 	BG1.addLayer(t1, "background", 0.f,CBackground::background);
 	//Soleil
 	sf::Sprite soleil(data->assets.GetTexture("sun"));
+	utilities::centerObject(soleil);
 	soleil.setScale(2.f, 2.f);
+	soleil.setPosition(0.f, (float)data->assets.sCREEN_HEIGHT);
 	BG1.addLayer(soleil, "sun", 0.0f, CBackground::sun);
 	BG1.addClouds("nuages", "nuage", 0.25f, anim);
 	data->assets.LoadTexture("firstLayer", 
@@ -141,31 +143,36 @@ void CGameState::initBackground()
 	gameClockText.setFont(data->assets.GetFont("Nouvelle"));
 	gameTime.Zero;
 	updateBackground(0.f);
+	
+	//Light shader
+	renderTexture.create(data->window.getSize().x, data->window.getSize().y);
+	//For the light effect
+	shadowMask.create(data->window.getSize().x, data->window.getSize().y);
+	lightShader.loadFromFile("shaders/lightFrag.frag", sf::Shader::Fragment);
+	lightShader.setUniform("u_resolution", sf::Glsl::Vec2(data->assets.getEcranBound()));
 }
+
 void CGameState::STEInit()
 {
 	*enemyNumber = 0;
 	initBackground();
+	data->assets.stopMusique("MenuPrincipal");
 	data->assets.jouerMusique("PartieJour");
 	bulletstorage = bulletStorage(&(data->assets));
 	entityList.push_back(&bulletstorage);
 }
 
-void CGameState::STEHandleInput()
+void CGameState::STEHandleInput(sf::Event& event)
 {
-	sf::Event event;
-	while (data->window.pollEvent(event))
-	{
-		for (auto i = players.begin(); i != players.end(); i++)
-			i->PLYupdateMovement(event);
-		if (sf::Event::Closed == event.type)
-			data->window.close();
-		if (event.type == sf::Event::KeyPressed) {
-			if (event.key.code == sf::Keyboard::Escape)
-			{
-				data->machine.AddState(StateRef(new CGameMenu(data,this)), false);
-				hasChanges = true;
-			}
+	for (auto i = players.begin(); i != players.end(); i++)
+		i->PLYupdateMovement(event);
+	if (sf::Event::Closed == event.type)
+		data->window.close();
+	if (event.type == sf::Event::KeyPressed) {
+		if (event.key.code == sf::Keyboard::Escape)
+		{
+			data->machine.AddState(StateRef(new CGameMenu(data,this)), false);
+			hasChanges = true;
 		}
 	}
 
@@ -271,8 +278,9 @@ void CGameState::STEUpdate(float delta)
 void CGameState::updateBackground(float delta)
 {
 	BG1.updateCBackground(delta);
-	indexForSun = static_cast<int>(floor(time/2.5f)+ (int)ellipseForSun.getPointCount()/2 + (int)ellipseForSun.getPointCount() / 4)% (int)ellipseForSun.getPointCount();
+	indexForSun = static_cast<int>(floor(time)+ (int)ellipseForSun.getPointCount()/2 + (int)ellipseForSun.getPointCount() / 4)% (int)ellipseForSun.getPointCount();
 	BG1.getLayer("sun").sprite.setPosition(ellipseForSun.getPoint(indexForSun));
+	lightShader.setUniform("lightPoint", utilities::glslCoord(ellipseForSun.getPoint(indexForSun), data->assets.sCREEN_HEIGHT));
 }
 
 void CGameState::deleteEntity(int i)
@@ -315,26 +323,26 @@ void CGameState::STEDraw(float delta)
 
 void CGameState::drawOnTarget(sf::RenderTarget& target, float interpolation)
 {
-	renderBackground(target);
-	for (auto i = players.begin(); i != players.end(); i++)
-		i->renderEntity(target);
-	for (int i = 0; i < entityList.size(); i++)
-	{
-		entityList[i]->renderEntity(target);
-	}
+	// 1. Dessiner la première couche (background) sur la texture de rendu principale
+	renderTexture.clear();
+	BG1.drawFirstLayer(renderTexture, interpolation);
+	drawOnTargetEntity(renderTexture, interpolation); // Dessiner les entités
+	renderTexture.display();
 
-	target.setView(data->window.getDefaultView());
-	//Permet de remettre la vue par défaut et donc pas de soucis sur la suite
-	for (int i = 0; i < entityList.size(); i++)
-	{
-		entityList[i]->renderUI(target);
-	}
-	for (auto i = players.begin(); i != players.end(); i++)
-	{
-		i->renderUI(target);
-	}
-	target.draw(uitext);
-	target.draw(gameClockText);
+	// 2. Dessiner les éléments qui bloquent la lumière sur la texture de masque d'ombres
+	shadowMask.clear(sf::Color::White);
+	drawOnTargetEntity(shadowMask, interpolation); // Dessiner les entités qui bloquent la lumière
+	shadowMask.display();
+
+	// 3. Configurer les uniformes du shader
+	lightShader.setUniform("texture", renderTexture.getTexture());
+	lightShader.setUniform("shadowMask", shadowMask.getTexture());
+
+	spriteRender.setTexture(renderTexture.getTexture());
+	target.draw(spriteRender, &lightShader);
+
+	// 5. Dessiner les éléments de l'interface utilisateur directement sur la fenêtre
+	drawOnTargetUI(target, interpolation);
 }
 
 void CGameState::STEResume()
@@ -361,36 +369,31 @@ void CGameState::updateClock()
 		gameClockText.setPosition(sf::Vector2f(data->assets.sCREEN_WIDTH / 2 - gameClockText.getGlobalBounds().width / 2, 20.f));
 
 }
-void CGameState::updateXpPlayers()
-{
-	bool wantToLevelUp = false, wantToLevelUpOne = players.front().wantToLevelUp
-		, wantToLevelUpTwo = (players.size() == 1) ? false : players.back().wantToLevelUp
-		,twoPUpdate=false;
+void CGameState::updateXpPlayers() {
+	bool wantToLevelUpOne = players.front().wantToLevelUp;
+	bool wantToLevelUpTwo = (players.size() == 1) ? false : players.back().wantToLevelUp;
+	bool twoPUpdate = false;
 
-	if (wantToLevelUpOne || wantToLevelUpTwo)
-		wantToLevelUp = true;
-	else 
-		wantToLevelUp = false;
-	if (wantToLevelUp)//ça level up
-	{
-		if (wantToLevelUpOne)
-		{
-			if (players.size() == 1)
-				data->machine.AddState(StateRef(new CUpgradeState(data, &(*players.begin()), &US, this)), false);
-			else if(players.back().hasLevelUp|| players.back().wantToLevelUp)
+	if (wantToLevelUpOne || wantToLevelUpTwo) {
+		if (wantToLevelUpOne) {
+			if (players.size() == 1 || players.back().hasLevelUp || players.back().wantToLevelUp) {
 				twoPUpdate = true;
+			}
 			else {
 				data->machine.AddState(StateRef(new CUpgradeState(data, &(*players.begin()), &US, this)), false);
 			}
-		}else if (wantToLevelUpTwo)
-		{
-			if (players.front().hasLevelUp)
-				twoPUpdate = true;
-			else
-				data->machine.AddState(StateRef(new CUpgradeState(data, &(players.back()), &US, this)), false);
 		}
-		if(twoPUpdate)
+		else if (wantToLevelUpTwo) {
+			if (players.front().hasLevelUp) {
+				twoPUpdate = true;
+			}
+			else {
+				data->machine.AddState(StateRef(new CUpgradeState(data, &(players.back()), &US, this)), false);
+			}
+		}
+		if (twoPUpdate) {
 			data->machine.AddState(StateRef(new CUpgradeState(data, &players, &US, this)), false);
+		}
 	}
 }
 void CGameState::afterTransi()
