@@ -38,7 +38,7 @@ protected:
 	sf::Text uitext;
 	bool CESTBON = false;
 	void initPlayer();
-	void initBackground();
+	virtual void initBackground();
 	void deleteEntity(int i);
 	void updateTime();
 	EllipseShape ellipseForSun;
@@ -69,7 +69,8 @@ public:
 	void addEnemy(std::string enemyName);
 	void addPowerUp(sf::Vector2f pos);
 	void STEUpdate(float delta);
-	void updateBackground(float delta);
+	virtual void updateBackground(float delta);
+	virtual void updateSun();
 	// Méthode qui initialise les assets du niveau.
 	virtual void initAssets() = 0;
 	virtual void GameOver() = 0;

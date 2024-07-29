@@ -12,6 +12,8 @@ private:
 	void deleteEntity(int& i);
 	void deleteEntity(std::vector<CHittingEntity*>::iterator& entity);
 	void startLevel();
+
+	void initBackground();
 public:
 	CLevelGameState(GameDataRef _data);
 	CLevelGameState(GameDataRef _data, std::vector<CCharacter>& characters,std::string filePath);
@@ -28,6 +30,17 @@ public:
 	void STEDraw(float delta);
 	void afterTransi();
 	void drawOnTarget(sf::RenderTarget& target, float interpolation);
+	//Méthode surchargée de CGameState
+	void updateSun() {
+		BG1.getLayer("sun").sprite.setPosition(ellipseForSun.getPoint(indexForSun));
+		lightShader.setUniform("lightPoint", utilities::glslCoord(ellipseForSun.getPoint(indexForSun), (float)data->assets.sCREEN_HEIGHT));
+		if (!level.isInfinite)
+			CGameState::updateSun();
+	}
+	void updateBackground(float delta);
+	void debugInfo() {
+		ImGui::SliderInt("Index soleil", &indexForSun, 0, 600);
+	}
 };
 
 

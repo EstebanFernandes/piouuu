@@ -64,6 +64,12 @@ void CLevelGameState::drawOnTarget(sf::RenderTarget& target, float interpolation
 	}
 }
 
+void CLevelGameState::updateBackground(float delta)
+{
+	CGameState::updateBackground(delta);
+}
+
+
 
 
 void CLevelGameState::deleteEntity(int& i)
@@ -91,6 +97,18 @@ void CLevelGameState::startLevel()
 	clock.restart();
 }
 
+void CLevelGameState::initBackground()
+{
+	CGameState::initBackground();
+	if(level.isInfinite)
+	{
+		//Pour que l'on voit le soleil en haut à gauche
+		indexForSun = static_cast<int>((float)ellipseForSun.getPointCount()*0.88);
+		BG1.getLayer("sun").sprite.setPosition(ellipseForSun.getPoint(indexForSun));
+		lightShader.setUniform("lightPoint", utilities::glslCoord(ellipseForSun.getPoint(indexForSun), (float)data->assets.sCREEN_HEIGHT));
+	}
+}
+
 CLevelGameState::CLevelGameState(GameDataRef _data)
 {
 	setData(_data);
@@ -114,6 +132,7 @@ CLevelGameState::CLevelGameState(GameDataRef _data, std::vector<CCharacter>& cha
 
 void CLevelGameState::STEInit()
 {
+	useIMGUI = true;
 	//Le init du cgamestate est appelé au moment du resume
 	initAssets();
 	initPlayer();

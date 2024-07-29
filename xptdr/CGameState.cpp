@@ -278,9 +278,14 @@ void CGameState::STEUpdate(float delta)
 void CGameState::updateBackground(float delta)
 {
 	BG1.updateCBackground(delta);
-	indexForSun = static_cast<int>(floor(time)+ (int)ellipseForSun.getPointCount()/2 + (int)ellipseForSun.getPointCount() / 4)% (int)ellipseForSun.getPointCount();
+	updateSun();
+}
+
+void CGameState::updateSun()
+{
+	indexForSun = static_cast<int>(floor(time) + (int)ellipseForSun.getPointCount() / 2 + (int)ellipseForSun.getPointCount() / 4) % (int)ellipseForSun.getPointCount();
 	BG1.getLayer("sun").sprite.setPosition(ellipseForSun.getPoint(indexForSun));
-	lightShader.setUniform("lightPoint", utilities::glslCoord(ellipseForSun.getPoint(indexForSun), data->assets.sCREEN_HEIGHT));
+	lightShader.setUniform("lightPoint", utilities::glslCoord(ellipseForSun.getPoint(indexForSun), (float)data->assets.sCREEN_HEIGHT));
 }
 
 void CGameState::deleteEntity(int i)
