@@ -96,7 +96,7 @@ public:
 			i->renderEntity(target);
 		for (int i = 0; i < entityList.size(); i++)
 		{
-			entityList[i]->renderTheEntity(target);
+			entityList[i]->renderEntity(target);
 		}
 		for (int i = 0; i < entityList.size(); i++)
 		{

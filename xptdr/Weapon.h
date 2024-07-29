@@ -49,6 +49,7 @@ protected:
 	float angleOffset;
 	bool isShooting = false;
 public:
+	bool wantToShoot=false;
 	CMob* pointerToPlayer;
 	~Weapon();
 

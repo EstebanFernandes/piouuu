@@ -120,6 +120,7 @@ void ShootingEnemy::renderEntity(sf::RenderTarget& target)
 	BAW.renderWeapon(target);
 }
 
+
 void ShootingEnemy::updateEntity(float delta)
 {
 	CEnemy::updateEntity(delta);

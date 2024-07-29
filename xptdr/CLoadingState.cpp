@@ -11,13 +11,14 @@ CLoadingState::CLoadingState(GameDataRef data_, infoForloading info_,std::list<C
 
 void CLoadingState::STEInit()
 {
+	useIMGUI = true;
 	//Initialisation du visuel
 	float height = (float)data->assets.sCREEN_HEIGHT;
 	float width = (float)data->assets.sCREEN_WIDTH;
 	for (auto player = players->begin(); player != players->end(); player++)
 	{
 		playerPos.push_back(player->getPosition());
-		player->setPositionEntity(-player->getGlobalBounds().width*2.f , playerPos.back().y);
+		player->setPositionEntity(-player->getPosition().x/2.f, playerPos.back().y);
 	}
 	levelNameText.setFont(data->assets.GetFont("Nouvelle"));
 	if (info.fileName != "")
@@ -36,7 +37,7 @@ void CLoadingState::STEInit()
 
 
 	// le premier argument de la fonction est this car c'est une fonction membre
-	std::thread t(&CLoadingState::threadFunction,this, &this->info,&(data->assets));
+	std::thread t(&CLoadingState::threadFunction,this, &this->info);
 	t.detach();//Lance le thread en parallèle du reste
 }
 
@@ -61,6 +62,7 @@ void CLoadingState::STEUpdate(float delta)
 		if (player->getPosition().x<playerPos[i].x)
 		{
 			player->moveEntity(sf::Vector2f(speed, 0.f));
+			//std::cout << "update loading level ! Move of "<<speed<<std::endl;
 		}
 		else
 		{
@@ -83,14 +85,15 @@ void CLoadingState::STEDraw(float delta)
 		data->window.draw(validText);
 }
 
-void CLoadingState::threadFunction(infoForloading* infop,CAssetManager* asset)
+void CLoadingState::threadFunction(infoForloading* infop)
 {
+	std::cout << "Start threaded function !";
 	if (infop->assetToLoadForGame != NULL)
 	{
 		for (int i = 0; i < infop->assetToLoadForGame->size(); i++)
 		{
 			std::pair<std::string, std::string>& currentPair = infop->assetToLoadForGame->at(i);
-			load(asset, currentPair);
+			load(infop->assetHandler, currentPair);
 	
 		}
 
@@ -103,10 +106,10 @@ void CLoadingState::threadFunction(infoForloading* infop,CAssetManager* asset)
 	}
 	if(infop->fileName!="")
 	{
-		CParserXML P(infop->fileName, &(data->assets), infop->bulletStorage);
+		CParserXML P(infop->fileName, infop->assetHandler, infop->bulletStorage);
 		P.coreFunction();
 	*(infop->level) = P.getLevel();
 	infop->level->isLevelSet = true;
 	}
-	std::cout << "niveau charge !";
+	std::cout << "End of threaded function !";
 }

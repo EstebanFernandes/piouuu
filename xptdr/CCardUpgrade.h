@@ -48,5 +48,18 @@ public:
 	{
 		cardTitle.setString(titre);
 	}
+	void setFontColor(sf::Color color)
+	{
+		cardTitle.setFillColor(color);
+		cardDescription.setFillColor(color);
+		for (sf::Text& stat : Stats)
+		{
+			stat.setFillColor(color);
+		}
+	}
+	void setBackColor(sf::Color color)
+	{
+		cardBack.setFillColor(color);
+	}
 };
 

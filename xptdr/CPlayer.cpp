@@ -62,13 +62,10 @@ void CPlayer::updateXpBar()
 
 void CPlayer::setAssets(CAssetManager* a)
 {
-	mainWeapon = new CGunslinger();
-	secondaryWeapon = new CGunslinger();
+	
 	assets = a;
-	mainWeapon->assets = a;
-	secondaryWeapon->assets = a;
-	assets->addSFX("bulletSound", &secondaryWeapon->bulletSound);
-	assets->addSFX("bulletSound", &mainWeapon->bulletSound);
+	setMainWeapon(new CGunslinger(),true);
+	setSecondaryWeapon(new CGunslinger(),true);
 	setTexture(name);
 	R2Sprite.setTexture(assets->GetTexture("R2D2"));
 	R2Sprite.setOrigin(0.f, 0.f);
@@ -100,16 +97,13 @@ void CPlayer::setAssets(CAssetManager* a)
 	animExplosionSprite = CAnimation(&explosionSprite, sf::Vector2i( 96, 96), sf::Vector2i(12,1), 2.f/12.f);
 	setSprite();
 	mainWeapon->setTouche(sf::Keyboard::Num1);
-	mainWeapon->pointerToPlayer = this;
 	ws.dir = sf::Vector2f(0.f, 1.f);
 	secondaryWeapon->setWeaponStats(ws);
 	secondaryWeapon->setBulletAsset("bulletSecond");
 	secondaryWeapon->setTouche(sf::Keyboard::Num2);
 	sf::Vector2f temp(0.f, -1.f);
 	secondaryWeapon->getWeaponStats().addDir(temp);
-	secondaryWeapon->pointerToPlayer=this;
-	mainWeapon->setAimBoolean(&seekForTarget);
-	secondaryWeapon->setAimBoolean(&seekForTarget);
+
 	assets->addSFX("planeSound", &planeSound);
 	assets->volumeSon(planeSound, 30.f);
 	planeSound->setPitch(0.5f);
@@ -174,18 +168,26 @@ Weapon* CPlayer::getMainWeapon()
 
 void CPlayer::setMainWeapon(Weapon* weaponParam,bool isFirstTime)
 {
-	std::string bulletAssets = mainWeapon->getBulletAsset();
-	sf::Keyboard::Key t = mainWeapon->getTouche();
-	CWeaponStat a = mainWeapon->getWeaponStats();
-delete mainWeapon;
-	mainWeapon = weaponParam;
-	mainWeapon->assets = assets;
-	assets->addSFX("bulletSound", &mainWeapon->bulletSound);
-	mainWeapon->setWeaponStats(a);
-	mainWeapon->setBulletAsset(bulletAssets);
-	mainWeapon->setTouche(t);
-	mainWeapon->pointerToPlayer = this;
-	mainWeapon->setAimBoolean(&seekForTarget);
+	setWeapon(&mainWeapon, weaponParam, isFirstTime);
+}
+
+void CPlayer::setWeapon(Weapon** weaponToReplace, Weapon* replacement, bool isFirstTime)
+{
+	if (!isFirstTime&& *weaponToReplace != NULL)
+	{
+		std::string bulletAssets = (*weaponToReplace)->getBulletAsset();
+		sf::Keyboard::Key t = (*weaponToReplace)->getTouche();
+		CWeaponStat a = (*weaponToReplace)->getWeaponStats();
+		delete (*weaponToReplace);
+		replacement->setWeaponStats(a);
+		replacement->setBulletAsset(bulletAssets);
+		replacement->setTouche(t);
+	}
+	(*weaponToReplace) = replacement;
+	(*weaponToReplace)->assets = assets;
+	assets->addSFX("bulletSound", &(*weaponToReplace)->bulletSound);
+	(*weaponToReplace)->pointerToPlayer = this;
+	(*weaponToReplace)->setAimBoolean(&seekForTarget);
 }
 
 Weapon* CPlayer::getSecondaryWeapon()
@@ -193,10 +195,9 @@ Weapon* CPlayer::getSecondaryWeapon()
 	return secondaryWeapon;
 }
 
-void CPlayer::setSecondaryWeapon(Weapon* weaponParam)
+void CPlayer::setSecondaryWeapon(Weapon* weaponParam, bool isFirstTime)
 {
-	delete secondaryWeapon;
-	secondaryWeapon = weaponParam;
+	setWeapon(&secondaryWeapon, weaponParam, isFirstTime);
 }
 //Si on ne précise pas c'est que l'on applique le bonus sur l'arme principale et secondaire
 void CPlayer::traitermisc(std::string& misc)

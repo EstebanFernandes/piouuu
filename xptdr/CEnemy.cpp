@@ -169,11 +169,11 @@ void CEnemy::renderEntity(sf::RenderTarget& target)
 	if(isDead==false)
 	{
 		renderTheEntity(target);
-		renderBuffs(target);
 	}
 	else{
 		target.draw(explosionSprite);
 	}
+
 }
 void CEnemy::setPosition(float positionXParam, float PositionYParam)
 {

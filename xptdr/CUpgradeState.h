@@ -64,12 +64,11 @@ private:
 		void draw(sf::RenderTarget& renderTarget)
 		{
 			bool backFirst = (degree > 90.f && degree < 270.f) ? true : false;
-			if (backFirst)
+				renderTarget.draw(*cardBack);
+			
+			if (!backFirst)
 			{
-				renderTarget.draw(*cardBack);
-			}
-			else {
-				renderTarget.draw(*cardBack);
+	
 				renderTarget.draw(*cardFace);
 			}
 		}
@@ -136,7 +135,7 @@ private:
 	/// <param name="isFirstTime"></param>
 	void CreateCard(upgradeForOnePlayer& player)
 	{
-		backCardTexture.loadFromFile("res/img/backCard.png");
+		backCardTexture.loadFromFile("res/img/backCard2.png");
 		float screen_Height = player.bord.height;
 		float screen_Width = player.bord.width;
 		CSommetUpgrade& baseSommet = (*player.playerComp->pointerToSommet);

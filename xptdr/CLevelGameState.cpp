@@ -123,6 +123,7 @@ void CLevelGameState::STEInit()
 	temp.level = &level;
 	temp.US = &US;
 	temp.assetToLoadForGame = &assetToload;
+	temp.assetHandler = &data->assets;
 	data->machine.AddState(StateRef(new CLoadingState(data, temp, &players)), false);
 	hasChanges = true;
 	isLevelSet = true;

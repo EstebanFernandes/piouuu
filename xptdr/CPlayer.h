@@ -171,8 +171,9 @@ public:
 	void resetMovement();
 	Weapon* getMainWeapon();
 	void setMainWeapon(Weapon* weaponParam,bool isFirstTime=false);
+	void setWeapon(Weapon** weaponToReplace, Weapon* replacement, bool isFirstTime = false);
 	Weapon* getSecondaryWeapon();
-	void setSecondaryWeapon(Weapon* weaponParam);
+	void setSecondaryWeapon(Weapon* weaponParam,bool isFirstTime=false);
 	void traitermisc(std::string& misc);
 	void traitermisc(std::string& misc,int type);
 	void updateMisc();

@@ -38,6 +38,8 @@ CGunslinger::CGunslinger()
 
 void CGunslinger::updateWeapon(float dt)
 {
+	if (wantToShoot==true)
+		weaponShoot();
 	for (std::list<CBulletAuto>::iterator it = magasine.begin(); it != magasine.end(); /*++it*/) {
 		it->updateEntity(dt);
 		if (typeTir == bombe)
@@ -65,9 +67,21 @@ void CGunslinger::updateWeapon(float dt)
 
 void CGunslinger::weaponControls(sf::Event event )
 {
-	if (sf::Keyboard::isKeyPressed(touche))
+
+	switch (event.type)
 	{
-		weaponShoot();
+		case sf::Event::KeyPressed:
+		{
+			if (event.key.code == touche)
+				wantToShoot = true;
+			break;
+		}
+		case sf::Event::KeyReleased:
+		{
+			if (event.key.code == touche)
+				wantToShoot = false;
+			break;
+		}
 	}
 }
 

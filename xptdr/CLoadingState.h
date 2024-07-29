@@ -14,17 +14,20 @@ struct infoForloading {
 	std::string fileName;
 	bulletStorage* bulletStorage;
 	upgradeStock* US;
+	CAssetManager* assetHandler;
 	infoForloading() {
 		level = NULL;
 		assetToLoadForGame = NULL;
 		fileName = "";
 		bulletStorage=NULL;
 		US = NULL;
+		assetHandler = NULL;
 	}
 };
 class CLoadingState : public CState
 {
 private:
+	sf::Vector2f posPlayer;
 	bool isPlayerSet = false;
 	GameDataRef data;
 	infoForloading info;
@@ -33,6 +36,14 @@ private:
 	float speed = 0.1f;
 	sf::Text validText;
 	sf::Text levelNameText;
+	void debugInfo()
+	{
+		posPlayer = players->front().getPosition();
+
+		ImGui::Text(std::string("x pos : "+std::to_string(posPlayer.x) + " y pos : " + std::to_string(posPlayer.y)).c_str());
+
+
+	}
 public:
 	CLoadingState(GameDataRef data_,infoForloading info_, std::list<CPlayer>* pointerToPlayers);
 	void STEInit();
@@ -40,6 +51,6 @@ public:
 	void STEUpdate(float delta);
 	void STEDraw(float delta);
 
-	void threadFunction(infoForloading* infoquoi,CAssetManager* asset);
+	void threadFunction(infoForloading* infoquoi);
 };
 

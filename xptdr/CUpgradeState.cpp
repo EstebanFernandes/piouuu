@@ -31,6 +31,7 @@ void CUpgradeState::createCardTexture(upgradeForOnePlayer& player, int nbOfUpgra
 		if (!player.isFirstTime)
 		{
 			CCardUpgrade temp(baseSommet.returnValues(), graph.ListeType, &(data->assets), 0);
+
 			temp.setSize(sizeOfCardWithoutThick);
 			pos.x = i * sizeOfCardWithoutThick.x;
 			temp.setPosition(pos);
@@ -38,12 +39,15 @@ void CUpgradeState::createCardTexture(upgradeForOnePlayer& player, int nbOfUpgra
 		}
 		else
 		{
+
 			CCardUpgrade temp(baseSommet.returnValues(), US->graphs[stoi(graph.Name)][player.indexesUpgrade[i]-1].ListeType, &(data->assets), 0);
 			temp.setSize(sizeOfCardWithoutThick);
 			pos.x = i * sizeOfCardWithoutThick.x;
 			temp.setPosition(pos);
 			tempCardList.push_back(temp);
 		}
+		tempCardList[i].setFontColor(sf::Color(0, 0, 0, 255));
+		tempCardList[i].setBackColor(sf::Color(255, 255, 255, 255));
 	}
 	InterfaceState::applyCardUpgrademaxMinCharSize(tempCardList);
 	for (int i = 0; i < tempCardList.size(); ++i)
@@ -52,7 +56,7 @@ void CUpgradeState::createCardTexture(upgradeForOnePlayer& player, int nbOfUpgra
 	}
 	sf::RenderTexture renderTexture;
 	renderTexture.create((int)(sizeOfCard.x * nbOfUpgrade+1), (int)(sizeOfCard.y) );
-	renderTexture.clear();
+	renderTexture.clear(sf::Color::White);
 	for (int i = 0; i < nbOfUpgrade; i++)
 	{
 		renderTexture.draw(tempCardList[i]);

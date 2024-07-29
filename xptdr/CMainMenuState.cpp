@@ -261,7 +261,8 @@ void CMainMenuState::STEDraw(float delta)
 	}
 	back.display();
 	spriteRender.setTexture(back.getTexture());
-	data->window.draw(spriteRender, &lightShader);
+	//data->window.draw(spriteRender, &lightShader);
+	data->window.draw(spriteRender);
 
 }
 
