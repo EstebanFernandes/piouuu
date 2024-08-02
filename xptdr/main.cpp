@@ -1,8 +1,10 @@
-#include "CJeu.h"
+#include "Engine/MainLoop.h"
 #include "DEFINITIONS.h"
+using Engine::MainLoop;
 //SIUUUUU
 int main() {
 	//Assure que chaque appelle à rand donne un nombre différent
 	srand(static_cast<unsigned int>(time(nullptr)));
-	CJeu(1280, 720, "PIOU PIOU");
+	MainLoop(1280, 720, "PIOU PIOU");
+	
 }
