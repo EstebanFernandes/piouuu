@@ -28,16 +28,16 @@
 class Weapon
 {
 protected:
-	bool* seekForTarget = NULL;
+	bool* seekForTarget = nullptr;
 	int typeArme = -1;
 	/// <summary>
 	/// définit le décalage entre la position du joueur et l'endroit où l'on doit tirer
 	/// </summary>
 	sf::Vector2f weaponPos;
+	std::vector<effetspecial*>* pointerToEffetOnHit;
+	WeaponStat* pointerToWeaponStat;
 
-	std::vector<effetspecial*> effetOnHit;
-
-	WeaponStat referenceStat;
+	
 	sf::Keyboard::Key touche;
 	float angleOffset;
 	bool isShooting = false;
@@ -52,7 +52,7 @@ public:
 	/// Pour définir le comportement du tir on choisit l'un de ceux ci dessous
 	/// </summary>
 
-	sf::Sound *bulletSound = NULL;
+	sf::Sound *bulletSound = nullptr;
 	typedef enum {
 		gunslinger = 0,
 		laser = 1
@@ -107,9 +107,5 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	bool isWeaponShooting() { return isShooting; }
-	void addBuff(effetspecial* newEffet)
-	{
-		effetOnHit.push_back(newEffet);
-	}
-};
-
+	void setPointerToOnHitEffect(std::vector<effetspecial*>* pToEffet) { pointerToEffetOnHit = pToEffet; }
+	void setPointerToWeaponStats(WeaponStat* pToStat) { pointerToWeaponStat= pToStat; }

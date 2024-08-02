@@ -18,7 +18,7 @@ void Weapon::updateAngle()
 
 Weapon::~Weapon()
 {
-	if(bulletSound!=NULL)
+	if(bulletSound!=nullptr)
 		assets->deleteSound(bulletSound);
 }
 
@@ -58,22 +58,14 @@ void Weapon::addBulletType(int type)
 	}
 }
 
-WeaponStat& Weapon::getWeaponStats()
-{
-	return referenceStat;
-}
 
-void Weapon::setWeaponStats(WeaponStat statsParam)
-{
-	referenceStat = statsParam;
-}
 
 std::vector<effetspecial*>& Weapon::getEffect()
 {
 	std::vector<effetspecial*> res;
-	for (int i = 0; i < effetOnHit.size(); i++)
+	for (int i = 0; i < pointerToEffetOnHit->size(); i++)
 	{
-		res.push_back(effetOnHit[i]->clone());
+		res.push_back(pointerToEffetOnHit->at(i)->clone());
 	}
 	return res;
 }
